@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>HIW JS API Tests</title>
+        <link type="text/css" rel="stylesheet" href="Content/Styles/qunit.css"/>
+    </head>
+    <body>
+        <fieldset>
+            <legend>Test Parameters</legend>
+            <label for="apiKey">API Key:</label>
+            <input id="apiKey" type="text" />
+            <label for="baseURL">Base URL:</label>
+            <input id="baseURL" type="text" />
+            <button id="run" type="button">Run Tests</button>
+        </fieldset>
+
+        <div id="qunit"></div>
+        <div id="qunit-fixture"></div>
+
+        <script type="text/javascript" src="Content/Scripts/jquery.min.js"></script>
+        <script type="text/javascript" src="Content/Scripts/qunit.js"></script>
+        <script type="text/javascript" src="Content/Scripts/API/Output/hiw-api.js"></script>
+        <script type="text/javascript" src="Content/Scripts/API/Output/hiw-api-test.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#baseURL").val(hiw.API.DefaultBaseURL);
+
+                $("#run").click(function () {
+                    hiw.test.run($("#apiKey").val(), $("#baseURL").val());
+                });
+            });
+        </script>
+    </body>
+</html>

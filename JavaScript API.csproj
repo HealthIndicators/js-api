@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="..\..\.build\MSBuild.Community.Tasks.Targets" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{300B46EC-48D4-479B-B3EA-CC636E6D234E}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NCHS.HIW.JavaScriptAPI</RootNamespace>
+    <AssemblyName>NCHS.HIW.JavaScriptAPI</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <TypeScriptToolsVersion>1.4</TypeScriptToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Content\Scripts\API\Full.txt" />
+    <Content Include="Content\Scripts\API\Header.js" />
+    <Content Include="Content\Scripts\API\Lite.txt" />
+    <Content Include="Content\Scripts\API\Test.txt" />
+    <Content Include="Content\Scripts\jquery.min.js" />
+    <Content Include="Content\Scripts\qunit.js" />
+    <Content Include="Content\Styles\qunit.css" />
+    <Content Include="Index.html" />
+    <Content Include="LICENSE.md" />
+    <None Include="README.md" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\Common.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\Endpoint.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\Endpoints.Generated.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\Enumerations.Generated.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\DataObjects.Generated.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\API.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\Criterion.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\Filter.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\FilterType.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\Group.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\HttpMethod.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\IAPIResponseInitializer.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\IndicatorDataItem.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\Link.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\PropertyMap.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\ServiceDataObject.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\ServiceObject.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\test\IQUnitTestCallback.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\test\QUnitAssert.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\test\QUnitTest.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\test\Tests.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\test\_dependencies.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\Version.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\IAPICallback.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\APIResponse.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\IFilterPart.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\Operator.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\VersionInfo.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\_dependencies.ts" />
+    <TypeScriptCompile Include="Content\Scripts\Definitions\qunit.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>59161</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:5000/HIW-JSAPI</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="AfterClean">
+    <CallTarget Targets="CleanJavaScriptAPIOutput" />
+  </Target>
+  <Target Name="BeforeBuild">
+    <CallTarget Targets="CleanJavaScriptAPIOutput" />
+  </Target>
+  <Target Name="AfterBuild">
+    <Message Importance="high" Text="Compiling 'lite' API..." />
+    <Exec Command="tsc @Lite.txt" WorkingDirectory="Content\Scripts\API\" />
+    <Message Importance="high" Text="Compiling 'full' API..." />
+    <Exec Command="tsc @Full.txt" WorkingDirectory="Content\Scripts\API\" />
+    <Message Importance="high" Text="Compiling tests..." />
+    <Exec Command="tsc @Test.txt" WorkingDirectory="Content\Scripts\API\" />
+    <Message Importance="high" Text="Copying LICENSE and README..." />
+    <Copy SourceFiles="LICENSE.md" DestinationFiles="Content\Scripts\API\Output\LICENSE.md" />
+    <Copy SourceFiles="README.md" DestinationFiles="Content\Scripts\API\Output\README.md" />
+    <Message Importance="high" Text="Minifying..." />
+    <Copy SourceFiles="Content\Scripts\API\Output\hiw-api.js" DestinationFiles="Content\Scripts\API\Output\hiw-api.min.js" />
+    <JSCompress Files="Content\Scripts\API\Output\hiw-api.min.js" />
+    <Copy SourceFiles="Content\Scripts\API\Output\hiw-api-lite.js" DestinationFiles="Content\Scripts\API\Output\hiw-api-lite.min.js" />
+    <JSCompress Files="Content\Scripts\API\Output\hiw-api-lite.min.js" />
+    <ItemGroup>
+      <JSAPIOutputs Include="Content\Scripts\API\Output\*" Exclude="hiw-js-api.zip;package.json" />
+    </ItemGroup>
+    <ItemGroup>
+      <JSAPIOutputs-JS Include="%(JSAPIOutputs.Identity)" Condition="'%(Extension)' == '.ts' Or '%(Extension)' == '.js'" />
+    </ItemGroup>
+    <Message Importance="high" Text="Prepending header to outputs..." />
+    <Exec Command="type Content\Scripts\API\Header.js %(JSAPIOutputs-JS.Identity) &gt; %(JSAPIOutputs-JS.Identity).out 2&gt;NUL" />
+    <Delete Files="%(JSAPIOutputs-JS.Identity)" />
+    <Move SourceFiles="%(JSAPIOutputs-JS.Identity).out" DestinationFiles="%(JSAPIOutputs-JS.Identity)" />
+    <Message Importance="high" Text="Zipping API..." />
+    <Zip ZipFileName="Content\Scripts\API\Output\hiw-js-api.zip" ZipLevel="9" Files="@(JSAPIOutputs)" WorkingDirectory="Content\Scripts\API\Output" />
+    <Message Importance="high" Text="Copying API to Developers..." />
+    <Copy SourceFiles="Content\Scripts\API\Output\hiw-js-api.zip" DestinationFiles="..\..\Developers\Content\Downloads\hiw-js-api.zip" />
+  </Target>
+  <Target Name="CleanJavaScriptAPIOutput">
+    <ItemGroup>
+      <CleanJavaScriptAPIOut Include="Content\Scripts\API\Output\*" Exclude="package.json" />
+    </ItemGroup>
+    <Delete Files="%(CleanJavaScriptAPIOut.Identity)" />
+  </Target>
+</Project>

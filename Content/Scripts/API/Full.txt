@@ -1,0 +1,26 @@
+-t ES5
+-d
+--sourceMap
+--out Output\hiw-api.js
+hiw\Common.ts
+hiw\IFilterPart.ts
+hiw\FilterType.ts
+hiw\Operator.ts
+hiw\Criterion.ts
+hiw\Group.ts
+hiw\Filter.ts
+hiw\IAPIResponseInitializer.ts
+hiw\Enumerations.Generated.ts
+hiw\PropertyMap.ts
+hiw\HTTPMethod.ts
+hiw\Endpoint.ts
+hiw\Link.ts
+hiw\ServiceObject.ts
+hiw\ServiceDataObject.ts
+hiw\APIResponse.ts
+hiw\IAPICallback.ts
+hiw\API.ts
+hiw\DataObjects.Generated.ts
+hiw\Version.ts
+hiw\VersionInfo.ts
+hiw\Endpoints.Generated.ts

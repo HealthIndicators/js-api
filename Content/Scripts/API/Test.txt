@@ -1,0 +1,8 @@
+-t ES5
+-d
+--sourceMap
+--out Output\hiw-api-test.js
+hiw\test\QUnitAssert.ts
+hiw\test\IQUnitTestCallback.ts
+hiw\test\QUnitTest.ts
+hiw\test\Tests.ts
