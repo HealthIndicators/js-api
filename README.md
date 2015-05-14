@@ -133,4 +133,4 @@ The small examples above should have given you the general idea of how to work w
 available on the [HIW Developers site](http://localhost:5000/HIW-Developers/Examples).
 
 ##Reporting Issues
-If you come across any issues while using the JS API or if something is not clear, please [contact HIW Support](mailto:healthindicators@cdc.gov).
+If you come across any issues while using the JS API or if something is not clear, please [contact HIW Support](mailto:healthindicators@cdc.gov). Bugs and suggestions [may also be logged on Github](https://github.com/HealthIndicators/js-api/issues).
