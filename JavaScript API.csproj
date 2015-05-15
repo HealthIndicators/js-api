@@ -137,7 +137,10 @@
     <Copy SourceFiles="Content\Scripts\API\Output\hiw-api-lite.js" DestinationFiles="Content\Scripts\API\Output\hiw-api-lite.min.js" />
     <JSCompress Files="Content\Scripts\API\Output\hiw-api-lite.min.js" />
     <ItemGroup>
-      <JSAPIOutputs Include="Content\Scripts\API\Output\*" Exclude="hiw-js-api.zip;package.json" />
+        <JSAPIOutputs Include="Content\Scripts\API\Output\*.ts" />
+        <JSAPIOutputs Include="Content\Scripts\API\Output\*.js" />
+        <JSAPIOutputs Include="Content\Scripts\API\Output\LICENSE.md" />
+        <JSAPIOutputs Include="Content\Scripts\API\Output\README.md" />
     </ItemGroup>
     <ItemGroup>
       <JSAPIOutputs-JS Include="%(JSAPIOutputs.Identity)" Condition="'%(Extension)' == '.ts' Or '%(Extension)' == '.js'" />

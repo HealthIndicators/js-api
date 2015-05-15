@@ -82,22 +82,22 @@
 
         protected getFields(): any { return IndicatorDataItem.Fields; }
 
-        /** Gets IndicatorDataItems by IndicatorDescriptionID.
-         *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child Indicators.
+        /** Gets a list of all of the (flattened) IndicatorDataItems in the database which are associated with the IndicatorDescription table via the ID column.
+         *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDataItems.
          *  @return An Array of IndicatorDataItems. */
         public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDataItem>>, page?: number) {
             api.executeEndpoint<Array<IndicatorDataItem>>(Endpoint.fromSelf<Array<IndicatorDataItem>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
         }
 
         /** Gets how many IndicatorDataItems by IndicatorDescriptionID exist. 
-         *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child Indicators.
+         *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDataItems.
          *  @return An Array of IndicatorDataItems. */
         public static getByIndicatorDescriptionIDCount(indicatorDescriptionID: number, api: API, callback: IAPICallback<number>) {
             api.executeEndpoint<number>(Endpoint.fromSelf<number>(), callback, { indicatorDescriptionID: indicatorDescriptionID });
         }
 
         /** Gets how many pages of IndicatorDataItems by IndicatorDescriptionID exist.
-         *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child Indicators.
+         *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDataItems.
          *  @return An Array of IndicatorDataItems. */
         public static getByIndicatorDescriptionIDPageCount(indicatorDescriptionID: number, api: API, callback: IAPICallback<number>) {
             api.executeEndpoint<number>(Endpoint.fromSelf<number>(), callback, { indicatorDescriptionID: indicatorDescriptionID });
