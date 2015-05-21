@@ -23,13 +23,31 @@
         <script type="text/javascript" src="Content/Scripts/API/Output/hiw-api-test.js"></script>
 
         <script type="text/javascript">
-            $(document).ready(function () {
-                $("#baseURL").val(hiw.API.DefaultBaseURL);
+            var apiKey_Key = "apiKey";
+            var baseURL_Key = "baseURL";
 
+            $(document).ready(function () {
+                setParameters();
+
+                $("#apiKey").change(function () { localStorage.setItem(apiKey_Key, $(this).val()); });
+                $("#baseURL").change(function () { localStorage.setItem(baseURL_Key, $(this).val()); });
                 $("#run").click(function () {
                     hiw.test.run($("#apiKey").val(), $("#baseURL").val());
                 });
             });
+
+            function setParameters() {
+                var apiKey = null;
+                var baseURL = hiw.API.DefaultBaseURL;
+
+                if (typeof (Storage) !== "undefined") {
+                    apiKey = localStorage.getItem(apiKey_Key);
+                    baseURL = (localStorage.getItem(baseURL_Key) || baseURL);
+                }
+
+                $("#apiKey").val(apiKey);
+                $("#baseURL").val(baseURL);
+            }
         </script>
     </body>
 </html>
