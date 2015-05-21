@@ -12,7 +12,7 @@ hiw\Filter.ts
 hiw\IAPIResponseInitializer.ts
 hiw\Enumerations.Generated.ts
 hiw\PropertyMap.ts
-hiw\HTTPMethod.ts
+hiw\HttpMethod.ts
 hiw\Endpoint.ts
 hiw\Link.ts
 hiw\ServiceObject.ts

@@ -1,9 +1,9 @@
 var hiw;
 (function (hiw) {
-    (function (HTTPMethod) {
-        HTTPMethod[HTTPMethod["GET"] = 0] = "GET";
-        HTTPMethod[HTTPMethod["POST"] = 1] = "POST";
-    })(hiw.HTTPMethod || (hiw.HTTPMethod = {}));
-    var HTTPMethod = hiw.HTTPMethod;
+    (function (HttpMethod) {
+        HttpMethod[HttpMethod["GET"] = 0] = "GET";
+        HttpMethod[HttpMethod["POST"] = 1] = "POST";
+    })(hiw.HttpMethod || (hiw.HttpMethod = {}));
+    var HttpMethod = hiw.HttpMethod;
 })(hiw || (hiw = {}));
 //# sourceMappingURL=HttpMethod.js.map

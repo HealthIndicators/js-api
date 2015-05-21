@@ -1,5 +1,5 @@
 ﻿module hiw {
-    export enum HTTPMethod {
+    export enum HttpMethod {
         GET,
         POST
     }

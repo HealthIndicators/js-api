@@ -17,5 +17,5 @@
         }
     }
 
-    Endpoint.addSingle<VersionInfo>(VersionInfo, HTTPMethod.GET, "/Version", VersionInfo.Version);
+    Endpoint.addSingle<VersionInfo>(VersionInfo, HttpMethod.GET, "/Version", VersionInfo.Version);
 }

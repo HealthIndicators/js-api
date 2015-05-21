@@ -65,7 +65,7 @@ var hiw;
                         callback(json, error);
                 }
             };
-            request.open(hiw.HTTPMethod[method], url);
+            request.open(hiw.HttpMethod[method], url);
             request.setRequestHeader("X-HIW-API-Key", this.apiKey);
             request.setRequestHeader("Accept", "application/json");
             if (method == 1 /* POST */) {

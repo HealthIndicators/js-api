@@ -104,7 +104,7 @@
         }
     }
 
-    Endpoint.addArray<IndicatorDataItem>(IndicatorDataItem, HTTPMethod.GET, "/IndicatorDescription/{indicatorDescriptionID}/Data/{page}", IndicatorDataItem.getByIndicatorDescriptionID);
-    Endpoint.addSimple<IndicatorDataItem, Number>(IndicatorDataItem, HTTPMethod.GET, "/IndicatorDescription/{indicatorDescriptionID}/Data/Count", IndicatorDataItem.getByIndicatorDescriptionIDCount);
-    Endpoint.addSimple<IndicatorDataItem, Number>(IndicatorDataItem, HTTPMethod.GET, "/IndicatorDescription/{indicatorDescriptionID}/Data/PageCount", IndicatorDataItem.getByIndicatorDescriptionIDPageCount);
+    Endpoint.addArray<IndicatorDataItem>(IndicatorDataItem, HttpMethod.GET, "/IndicatorDescription/{indicatorDescriptionID}/Data/{page}", IndicatorDataItem.getByIndicatorDescriptionID);
+    Endpoint.addSimple<IndicatorDataItem, Number>(IndicatorDataItem, HttpMethod.GET, "/IndicatorDescription/{indicatorDescriptionID}/Data/Count", IndicatorDataItem.getByIndicatorDescriptionIDCount);
+    Endpoint.addSimple<IndicatorDataItem, Number>(IndicatorDataItem, HttpMethod.GET, "/IndicatorDescription/{indicatorDescriptionID}/Data/PageCount", IndicatorDataItem.getByIndicatorDescriptionIDPageCount);
 }

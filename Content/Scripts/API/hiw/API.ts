@@ -59,7 +59,7 @@
             });
         }
 
-        public executeUrl(method: HTTPMethod, url: string, postData: any, callback: (json: Object, error: string) => void) {
+        public executeUrl(method: HttpMethod, url: string, postData: any, callback: (json: Object, error: string) => void) {
             var request = new XMLHttpRequest();
 
             request.onreadystatechange = () => {
@@ -86,11 +86,11 @@
                 }
             };
 
-            request.open(HTTPMethod[method], url);
+            request.open(HttpMethod[method], url);
             request.setRequestHeader("X-HIW-API-Key", this.apiKey);
             request.setRequestHeader("Accept", "application/json");
 
-            if (method == HTTPMethod.POST) {
+            if (method == HttpMethod.POST) {
                 request.setRequestHeader("Content-Type", "application/json");
                 request.send(JSON.stringify(postData));
             }
@@ -103,5 +103,5 @@
         }
     }
 
-    Endpoint.addSimple<API, boolean>(API, HTTPMethod.GET, "/VerifyApiKey", API.VerifyApiKey);
+    Endpoint.addSimple<API, boolean>(API, HttpMethod.GET, "/VerifyApiKey", API.VerifyApiKey);
 }

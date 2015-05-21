@@ -208,15 +208,15 @@ module hiw {
 
         /** Returns the related AncestorAge based on the unique ID of the related AgeRelation.
          *  @return A single AgeRelation, or null. */
-        public getAncestorAge(api: API, callback: IAPICallback<AgeRelation>) {
+        public getAncestorAge(api: API, callback: IAPICallback<Age>) {
             AgeRelation.getAncestorAgeForAgeRelation(this.id, api, callback);
         }
 
         /** Returns the related AncestorAge based on the unique ID of the related AgeRelation.
          *  @param ageRelationID The ID of the AgeRelation to retrieve.
          *  @return A single AgeRelation, or null. */
-        public static getAncestorAgeForAgeRelation(ageRelationID: number, api: API, callback: IAPICallback<AgeRelation>) {
-            api.executeEndpoint<AgeRelation>(Endpoint.fromSelf<AgeRelation>(), callback, { ageRelationID: ageRelationID });
+        public static getAncestorAgeForAgeRelation(ageRelationID: number, api: API, callback: IAPICallback<Age>) {
+            api.executeEndpoint<Age>(Endpoint.fromSelf<Age>(), callback, { ageRelationID: ageRelationID });
         }
 
         /** Gets AgeRelations by DescendantAgeID.
@@ -242,15 +242,15 @@ module hiw {
 
         /** Returns the related DescendantAge based on the unique ID of the related AgeRelation.
          *  @return A single AgeRelation, or null. */
-        public getDescendantAge(api: API, callback: IAPICallback<AgeRelation>) {
+        public getDescendantAge(api: API, callback: IAPICallback<Age>) {
             AgeRelation.getDescendantAgeForAgeRelation(this.id, api, callback);
         }
 
         /** Returns the related DescendantAge based on the unique ID of the related AgeRelation.
          *  @param ageRelationID The ID of the AgeRelation to retrieve.
          *  @return A single AgeRelation, or null. */
-        public static getDescendantAgeForAgeRelation(ageRelationID: number, api: API, callback: IAPICallback<AgeRelation>) {
-            api.executeEndpoint<AgeRelation>(Endpoint.fromSelf<AgeRelation>(), callback, { ageRelationID: ageRelationID });
+        public static getDescendantAgeForAgeRelation(ageRelationID: number, api: API, callback: IAPICallback<Age>) {
+            api.executeEndpoint<Age>(Endpoint.fromSelf<Age>(), callback, { ageRelationID: ageRelationID });
         }
     }
     
@@ -464,15 +464,15 @@ module hiw {
 
         /** Returns the related AncestorCharacteristicOfSchoolOrStudent based on the unique ID of the related CharacteristicOfSchoolOrStudentRelation.
          *  @return A single CharacteristicOfSchoolOrStudentRelation, or null. */
-        public getAncestorCharacteristicOfSchoolOrStudent(api: API, callback: IAPICallback<CharacteristicOfSchoolOrStudentRelation>) {
+        public getAncestorCharacteristicOfSchoolOrStudent(api: API, callback: IAPICallback<CharacteristicOfSchoolOrStudent>) {
             CharacteristicOfSchoolOrStudentRelation.getAncestorCharacteristicOfSchoolOrStudentForCharacteristicOfSchoolOrStudentRelation(this.id, api, callback);
         }
 
         /** Returns the related AncestorCharacteristicOfSchoolOrStudent based on the unique ID of the related CharacteristicOfSchoolOrStudentRelation.
          *  @param characteristicOfSchoolOrStudentRelationID The ID of the CharacteristicOfSchoolOrStudentRelation to retrieve.
          *  @return A single CharacteristicOfSchoolOrStudentRelation, or null. */
-        public static getAncestorCharacteristicOfSchoolOrStudentForCharacteristicOfSchoolOrStudentRelation(characteristicOfSchoolOrStudentRelationID: number, api: API, callback: IAPICallback<CharacteristicOfSchoolOrStudentRelation>) {
-            api.executeEndpoint<CharacteristicOfSchoolOrStudentRelation>(Endpoint.fromSelf<CharacteristicOfSchoolOrStudentRelation>(), callback, { characteristicOfSchoolOrStudentRelationID: characteristicOfSchoolOrStudentRelationID });
+        public static getAncestorCharacteristicOfSchoolOrStudentForCharacteristicOfSchoolOrStudentRelation(characteristicOfSchoolOrStudentRelationID: number, api: API, callback: IAPICallback<CharacteristicOfSchoolOrStudent>) {
+            api.executeEndpoint<CharacteristicOfSchoolOrStudent>(Endpoint.fromSelf<CharacteristicOfSchoolOrStudent>(), callback, { characteristicOfSchoolOrStudentRelationID: characteristicOfSchoolOrStudentRelationID });
         }
 
         /** Gets CharacteristicOfSchoolOrStudentRelations by DescendantCharacteristicOfSchoolOrStudentID.
@@ -498,15 +498,15 @@ module hiw {
 
         /** Returns the related DescendantCharacteristicOfSchoolOrStudent based on the unique ID of the related CharacteristicOfSchoolOrStudentRelation.
          *  @return A single CharacteristicOfSchoolOrStudentRelation, or null. */
-        public getDescendantCharacteristicOfSchoolOrStudent(api: API, callback: IAPICallback<CharacteristicOfSchoolOrStudentRelation>) {
+        public getDescendantCharacteristicOfSchoolOrStudent(api: API, callback: IAPICallback<CharacteristicOfSchoolOrStudent>) {
             CharacteristicOfSchoolOrStudentRelation.getDescendantCharacteristicOfSchoolOrStudentForCharacteristicOfSchoolOrStudentRelation(this.id, api, callback);
         }
 
         /** Returns the related DescendantCharacteristicOfSchoolOrStudent based on the unique ID of the related CharacteristicOfSchoolOrStudentRelation.
          *  @param characteristicOfSchoolOrStudentRelationID The ID of the CharacteristicOfSchoolOrStudentRelation to retrieve.
          *  @return A single CharacteristicOfSchoolOrStudentRelation, or null. */
-        public static getDescendantCharacteristicOfSchoolOrStudentForCharacteristicOfSchoolOrStudentRelation(characteristicOfSchoolOrStudentRelationID: number, api: API, callback: IAPICallback<CharacteristicOfSchoolOrStudentRelation>) {
-            api.executeEndpoint<CharacteristicOfSchoolOrStudentRelation>(Endpoint.fromSelf<CharacteristicOfSchoolOrStudentRelation>(), callback, { characteristicOfSchoolOrStudentRelationID: characteristicOfSchoolOrStudentRelationID });
+        public static getDescendantCharacteristicOfSchoolOrStudentForCharacteristicOfSchoolOrStudentRelation(characteristicOfSchoolOrStudentRelationID: number, api: API, callback: IAPICallback<CharacteristicOfSchoolOrStudent>) {
+            api.executeEndpoint<CharacteristicOfSchoolOrStudent>(Endpoint.fromSelf<CharacteristicOfSchoolOrStudent>(), callback, { characteristicOfSchoolOrStudentRelationID: characteristicOfSchoolOrStudentRelationID });
         }
     }
     
@@ -720,15 +720,15 @@ module hiw {
 
         /** Returns the related AncestorCountryOfBirth based on the unique ID of the related CountryOfBirthRelation.
          *  @return A single CountryOfBirthRelation, or null. */
-        public getAncestorCountryOfBirth(api: API, callback: IAPICallback<CountryOfBirthRelation>) {
+        public getAncestorCountryOfBirth(api: API, callback: IAPICallback<CountryOfBirth>) {
             CountryOfBirthRelation.getAncestorCountryOfBirthForCountryOfBirthRelation(this.id, api, callback);
         }
 
         /** Returns the related AncestorCountryOfBirth based on the unique ID of the related CountryOfBirthRelation.
          *  @param countryOfBirthRelationID The ID of the CountryOfBirthRelation to retrieve.
          *  @return A single CountryOfBirthRelation, or null. */
-        public static getAncestorCountryOfBirthForCountryOfBirthRelation(countryOfBirthRelationID: number, api: API, callback: IAPICallback<CountryOfBirthRelation>) {
-            api.executeEndpoint<CountryOfBirthRelation>(Endpoint.fromSelf<CountryOfBirthRelation>(), callback, { countryOfBirthRelationID: countryOfBirthRelationID });
+        public static getAncestorCountryOfBirthForCountryOfBirthRelation(countryOfBirthRelationID: number, api: API, callback: IAPICallback<CountryOfBirth>) {
+            api.executeEndpoint<CountryOfBirth>(Endpoint.fromSelf<CountryOfBirth>(), callback, { countryOfBirthRelationID: countryOfBirthRelationID });
         }
 
         /** Gets CountryOfBirthRelations by DescendantCountryOfBirthID.
@@ -754,15 +754,15 @@ module hiw {
 
         /** Returns the related DescendantCountryOfBirth based on the unique ID of the related CountryOfBirthRelation.
          *  @return A single CountryOfBirthRelation, or null. */
-        public getDescendantCountryOfBirth(api: API, callback: IAPICallback<CountryOfBirthRelation>) {
+        public getDescendantCountryOfBirth(api: API, callback: IAPICallback<CountryOfBirth>) {
             CountryOfBirthRelation.getDescendantCountryOfBirthForCountryOfBirthRelation(this.id, api, callback);
         }
 
         /** Returns the related DescendantCountryOfBirth based on the unique ID of the related CountryOfBirthRelation.
          *  @param countryOfBirthRelationID The ID of the CountryOfBirthRelation to retrieve.
          *  @return A single CountryOfBirthRelation, or null. */
-        public static getDescendantCountryOfBirthForCountryOfBirthRelation(countryOfBirthRelationID: number, api: API, callback: IAPICallback<CountryOfBirthRelation>) {
-            api.executeEndpoint<CountryOfBirthRelation>(Endpoint.fromSelf<CountryOfBirthRelation>(), callback, { countryOfBirthRelationID: countryOfBirthRelationID });
+        public static getDescendantCountryOfBirthForCountryOfBirthRelation(countryOfBirthRelationID: number, api: API, callback: IAPICallback<CountryOfBirth>) {
+            api.executeEndpoint<CountryOfBirth>(Endpoint.fromSelf<CountryOfBirth>(), callback, { countryOfBirthRelationID: countryOfBirthRelationID });
         }
     }
     
@@ -924,15 +924,15 @@ module hiw {
 
         /** Returns the related Initiative based on the unique ID of the related DataCategory.
          *  @return A single DataCategory, or null. */
-        public getInitiative(api: API, callback: IAPICallback<DataCategory>) {
+        public getInitiative(api: API, callback: IAPICallback<Initiative>) {
             DataCategory.getInitiativeForDataCategory(this.id, api, callback);
         }
 
         /** Returns the related Initiative based on the unique ID of the related DataCategory.
          *  @param dataCategoryID The ID of the DataCategory to retrieve.
          *  @return A single DataCategory, or null. */
-        public static getInitiativeForDataCategory(dataCategoryID: number, api: API, callback: IAPICallback<DataCategory>) {
-            api.executeEndpoint<DataCategory>(Endpoint.fromSelf<DataCategory>(), callback, { dataCategoryID: dataCategoryID });
+        public static getInitiativeForDataCategory(dataCategoryID: number, api: API, callback: IAPICallback<Initiative>) {
+            api.executeEndpoint<Initiative>(Endpoint.fromSelf<Initiative>(), callback, { dataCategoryID: dataCategoryID });
         }
     }
     
@@ -1022,15 +1022,15 @@ module hiw {
 
         /** Returns the related AncestorDataCategory based on the unique ID of the related DataCategoryRelation.
          *  @return A single DataCategoryRelation, or null. */
-        public getAncestorDataCategory(api: API, callback: IAPICallback<DataCategoryRelation>) {
+        public getAncestorDataCategory(api: API, callback: IAPICallback<DataCategory>) {
             DataCategoryRelation.getAncestorDataCategoryForDataCategoryRelation(this.id, api, callback);
         }
 
         /** Returns the related AncestorDataCategory based on the unique ID of the related DataCategoryRelation.
          *  @param dataCategoryRelationID The ID of the DataCategoryRelation to retrieve.
          *  @return A single DataCategoryRelation, or null. */
-        public static getAncestorDataCategoryForDataCategoryRelation(dataCategoryRelationID: number, api: API, callback: IAPICallback<DataCategoryRelation>) {
-            api.executeEndpoint<DataCategoryRelation>(Endpoint.fromSelf<DataCategoryRelation>(), callback, { dataCategoryRelationID: dataCategoryRelationID });
+        public static getAncestorDataCategoryForDataCategoryRelation(dataCategoryRelationID: number, api: API, callback: IAPICallback<DataCategory>) {
+            api.executeEndpoint<DataCategory>(Endpoint.fromSelf<DataCategory>(), callback, { dataCategoryRelationID: dataCategoryRelationID });
         }
 
         /** Gets DataCategoryRelations by DescendantDataCategoryID.
@@ -1056,15 +1056,15 @@ module hiw {
 
         /** Returns the related DescendantDataCategory based on the unique ID of the related DataCategoryRelation.
          *  @return A single DataCategoryRelation, or null. */
-        public getDescendantDataCategory(api: API, callback: IAPICallback<DataCategoryRelation>) {
+        public getDescendantDataCategory(api: API, callback: IAPICallback<DataCategory>) {
             DataCategoryRelation.getDescendantDataCategoryForDataCategoryRelation(this.id, api, callback);
         }
 
         /** Returns the related DescendantDataCategory based on the unique ID of the related DataCategoryRelation.
          *  @param dataCategoryRelationID The ID of the DataCategoryRelation to retrieve.
          *  @return A single DataCategoryRelation, or null. */
-        public static getDescendantDataCategoryForDataCategoryRelation(dataCategoryRelationID: number, api: API, callback: IAPICallback<DataCategoryRelation>) {
-            api.executeEndpoint<DataCategoryRelation>(Endpoint.fromSelf<DataCategoryRelation>(), callback, { dataCategoryRelationID: dataCategoryRelationID });
+        public static getDescendantDataCategoryForDataCategoryRelation(dataCategoryRelationID: number, api: API, callback: IAPICallback<DataCategory>) {
+            api.executeEndpoint<DataCategory>(Endpoint.fromSelf<DataCategory>(), callback, { dataCategoryRelationID: dataCategoryRelationID });
         }
     }
     
@@ -1154,15 +1154,15 @@ module hiw {
 
         /** Returns the related DataSource based on the unique ID of the related DataSourceDataSupplier.
          *  @return A single DataSourceDataSupplier, or null. */
-        public getDataSource(api: API, callback: IAPICallback<DataSourceDataSupplier>) {
+        public getDataSource(api: API, callback: IAPICallback<DataSource>) {
             DataSourceDataSupplier.getDataSourceForDataSourceDataSupplier(this.id, api, callback);
         }
 
         /** Returns the related DataSource based on the unique ID of the related DataSourceDataSupplier.
          *  @param dataSourceDataSupplierID The ID of the DataSourceDataSupplier to retrieve.
          *  @return A single DataSourceDataSupplier, or null. */
-        public static getDataSourceForDataSourceDataSupplier(dataSourceDataSupplierID: number, api: API, callback: IAPICallback<DataSourceDataSupplier>) {
-            api.executeEndpoint<DataSourceDataSupplier>(Endpoint.fromSelf<DataSourceDataSupplier>(), callback, { dataSourceDataSupplierID: dataSourceDataSupplierID });
+        public static getDataSourceForDataSourceDataSupplier(dataSourceDataSupplierID: number, api: API, callback: IAPICallback<DataSource>) {
+            api.executeEndpoint<DataSource>(Endpoint.fromSelf<DataSource>(), callback, { dataSourceDataSupplierID: dataSourceDataSupplierID });
         }
 
         /** Gets DataSourceDataSuppliers by DataSupplierID.
@@ -1188,15 +1188,15 @@ module hiw {
 
         /** Returns the related DataSupplier based on the unique ID of the related DataSourceDataSupplier.
          *  @return A single DataSourceDataSupplier, or null. */
-        public getDataSupplier(api: API, callback: IAPICallback<DataSourceDataSupplier>) {
+        public getDataSupplier(api: API, callback: IAPICallback<DataSupplier>) {
             DataSourceDataSupplier.getDataSupplierForDataSourceDataSupplier(this.id, api, callback);
         }
 
         /** Returns the related DataSupplier based on the unique ID of the related DataSourceDataSupplier.
          *  @param dataSourceDataSupplierID The ID of the DataSourceDataSupplier to retrieve.
          *  @return A single DataSourceDataSupplier, or null. */
-        public static getDataSupplierForDataSourceDataSupplier(dataSourceDataSupplierID: number, api: API, callback: IAPICallback<DataSourceDataSupplier>) {
-            api.executeEndpoint<DataSourceDataSupplier>(Endpoint.fromSelf<DataSourceDataSupplier>(), callback, { dataSourceDataSupplierID: dataSourceDataSupplierID });
+        public static getDataSupplierForDataSourceDataSupplier(dataSourceDataSupplierID: number, api: API, callback: IAPICallback<DataSupplier>) {
+            api.executeEndpoint<DataSupplier>(Endpoint.fromSelf<DataSupplier>(), callback, { dataSourceDataSupplierID: dataSourceDataSupplierID });
         }
     }
     
@@ -1386,15 +1386,15 @@ module hiw {
 
         /** Returns the related DataSource based on the unique ID of the related DataSourceURL.
          *  @return A single DataSourceURL, or null. */
-        public getDataSource(api: API, callback: IAPICallback<DataSourceURL>) {
+        public getDataSource(api: API, callback: IAPICallback<DataSource>) {
             DataSourceURL.getDataSourceForDataSourceURL(this.id, api, callback);
         }
 
         /** Returns the related DataSource based on the unique ID of the related DataSourceURL.
          *  @param dataSourceURLID The ID of the DataSourceURL to retrieve.
          *  @return A single DataSourceURL, or null. */
-        public static getDataSourceForDataSourceURL(dataSourceURLID: number, api: API, callback: IAPICallback<DataSourceURL>) {
-            api.executeEndpoint<DataSourceURL>(Endpoint.fromSelf<DataSourceURL>(), callback, { dataSourceURLID: dataSourceURLID });
+        public static getDataSourceForDataSourceURL(dataSourceURLID: number, api: API, callback: IAPICallback<DataSource>) {
+            api.executeEndpoint<DataSource>(Endpoint.fromSelf<DataSource>(), callback, { dataSourceURLID: dataSourceURLID });
         }
 
         /** Gets DataSourceURLs by UrlID.
@@ -1420,15 +1420,15 @@ module hiw {
 
         /** Returns the related Url based on the unique ID of the related DataSourceURL.
          *  @return A single DataSourceURL, or null. */
-        public getUrl(api: API, callback: IAPICallback<DataSourceURL>) {
+        public getUrl(api: API, callback: IAPICallback<Url>) {
             DataSourceURL.getUrlForDataSourceURL(this.id, api, callback);
         }
 
         /** Returns the related Url based on the unique ID of the related DataSourceURL.
          *  @param dataSourceURLID The ID of the DataSourceURL to retrieve.
          *  @return A single DataSourceURL, or null. */
-        public static getUrlForDataSourceURL(dataSourceURLID: number, api: API, callback: IAPICallback<DataSourceURL>) {
-            api.executeEndpoint<DataSourceURL>(Endpoint.fromSelf<DataSourceURL>(), callback, { dataSourceURLID: dataSourceURLID });
+        public static getUrlForDataSourceURL(dataSourceURLID: number, api: API, callback: IAPICallback<Url>) {
+            api.executeEndpoint<Url>(Endpoint.fromSelf<Url>(), callback, { dataSourceURLID: dataSourceURLID });
         }
     }
     
@@ -1530,15 +1530,15 @@ module hiw {
 
         /** Returns the related Url based on the unique ID of the related DataSupplier.
          *  @return A single DataSupplier, or null. */
-        public getUrl(api: API, callback: IAPICallback<DataSupplier>) {
+        public getUrl(api: API, callback: IAPICallback<Url>) {
             DataSupplier.getUrlForDataSupplier(this.id, api, callback);
         }
 
         /** Returns the related Url based on the unique ID of the related DataSupplier.
          *  @param dataSupplierID The ID of the DataSupplier to retrieve.
          *  @return A single DataSupplier, or null. */
-        public static getUrlForDataSupplier(dataSupplierID: number, api: API, callback: IAPICallback<DataSupplier>) {
-            api.executeEndpoint<DataSupplier>(Endpoint.fromSelf<DataSupplier>(), callback, { dataSupplierID: dataSupplierID });
+        public static getUrlForDataSupplier(dataSupplierID: number, api: API, callback: IAPICallback<Url>) {
+            api.executeEndpoint<Url>(Endpoint.fromSelf<Url>(), callback, { dataSupplierID: dataSupplierID });
         }
     }
     
@@ -1700,15 +1700,15 @@ module hiw {
 
         /** Returns the related DimensionList based on the unique ID of the related DimensionBook.
          *  @return A single DimensionBook, or null. */
-        public getDimensionList(api: API, callback: IAPICallback<DimensionBook>) {
+        public getDimensionList(api: API, callback: IAPICallback<DimensionList>) {
             DimensionBook.getDimensionListForDimensionBook(this.id, api, callback);
         }
 
         /** Returns the related DimensionList based on the unique ID of the related DimensionBook.
          *  @param dimensionBookID The ID of the DimensionBook to retrieve.
          *  @return A single DimensionBook, or null. */
-        public static getDimensionListForDimensionBook(dimensionBookID: number, api: API, callback: IAPICallback<DimensionBook>) {
-            api.executeEndpoint<DimensionBook>(Endpoint.fromSelf<DimensionBook>(), callback, { dimensionBookID: dimensionBookID });
+        public static getDimensionListForDimensionBook(dimensionBookID: number, api: API, callback: IAPICallback<DimensionList>) {
+            api.executeEndpoint<DimensionList>(Endpoint.fromSelf<DimensionList>(), callback, { dimensionBookID: dimensionBookID });
         }
 
         /** Gets a unique DimensionBook based on the provided values.
@@ -1804,15 +1804,15 @@ module hiw {
 
         /** Returns the related AncestorDimensionBook based on the unique ID of the related DimensionBookRelation.
          *  @return A single DimensionBookRelation, or null. */
-        public getAncestorDimensionBook(api: API, callback: IAPICallback<DimensionBookRelation>) {
+        public getAncestorDimensionBook(api: API, callback: IAPICallback<DimensionBook>) {
             DimensionBookRelation.getAncestorDimensionBookForDimensionBookRelation(this.id, api, callback);
         }
 
         /** Returns the related AncestorDimensionBook based on the unique ID of the related DimensionBookRelation.
          *  @param dimensionBookRelationID The ID of the DimensionBookRelation to retrieve.
          *  @return A single DimensionBookRelation, or null. */
-        public static getAncestorDimensionBookForDimensionBookRelation(dimensionBookRelationID: number, api: API, callback: IAPICallback<DimensionBookRelation>) {
-            api.executeEndpoint<DimensionBookRelation>(Endpoint.fromSelf<DimensionBookRelation>(), callback, { dimensionBookRelationID: dimensionBookRelationID });
+        public static getAncestorDimensionBookForDimensionBookRelation(dimensionBookRelationID: number, api: API, callback: IAPICallback<DimensionBook>) {
+            api.executeEndpoint<DimensionBook>(Endpoint.fromSelf<DimensionBook>(), callback, { dimensionBookRelationID: dimensionBookRelationID });
         }
 
         /** Gets DimensionBookRelations by DescendantDimensionBookID.
@@ -1838,15 +1838,15 @@ module hiw {
 
         /** Returns the related DescendantDimensionBook based on the unique ID of the related DimensionBookRelation.
          *  @return A single DimensionBookRelation, or null. */
-        public getDescendantDimensionBook(api: API, callback: IAPICallback<DimensionBookRelation>) {
+        public getDescendantDimensionBook(api: API, callback: IAPICallback<DimensionBook>) {
             DimensionBookRelation.getDescendantDimensionBookForDimensionBookRelation(this.id, api, callback);
         }
 
         /** Returns the related DescendantDimensionBook based on the unique ID of the related DimensionBookRelation.
          *  @param dimensionBookRelationID The ID of the DimensionBookRelation to retrieve.
          *  @return A single DimensionBookRelation, or null. */
-        public static getDescendantDimensionBookForDimensionBookRelation(dimensionBookRelationID: number, api: API, callback: IAPICallback<DimensionBookRelation>) {
-            api.executeEndpoint<DimensionBookRelation>(Endpoint.fromSelf<DimensionBookRelation>(), callback, { dimensionBookRelationID: dimensionBookRelationID });
+        public static getDescendantDimensionBookForDimensionBookRelation(dimensionBookRelationID: number, api: API, callback: IAPICallback<DimensionBook>) {
+            api.executeEndpoint<DimensionBook>(Endpoint.fromSelf<DimensionBook>(), callback, { dimensionBookRelationID: dimensionBookRelationID });
         }
     }
     
@@ -2086,15 +2086,15 @@ module hiw {
 
         /** Returns the related Total based on the unique ID of the related DimensionGraph.
          *  @return A single DimensionGraph, or null. */
-        public getTotal(api: API, callback: IAPICallback<DimensionGraph>) {
+        public getTotal(api: API, callback: IAPICallback<Total>) {
             DimensionGraph.getTotalForDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related Total based on the unique ID of the related DimensionGraph.
          *  @param dimensionGraphID The ID of the DimensionGraph to retrieve.
          *  @return A single DimensionGraph, or null. */
-        public static getTotalForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<DimensionGraph>) {
-            api.executeEndpoint<DimensionGraph>(Endpoint.fromSelf<DimensionGraph>(), callback, { dimensionGraphID: dimensionGraphID });
+        public static getTotalForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<Total>) {
+            api.executeEndpoint<Total>(Endpoint.fromSelf<Total>(), callback, { dimensionGraphID: dimensionGraphID });
         }
 
         /** Gets DimensionGraphs by AgeID.
@@ -2120,15 +2120,15 @@ module hiw {
 
         /** Returns the related Age based on the unique ID of the related DimensionGraph.
          *  @return A single DimensionGraph, or null. */
-        public getAge(api: API, callback: IAPICallback<DimensionGraph>) {
+        public getAge(api: API, callback: IAPICallback<Age>) {
             DimensionGraph.getAgeForDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related Age based on the unique ID of the related DimensionGraph.
          *  @param dimensionGraphID The ID of the DimensionGraph to retrieve.
          *  @return A single DimensionGraph, or null. */
-        public static getAgeForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<DimensionGraph>) {
-            api.executeEndpoint<DimensionGraph>(Endpoint.fromSelf<DimensionGraph>(), callback, { dimensionGraphID: dimensionGraphID });
+        public static getAgeForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<Age>) {
+            api.executeEndpoint<Age>(Endpoint.fromSelf<Age>(), callback, { dimensionGraphID: dimensionGraphID });
         }
 
         /** Gets DimensionGraphs by SexID.
@@ -2154,15 +2154,15 @@ module hiw {
 
         /** Returns the related Sex based on the unique ID of the related DimensionGraph.
          *  @return A single DimensionGraph, or null. */
-        public getSex(api: API, callback: IAPICallback<DimensionGraph>) {
+        public getSex(api: API, callback: IAPICallback<Sex>) {
             DimensionGraph.getSexForDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related Sex based on the unique ID of the related DimensionGraph.
          *  @param dimensionGraphID The ID of the DimensionGraph to retrieve.
          *  @return A single DimensionGraph, or null. */
-        public static getSexForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<DimensionGraph>) {
-            api.executeEndpoint<DimensionGraph>(Endpoint.fromSelf<DimensionGraph>(), callback, { dimensionGraphID: dimensionGraphID });
+        public static getSexForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<Sex>) {
+            api.executeEndpoint<Sex>(Endpoint.fromSelf<Sex>(), callback, { dimensionGraphID: dimensionGraphID });
         }
 
         /** Gets DimensionGraphs by RaceEthnicityID.
@@ -2188,15 +2188,15 @@ module hiw {
 
         /** Returns the related RaceEthnicity based on the unique ID of the related DimensionGraph.
          *  @return A single DimensionGraph, or null. */
-        public getRaceEthnicity(api: API, callback: IAPICallback<DimensionGraph>) {
+        public getRaceEthnicity(api: API, callback: IAPICallback<RaceEthnicity>) {
             DimensionGraph.getRaceEthnicityForDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related RaceEthnicity based on the unique ID of the related DimensionGraph.
          *  @param dimensionGraphID The ID of the DimensionGraph to retrieve.
          *  @return A single DimensionGraph, or null. */
-        public static getRaceEthnicityForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<DimensionGraph>) {
-            api.executeEndpoint<DimensionGraph>(Endpoint.fromSelf<DimensionGraph>(), callback, { dimensionGraphID: dimensionGraphID });
+        public static getRaceEthnicityForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<RaceEthnicity>) {
+            api.executeEndpoint<RaceEthnicity>(Endpoint.fromSelf<RaceEthnicity>(), callback, { dimensionGraphID: dimensionGraphID });
         }
 
         /** Gets DimensionGraphs by IncomeAndPovertyStatusID.
@@ -2222,15 +2222,15 @@ module hiw {
 
         /** Returns the related IncomeAndPovertyStatus based on the unique ID of the related DimensionGraph.
          *  @return A single DimensionGraph, or null. */
-        public getIncomeAndPovertyStatus(api: API, callback: IAPICallback<DimensionGraph>) {
+        public getIncomeAndPovertyStatus(api: API, callback: IAPICallback<IncomeAndPovertyStatus>) {
             DimensionGraph.getIncomeAndPovertyStatusForDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related IncomeAndPovertyStatus based on the unique ID of the related DimensionGraph.
          *  @param dimensionGraphID The ID of the DimensionGraph to retrieve.
          *  @return A single DimensionGraph, or null. */
-        public static getIncomeAndPovertyStatusForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<DimensionGraph>) {
-            api.executeEndpoint<DimensionGraph>(Endpoint.fromSelf<DimensionGraph>(), callback, { dimensionGraphID: dimensionGraphID });
+        public static getIncomeAndPovertyStatusForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<IncomeAndPovertyStatus>) {
+            api.executeEndpoint<IncomeAndPovertyStatus>(Endpoint.fromSelf<IncomeAndPovertyStatus>(), callback, { dimensionGraphID: dimensionGraphID });
         }
 
         /** Gets DimensionGraphs by EducationalAttainmentID.
@@ -2256,15 +2256,15 @@ module hiw {
 
         /** Returns the related EducationalAttainment based on the unique ID of the related DimensionGraph.
          *  @return A single DimensionGraph, or null. */
-        public getEducationalAttainment(api: API, callback: IAPICallback<DimensionGraph>) {
+        public getEducationalAttainment(api: API, callback: IAPICallback<EducationalAttainment>) {
             DimensionGraph.getEducationalAttainmentForDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related EducationalAttainment based on the unique ID of the related DimensionGraph.
          *  @param dimensionGraphID The ID of the DimensionGraph to retrieve.
          *  @return A single DimensionGraph, or null. */
-        public static getEducationalAttainmentForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<DimensionGraph>) {
-            api.executeEndpoint<DimensionGraph>(Endpoint.fromSelf<DimensionGraph>(), callback, { dimensionGraphID: dimensionGraphID });
+        public static getEducationalAttainmentForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<EducationalAttainment>) {
+            api.executeEndpoint<EducationalAttainment>(Endpoint.fromSelf<EducationalAttainment>(), callback, { dimensionGraphID: dimensionGraphID });
         }
 
         /** Gets DimensionGraphs by HealthInsuranceStatusID.
@@ -2290,15 +2290,15 @@ module hiw {
 
         /** Returns the related HealthInsuranceStatus based on the unique ID of the related DimensionGraph.
          *  @return A single DimensionGraph, or null. */
-        public getHealthInsuranceStatus(api: API, callback: IAPICallback<DimensionGraph>) {
+        public getHealthInsuranceStatus(api: API, callback: IAPICallback<HealthInsuranceStatus>) {
             DimensionGraph.getHealthInsuranceStatusForDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related HealthInsuranceStatus based on the unique ID of the related DimensionGraph.
          *  @param dimensionGraphID The ID of the DimensionGraph to retrieve.
          *  @return A single DimensionGraph, or null. */
-        public static getHealthInsuranceStatusForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<DimensionGraph>) {
-            api.executeEndpoint<DimensionGraph>(Endpoint.fromSelf<DimensionGraph>(), callback, { dimensionGraphID: dimensionGraphID });
+        public static getHealthInsuranceStatusForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<HealthInsuranceStatus>) {
+            api.executeEndpoint<HealthInsuranceStatus>(Endpoint.fromSelf<HealthInsuranceStatus>(), callback, { dimensionGraphID: dimensionGraphID });
         }
 
         /** Gets DimensionGraphs by SexualOrientationID.
@@ -2324,15 +2324,15 @@ module hiw {
 
         /** Returns the related SexualOrientation based on the unique ID of the related DimensionGraph.
          *  @return A single DimensionGraph, or null. */
-        public getSexualOrientation(api: API, callback: IAPICallback<DimensionGraph>) {
+        public getSexualOrientation(api: API, callback: IAPICallback<SexualOrientation>) {
             DimensionGraph.getSexualOrientationForDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related SexualOrientation based on the unique ID of the related DimensionGraph.
          *  @param dimensionGraphID The ID of the DimensionGraph to retrieve.
          *  @return A single DimensionGraph, or null. */
-        public static getSexualOrientationForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<DimensionGraph>) {
-            api.executeEndpoint<DimensionGraph>(Endpoint.fromSelf<DimensionGraph>(), callback, { dimensionGraphID: dimensionGraphID });
+        public static getSexualOrientationForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<SexualOrientation>) {
+            api.executeEndpoint<SexualOrientation>(Endpoint.fromSelf<SexualOrientation>(), callback, { dimensionGraphID: dimensionGraphID });
         }
 
         /** Gets DimensionGraphs by FamilyTypeID.
@@ -2358,15 +2358,15 @@ module hiw {
 
         /** Returns the related FamilyType based on the unique ID of the related DimensionGraph.
          *  @return A single DimensionGraph, or null. */
-        public getFamilyType(api: API, callback: IAPICallback<DimensionGraph>) {
+        public getFamilyType(api: API, callback: IAPICallback<FamilyType>) {
             DimensionGraph.getFamilyTypeForDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related FamilyType based on the unique ID of the related DimensionGraph.
          *  @param dimensionGraphID The ID of the DimensionGraph to retrieve.
          *  @return A single DimensionGraph, or null. */
-        public static getFamilyTypeForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<DimensionGraph>) {
-            api.executeEndpoint<DimensionGraph>(Endpoint.fromSelf<DimensionGraph>(), callback, { dimensionGraphID: dimensionGraphID });
+        public static getFamilyTypeForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<FamilyType>) {
+            api.executeEndpoint<FamilyType>(Endpoint.fromSelf<FamilyType>(), callback, { dimensionGraphID: dimensionGraphID });
         }
 
         /** Gets DimensionGraphs by MaritalStatusID.
@@ -2392,15 +2392,15 @@ module hiw {
 
         /** Returns the related MaritalStatus based on the unique ID of the related DimensionGraph.
          *  @return A single DimensionGraph, or null. */
-        public getMaritalStatus(api: API, callback: IAPICallback<DimensionGraph>) {
+        public getMaritalStatus(api: API, callback: IAPICallback<MaritalStatus>) {
             DimensionGraph.getMaritalStatusForDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related MaritalStatus based on the unique ID of the related DimensionGraph.
          *  @param dimensionGraphID The ID of the DimensionGraph to retrieve.
          *  @return A single DimensionGraph, or null. */
-        public static getMaritalStatusForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<DimensionGraph>) {
-            api.executeEndpoint<DimensionGraph>(Endpoint.fromSelf<DimensionGraph>(), callback, { dimensionGraphID: dimensionGraphID });
+        public static getMaritalStatusForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<MaritalStatus>) {
+            api.executeEndpoint<MaritalStatus>(Endpoint.fromSelf<MaritalStatus>(), callback, { dimensionGraphID: dimensionGraphID });
         }
 
         /** Gets DimensionGraphs by VeteranStatusID.
@@ -2426,15 +2426,15 @@ module hiw {
 
         /** Returns the related VeteranStatus based on the unique ID of the related DimensionGraph.
          *  @return A single DimensionGraph, or null. */
-        public getVeteranStatus(api: API, callback: IAPICallback<DimensionGraph>) {
+        public getVeteranStatus(api: API, callback: IAPICallback<VeteranStatus>) {
             DimensionGraph.getVeteranStatusForDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related VeteranStatus based on the unique ID of the related DimensionGraph.
          *  @param dimensionGraphID The ID of the DimensionGraph to retrieve.
          *  @return A single DimensionGraph, or null. */
-        public static getVeteranStatusForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<DimensionGraph>) {
-            api.executeEndpoint<DimensionGraph>(Endpoint.fromSelf<DimensionGraph>(), callback, { dimensionGraphID: dimensionGraphID });
+        public static getVeteranStatusForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<VeteranStatus>) {
+            api.executeEndpoint<VeteranStatus>(Endpoint.fromSelf<VeteranStatus>(), callback, { dimensionGraphID: dimensionGraphID });
         }
 
         /** Gets DimensionGraphs by CountryOfBirthID.
@@ -2460,15 +2460,15 @@ module hiw {
 
         /** Returns the related CountryOfBirth based on the unique ID of the related DimensionGraph.
          *  @return A single DimensionGraph, or null. */
-        public getCountryOfBirth(api: API, callback: IAPICallback<DimensionGraph>) {
+        public getCountryOfBirth(api: API, callback: IAPICallback<CountryOfBirth>) {
             DimensionGraph.getCountryOfBirthForDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related CountryOfBirth based on the unique ID of the related DimensionGraph.
          *  @param dimensionGraphID The ID of the DimensionGraph to retrieve.
          *  @return A single DimensionGraph, or null. */
-        public static getCountryOfBirthForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<DimensionGraph>) {
-            api.executeEndpoint<DimensionGraph>(Endpoint.fromSelf<DimensionGraph>(), callback, { dimensionGraphID: dimensionGraphID });
+        public static getCountryOfBirthForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<CountryOfBirth>) {
+            api.executeEndpoint<CountryOfBirth>(Endpoint.fromSelf<CountryOfBirth>(), callback, { dimensionGraphID: dimensionGraphID });
         }
 
         /** Gets DimensionGraphs by DisabilityStatusID.
@@ -2494,15 +2494,15 @@ module hiw {
 
         /** Returns the related DisabilityStatus based on the unique ID of the related DimensionGraph.
          *  @return A single DimensionGraph, or null. */
-        public getDisabilityStatus(api: API, callback: IAPICallback<DimensionGraph>) {
+        public getDisabilityStatus(api: API, callback: IAPICallback<DisabilityStatus>) {
             DimensionGraph.getDisabilityStatusForDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related DisabilityStatus based on the unique ID of the related DimensionGraph.
          *  @param dimensionGraphID The ID of the DimensionGraph to retrieve.
          *  @return A single DimensionGraph, or null. */
-        public static getDisabilityStatusForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<DimensionGraph>) {
-            api.executeEndpoint<DimensionGraph>(Endpoint.fromSelf<DimensionGraph>(), callback, { dimensionGraphID: dimensionGraphID });
+        public static getDisabilityStatusForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<DisabilityStatus>) {
+            api.executeEndpoint<DisabilityStatus>(Endpoint.fromSelf<DisabilityStatus>(), callback, { dimensionGraphID: dimensionGraphID });
         }
 
         /** Gets DimensionGraphs by ObesityStatusID.
@@ -2528,15 +2528,15 @@ module hiw {
 
         /** Returns the related ObesityStatus based on the unique ID of the related DimensionGraph.
          *  @return A single DimensionGraph, or null. */
-        public getObesityStatus(api: API, callback: IAPICallback<DimensionGraph>) {
+        public getObesityStatus(api: API, callback: IAPICallback<ObesityStatus>) {
             DimensionGraph.getObesityStatusForDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related ObesityStatus based on the unique ID of the related DimensionGraph.
          *  @param dimensionGraphID The ID of the DimensionGraph to retrieve.
          *  @return A single DimensionGraph, or null. */
-        public static getObesityStatusForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<DimensionGraph>) {
-            api.executeEndpoint<DimensionGraph>(Endpoint.fromSelf<DimensionGraph>(), callback, { dimensionGraphID: dimensionGraphID });
+        public static getObesityStatusForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<ObesityStatus>) {
+            api.executeEndpoint<ObesityStatus>(Endpoint.fromSelf<ObesityStatus>(), callback, { dimensionGraphID: dimensionGraphID });
         }
 
         /** Gets DimensionGraphs by CharacteristicOfSchoolOrStudentID.
@@ -2562,15 +2562,15 @@ module hiw {
 
         /** Returns the related CharacteristicOfSchoolOrStudent based on the unique ID of the related DimensionGraph.
          *  @return A single DimensionGraph, or null. */
-        public getCharacteristicOfSchoolOrStudent(api: API, callback: IAPICallback<DimensionGraph>) {
+        public getCharacteristicOfSchoolOrStudent(api: API, callback: IAPICallback<CharacteristicOfSchoolOrStudent>) {
             DimensionGraph.getCharacteristicOfSchoolOrStudentForDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related CharacteristicOfSchoolOrStudent based on the unique ID of the related DimensionGraph.
          *  @param dimensionGraphID The ID of the DimensionGraph to retrieve.
          *  @return A single DimensionGraph, or null. */
-        public static getCharacteristicOfSchoolOrStudentForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<DimensionGraph>) {
-            api.executeEndpoint<DimensionGraph>(Endpoint.fromSelf<DimensionGraph>(), callback, { dimensionGraphID: dimensionGraphID });
+        public static getCharacteristicOfSchoolOrStudentForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<CharacteristicOfSchoolOrStudent>) {
+            api.executeEndpoint<CharacteristicOfSchoolOrStudent>(Endpoint.fromSelf<CharacteristicOfSchoolOrStudent>(), callback, { dimensionGraphID: dimensionGraphID });
         }
 
         /** Gets DimensionGraphs by OtherID.
@@ -2596,15 +2596,15 @@ module hiw {
 
         /** Returns the related Other based on the unique ID of the related DimensionGraph.
          *  @return A single DimensionGraph, or null. */
-        public getOther(api: API, callback: IAPICallback<DimensionGraph>) {
+        public getOther(api: API, callback: IAPICallback<Other>) {
             DimensionGraph.getOtherForDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related Other based on the unique ID of the related DimensionGraph.
          *  @param dimensionGraphID The ID of the DimensionGraph to retrieve.
          *  @return A single DimensionGraph, or null. */
-        public static getOtherForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<DimensionGraph>) {
-            api.executeEndpoint<DimensionGraph>(Endpoint.fromSelf<DimensionGraph>(), callback, { dimensionGraphID: dimensionGraphID });
+        public static getOtherForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<Other>) {
+            api.executeEndpoint<Other>(Endpoint.fromSelf<Other>(), callback, { dimensionGraphID: dimensionGraphID });
         }
 
         /** Gets DimensionGraphs by GeographyID.
@@ -2630,15 +2630,15 @@ module hiw {
 
         /** Returns the related Geography based on the unique ID of the related DimensionGraph.
          *  @return A single DimensionGraph, or null. */
-        public getGeography(api: API, callback: IAPICallback<DimensionGraph>) {
+        public getGeography(api: API, callback: IAPICallback<Geography>) {
             DimensionGraph.getGeographyForDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related Geography based on the unique ID of the related DimensionGraph.
          *  @param dimensionGraphID The ID of the DimensionGraph to retrieve.
          *  @return A single DimensionGraph, or null. */
-        public static getGeographyForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<DimensionGraph>) {
-            api.executeEndpoint<DimensionGraph>(Endpoint.fromSelf<DimensionGraph>(), callback, { dimensionGraphID: dimensionGraphID });
+        public static getGeographyForDimensionGraph(dimensionGraphID: number, api: API, callback: IAPICallback<Geography>) {
+            api.executeEndpoint<Geography>(Endpoint.fromSelf<Geography>(), callback, { dimensionGraphID: dimensionGraphID });
         }
     }
     
@@ -2918,15 +2918,15 @@ module hiw {
 
         /** Returns the related AncestorDisabilityStatus based on the unique ID of the related DisabilityStatusRelation.
          *  @return A single DisabilityStatusRelation, or null. */
-        public getAncestorDisabilityStatus(api: API, callback: IAPICallback<DisabilityStatusRelation>) {
+        public getAncestorDisabilityStatus(api: API, callback: IAPICallback<DisabilityStatus>) {
             DisabilityStatusRelation.getAncestorDisabilityStatusForDisabilityStatusRelation(this.id, api, callback);
         }
 
         /** Returns the related AncestorDisabilityStatus based on the unique ID of the related DisabilityStatusRelation.
          *  @param disabilityStatusRelationID The ID of the DisabilityStatusRelation to retrieve.
          *  @return A single DisabilityStatusRelation, or null. */
-        public static getAncestorDisabilityStatusForDisabilityStatusRelation(disabilityStatusRelationID: number, api: API, callback: IAPICallback<DisabilityStatusRelation>) {
-            api.executeEndpoint<DisabilityStatusRelation>(Endpoint.fromSelf<DisabilityStatusRelation>(), callback, { disabilityStatusRelationID: disabilityStatusRelationID });
+        public static getAncestorDisabilityStatusForDisabilityStatusRelation(disabilityStatusRelationID: number, api: API, callback: IAPICallback<DisabilityStatus>) {
+            api.executeEndpoint<DisabilityStatus>(Endpoint.fromSelf<DisabilityStatus>(), callback, { disabilityStatusRelationID: disabilityStatusRelationID });
         }
 
         /** Gets DisabilityStatusRelations by DescendantDisabilityStatusID.
@@ -2952,15 +2952,15 @@ module hiw {
 
         /** Returns the related DescendantDisabilityStatus based on the unique ID of the related DisabilityStatusRelation.
          *  @return A single DisabilityStatusRelation, or null. */
-        public getDescendantDisabilityStatus(api: API, callback: IAPICallback<DisabilityStatusRelation>) {
+        public getDescendantDisabilityStatus(api: API, callback: IAPICallback<DisabilityStatus>) {
             DisabilityStatusRelation.getDescendantDisabilityStatusForDisabilityStatusRelation(this.id, api, callback);
         }
 
         /** Returns the related DescendantDisabilityStatus based on the unique ID of the related DisabilityStatusRelation.
          *  @param disabilityStatusRelationID The ID of the DisabilityStatusRelation to retrieve.
          *  @return A single DisabilityStatusRelation, or null. */
-        public static getDescendantDisabilityStatusForDisabilityStatusRelation(disabilityStatusRelationID: number, api: API, callback: IAPICallback<DisabilityStatusRelation>) {
-            api.executeEndpoint<DisabilityStatusRelation>(Endpoint.fromSelf<DisabilityStatusRelation>(), callback, { disabilityStatusRelationID: disabilityStatusRelationID });
+        public static getDescendantDisabilityStatusForDisabilityStatusRelation(disabilityStatusRelationID: number, api: API, callback: IAPICallback<DisabilityStatus>) {
+            api.executeEndpoint<DisabilityStatus>(Endpoint.fromSelf<DisabilityStatus>(), callback, { disabilityStatusRelationID: disabilityStatusRelationID });
         }
     }
     
@@ -3174,15 +3174,15 @@ module hiw {
 
         /** Returns the related AncestorducationalAttainment based on the unique ID of the related EducationalAttainmentRelation.
          *  @return A single EducationalAttainmentRelation, or null. */
-        public getAncestorducationalAttainment(api: API, callback: IAPICallback<EducationalAttainmentRelation>) {
+        public getAncestorducationalAttainment(api: API, callback: IAPICallback<EducationalAttainment>) {
             EducationalAttainmentRelation.getAncestorducationalAttainmentForEducationalAttainmentRelation(this.id, api, callback);
         }
 
         /** Returns the related AncestorducationalAttainment based on the unique ID of the related EducationalAttainmentRelation.
          *  @param educationalAttainmentRelationID The ID of the EducationalAttainmentRelation to retrieve.
          *  @return A single EducationalAttainmentRelation, or null. */
-        public static getAncestorducationalAttainmentForEducationalAttainmentRelation(educationalAttainmentRelationID: number, api: API, callback: IAPICallback<EducationalAttainmentRelation>) {
-            api.executeEndpoint<EducationalAttainmentRelation>(Endpoint.fromSelf<EducationalAttainmentRelation>(), callback, { educationalAttainmentRelationID: educationalAttainmentRelationID });
+        public static getAncestorducationalAttainmentForEducationalAttainmentRelation(educationalAttainmentRelationID: number, api: API, callback: IAPICallback<EducationalAttainment>) {
+            api.executeEndpoint<EducationalAttainment>(Endpoint.fromSelf<EducationalAttainment>(), callback, { educationalAttainmentRelationID: educationalAttainmentRelationID });
         }
 
         /** Gets EducationalAttainmentRelations by DescendantEducationalAttainmentID.
@@ -3208,15 +3208,15 @@ module hiw {
 
         /** Returns the related DescendantEducationalAttainment based on the unique ID of the related EducationalAttainmentRelation.
          *  @return A single EducationalAttainmentRelation, or null. */
-        public getDescendantEducationalAttainment(api: API, callback: IAPICallback<EducationalAttainmentRelation>) {
+        public getDescendantEducationalAttainment(api: API, callback: IAPICallback<EducationalAttainment>) {
             EducationalAttainmentRelation.getDescendantEducationalAttainmentForEducationalAttainmentRelation(this.id, api, callback);
         }
 
         /** Returns the related DescendantEducationalAttainment based on the unique ID of the related EducationalAttainmentRelation.
          *  @param educationalAttainmentRelationID The ID of the EducationalAttainmentRelation to retrieve.
          *  @return A single EducationalAttainmentRelation, or null. */
-        public static getDescendantEducationalAttainmentForEducationalAttainmentRelation(educationalAttainmentRelationID: number, api: API, callback: IAPICallback<EducationalAttainmentRelation>) {
-            api.executeEndpoint<EducationalAttainmentRelation>(Endpoint.fromSelf<EducationalAttainmentRelation>(), callback, { educationalAttainmentRelationID: educationalAttainmentRelationID });
+        public static getDescendantEducationalAttainmentForEducationalAttainmentRelation(educationalAttainmentRelationID: number, api: API, callback: IAPICallback<EducationalAttainment>) {
+            api.executeEndpoint<EducationalAttainment>(Endpoint.fromSelf<EducationalAttainment>(), callback, { educationalAttainmentRelationID: educationalAttainmentRelationID });
         }
     }
     
@@ -3430,15 +3430,15 @@ module hiw {
 
         /** Returns the related AncestorFamilyType based on the unique ID of the related FamilyTypeRelation.
          *  @return A single FamilyTypeRelation, or null. */
-        public getAncestorFamilyType(api: API, callback: IAPICallback<FamilyTypeRelation>) {
+        public getAncestorFamilyType(api: API, callback: IAPICallback<FamilyType>) {
             FamilyTypeRelation.getAncestorFamilyTypeForFamilyTypeRelation(this.id, api, callback);
         }
 
         /** Returns the related AncestorFamilyType based on the unique ID of the related FamilyTypeRelation.
          *  @param familyTypeRelationID The ID of the FamilyTypeRelation to retrieve.
          *  @return A single FamilyTypeRelation, or null. */
-        public static getAncestorFamilyTypeForFamilyTypeRelation(familyTypeRelationID: number, api: API, callback: IAPICallback<FamilyTypeRelation>) {
-            api.executeEndpoint<FamilyTypeRelation>(Endpoint.fromSelf<FamilyTypeRelation>(), callback, { familyTypeRelationID: familyTypeRelationID });
+        public static getAncestorFamilyTypeForFamilyTypeRelation(familyTypeRelationID: number, api: API, callback: IAPICallback<FamilyType>) {
+            api.executeEndpoint<FamilyType>(Endpoint.fromSelf<FamilyType>(), callback, { familyTypeRelationID: familyTypeRelationID });
         }
 
         /** Gets FamilyTypeRelations by DescendantFamilyTypeID.
@@ -3464,15 +3464,15 @@ module hiw {
 
         /** Returns the related DescendantFamilyType based on the unique ID of the related FamilyTypeRelation.
          *  @return A single FamilyTypeRelation, or null. */
-        public getDescendantFamilyType(api: API, callback: IAPICallback<FamilyTypeRelation>) {
+        public getDescendantFamilyType(api: API, callback: IAPICallback<FamilyType>) {
             FamilyTypeRelation.getDescendantFamilyTypeForFamilyTypeRelation(this.id, api, callback);
         }
 
         /** Returns the related DescendantFamilyType based on the unique ID of the related FamilyTypeRelation.
          *  @param familyTypeRelationID The ID of the FamilyTypeRelation to retrieve.
          *  @return A single FamilyTypeRelation, or null. */
-        public static getDescendantFamilyTypeForFamilyTypeRelation(familyTypeRelationID: number, api: API, callback: IAPICallback<FamilyTypeRelation>) {
-            api.executeEndpoint<FamilyTypeRelation>(Endpoint.fromSelf<FamilyTypeRelation>(), callback, { familyTypeRelationID: familyTypeRelationID });
+        public static getDescendantFamilyTypeForFamilyTypeRelation(familyTypeRelationID: number, api: API, callback: IAPICallback<FamilyType>) {
+            api.executeEndpoint<FamilyType>(Endpoint.fromSelf<FamilyType>(), callback, { familyTypeRelationID: familyTypeRelationID });
         }
     }
     
@@ -3686,15 +3686,15 @@ module hiw {
 
         /** Returns the related AncestorGeography based on the unique ID of the related GeographyRelation.
          *  @return A single GeographyRelation, or null. */
-        public getAncestorGeography(api: API, callback: IAPICallback<GeographyRelation>) {
+        public getAncestorGeography(api: API, callback: IAPICallback<Geography>) {
             GeographyRelation.getAncestorGeographyForGeographyRelation(this.id, api, callback);
         }
 
         /** Returns the related AncestorGeography based on the unique ID of the related GeographyRelation.
          *  @param geographyRelationID The ID of the GeographyRelation to retrieve.
          *  @return A single GeographyRelation, or null. */
-        public static getAncestorGeographyForGeographyRelation(geographyRelationID: number, api: API, callback: IAPICallback<GeographyRelation>) {
-            api.executeEndpoint<GeographyRelation>(Endpoint.fromSelf<GeographyRelation>(), callback, { geographyRelationID: geographyRelationID });
+        public static getAncestorGeographyForGeographyRelation(geographyRelationID: number, api: API, callback: IAPICallback<Geography>) {
+            api.executeEndpoint<Geography>(Endpoint.fromSelf<Geography>(), callback, { geographyRelationID: geographyRelationID });
         }
 
         /** Gets GeographyRelations by DescendantGeographyID.
@@ -3720,15 +3720,15 @@ module hiw {
 
         /** Returns the related DescendantGeography based on the unique ID of the related GeographyRelation.
          *  @return A single GeographyRelation, or null. */
-        public getDescendantGeography(api: API, callback: IAPICallback<GeographyRelation>) {
+        public getDescendantGeography(api: API, callback: IAPICallback<Geography>) {
             GeographyRelation.getDescendantGeographyForGeographyRelation(this.id, api, callback);
         }
 
         /** Returns the related DescendantGeography based on the unique ID of the related GeographyRelation.
          *  @param geographyRelationID The ID of the GeographyRelation to retrieve.
          *  @return A single GeographyRelation, or null. */
-        public static getDescendantGeographyForGeographyRelation(geographyRelationID: number, api: API, callback: IAPICallback<GeographyRelation>) {
-            api.executeEndpoint<GeographyRelation>(Endpoint.fromSelf<GeographyRelation>(), callback, { geographyRelationID: geographyRelationID });
+        public static getDescendantGeographyForGeographyRelation(geographyRelationID: number, api: API, callback: IAPICallback<Geography>) {
+            api.executeEndpoint<Geography>(Endpoint.fromSelf<Geography>(), callback, { geographyRelationID: geographyRelationID });
         }
     }
     
@@ -3824,15 +3824,15 @@ module hiw {
 
         /** Returns the related SourceUrl1 based on the unique ID of the related GlossaryTerm.
          *  @return A single GlossaryTerm, or null. */
-        public getSourceUrl1(api: API, callback: IAPICallback<GlossaryTerm>) {
+        public getSourceUrl1(api: API, callback: IAPICallback<Url>) {
             GlossaryTerm.getSourceUrl1ForGlossaryTerm(this.id, api, callback);
         }
 
         /** Returns the related SourceUrl1 based on the unique ID of the related GlossaryTerm.
          *  @param glossaryTermID The ID of the GlossaryTerm to retrieve.
          *  @return A single GlossaryTerm, or null. */
-        public static getSourceUrl1ForGlossaryTerm(glossaryTermID: number, api: API, callback: IAPICallback<GlossaryTerm>) {
-            api.executeEndpoint<GlossaryTerm>(Endpoint.fromSelf<GlossaryTerm>(), callback, { glossaryTermID: glossaryTermID });
+        public static getSourceUrl1ForGlossaryTerm(glossaryTermID: number, api: API, callback: IAPICallback<Url>) {
+            api.executeEndpoint<Url>(Endpoint.fromSelf<Url>(), callback, { glossaryTermID: glossaryTermID });
         }
 
         /** Gets GlossaryTerms by SourceUrl2ID.
@@ -3858,15 +3858,15 @@ module hiw {
 
         /** Returns the related SourceUrl2 based on the unique ID of the related GlossaryTerm.
          *  @return A single GlossaryTerm, or null. */
-        public getSourceUrl2(api: API, callback: IAPICallback<GlossaryTerm>) {
+        public getSourceUrl2(api: API, callback: IAPICallback<Url>) {
             GlossaryTerm.getSourceUrl2ForGlossaryTerm(this.id, api, callback);
         }
 
         /** Returns the related SourceUrl2 based on the unique ID of the related GlossaryTerm.
          *  @param glossaryTermID The ID of the GlossaryTerm to retrieve.
          *  @return A single GlossaryTerm, or null. */
-        public static getSourceUrl2ForGlossaryTerm(glossaryTermID: number, api: API, callback: IAPICallback<GlossaryTerm>) {
-            api.executeEndpoint<GlossaryTerm>(Endpoint.fromSelf<GlossaryTerm>(), callback, { glossaryTermID: glossaryTermID });
+        public static getSourceUrl2ForGlossaryTerm(glossaryTermID: number, api: API, callback: IAPICallback<Url>) {
+            api.executeEndpoint<Url>(Endpoint.fromSelf<Url>(), callback, { glossaryTermID: glossaryTermID });
         }
     }
     
@@ -4080,15 +4080,15 @@ module hiw {
 
         /** Returns the related AncestorHealthInsuranceStatus based on the unique ID of the related HealthInsuranceStatusRelation.
          *  @return A single HealthInsuranceStatusRelation, or null. */
-        public getAncestorHealthInsuranceStatus(api: API, callback: IAPICallback<HealthInsuranceStatusRelation>) {
+        public getAncestorHealthInsuranceStatus(api: API, callback: IAPICallback<HealthInsuranceStatus>) {
             HealthInsuranceStatusRelation.getAncestorHealthInsuranceStatusForHealthInsuranceStatusRelation(this.id, api, callback);
         }
 
         /** Returns the related AncestorHealthInsuranceStatus based on the unique ID of the related HealthInsuranceStatusRelation.
          *  @param healthInsuranceStatusRelationID The ID of the HealthInsuranceStatusRelation to retrieve.
          *  @return A single HealthInsuranceStatusRelation, or null. */
-        public static getAncestorHealthInsuranceStatusForHealthInsuranceStatusRelation(healthInsuranceStatusRelationID: number, api: API, callback: IAPICallback<HealthInsuranceStatusRelation>) {
-            api.executeEndpoint<HealthInsuranceStatusRelation>(Endpoint.fromSelf<HealthInsuranceStatusRelation>(), callback, { healthInsuranceStatusRelationID: healthInsuranceStatusRelationID });
+        public static getAncestorHealthInsuranceStatusForHealthInsuranceStatusRelation(healthInsuranceStatusRelationID: number, api: API, callback: IAPICallback<HealthInsuranceStatus>) {
+            api.executeEndpoint<HealthInsuranceStatus>(Endpoint.fromSelf<HealthInsuranceStatus>(), callback, { healthInsuranceStatusRelationID: healthInsuranceStatusRelationID });
         }
 
         /** Gets HealthInsuranceStatusRelations by DescendantHealthInsuranceStatusID.
@@ -4114,15 +4114,15 @@ module hiw {
 
         /** Returns the related DescendantHealthInsuranceStatus based on the unique ID of the related HealthInsuranceStatusRelation.
          *  @return A single HealthInsuranceStatusRelation, or null. */
-        public getDescendantHealthInsuranceStatus(api: API, callback: IAPICallback<HealthInsuranceStatusRelation>) {
+        public getDescendantHealthInsuranceStatus(api: API, callback: IAPICallback<HealthInsuranceStatus>) {
             HealthInsuranceStatusRelation.getDescendantHealthInsuranceStatusForHealthInsuranceStatusRelation(this.id, api, callback);
         }
 
         /** Returns the related DescendantHealthInsuranceStatus based on the unique ID of the related HealthInsuranceStatusRelation.
          *  @param healthInsuranceStatusRelationID The ID of the HealthInsuranceStatusRelation to retrieve.
          *  @return A single HealthInsuranceStatusRelation, or null. */
-        public static getDescendantHealthInsuranceStatusForHealthInsuranceStatusRelation(healthInsuranceStatusRelationID: number, api: API, callback: IAPICallback<HealthInsuranceStatusRelation>) {
-            api.executeEndpoint<HealthInsuranceStatusRelation>(Endpoint.fromSelf<HealthInsuranceStatusRelation>(), callback, { healthInsuranceStatusRelationID: healthInsuranceStatusRelationID });
+        public static getDescendantHealthInsuranceStatusForHealthInsuranceStatusRelation(healthInsuranceStatusRelationID: number, api: API, callback: IAPICallback<HealthInsuranceStatus>) {
+            api.executeEndpoint<HealthInsuranceStatus>(Endpoint.fromSelf<HealthInsuranceStatus>(), callback, { healthInsuranceStatusRelationID: healthInsuranceStatusRelationID });
         }
     }
     
@@ -4398,15 +4398,15 @@ module hiw {
 
         /** Returns the related AncestorIncomeAndPovertyStatus based on the unique ID of the related IncomeAndPovertyStatusRelation.
          *  @return A single IncomeAndPovertyStatusRelation, or null. */
-        public getAncestorIncomeAndPovertyStatus(api: API, callback: IAPICallback<IncomeAndPovertyStatusRelation>) {
+        public getAncestorIncomeAndPovertyStatus(api: API, callback: IAPICallback<IncomeAndPovertyStatus>) {
             IncomeAndPovertyStatusRelation.getAncestorIncomeAndPovertyStatusForIncomeAndPovertyStatusRelation(this.id, api, callback);
         }
 
         /** Returns the related AncestorIncomeAndPovertyStatus based on the unique ID of the related IncomeAndPovertyStatusRelation.
          *  @param incomeAndPovertyStatusRelationID The ID of the IncomeAndPovertyStatusRelation to retrieve.
          *  @return A single IncomeAndPovertyStatusRelation, or null. */
-        public static getAncestorIncomeAndPovertyStatusForIncomeAndPovertyStatusRelation(incomeAndPovertyStatusRelationID: number, api: API, callback: IAPICallback<IncomeAndPovertyStatusRelation>) {
-            api.executeEndpoint<IncomeAndPovertyStatusRelation>(Endpoint.fromSelf<IncomeAndPovertyStatusRelation>(), callback, { incomeAndPovertyStatusRelationID: incomeAndPovertyStatusRelationID });
+        public static getAncestorIncomeAndPovertyStatusForIncomeAndPovertyStatusRelation(incomeAndPovertyStatusRelationID: number, api: API, callback: IAPICallback<IncomeAndPovertyStatus>) {
+            api.executeEndpoint<IncomeAndPovertyStatus>(Endpoint.fromSelf<IncomeAndPovertyStatus>(), callback, { incomeAndPovertyStatusRelationID: incomeAndPovertyStatusRelationID });
         }
 
         /** Gets IncomeAndPovertyStatusRelations by DescendantIncomeAndPovertyStatusID.
@@ -4432,15 +4432,15 @@ module hiw {
 
         /** Returns the related DescendantIncomeAndPovertyStatus based on the unique ID of the related IncomeAndPovertyStatusRelation.
          *  @return A single IncomeAndPovertyStatusRelation, or null. */
-        public getDescendantIncomeAndPovertyStatus(api: API, callback: IAPICallback<IncomeAndPovertyStatusRelation>) {
+        public getDescendantIncomeAndPovertyStatus(api: API, callback: IAPICallback<IncomeAndPovertyStatus>) {
             IncomeAndPovertyStatusRelation.getDescendantIncomeAndPovertyStatusForIncomeAndPovertyStatusRelation(this.id, api, callback);
         }
 
         /** Returns the related DescendantIncomeAndPovertyStatus based on the unique ID of the related IncomeAndPovertyStatusRelation.
          *  @param incomeAndPovertyStatusRelationID The ID of the IncomeAndPovertyStatusRelation to retrieve.
          *  @return A single IncomeAndPovertyStatusRelation, or null. */
-        public static getDescendantIncomeAndPovertyStatusForIncomeAndPovertyStatusRelation(incomeAndPovertyStatusRelationID: number, api: API, callback: IAPICallback<IncomeAndPovertyStatusRelation>) {
-            api.executeEndpoint<IncomeAndPovertyStatusRelation>(Endpoint.fromSelf<IncomeAndPovertyStatusRelation>(), callback, { incomeAndPovertyStatusRelationID: incomeAndPovertyStatusRelationID });
+        public static getDescendantIncomeAndPovertyStatusForIncomeAndPovertyStatusRelation(incomeAndPovertyStatusRelationID: number, api: API, callback: IAPICallback<IncomeAndPovertyStatus>) {
+            api.executeEndpoint<IncomeAndPovertyStatus>(Endpoint.fromSelf<IncomeAndPovertyStatus>(), callback, { incomeAndPovertyStatusRelationID: incomeAndPovertyStatusRelationID });
         }
     }
     
@@ -4528,15 +4528,15 @@ module hiw {
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionDataCategory.
          *  @return A single IndicatorDescriptionDataCategory, or null. */
-        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescriptionDataCategory>) {
+        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescription>) {
             IndicatorDescriptionDataCategory.getIndicatorDescriptionForIndicatorDescriptionDataCategory(this.id, api, callback);
         }
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionDataCategory.
          *  @param indicatorDescriptionDataCategoryID The ID of the IndicatorDescriptionDataCategory to retrieve.
          *  @return A single IndicatorDescriptionDataCategory, or null. */
-        public static getIndicatorDescriptionForIndicatorDescriptionDataCategory(indicatorDescriptionDataCategoryID: number, api: API, callback: IAPICallback<IndicatorDescriptionDataCategory>) {
-            api.executeEndpoint<IndicatorDescriptionDataCategory>(Endpoint.fromSelf<IndicatorDescriptionDataCategory>(), callback, { indicatorDescriptionDataCategoryID: indicatorDescriptionDataCategoryID });
+        public static getIndicatorDescriptionForIndicatorDescriptionDataCategory(indicatorDescriptionDataCategoryID: number, api: API, callback: IAPICallback<IndicatorDescription>) {
+            api.executeEndpoint<IndicatorDescription>(Endpoint.fromSelf<IndicatorDescription>(), callback, { indicatorDescriptionDataCategoryID: indicatorDescriptionDataCategoryID });
         }
 
         /** Gets IndicatorDescriptionDataCategories by DataCategoryID.
@@ -4562,15 +4562,15 @@ module hiw {
 
         /** Returns the related DataCategory based on the unique ID of the related IndicatorDescriptionDataCategory.
          *  @return A single IndicatorDescriptionDataCategory, or null. */
-        public getDataCategory(api: API, callback: IAPICallback<IndicatorDescriptionDataCategory>) {
+        public getDataCategory(api: API, callback: IAPICallback<DataCategory>) {
             IndicatorDescriptionDataCategory.getDataCategoryForIndicatorDescriptionDataCategory(this.id, api, callback);
         }
 
         /** Returns the related DataCategory based on the unique ID of the related IndicatorDescriptionDataCategory.
          *  @param indicatorDescriptionDataCategoryID The ID of the IndicatorDescriptionDataCategory to retrieve.
          *  @return A single IndicatorDescriptionDataCategory, or null. */
-        public static getDataCategoryForIndicatorDescriptionDataCategory(indicatorDescriptionDataCategoryID: number, api: API, callback: IAPICallback<IndicatorDescriptionDataCategory>) {
-            api.executeEndpoint<IndicatorDescriptionDataCategory>(Endpoint.fromSelf<IndicatorDescriptionDataCategory>(), callback, { indicatorDescriptionDataCategoryID: indicatorDescriptionDataCategoryID });
+        public static getDataCategoryForIndicatorDescriptionDataCategory(indicatorDescriptionDataCategoryID: number, api: API, callback: IAPICallback<DataCategory>) {
+            api.executeEndpoint<DataCategory>(Endpoint.fromSelf<DataCategory>(), callback, { indicatorDescriptionDataCategoryID: indicatorDescriptionDataCategoryID });
         }
     }
     
@@ -4662,15 +4662,15 @@ module hiw {
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionDataSource.
          *  @return A single IndicatorDescriptionDataSource, or null. */
-        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescriptionDataSource>) {
+        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescription>) {
             IndicatorDescriptionDataSource.getIndicatorDescriptionForIndicatorDescriptionDataSource(this.id, api, callback);
         }
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionDataSource.
          *  @param indicatorDescriptionDataSourceID The ID of the IndicatorDescriptionDataSource to retrieve.
          *  @return A single IndicatorDescriptionDataSource, or null. */
-        public static getIndicatorDescriptionForIndicatorDescriptionDataSource(indicatorDescriptionDataSourceID: number, api: API, callback: IAPICallback<IndicatorDescriptionDataSource>) {
-            api.executeEndpoint<IndicatorDescriptionDataSource>(Endpoint.fromSelf<IndicatorDescriptionDataSource>(), callback, { indicatorDescriptionDataSourceID: indicatorDescriptionDataSourceID });
+        public static getIndicatorDescriptionForIndicatorDescriptionDataSource(indicatorDescriptionDataSourceID: number, api: API, callback: IAPICallback<IndicatorDescription>) {
+            api.executeEndpoint<IndicatorDescription>(Endpoint.fromSelf<IndicatorDescription>(), callback, { indicatorDescriptionDataSourceID: indicatorDescriptionDataSourceID });
         }
 
         /** Gets IndicatorDescriptionDataSources by DataSourceID.
@@ -4696,15 +4696,15 @@ module hiw {
 
         /** Returns the related DataSource based on the unique ID of the related IndicatorDescriptionDataSource.
          *  @return A single IndicatorDescriptionDataSource, or null. */
-        public getDataSource(api: API, callback: IAPICallback<IndicatorDescriptionDataSource>) {
+        public getDataSource(api: API, callback: IAPICallback<DataSource>) {
             IndicatorDescriptionDataSource.getDataSourceForIndicatorDescriptionDataSource(this.id, api, callback);
         }
 
         /** Returns the related DataSource based on the unique ID of the related IndicatorDescriptionDataSource.
          *  @param indicatorDescriptionDataSourceID The ID of the IndicatorDescriptionDataSource to retrieve.
          *  @return A single IndicatorDescriptionDataSource, or null. */
-        public static getDataSourceForIndicatorDescriptionDataSource(indicatorDescriptionDataSourceID: number, api: API, callback: IAPICallback<IndicatorDescriptionDataSource>) {
-            api.executeEndpoint<IndicatorDescriptionDataSource>(Endpoint.fromSelf<IndicatorDescriptionDataSource>(), callback, { indicatorDescriptionDataSourceID: indicatorDescriptionDataSourceID });
+        public static getDataSourceForIndicatorDescriptionDataSource(indicatorDescriptionDataSourceID: number, api: API, callback: IAPICallback<DataSource>) {
+            api.executeEndpoint<DataSource>(Endpoint.fromSelf<DataSource>(), callback, { indicatorDescriptionDataSourceID: indicatorDescriptionDataSourceID });
         }
     }
     
@@ -4794,15 +4794,15 @@ module hiw {
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionDefaultDimensionGraph.
          *  @return A single IndicatorDescriptionDefaultDimensionGraph, or null. */
-        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescriptionDefaultDimensionGraph>) {
+        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescription>) {
             IndicatorDescriptionDefaultDimensionGraph.getIndicatorDescriptionForIndicatorDescriptionDefaultDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionDefaultDimensionGraph.
          *  @param indicatorDescriptionDefaultDimensionGraphID The ID of the IndicatorDescriptionDefaultDimensionGraph to retrieve.
          *  @return A single IndicatorDescriptionDefaultDimensionGraph, or null. */
-        public static getIndicatorDescriptionForIndicatorDescriptionDefaultDimensionGraph(indicatorDescriptionDefaultDimensionGraphID: number, api: API, callback: IAPICallback<IndicatorDescriptionDefaultDimensionGraph>) {
-            api.executeEndpoint<IndicatorDescriptionDefaultDimensionGraph>(Endpoint.fromSelf<IndicatorDescriptionDefaultDimensionGraph>(), callback, { indicatorDescriptionDefaultDimensionGraphID: indicatorDescriptionDefaultDimensionGraphID });
+        public static getIndicatorDescriptionForIndicatorDescriptionDefaultDimensionGraph(indicatorDescriptionDefaultDimensionGraphID: number, api: API, callback: IAPICallback<IndicatorDescription>) {
+            api.executeEndpoint<IndicatorDescription>(Endpoint.fromSelf<IndicatorDescription>(), callback, { indicatorDescriptionDefaultDimensionGraphID: indicatorDescriptionDefaultDimensionGraphID });
         }
 
         /** Gets IndicatorDescriptionDefaultDimensionGraphs by LocaleLevelID.
@@ -4828,15 +4828,15 @@ module hiw {
 
         /** Returns the related LocaleLevel based on the unique ID of the related IndicatorDescriptionDefaultDimensionGraph.
          *  @return A single IndicatorDescriptionDefaultDimensionGraph, or null. */
-        public getLocaleLevel(api: API, callback: IAPICallback<IndicatorDescriptionDefaultDimensionGraph>) {
+        public getLocaleLevel(api: API, callback: IAPICallback<LocaleLevel>) {
             IndicatorDescriptionDefaultDimensionGraph.getLocaleLevelForIndicatorDescriptionDefaultDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related LocaleLevel based on the unique ID of the related IndicatorDescriptionDefaultDimensionGraph.
          *  @param indicatorDescriptionDefaultDimensionGraphID The ID of the IndicatorDescriptionDefaultDimensionGraph to retrieve.
          *  @return A single IndicatorDescriptionDefaultDimensionGraph, or null. */
-        public static getLocaleLevelForIndicatorDescriptionDefaultDimensionGraph(indicatorDescriptionDefaultDimensionGraphID: number, api: API, callback: IAPICallback<IndicatorDescriptionDefaultDimensionGraph>) {
-            api.executeEndpoint<IndicatorDescriptionDefaultDimensionGraph>(Endpoint.fromSelf<IndicatorDescriptionDefaultDimensionGraph>(), callback, { indicatorDescriptionDefaultDimensionGraphID: indicatorDescriptionDefaultDimensionGraphID });
+        public static getLocaleLevelForIndicatorDescriptionDefaultDimensionGraph(indicatorDescriptionDefaultDimensionGraphID: number, api: API, callback: IAPICallback<LocaleLevel>) {
+            api.executeEndpoint<LocaleLevel>(Endpoint.fromSelf<LocaleLevel>(), callback, { indicatorDescriptionDefaultDimensionGraphID: indicatorDescriptionDefaultDimensionGraphID });
         }
 
         /** Gets IndicatorDescriptionDefaultDimensionGraphs by DimensionGraphID.
@@ -4862,15 +4862,15 @@ module hiw {
 
         /** Returns the related DimensionGraph based on the unique ID of the related IndicatorDescriptionDefaultDimensionGraph.
          *  @return A single IndicatorDescriptionDefaultDimensionGraph, or null. */
-        public getDimensionGraph(api: API, callback: IAPICallback<IndicatorDescriptionDefaultDimensionGraph>) {
+        public getDimensionGraph(api: API, callback: IAPICallback<DimensionGraph>) {
             IndicatorDescriptionDefaultDimensionGraph.getDimensionGraphForIndicatorDescriptionDefaultDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related DimensionGraph based on the unique ID of the related IndicatorDescriptionDefaultDimensionGraph.
          *  @param indicatorDescriptionDefaultDimensionGraphID The ID of the IndicatorDescriptionDefaultDimensionGraph to retrieve.
          *  @return A single IndicatorDescriptionDefaultDimensionGraph, or null. */
-        public static getDimensionGraphForIndicatorDescriptionDefaultDimensionGraph(indicatorDescriptionDefaultDimensionGraphID: number, api: API, callback: IAPICallback<IndicatorDescriptionDefaultDimensionGraph>) {
-            api.executeEndpoint<IndicatorDescriptionDefaultDimensionGraph>(Endpoint.fromSelf<IndicatorDescriptionDefaultDimensionGraph>(), callback, { indicatorDescriptionDefaultDimensionGraphID: indicatorDescriptionDefaultDimensionGraphID });
+        public static getDimensionGraphForIndicatorDescriptionDefaultDimensionGraph(indicatorDescriptionDefaultDimensionGraphID: number, api: API, callback: IAPICallback<DimensionGraph>) {
+            api.executeEndpoint<DimensionGraph>(Endpoint.fromSelf<DimensionGraph>(), callback, { indicatorDescriptionDefaultDimensionGraphID: indicatorDescriptionDefaultDimensionGraphID });
         }
     }
     
@@ -4958,15 +4958,15 @@ module hiw {
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionDimension.
          *  @return A single IndicatorDescriptionDimension, or null. */
-        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescriptionDimension>) {
+        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescription>) {
             IndicatorDescriptionDimension.getIndicatorDescriptionForIndicatorDescriptionDimension(this.id, api, callback);
         }
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionDimension.
          *  @param indicatorDescriptionDimensionID The ID of the IndicatorDescriptionDimension to retrieve.
          *  @return A single IndicatorDescriptionDimension, or null. */
-        public static getIndicatorDescriptionForIndicatorDescriptionDimension(indicatorDescriptionDimensionID: number, api: API, callback: IAPICallback<IndicatorDescriptionDimension>) {
-            api.executeEndpoint<IndicatorDescriptionDimension>(Endpoint.fromSelf<IndicatorDescriptionDimension>(), callback, { indicatorDescriptionDimensionID: indicatorDescriptionDimensionID });
+        public static getIndicatorDescriptionForIndicatorDescriptionDimension(indicatorDescriptionDimensionID: number, api: API, callback: IAPICallback<IndicatorDescription>) {
+            api.executeEndpoint<IndicatorDescription>(Endpoint.fromSelf<IndicatorDescription>(), callback, { indicatorDescriptionDimensionID: indicatorDescriptionDimensionID });
         }
 
         /** Gets IndicatorDescriptionDimensions by DimensionListID.
@@ -4992,15 +4992,15 @@ module hiw {
 
         /** Returns the related DimensionList based on the unique ID of the related IndicatorDescriptionDimension.
          *  @return A single IndicatorDescriptionDimension, or null. */
-        public getDimensionList(api: API, callback: IAPICallback<IndicatorDescriptionDimension>) {
+        public getDimensionList(api: API, callback: IAPICallback<DimensionList>) {
             IndicatorDescriptionDimension.getDimensionListForIndicatorDescriptionDimension(this.id, api, callback);
         }
 
         /** Returns the related DimensionList based on the unique ID of the related IndicatorDescriptionDimension.
          *  @param indicatorDescriptionDimensionID The ID of the IndicatorDescriptionDimension to retrieve.
          *  @return A single IndicatorDescriptionDimension, or null. */
-        public static getDimensionListForIndicatorDescriptionDimension(indicatorDescriptionDimensionID: number, api: API, callback: IAPICallback<IndicatorDescriptionDimension>) {
-            api.executeEndpoint<IndicatorDescriptionDimension>(Endpoint.fromSelf<IndicatorDescriptionDimension>(), callback, { indicatorDescriptionDimensionID: indicatorDescriptionDimensionID });
+        public static getDimensionListForIndicatorDescriptionDimension(indicatorDescriptionDimensionID: number, api: API, callback: IAPICallback<DimensionList>) {
+            api.executeEndpoint<DimensionList>(Endpoint.fromSelf<DimensionList>(), callback, { indicatorDescriptionDimensionID: indicatorDescriptionDimensionID });
         }
 
         /** Gets a unique IndicatorDescriptionDimension based on the provided values.
@@ -5096,15 +5096,15 @@ module hiw {
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionDimensionGraph.
          *  @return A single IndicatorDescriptionDimensionGraph, or null. */
-        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescriptionDimensionGraph>) {
+        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescription>) {
             IndicatorDescriptionDimensionGraph.getIndicatorDescriptionForIndicatorDescriptionDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionDimensionGraph.
          *  @param indicatorDescriptionDimensionGraphID The ID of the IndicatorDescriptionDimensionGraph to retrieve.
          *  @return A single IndicatorDescriptionDimensionGraph, or null. */
-        public static getIndicatorDescriptionForIndicatorDescriptionDimensionGraph(indicatorDescriptionDimensionGraphID: number, api: API, callback: IAPICallback<IndicatorDescriptionDimensionGraph>) {
-            api.executeEndpoint<IndicatorDescriptionDimensionGraph>(Endpoint.fromSelf<IndicatorDescriptionDimensionGraph>(), callback, { indicatorDescriptionDimensionGraphID: indicatorDescriptionDimensionGraphID });
+        public static getIndicatorDescriptionForIndicatorDescriptionDimensionGraph(indicatorDescriptionDimensionGraphID: number, api: API, callback: IAPICallback<IndicatorDescription>) {
+            api.executeEndpoint<IndicatorDescription>(Endpoint.fromSelf<IndicatorDescription>(), callback, { indicatorDescriptionDimensionGraphID: indicatorDescriptionDimensionGraphID });
         }
 
         /** Gets IndicatorDescriptionDimensionGraphs by LocaleLevelID.
@@ -5130,15 +5130,15 @@ module hiw {
 
         /** Returns the related LocaleLevel based on the unique ID of the related IndicatorDescriptionDimensionGraph.
          *  @return A single IndicatorDescriptionDimensionGraph, or null. */
-        public getLocaleLevel(api: API, callback: IAPICallback<IndicatorDescriptionDimensionGraph>) {
+        public getLocaleLevel(api: API, callback: IAPICallback<LocaleLevel>) {
             IndicatorDescriptionDimensionGraph.getLocaleLevelForIndicatorDescriptionDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related LocaleLevel based on the unique ID of the related IndicatorDescriptionDimensionGraph.
          *  @param indicatorDescriptionDimensionGraphID The ID of the IndicatorDescriptionDimensionGraph to retrieve.
          *  @return A single IndicatorDescriptionDimensionGraph, or null. */
-        public static getLocaleLevelForIndicatorDescriptionDimensionGraph(indicatorDescriptionDimensionGraphID: number, api: API, callback: IAPICallback<IndicatorDescriptionDimensionGraph>) {
-            api.executeEndpoint<IndicatorDescriptionDimensionGraph>(Endpoint.fromSelf<IndicatorDescriptionDimensionGraph>(), callback, { indicatorDescriptionDimensionGraphID: indicatorDescriptionDimensionGraphID });
+        public static getLocaleLevelForIndicatorDescriptionDimensionGraph(indicatorDescriptionDimensionGraphID: number, api: API, callback: IAPICallback<LocaleLevel>) {
+            api.executeEndpoint<LocaleLevel>(Endpoint.fromSelf<LocaleLevel>(), callback, { indicatorDescriptionDimensionGraphID: indicatorDescriptionDimensionGraphID });
         }
 
         /** Gets IndicatorDescriptionDimensionGraphs by DimensionGraphID.
@@ -5164,15 +5164,15 @@ module hiw {
 
         /** Returns the related DimensionGraph based on the unique ID of the related IndicatorDescriptionDimensionGraph.
          *  @return A single IndicatorDescriptionDimensionGraph, or null. */
-        public getDimensionGraph(api: API, callback: IAPICallback<IndicatorDescriptionDimensionGraph>) {
+        public getDimensionGraph(api: API, callback: IAPICallback<DimensionGraph>) {
             IndicatorDescriptionDimensionGraph.getDimensionGraphForIndicatorDescriptionDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related DimensionGraph based on the unique ID of the related IndicatorDescriptionDimensionGraph.
          *  @param indicatorDescriptionDimensionGraphID The ID of the IndicatorDescriptionDimensionGraph to retrieve.
          *  @return A single IndicatorDescriptionDimensionGraph, or null. */
-        public static getDimensionGraphForIndicatorDescriptionDimensionGraph(indicatorDescriptionDimensionGraphID: number, api: API, callback: IAPICallback<IndicatorDescriptionDimensionGraph>) {
-            api.executeEndpoint<IndicatorDescriptionDimensionGraph>(Endpoint.fromSelf<IndicatorDescriptionDimensionGraph>(), callback, { indicatorDescriptionDimensionGraphID: indicatorDescriptionDimensionGraphID });
+        public static getDimensionGraphForIndicatorDescriptionDimensionGraph(indicatorDescriptionDimensionGraphID: number, api: API, callback: IAPICallback<DimensionGraph>) {
+            api.executeEndpoint<DimensionGraph>(Endpoint.fromSelf<DimensionGraph>(), callback, { indicatorDescriptionDimensionGraphID: indicatorDescriptionDimensionGraphID });
         }
     }
     
@@ -5260,15 +5260,15 @@ module hiw {
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionDimensionValue.
          *  @return A single IndicatorDescriptionDimensionValue, or null. */
-        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescriptionDimensionValue>) {
+        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescription>) {
             IndicatorDescriptionDimensionValue.getIndicatorDescriptionForIndicatorDescriptionDimensionValue(this.id, api, callback);
         }
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionDimensionValue.
          *  @param indicatorDescriptionDimensionValueID The ID of the IndicatorDescriptionDimensionValue to retrieve.
          *  @return A single IndicatorDescriptionDimensionValue, or null. */
-        public static getIndicatorDescriptionForIndicatorDescriptionDimensionValue(indicatorDescriptionDimensionValueID: number, api: API, callback: IAPICallback<IndicatorDescriptionDimensionValue>) {
-            api.executeEndpoint<IndicatorDescriptionDimensionValue>(Endpoint.fromSelf<IndicatorDescriptionDimensionValue>(), callback, { indicatorDescriptionDimensionValueID: indicatorDescriptionDimensionValueID });
+        public static getIndicatorDescriptionForIndicatorDescriptionDimensionValue(indicatorDescriptionDimensionValueID: number, api: API, callback: IAPICallback<IndicatorDescription>) {
+            api.executeEndpoint<IndicatorDescription>(Endpoint.fromSelf<IndicatorDescription>(), callback, { indicatorDescriptionDimensionValueID: indicatorDescriptionDimensionValueID });
         }
 
         /** Gets IndicatorDescriptionDimensionValues by DimensionBookID.
@@ -5294,15 +5294,15 @@ module hiw {
 
         /** Returns the related DimensionBook based on the unique ID of the related IndicatorDescriptionDimensionValue.
          *  @return A single IndicatorDescriptionDimensionValue, or null. */
-        public getDimensionBook(api: API, callback: IAPICallback<IndicatorDescriptionDimensionValue>) {
+        public getDimensionBook(api: API, callback: IAPICallback<DimensionBook>) {
             IndicatorDescriptionDimensionValue.getDimensionBookForIndicatorDescriptionDimensionValue(this.id, api, callback);
         }
 
         /** Returns the related DimensionBook based on the unique ID of the related IndicatorDescriptionDimensionValue.
          *  @param indicatorDescriptionDimensionValueID The ID of the IndicatorDescriptionDimensionValue to retrieve.
          *  @return A single IndicatorDescriptionDimensionValue, or null. */
-        public static getDimensionBookForIndicatorDescriptionDimensionValue(indicatorDescriptionDimensionValueID: number, api: API, callback: IAPICallback<IndicatorDescriptionDimensionValue>) {
-            api.executeEndpoint<IndicatorDescriptionDimensionValue>(Endpoint.fromSelf<IndicatorDescriptionDimensionValue>(), callback, { indicatorDescriptionDimensionValueID: indicatorDescriptionDimensionValueID });
+        public static getDimensionBookForIndicatorDescriptionDimensionValue(indicatorDescriptionDimensionValueID: number, api: API, callback: IAPICallback<DimensionBook>) {
+            api.executeEndpoint<DimensionBook>(Endpoint.fromSelf<DimensionBook>(), callback, { indicatorDescriptionDimensionValueID: indicatorDescriptionDimensionValueID });
         }
 
         /** Gets a unique IndicatorDescriptionDimensionValue based on the provided values.
@@ -5396,15 +5396,15 @@ module hiw {
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionInitiative.
          *  @return A single IndicatorDescriptionInitiative, or null. */
-        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescriptionInitiative>) {
+        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescription>) {
             IndicatorDescriptionInitiative.getIndicatorDescriptionForIndicatorDescriptionInitiative(this.id, api, callback);
         }
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionInitiative.
          *  @param indicatorDescriptionInitiativeID The ID of the IndicatorDescriptionInitiative to retrieve.
          *  @return A single IndicatorDescriptionInitiative, or null. */
-        public static getIndicatorDescriptionForIndicatorDescriptionInitiative(indicatorDescriptionInitiativeID: number, api: API, callback: IAPICallback<IndicatorDescriptionInitiative>) {
-            api.executeEndpoint<IndicatorDescriptionInitiative>(Endpoint.fromSelf<IndicatorDescriptionInitiative>(), callback, { indicatorDescriptionInitiativeID: indicatorDescriptionInitiativeID });
+        public static getIndicatorDescriptionForIndicatorDescriptionInitiative(indicatorDescriptionInitiativeID: number, api: API, callback: IAPICallback<IndicatorDescription>) {
+            api.executeEndpoint<IndicatorDescription>(Endpoint.fromSelf<IndicatorDescription>(), callback, { indicatorDescriptionInitiativeID: indicatorDescriptionInitiativeID });
         }
 
         /** Gets IndicatorDescriptionInitiatives by InitiativeID.
@@ -5430,15 +5430,15 @@ module hiw {
 
         /** Returns the related Initiative based on the unique ID of the related IndicatorDescriptionInitiative.
          *  @return A single IndicatorDescriptionInitiative, or null. */
-        public getInitiative(api: API, callback: IAPICallback<IndicatorDescriptionInitiative>) {
+        public getInitiative(api: API, callback: IAPICallback<Initiative>) {
             IndicatorDescriptionInitiative.getInitiativeForIndicatorDescriptionInitiative(this.id, api, callback);
         }
 
         /** Returns the related Initiative based on the unique ID of the related IndicatorDescriptionInitiative.
          *  @param indicatorDescriptionInitiativeID The ID of the IndicatorDescriptionInitiative to retrieve.
          *  @return A single IndicatorDescriptionInitiative, or null. */
-        public static getInitiativeForIndicatorDescriptionInitiative(indicatorDescriptionInitiativeID: number, api: API, callback: IAPICallback<IndicatorDescriptionInitiative>) {
-            api.executeEndpoint<IndicatorDescriptionInitiative>(Endpoint.fromSelf<IndicatorDescriptionInitiative>(), callback, { indicatorDescriptionInitiativeID: indicatorDescriptionInitiativeID });
+        public static getInitiativeForIndicatorDescriptionInitiative(indicatorDescriptionInitiativeID: number, api: API, callback: IAPICallback<Initiative>) {
+            api.executeEndpoint<Initiative>(Endpoint.fromSelf<Initiative>(), callback, { indicatorDescriptionInitiativeID: indicatorDescriptionInitiativeID });
         }
     }
     
@@ -5528,15 +5528,15 @@ module hiw {
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionIntervention.
          *  @return A single IndicatorDescriptionIntervention, or null. */
-        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescriptionIntervention>) {
+        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescription>) {
             IndicatorDescriptionIntervention.getIndicatorDescriptionForIndicatorDescriptionIntervention(this.id, api, callback);
         }
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionIntervention.
          *  @param indicatorDescriptionInterventionID The ID of the IndicatorDescriptionIntervention to retrieve.
          *  @return A single IndicatorDescriptionIntervention, or null. */
-        public static getIndicatorDescriptionForIndicatorDescriptionIntervention(indicatorDescriptionInterventionID: number, api: API, callback: IAPICallback<IndicatorDescriptionIntervention>) {
-            api.executeEndpoint<IndicatorDescriptionIntervention>(Endpoint.fromSelf<IndicatorDescriptionIntervention>(), callback, { indicatorDescriptionInterventionID: indicatorDescriptionInterventionID });
+        public static getIndicatorDescriptionForIndicatorDescriptionIntervention(indicatorDescriptionInterventionID: number, api: API, callback: IAPICallback<IndicatorDescription>) {
+            api.executeEndpoint<IndicatorDescription>(Endpoint.fromSelf<IndicatorDescription>(), callback, { indicatorDescriptionInterventionID: indicatorDescriptionInterventionID });
         }
 
         /** Gets IndicatorDescriptionInterventions by InterventionID.
@@ -5562,15 +5562,15 @@ module hiw {
 
         /** Returns the related Interventions based on the unique ID of the related IndicatorDescriptionIntervention.
          *  @return A single IndicatorDescriptionIntervention, or null. */
-        public getInterventions(api: API, callback: IAPICallback<IndicatorDescriptionIntervention>) {
+        public getInterventions(api: API, callback: IAPICallback<Intervention>) {
             IndicatorDescriptionIntervention.getInterventionsForIndicatorDescriptionIntervention(this.id, api, callback);
         }
 
         /** Returns the related Interventions based on the unique ID of the related IndicatorDescriptionIntervention.
          *  @param indicatorDescriptionInterventionID The ID of the IndicatorDescriptionIntervention to retrieve.
          *  @return A single IndicatorDescriptionIntervention, or null. */
-        public static getInterventionsForIndicatorDescriptionIntervention(indicatorDescriptionInterventionID: number, api: API, callback: IAPICallback<IndicatorDescriptionIntervention>) {
-            api.executeEndpoint<IndicatorDescriptionIntervention>(Endpoint.fromSelf<IndicatorDescriptionIntervention>(), callback, { indicatorDescriptionInterventionID: indicatorDescriptionInterventionID });
+        public static getInterventionsForIndicatorDescriptionIntervention(indicatorDescriptionInterventionID: number, api: API, callback: IAPICallback<Intervention>) {
+            api.executeEndpoint<Intervention>(Endpoint.fromSelf<Intervention>(), callback, { indicatorDescriptionInterventionID: indicatorDescriptionInterventionID });
         }
     }
     
@@ -5658,15 +5658,15 @@ module hiw {
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionKeyword.
          *  @return A single IndicatorDescriptionKeyword, or null. */
-        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescriptionKeyword>) {
+        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescription>) {
             IndicatorDescriptionKeyword.getIndicatorDescriptionForIndicatorDescriptionKeyword(this.id, api, callback);
         }
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionKeyword.
          *  @param indicatorDescriptionKeywordID The ID of the IndicatorDescriptionKeyword to retrieve.
          *  @return A single IndicatorDescriptionKeyword, or null. */
-        public static getIndicatorDescriptionForIndicatorDescriptionKeyword(indicatorDescriptionKeywordID: number, api: API, callback: IAPICallback<IndicatorDescriptionKeyword>) {
-            api.executeEndpoint<IndicatorDescriptionKeyword>(Endpoint.fromSelf<IndicatorDescriptionKeyword>(), callback, { indicatorDescriptionKeywordID: indicatorDescriptionKeywordID });
+        public static getIndicatorDescriptionForIndicatorDescriptionKeyword(indicatorDescriptionKeywordID: number, api: API, callback: IAPICallback<IndicatorDescription>) {
+            api.executeEndpoint<IndicatorDescription>(Endpoint.fromSelf<IndicatorDescription>(), callback, { indicatorDescriptionKeywordID: indicatorDescriptionKeywordID });
         }
 
         /** Gets IndicatorDescriptionKeywords by KeywordID.
@@ -5692,15 +5692,15 @@ module hiw {
 
         /** Returns the related Keyword based on the unique ID of the related IndicatorDescriptionKeyword.
          *  @return A single IndicatorDescriptionKeyword, or null. */
-        public getKeyword(api: API, callback: IAPICallback<IndicatorDescriptionKeyword>) {
+        public getKeyword(api: API, callback: IAPICallback<Keyword>) {
             IndicatorDescriptionKeyword.getKeywordForIndicatorDescriptionKeyword(this.id, api, callback);
         }
 
         /** Returns the related Keyword based on the unique ID of the related IndicatorDescriptionKeyword.
          *  @param indicatorDescriptionKeywordID The ID of the IndicatorDescriptionKeyword to retrieve.
          *  @return A single IndicatorDescriptionKeyword, or null. */
-        public static getKeywordForIndicatorDescriptionKeyword(indicatorDescriptionKeywordID: number, api: API, callback: IAPICallback<IndicatorDescriptionKeyword>) {
-            api.executeEndpoint<IndicatorDescriptionKeyword>(Endpoint.fromSelf<IndicatorDescriptionKeyword>(), callback, { indicatorDescriptionKeywordID: indicatorDescriptionKeywordID });
+        public static getKeywordForIndicatorDescriptionKeyword(indicatorDescriptionKeywordID: number, api: API, callback: IAPICallback<Keyword>) {
+            api.executeEndpoint<Keyword>(Endpoint.fromSelf<Keyword>(), callback, { indicatorDescriptionKeywordID: indicatorDescriptionKeywordID });
         }
 
         /** Gets a unique IndicatorDescriptionKeyword based on the provided values.
@@ -5794,15 +5794,15 @@ module hiw {
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionLocaleCounty.
          *  @return A single IndicatorDescriptionLocaleCounty, or null. */
-        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescriptionLocaleCounty>) {
+        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescription>) {
             IndicatorDescriptionLocaleCounty.getIndicatorDescriptionForIndicatorDescriptionLocaleCounty(this.id, api, callback);
         }
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionLocaleCounty.
          *  @param indicatorDescriptionLocaleCountyID The ID of the IndicatorDescriptionLocaleCounty to retrieve.
          *  @return A single IndicatorDescriptionLocaleCounty, or null. */
-        public static getIndicatorDescriptionForIndicatorDescriptionLocaleCounty(indicatorDescriptionLocaleCountyID: number, api: API, callback: IAPICallback<IndicatorDescriptionLocaleCounty>) {
-            api.executeEndpoint<IndicatorDescriptionLocaleCounty>(Endpoint.fromSelf<IndicatorDescriptionLocaleCounty>(), callback, { indicatorDescriptionLocaleCountyID: indicatorDescriptionLocaleCountyID });
+        public static getIndicatorDescriptionForIndicatorDescriptionLocaleCounty(indicatorDescriptionLocaleCountyID: number, api: API, callback: IAPICallback<IndicatorDescription>) {
+            api.executeEndpoint<IndicatorDescription>(Endpoint.fromSelf<IndicatorDescription>(), callback, { indicatorDescriptionLocaleCountyID: indicatorDescriptionLocaleCountyID });
         }
 
         /** Gets IndicatorDescriptionLocaleCounties by LocaleID.
@@ -5828,15 +5828,15 @@ module hiw {
 
         /** Returns the related Locale based on the unique ID of the related IndicatorDescriptionLocaleCounty.
          *  @return A single IndicatorDescriptionLocaleCounty, or null. */
-        public getLocale(api: API, callback: IAPICallback<IndicatorDescriptionLocaleCounty>) {
+        public getLocale(api: API, callback: IAPICallback<Locale>) {
             IndicatorDescriptionLocaleCounty.getLocaleForIndicatorDescriptionLocaleCounty(this.id, api, callback);
         }
 
         /** Returns the related Locale based on the unique ID of the related IndicatorDescriptionLocaleCounty.
          *  @param indicatorDescriptionLocaleCountyID The ID of the IndicatorDescriptionLocaleCounty to retrieve.
          *  @return A single IndicatorDescriptionLocaleCounty, or null. */
-        public static getLocaleForIndicatorDescriptionLocaleCounty(indicatorDescriptionLocaleCountyID: number, api: API, callback: IAPICallback<IndicatorDescriptionLocaleCounty>) {
-            api.executeEndpoint<IndicatorDescriptionLocaleCounty>(Endpoint.fromSelf<IndicatorDescriptionLocaleCounty>(), callback, { indicatorDescriptionLocaleCountyID: indicatorDescriptionLocaleCountyID });
+        public static getLocaleForIndicatorDescriptionLocaleCounty(indicatorDescriptionLocaleCountyID: number, api: API, callback: IAPICallback<Locale>) {
+            api.executeEndpoint<Locale>(Endpoint.fromSelf<Locale>(), callback, { indicatorDescriptionLocaleCountyID: indicatorDescriptionLocaleCountyID });
         }
     }
     
@@ -5924,15 +5924,15 @@ module hiw {
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionLocaleHospitalReferralRegion.
          *  @return A single IndicatorDescriptionLocaleHospitalReferralRegion, or null. */
-        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescriptionLocaleHospitalReferralRegion>) {
+        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescription>) {
             IndicatorDescriptionLocaleHospitalReferralRegion.getIndicatorDescriptionForIndicatorDescriptionLocaleHospitalReferralRegion(this.id, api, callback);
         }
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionLocaleHospitalReferralRegion.
          *  @param indicatorDescriptionLocaleHospitalReferralRegionID The ID of the IndicatorDescriptionLocaleHospitalReferralRegion to retrieve.
          *  @return A single IndicatorDescriptionLocaleHospitalReferralRegion, or null. */
-        public static getIndicatorDescriptionForIndicatorDescriptionLocaleHospitalReferralRegion(indicatorDescriptionLocaleHospitalReferralRegionID: number, api: API, callback: IAPICallback<IndicatorDescriptionLocaleHospitalReferralRegion>) {
-            api.executeEndpoint<IndicatorDescriptionLocaleHospitalReferralRegion>(Endpoint.fromSelf<IndicatorDescriptionLocaleHospitalReferralRegion>(), callback, { indicatorDescriptionLocaleHospitalReferralRegionID: indicatorDescriptionLocaleHospitalReferralRegionID });
+        public static getIndicatorDescriptionForIndicatorDescriptionLocaleHospitalReferralRegion(indicatorDescriptionLocaleHospitalReferralRegionID: number, api: API, callback: IAPICallback<IndicatorDescription>) {
+            api.executeEndpoint<IndicatorDescription>(Endpoint.fromSelf<IndicatorDescription>(), callback, { indicatorDescriptionLocaleHospitalReferralRegionID: indicatorDescriptionLocaleHospitalReferralRegionID });
         }
 
         /** Gets IndicatorDescriptionLocaleHospitalReferralRegions by LocaleID.
@@ -5958,15 +5958,15 @@ module hiw {
 
         /** Returns the related Locale based on the unique ID of the related IndicatorDescriptionLocaleHospitalReferralRegion.
          *  @return A single IndicatorDescriptionLocaleHospitalReferralRegion, or null. */
-        public getLocale(api: API, callback: IAPICallback<IndicatorDescriptionLocaleHospitalReferralRegion>) {
+        public getLocale(api: API, callback: IAPICallback<Locale>) {
             IndicatorDescriptionLocaleHospitalReferralRegion.getLocaleForIndicatorDescriptionLocaleHospitalReferralRegion(this.id, api, callback);
         }
 
         /** Returns the related Locale based on the unique ID of the related IndicatorDescriptionLocaleHospitalReferralRegion.
          *  @param indicatorDescriptionLocaleHospitalReferralRegionID The ID of the IndicatorDescriptionLocaleHospitalReferralRegion to retrieve.
          *  @return A single IndicatorDescriptionLocaleHospitalReferralRegion, or null. */
-        public static getLocaleForIndicatorDescriptionLocaleHospitalReferralRegion(indicatorDescriptionLocaleHospitalReferralRegionID: number, api: API, callback: IAPICallback<IndicatorDescriptionLocaleHospitalReferralRegion>) {
-            api.executeEndpoint<IndicatorDescriptionLocaleHospitalReferralRegion>(Endpoint.fromSelf<IndicatorDescriptionLocaleHospitalReferralRegion>(), callback, { indicatorDescriptionLocaleHospitalReferralRegionID: indicatorDescriptionLocaleHospitalReferralRegionID });
+        public static getLocaleForIndicatorDescriptionLocaleHospitalReferralRegion(indicatorDescriptionLocaleHospitalReferralRegionID: number, api: API, callback: IAPICallback<Locale>) {
+            api.executeEndpoint<Locale>(Endpoint.fromSelf<Locale>(), callback, { indicatorDescriptionLocaleHospitalReferralRegionID: indicatorDescriptionLocaleHospitalReferralRegionID });
         }
     }
     
@@ -6054,15 +6054,15 @@ module hiw {
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionLocaleLevel.
          *  @return A single IndicatorDescriptionLocaleLevel, or null. */
-        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescriptionLocaleLevel>) {
+        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescription>) {
             IndicatorDescriptionLocaleLevel.getIndicatorDescriptionForIndicatorDescriptionLocaleLevel(this.id, api, callback);
         }
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionLocaleLevel.
          *  @param indicatorDescriptionLocaleLevelID The ID of the IndicatorDescriptionLocaleLevel to retrieve.
          *  @return A single IndicatorDescriptionLocaleLevel, or null. */
-        public static getIndicatorDescriptionForIndicatorDescriptionLocaleLevel(indicatorDescriptionLocaleLevelID: number, api: API, callback: IAPICallback<IndicatorDescriptionLocaleLevel>) {
-            api.executeEndpoint<IndicatorDescriptionLocaleLevel>(Endpoint.fromSelf<IndicatorDescriptionLocaleLevel>(), callback, { indicatorDescriptionLocaleLevelID: indicatorDescriptionLocaleLevelID });
+        public static getIndicatorDescriptionForIndicatorDescriptionLocaleLevel(indicatorDescriptionLocaleLevelID: number, api: API, callback: IAPICallback<IndicatorDescription>) {
+            api.executeEndpoint<IndicatorDescription>(Endpoint.fromSelf<IndicatorDescription>(), callback, { indicatorDescriptionLocaleLevelID: indicatorDescriptionLocaleLevelID });
         }
 
         /** Gets IndicatorDescriptionLocaleLevels by LocaleLevelID.
@@ -6088,15 +6088,15 @@ module hiw {
 
         /** Returns the related LocaleLevel based on the unique ID of the related IndicatorDescriptionLocaleLevel.
          *  @return A single IndicatorDescriptionLocaleLevel, or null. */
-        public getLocaleLevel(api: API, callback: IAPICallback<IndicatorDescriptionLocaleLevel>) {
+        public getLocaleLevel(api: API, callback: IAPICallback<LocaleLevel>) {
             IndicatorDescriptionLocaleLevel.getLocaleLevelForIndicatorDescriptionLocaleLevel(this.id, api, callback);
         }
 
         /** Returns the related LocaleLevel based on the unique ID of the related IndicatorDescriptionLocaleLevel.
          *  @param indicatorDescriptionLocaleLevelID The ID of the IndicatorDescriptionLocaleLevel to retrieve.
          *  @return A single IndicatorDescriptionLocaleLevel, or null. */
-        public static getLocaleLevelForIndicatorDescriptionLocaleLevel(indicatorDescriptionLocaleLevelID: number, api: API, callback: IAPICallback<IndicatorDescriptionLocaleLevel>) {
-            api.executeEndpoint<IndicatorDescriptionLocaleLevel>(Endpoint.fromSelf<IndicatorDescriptionLocaleLevel>(), callback, { indicatorDescriptionLocaleLevelID: indicatorDescriptionLocaleLevelID });
+        public static getLocaleLevelForIndicatorDescriptionLocaleLevel(indicatorDescriptionLocaleLevelID: number, api: API, callback: IAPICallback<LocaleLevel>) {
+            api.executeEndpoint<LocaleLevel>(Endpoint.fromSelf<LocaleLevel>(), callback, { indicatorDescriptionLocaleLevelID: indicatorDescriptionLocaleLevelID });
         }
     }
     
@@ -6184,15 +6184,15 @@ module hiw {
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionLocale.
          *  @return A single IndicatorDescriptionLocale, or null. */
-        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescriptionLocale>) {
+        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescription>) {
             IndicatorDescriptionLocale.getIndicatorDescriptionForIndicatorDescriptionLocale(this.id, api, callback);
         }
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionLocale.
          *  @param indicatorDescriptionLocaleID The ID of the IndicatorDescriptionLocale to retrieve.
          *  @return A single IndicatorDescriptionLocale, or null. */
-        public static getIndicatorDescriptionForIndicatorDescriptionLocale(indicatorDescriptionLocaleID: number, api: API, callback: IAPICallback<IndicatorDescriptionLocale>) {
-            api.executeEndpoint<IndicatorDescriptionLocale>(Endpoint.fromSelf<IndicatorDescriptionLocale>(), callback, { indicatorDescriptionLocaleID: indicatorDescriptionLocaleID });
+        public static getIndicatorDescriptionForIndicatorDescriptionLocale(indicatorDescriptionLocaleID: number, api: API, callback: IAPICallback<IndicatorDescription>) {
+            api.executeEndpoint<IndicatorDescription>(Endpoint.fromSelf<IndicatorDescription>(), callback, { indicatorDescriptionLocaleID: indicatorDescriptionLocaleID });
         }
 
         /** Gets IndicatorDescriptionLocales by LocaleID.
@@ -6218,15 +6218,15 @@ module hiw {
 
         /** Returns the related Locale based on the unique ID of the related IndicatorDescriptionLocale.
          *  @return A single IndicatorDescriptionLocale, or null. */
-        public getLocale(api: API, callback: IAPICallback<IndicatorDescriptionLocale>) {
+        public getLocale(api: API, callback: IAPICallback<Locale>) {
             IndicatorDescriptionLocale.getLocaleForIndicatorDescriptionLocale(this.id, api, callback);
         }
 
         /** Returns the related Locale based on the unique ID of the related IndicatorDescriptionLocale.
          *  @param indicatorDescriptionLocaleID The ID of the IndicatorDescriptionLocale to retrieve.
          *  @return A single IndicatorDescriptionLocale, or null. */
-        public static getLocaleForIndicatorDescriptionLocale(indicatorDescriptionLocaleID: number, api: API, callback: IAPICallback<IndicatorDescriptionLocale>) {
-            api.executeEndpoint<IndicatorDescriptionLocale>(Endpoint.fromSelf<IndicatorDescriptionLocale>(), callback, { indicatorDescriptionLocaleID: indicatorDescriptionLocaleID });
+        public static getLocaleForIndicatorDescriptionLocale(indicatorDescriptionLocaleID: number, api: API, callback: IAPICallback<Locale>) {
+            api.executeEndpoint<Locale>(Endpoint.fromSelf<Locale>(), callback, { indicatorDescriptionLocaleID: indicatorDescriptionLocaleID });
         }
     }
     
@@ -6314,15 +6314,15 @@ module hiw {
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionLocaleState.
          *  @return A single IndicatorDescriptionLocaleState, or null. */
-        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescriptionLocaleState>) {
+        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescription>) {
             IndicatorDescriptionLocaleState.getIndicatorDescriptionForIndicatorDescriptionLocaleState(this.id, api, callback);
         }
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionLocaleState.
          *  @param indicatorDescriptionLocaleStateID The ID of the IndicatorDescriptionLocaleState to retrieve.
          *  @return A single IndicatorDescriptionLocaleState, or null. */
-        public static getIndicatorDescriptionForIndicatorDescriptionLocaleState(indicatorDescriptionLocaleStateID: number, api: API, callback: IAPICallback<IndicatorDescriptionLocaleState>) {
-            api.executeEndpoint<IndicatorDescriptionLocaleState>(Endpoint.fromSelf<IndicatorDescriptionLocaleState>(), callback, { indicatorDescriptionLocaleStateID: indicatorDescriptionLocaleStateID });
+        public static getIndicatorDescriptionForIndicatorDescriptionLocaleState(indicatorDescriptionLocaleStateID: number, api: API, callback: IAPICallback<IndicatorDescription>) {
+            api.executeEndpoint<IndicatorDescription>(Endpoint.fromSelf<IndicatorDescription>(), callback, { indicatorDescriptionLocaleStateID: indicatorDescriptionLocaleStateID });
         }
 
         /** Gets IndicatorDescriptionLocaleStates by LocaleID.
@@ -6348,15 +6348,15 @@ module hiw {
 
         /** Returns the related Locale based on the unique ID of the related IndicatorDescriptionLocaleState.
          *  @return A single IndicatorDescriptionLocaleState, or null. */
-        public getLocale(api: API, callback: IAPICallback<IndicatorDescriptionLocaleState>) {
+        public getLocale(api: API, callback: IAPICallback<Locale>) {
             IndicatorDescriptionLocaleState.getLocaleForIndicatorDescriptionLocaleState(this.id, api, callback);
         }
 
         /** Returns the related Locale based on the unique ID of the related IndicatorDescriptionLocaleState.
          *  @param indicatorDescriptionLocaleStateID The ID of the IndicatorDescriptionLocaleState to retrieve.
          *  @return A single IndicatorDescriptionLocaleState, or null. */
-        public static getLocaleForIndicatorDescriptionLocaleState(indicatorDescriptionLocaleStateID: number, api: API, callback: IAPICallback<IndicatorDescriptionLocaleState>) {
-            api.executeEndpoint<IndicatorDescriptionLocaleState>(Endpoint.fromSelf<IndicatorDescriptionLocaleState>(), callback, { indicatorDescriptionLocaleStateID: indicatorDescriptionLocaleStateID });
+        public static getLocaleForIndicatorDescriptionLocaleState(indicatorDescriptionLocaleStateID: number, api: API, callback: IAPICallback<Locale>) {
+            api.executeEndpoint<Locale>(Endpoint.fromSelf<Locale>(), callback, { indicatorDescriptionLocaleStateID: indicatorDescriptionLocaleStateID });
         }
     }
     
@@ -6454,15 +6454,15 @@ module hiw {
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionMethodologyNote.
          *  @return A single IndicatorDescriptionMethodologyNote, or null. */
-        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescriptionMethodologyNote>) {
+        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescription>) {
             IndicatorDescriptionMethodologyNote.getIndicatorDescriptionForIndicatorDescriptionMethodologyNote(this.id, api, callback);
         }
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionMethodologyNote.
          *  @param indicatorDescriptionMethodologyNoteID The ID of the IndicatorDescriptionMethodologyNote to retrieve.
          *  @return A single IndicatorDescriptionMethodologyNote, or null. */
-        public static getIndicatorDescriptionForIndicatorDescriptionMethodologyNote(indicatorDescriptionMethodologyNoteID: number, api: API, callback: IAPICallback<IndicatorDescriptionMethodologyNote>) {
-            api.executeEndpoint<IndicatorDescriptionMethodologyNote>(Endpoint.fromSelf<IndicatorDescriptionMethodologyNote>(), callback, { indicatorDescriptionMethodologyNoteID: indicatorDescriptionMethodologyNoteID });
+        public static getIndicatorDescriptionForIndicatorDescriptionMethodologyNote(indicatorDescriptionMethodologyNoteID: number, api: API, callback: IAPICallback<IndicatorDescription>) {
+            api.executeEndpoint<IndicatorDescription>(Endpoint.fromSelf<IndicatorDescription>(), callback, { indicatorDescriptionMethodologyNoteID: indicatorDescriptionMethodologyNoteID });
         }
     }
     
@@ -6554,15 +6554,15 @@ module hiw {
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionMoreInfo.
          *  @return A single IndicatorDescriptionMoreInfo, or null. */
-        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescriptionMoreInfo>) {
+        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescription>) {
             IndicatorDescriptionMoreInfo.getIndicatorDescriptionForIndicatorDescriptionMoreInfo(this.id, api, callback);
         }
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionMoreInfo.
          *  @param indicatorDescriptionMoreInfoID The ID of the IndicatorDescriptionMoreInfo to retrieve.
          *  @return A single IndicatorDescriptionMoreInfo, or null. */
-        public static getIndicatorDescriptionForIndicatorDescriptionMoreInfo(indicatorDescriptionMoreInfoID: number, api: API, callback: IAPICallback<IndicatorDescriptionMoreInfo>) {
-            api.executeEndpoint<IndicatorDescriptionMoreInfo>(Endpoint.fromSelf<IndicatorDescriptionMoreInfo>(), callback, { indicatorDescriptionMoreInfoID: indicatorDescriptionMoreInfoID });
+        public static getIndicatorDescriptionForIndicatorDescriptionMoreInfo(indicatorDescriptionMoreInfoID: number, api: API, callback: IAPICallback<IndicatorDescription>) {
+            api.executeEndpoint<IndicatorDescription>(Endpoint.fromSelf<IndicatorDescription>(), callback, { indicatorDescriptionMoreInfoID: indicatorDescriptionMoreInfoID });
         }
 
         /** Gets IndicatorDescriptionMoreInfos by UrlID.
@@ -6588,15 +6588,15 @@ module hiw {
 
         /** Returns the related Url based on the unique ID of the related IndicatorDescriptionMoreInfo.
          *  @return A single IndicatorDescriptionMoreInfo, or null. */
-        public getUrl(api: API, callback: IAPICallback<IndicatorDescriptionMoreInfo>) {
+        public getUrl(api: API, callback: IAPICallback<Url>) {
             IndicatorDescriptionMoreInfo.getUrlForIndicatorDescriptionMoreInfo(this.id, api, callback);
         }
 
         /** Returns the related Url based on the unique ID of the related IndicatorDescriptionMoreInfo.
          *  @param indicatorDescriptionMoreInfoID The ID of the IndicatorDescriptionMoreInfo to retrieve.
          *  @return A single IndicatorDescriptionMoreInfo, or null. */
-        public static getUrlForIndicatorDescriptionMoreInfo(indicatorDescriptionMoreInfoID: number, api: API, callback: IAPICallback<IndicatorDescriptionMoreInfo>) {
-            api.executeEndpoint<IndicatorDescriptionMoreInfo>(Endpoint.fromSelf<IndicatorDescriptionMoreInfo>(), callback, { indicatorDescriptionMoreInfoID: indicatorDescriptionMoreInfoID });
+        public static getUrlForIndicatorDescriptionMoreInfo(indicatorDescriptionMoreInfoID: number, api: API, callback: IAPICallback<Url>) {
+            api.executeEndpoint<Url>(Endpoint.fromSelf<Url>(), callback, { indicatorDescriptionMoreInfoID: indicatorDescriptionMoreInfoID });
         }
     }
     
@@ -6688,15 +6688,15 @@ module hiw {
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionReference.
          *  @return A single IndicatorDescriptionReference, or null. */
-        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescriptionReference>) {
+        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescription>) {
             IndicatorDescriptionReference.getIndicatorDescriptionForIndicatorDescriptionReference(this.id, api, callback);
         }
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionReference.
          *  @param indicatorDescriptionReferenceID The ID of the IndicatorDescriptionReference to retrieve.
          *  @return A single IndicatorDescriptionReference, or null. */
-        public static getIndicatorDescriptionForIndicatorDescriptionReference(indicatorDescriptionReferenceID: number, api: API, callback: IAPICallback<IndicatorDescriptionReference>) {
-            api.executeEndpoint<IndicatorDescriptionReference>(Endpoint.fromSelf<IndicatorDescriptionReference>(), callback, { indicatorDescriptionReferenceID: indicatorDescriptionReferenceID });
+        public static getIndicatorDescriptionForIndicatorDescriptionReference(indicatorDescriptionReferenceID: number, api: API, callback: IAPICallback<IndicatorDescription>) {
+            api.executeEndpoint<IndicatorDescription>(Endpoint.fromSelf<IndicatorDescription>(), callback, { indicatorDescriptionReferenceID: indicatorDescriptionReferenceID });
         }
 
         /** Gets IndicatorDescriptionReferences by UrlID.
@@ -6722,15 +6722,15 @@ module hiw {
 
         /** Returns the related Url based on the unique ID of the related IndicatorDescriptionReference.
          *  @return A single IndicatorDescriptionReference, or null. */
-        public getUrl(api: API, callback: IAPICallback<IndicatorDescriptionReference>) {
+        public getUrl(api: API, callback: IAPICallback<Url>) {
             IndicatorDescriptionReference.getUrlForIndicatorDescriptionReference(this.id, api, callback);
         }
 
         /** Returns the related Url based on the unique ID of the related IndicatorDescriptionReference.
          *  @param indicatorDescriptionReferenceID The ID of the IndicatorDescriptionReference to retrieve.
          *  @return A single IndicatorDescriptionReference, or null. */
-        public static getUrlForIndicatorDescriptionReference(indicatorDescriptionReferenceID: number, api: API, callback: IAPICallback<IndicatorDescriptionReference>) {
-            api.executeEndpoint<IndicatorDescriptionReference>(Endpoint.fromSelf<IndicatorDescriptionReference>(), callback, { indicatorDescriptionReferenceID: indicatorDescriptionReferenceID });
+        public static getUrlForIndicatorDescriptionReference(indicatorDescriptionReferenceID: number, api: API, callback: IAPICallback<Url>) {
+            api.executeEndpoint<Url>(Endpoint.fromSelf<Url>(), callback, { indicatorDescriptionReferenceID: indicatorDescriptionReferenceID });
         }
     }
     
@@ -6822,15 +6822,15 @@ module hiw {
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionResource.
          *  @return A single IndicatorDescriptionResource, or null. */
-        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescriptionResource>) {
+        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescription>) {
             IndicatorDescriptionResource.getIndicatorDescriptionForIndicatorDescriptionResource(this.id, api, callback);
         }
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionResource.
          *  @param indicatorDescriptionResourceID The ID of the IndicatorDescriptionResource to retrieve.
          *  @return A single IndicatorDescriptionResource, or null. */
-        public static getIndicatorDescriptionForIndicatorDescriptionResource(indicatorDescriptionResourceID: number, api: API, callback: IAPICallback<IndicatorDescriptionResource>) {
-            api.executeEndpoint<IndicatorDescriptionResource>(Endpoint.fromSelf<IndicatorDescriptionResource>(), callback, { indicatorDescriptionResourceID: indicatorDescriptionResourceID });
+        public static getIndicatorDescriptionForIndicatorDescriptionResource(indicatorDescriptionResourceID: number, api: API, callback: IAPICallback<IndicatorDescription>) {
+            api.executeEndpoint<IndicatorDescription>(Endpoint.fromSelf<IndicatorDescription>(), callback, { indicatorDescriptionResourceID: indicatorDescriptionResourceID });
         }
 
         /** Gets IndicatorDescriptionResources by UrlID.
@@ -6856,15 +6856,15 @@ module hiw {
 
         /** Returns the related Url based on the unique ID of the related IndicatorDescriptionResource.
          *  @return A single IndicatorDescriptionResource, or null. */
-        public getUrl(api: API, callback: IAPICallback<IndicatorDescriptionResource>) {
+        public getUrl(api: API, callback: IAPICallback<Url>) {
             IndicatorDescriptionResource.getUrlForIndicatorDescriptionResource(this.id, api, callback);
         }
 
         /** Returns the related Url based on the unique ID of the related IndicatorDescriptionResource.
          *  @param indicatorDescriptionResourceID The ID of the IndicatorDescriptionResource to retrieve.
          *  @return A single IndicatorDescriptionResource, or null. */
-        public static getUrlForIndicatorDescriptionResource(indicatorDescriptionResourceID: number, api: API, callback: IAPICallback<IndicatorDescriptionResource>) {
-            api.executeEndpoint<IndicatorDescriptionResource>(Endpoint.fromSelf<IndicatorDescriptionResource>(), callback, { indicatorDescriptionResourceID: indicatorDescriptionResourceID });
+        public static getUrlForIndicatorDescriptionResource(indicatorDescriptionResourceID: number, api: API, callback: IAPICallback<Url>) {
+            api.executeEndpoint<Url>(Endpoint.fromSelf<Url>(), callback, { indicatorDescriptionResourceID: indicatorDescriptionResourceID });
         }
     }
     
@@ -6988,15 +6988,15 @@ module hiw {
 
         /** Returns the related ValueLabel based on the unique ID of the related IndicatorDescription.
          *  @return A single IndicatorDescription, or null. */
-        public getValueLabel(api: API, callback: IAPICallback<IndicatorDescription>) {
+        public getValueLabel(api: API, callback: IAPICallback<ValueLabel>) {
             IndicatorDescription.getValueLabelForIndicatorDescription(this.id, api, callback);
         }
 
         /** Returns the related ValueLabel based on the unique ID of the related IndicatorDescription.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription to retrieve.
          *  @return A single IndicatorDescription, or null. */
-        public static getValueLabelForIndicatorDescription(indicatorDescriptionID: number, api: API, callback: IAPICallback<IndicatorDescription>) {
-            api.executeEndpoint<IndicatorDescription>(Endpoint.fromSelf<IndicatorDescription>(), callback, { indicatorDescriptionID: indicatorDescriptionID });
+        public static getValueLabelForIndicatorDescription(indicatorDescriptionID: number, api: API, callback: IAPICallback<ValueLabel>) {
+            api.executeEndpoint<ValueLabel>(Endpoint.fromSelf<ValueLabel>(), callback, { indicatorDescriptionID: indicatorDescriptionID });
         }
     }
 
@@ -7094,15 +7094,15 @@ module hiw {
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionHP2020.
          *  @return A single IndicatorDescriptionHP2020, or null. */
-        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescriptionHP2020>) {
+        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescription>) {
             IndicatorDescriptionHP2020.getIndicatorDescriptionForIndicatorDescriptionHP2020(this.id, api, callback);
         }
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionHP2020.
          *  @param indicatorDescriptionHP2020ID The ID of the IndicatorDescriptionHP2020 to retrieve.
          *  @return A single IndicatorDescriptionHP2020, or null. */
-        public static getIndicatorDescriptionForIndicatorDescriptionHP2020(indicatorDescriptionHP2020ID: number, api: API, callback: IAPICallback<IndicatorDescriptionHP2020>) {
-            api.executeEndpoint<IndicatorDescriptionHP2020>(Endpoint.fromSelf<IndicatorDescriptionHP2020>(), callback, { indicatorDescriptionHP2020ID: indicatorDescriptionHP2020ID });
+        public static getIndicatorDescriptionForIndicatorDescriptionHP2020(indicatorDescriptionHP2020ID: number, api: API, callback: IAPICallback<IndicatorDescription>) {
+            api.executeEndpoint<IndicatorDescription>(Endpoint.fromSelf<IndicatorDescription>(), callback, { indicatorDescriptionHP2020ID: indicatorDescriptionHP2020ID });
         }
 
         /** Gets IndicatorDescriptionHP2020s by HP2020TSMID.
@@ -7128,15 +7128,15 @@ module hiw {
 
         /** Returns the related HP2020TSM based on the unique ID of the related IndicatorDescriptionHP2020.
          *  @return A single IndicatorDescriptionHP2020, or null. */
-        public getHP2020TSM(api: API, callback: IAPICallback<IndicatorDescriptionHP2020>) {
+        public getHP2020TSM(api: API, callback: IAPICallback<HP2020TSM>) {
             IndicatorDescriptionHP2020.getHP2020TSMForIndicatorDescriptionHP2020(this.id, api, callback);
         }
 
         /** Returns the related HP2020TSM based on the unique ID of the related IndicatorDescriptionHP2020.
          *  @param indicatorDescriptionHP2020ID The ID of the IndicatorDescriptionHP2020 to retrieve.
          *  @return A single IndicatorDescriptionHP2020, or null. */
-        public static getHP2020TSMForIndicatorDescriptionHP2020(indicatorDescriptionHP2020ID: number, api: API, callback: IAPICallback<IndicatorDescriptionHP2020>) {
-            api.executeEndpoint<IndicatorDescriptionHP2020>(Endpoint.fromSelf<IndicatorDescriptionHP2020>(), callback, { indicatorDescriptionHP2020ID: indicatorDescriptionHP2020ID });
+        public static getHP2020TSMForIndicatorDescriptionHP2020(indicatorDescriptionHP2020ID: number, api: API, callback: IAPICallback<HP2020TSM>) {
+            api.executeEndpoint<HP2020TSM>(Endpoint.fromSelf<HP2020TSM>(), callback, { indicatorDescriptionHP2020ID: indicatorDescriptionHP2020ID });
         }
     }
     
@@ -7224,15 +7224,15 @@ module hiw {
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionTimeFrame.
          *  @return A single IndicatorDescriptionTimeFrame, or null. */
-        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescriptionTimeFrame>) {
+        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescription>) {
             IndicatorDescriptionTimeFrame.getIndicatorDescriptionForIndicatorDescriptionTimeFrame(this.id, api, callback);
         }
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionTimeFrame.
          *  @param indicatorDescriptionTimeFrameID The ID of the IndicatorDescriptionTimeFrame to retrieve.
          *  @return A single IndicatorDescriptionTimeFrame, or null. */
-        public static getIndicatorDescriptionForIndicatorDescriptionTimeFrame(indicatorDescriptionTimeFrameID: number, api: API, callback: IAPICallback<IndicatorDescriptionTimeFrame>) {
-            api.executeEndpoint<IndicatorDescriptionTimeFrame>(Endpoint.fromSelf<IndicatorDescriptionTimeFrame>(), callback, { indicatorDescriptionTimeFrameID: indicatorDescriptionTimeFrameID });
+        public static getIndicatorDescriptionForIndicatorDescriptionTimeFrame(indicatorDescriptionTimeFrameID: number, api: API, callback: IAPICallback<IndicatorDescription>) {
+            api.executeEndpoint<IndicatorDescription>(Endpoint.fromSelf<IndicatorDescription>(), callback, { indicatorDescriptionTimeFrameID: indicatorDescriptionTimeFrameID });
         }
 
         /** Gets IndicatorDescriptionTimeFrames by TimeframeID.
@@ -7258,15 +7258,15 @@ module hiw {
 
         /** Returns the related Timeframe based on the unique ID of the related IndicatorDescriptionTimeFrame.
          *  @return A single IndicatorDescriptionTimeFrame, or null. */
-        public getTimeframe(api: API, callback: IAPICallback<IndicatorDescriptionTimeFrame>) {
+        public getTimeframe(api: API, callback: IAPICallback<Timeframe>) {
             IndicatorDescriptionTimeFrame.getTimeframeForIndicatorDescriptionTimeFrame(this.id, api, callback);
         }
 
         /** Returns the related Timeframe based on the unique ID of the related IndicatorDescriptionTimeFrame.
          *  @param indicatorDescriptionTimeFrameID The ID of the IndicatorDescriptionTimeFrame to retrieve.
          *  @return A single IndicatorDescriptionTimeFrame, or null. */
-        public static getTimeframeForIndicatorDescriptionTimeFrame(indicatorDescriptionTimeFrameID: number, api: API, callback: IAPICallback<IndicatorDescriptionTimeFrame>) {
-            api.executeEndpoint<IndicatorDescriptionTimeFrame>(Endpoint.fromSelf<IndicatorDescriptionTimeFrame>(), callback, { indicatorDescriptionTimeFrameID: indicatorDescriptionTimeFrameID });
+        public static getTimeframeForIndicatorDescriptionTimeFrame(indicatorDescriptionTimeFrameID: number, api: API, callback: IAPICallback<Timeframe>) {
+            api.executeEndpoint<Timeframe>(Endpoint.fromSelf<Timeframe>(), callback, { indicatorDescriptionTimeFrameID: indicatorDescriptionTimeFrameID });
         }
     }
     
@@ -7354,15 +7354,15 @@ module hiw {
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionYear.
          *  @return A single IndicatorDescriptionYear, or null. */
-        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescriptionYear>) {
+        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescription>) {
             IndicatorDescriptionYear.getIndicatorDescriptionForIndicatorDescriptionYear(this.id, api, callback);
         }
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDescriptionYear.
          *  @param indicatorDescriptionYearID The ID of the IndicatorDescriptionYear to retrieve.
          *  @return A single IndicatorDescriptionYear, or null. */
-        public static getIndicatorDescriptionForIndicatorDescriptionYear(indicatorDescriptionYearID: number, api: API, callback: IAPICallback<IndicatorDescriptionYear>) {
-            api.executeEndpoint<IndicatorDescriptionYear>(Endpoint.fromSelf<IndicatorDescriptionYear>(), callback, { indicatorDescriptionYearID: indicatorDescriptionYearID });
+        public static getIndicatorDescriptionForIndicatorDescriptionYear(indicatorDescriptionYearID: number, api: API, callback: IAPICallback<IndicatorDescription>) {
+            api.executeEndpoint<IndicatorDescription>(Endpoint.fromSelf<IndicatorDescription>(), callback, { indicatorDescriptionYearID: indicatorDescriptionYearID });
         }
 
         /** Gets IndicatorDescriptionYears by YearID.
@@ -7388,15 +7388,15 @@ module hiw {
 
         /** Returns the related Year based on the unique ID of the related IndicatorDescriptionYear.
          *  @return A single IndicatorDescriptionYear, or null. */
-        public getYear(api: API, callback: IAPICallback<IndicatorDescriptionYear>) {
+        public getYear(api: API, callback: IAPICallback<Year>) {
             IndicatorDescriptionYear.getYearForIndicatorDescriptionYear(this.id, api, callback);
         }
 
         /** Returns the related Year based on the unique ID of the related IndicatorDescriptionYear.
          *  @param indicatorDescriptionYearID The ID of the IndicatorDescriptionYear to retrieve.
          *  @return A single IndicatorDescriptionYear, or null. */
-        public static getYearForIndicatorDescriptionYear(indicatorDescriptionYearID: number, api: API, callback: IAPICallback<IndicatorDescriptionYear>) {
-            api.executeEndpoint<IndicatorDescriptionYear>(Endpoint.fromSelf<IndicatorDescriptionYear>(), callback, { indicatorDescriptionYearID: indicatorDescriptionYearID });
+        public static getYearForIndicatorDescriptionYear(indicatorDescriptionYearID: number, api: API, callback: IAPICallback<Year>) {
+            api.executeEndpoint<Year>(Endpoint.fromSelf<Year>(), callback, { indicatorDescriptionYearID: indicatorDescriptionYearID });
         }
 
         /** Gets a unique IndicatorDescriptionYear based on the provided values.
@@ -7492,15 +7492,15 @@ module hiw {
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDimensionGraph.
          *  @return A single IndicatorDimensionGraph, or null. */
-        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDimensionGraph>) {
+        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescription>) {
             IndicatorDimensionGraph.getIndicatorDescriptionForIndicatorDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related IndicatorDescription based on the unique ID of the related IndicatorDimensionGraph.
          *  @param indicatorDimensionGraphID The ID of the IndicatorDimensionGraph to retrieve.
          *  @return A single IndicatorDimensionGraph, or null. */
-        public static getIndicatorDescriptionForIndicatorDimensionGraph(indicatorDimensionGraphID: number, api: API, callback: IAPICallback<IndicatorDimensionGraph>) {
-            api.executeEndpoint<IndicatorDimensionGraph>(Endpoint.fromSelf<IndicatorDimensionGraph>(), callback, { indicatorDimensionGraphID: indicatorDimensionGraphID });
+        public static getIndicatorDescriptionForIndicatorDimensionGraph(indicatorDimensionGraphID: number, api: API, callback: IAPICallback<IndicatorDescription>) {
+            api.executeEndpoint<IndicatorDescription>(Endpoint.fromSelf<IndicatorDescription>(), callback, { indicatorDimensionGraphID: indicatorDimensionGraphID });
         }
 
         /** Gets IndicatorDimensionGraphs by LocaleLevelID.
@@ -7526,15 +7526,15 @@ module hiw {
 
         /** Returns the related LocaleLevel based on the unique ID of the related IndicatorDimensionGraph.
          *  @return A single IndicatorDimensionGraph, or null. */
-        public getLocaleLevel(api: API, callback: IAPICallback<IndicatorDimensionGraph>) {
+        public getLocaleLevel(api: API, callback: IAPICallback<LocaleLevel>) {
             IndicatorDimensionGraph.getLocaleLevelForIndicatorDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related LocaleLevel based on the unique ID of the related IndicatorDimensionGraph.
          *  @param indicatorDimensionGraphID The ID of the IndicatorDimensionGraph to retrieve.
          *  @return A single IndicatorDimensionGraph, or null. */
-        public static getLocaleLevelForIndicatorDimensionGraph(indicatorDimensionGraphID: number, api: API, callback: IAPICallback<IndicatorDimensionGraph>) {
-            api.executeEndpoint<IndicatorDimensionGraph>(Endpoint.fromSelf<IndicatorDimensionGraph>(), callback, { indicatorDimensionGraphID: indicatorDimensionGraphID });
+        public static getLocaleLevelForIndicatorDimensionGraph(indicatorDimensionGraphID: number, api: API, callback: IAPICallback<LocaleLevel>) {
+            api.executeEndpoint<LocaleLevel>(Endpoint.fromSelf<LocaleLevel>(), callback, { indicatorDimensionGraphID: indicatorDimensionGraphID });
         }
 
         /** Gets IndicatorDimensionGraphs by DimensionGraphID.
@@ -7560,15 +7560,15 @@ module hiw {
 
         /** Returns the related DimensionGraph based on the unique ID of the related IndicatorDimensionGraph.
          *  @return A single IndicatorDimensionGraph, or null. */
-        public getDimensionGraph(api: API, callback: IAPICallback<IndicatorDimensionGraph>) {
+        public getDimensionGraph(api: API, callback: IAPICallback<DimensionGraph>) {
             IndicatorDimensionGraph.getDimensionGraphForIndicatorDimensionGraph(this.id, api, callback);
         }
 
         /** Returns the related DimensionGraph based on the unique ID of the related IndicatorDimensionGraph.
          *  @param indicatorDimensionGraphID The ID of the IndicatorDimensionGraph to retrieve.
          *  @return A single IndicatorDimensionGraph, or null. */
-        public static getDimensionGraphForIndicatorDimensionGraph(indicatorDimensionGraphID: number, api: API, callback: IAPICallback<IndicatorDimensionGraph>) {
-            api.executeEndpoint<IndicatorDimensionGraph>(Endpoint.fromSelf<IndicatorDimensionGraph>(), callback, { indicatorDimensionGraphID: indicatorDimensionGraphID });
+        public static getDimensionGraphForIndicatorDimensionGraph(indicatorDimensionGraphID: number, api: API, callback: IAPICallback<DimensionGraph>) {
+            api.executeEndpoint<DimensionGraph>(Endpoint.fromSelf<DimensionGraph>(), callback, { indicatorDimensionGraphID: indicatorDimensionGraphID });
         }
     }
     
@@ -7656,15 +7656,15 @@ module hiw {
 
         /** Returns the related Indicator based on the unique ID of the related IndicatorDimension.
          *  @return A single IndicatorDimension, or null. */
-        public getIndicator(api: API, callback: IAPICallback<IndicatorDimension>) {
+        public getIndicator(api: API, callback: IAPICallback<Indicator>) {
             IndicatorDimension.getIndicatorForIndicatorDimension(this.id, api, callback);
         }
 
         /** Returns the related Indicator based on the unique ID of the related IndicatorDimension.
          *  @param indicatorDimensionID The ID of the IndicatorDimension to retrieve.
          *  @return A single IndicatorDimension, or null. */
-        public static getIndicatorForIndicatorDimension(indicatorDimensionID: number, api: API, callback: IAPICallback<IndicatorDimension>) {
-            api.executeEndpoint<IndicatorDimension>(Endpoint.fromSelf<IndicatorDimension>(), callback, { indicatorDimensionID: indicatorDimensionID });
+        public static getIndicatorForIndicatorDimension(indicatorDimensionID: number, api: API, callback: IAPICallback<Indicator>) {
+            api.executeEndpoint<Indicator>(Endpoint.fromSelf<Indicator>(), callback, { indicatorDimensionID: indicatorDimensionID });
         }
 
         /** Gets IndicatorDimensions by DimensionBookID.
@@ -7690,15 +7690,15 @@ module hiw {
 
         /** Returns the related DimensionBook based on the unique ID of the related IndicatorDimension.
          *  @return A single IndicatorDimension, or null. */
-        public getDimensionBook(api: API, callback: IAPICallback<IndicatorDimension>) {
+        public getDimensionBook(api: API, callback: IAPICallback<DimensionBook>) {
             IndicatorDimension.getDimensionBookForIndicatorDimension(this.id, api, callback);
         }
 
         /** Returns the related DimensionBook based on the unique ID of the related IndicatorDimension.
          *  @param indicatorDimensionID The ID of the IndicatorDimension to retrieve.
          *  @return A single IndicatorDimension, or null. */
-        public static getDimensionBookForIndicatorDimension(indicatorDimensionID: number, api: API, callback: IAPICallback<IndicatorDimension>) {
-            api.executeEndpoint<IndicatorDimension>(Endpoint.fromSelf<IndicatorDimension>(), callback, { indicatorDimensionID: indicatorDimensionID });
+        public static getDimensionBookForIndicatorDimension(indicatorDimensionID: number, api: API, callback: IAPICallback<DimensionBook>) {
+            api.executeEndpoint<DimensionBook>(Endpoint.fromSelf<DimensionBook>(), callback, { indicatorDimensionID: indicatorDimensionID });
         }
 
         /** Gets a unique IndicatorDimension based on the provided values.
@@ -7848,15 +7848,15 @@ module hiw {
 
         /** Returns the related IndicatorDescription based on the unique ID of the related Indicator.
          *  @return A single Indicator, or null. */
-        public getIndicatorDescription(api: API, callback: IAPICallback<Indicator>) {
+        public getIndicatorDescription(api: API, callback: IAPICallback<IndicatorDescription>) {
             Indicator.getIndicatorDescriptionForIndicator(this.id, api, callback);
         }
 
         /** Returns the related IndicatorDescription based on the unique ID of the related Indicator.
          *  @param indicatorID The ID of the Indicator to retrieve.
          *  @return A single Indicator, or null. */
-        public static getIndicatorDescriptionForIndicator(indicatorID: number, api: API, callback: IAPICallback<Indicator>) {
-            api.executeEndpoint<Indicator>(Endpoint.fromSelf<Indicator>(), callback, { indicatorID: indicatorID });
+        public static getIndicatorDescriptionForIndicator(indicatorID: number, api: API, callback: IAPICallback<IndicatorDescription>) {
+            api.executeEndpoint<IndicatorDescription>(Endpoint.fromSelf<IndicatorDescription>(), callback, { indicatorID: indicatorID });
         }
 
         /** Gets Indicators by TimeframeID.
@@ -7882,15 +7882,15 @@ module hiw {
 
         /** Returns the related Timeframe based on the unique ID of the related Indicator.
          *  @return A single Indicator, or null. */
-        public getTimeframe(api: API, callback: IAPICallback<Indicator>) {
+        public getTimeframe(api: API, callback: IAPICallback<Timeframe>) {
             Indicator.getTimeframeForIndicator(this.id, api, callback);
         }
 
         /** Returns the related Timeframe based on the unique ID of the related Indicator.
          *  @param indicatorID The ID of the Indicator to retrieve.
          *  @return A single Indicator, or null. */
-        public static getTimeframeForIndicator(indicatorID: number, api: API, callback: IAPICallback<Indicator>) {
-            api.executeEndpoint<Indicator>(Endpoint.fromSelf<Indicator>(), callback, { indicatorID: indicatorID });
+        public static getTimeframeForIndicator(indicatorID: number, api: API, callback: IAPICallback<Timeframe>) {
+            api.executeEndpoint<Timeframe>(Endpoint.fromSelf<Timeframe>(), callback, { indicatorID: indicatorID });
         }
 
         /** Gets Indicators by LocaleID.
@@ -7916,15 +7916,15 @@ module hiw {
 
         /** Returns the related Locale based on the unique ID of the related Indicator.
          *  @return A single Indicator, or null. */
-        public getLocale(api: API, callback: IAPICallback<Indicator>) {
+        public getLocale(api: API, callback: IAPICallback<Locale>) {
             Indicator.getLocaleForIndicator(this.id, api, callback);
         }
 
         /** Returns the related Locale based on the unique ID of the related Indicator.
          *  @param indicatorID The ID of the Indicator to retrieve.
          *  @return A single Indicator, or null. */
-        public static getLocaleForIndicator(indicatorID: number, api: API, callback: IAPICallback<Indicator>) {
-            api.executeEndpoint<Indicator>(Endpoint.fromSelf<Indicator>(), callback, { indicatorID: indicatorID });
+        public static getLocaleForIndicator(indicatorID: number, api: API, callback: IAPICallback<Locale>) {
+            api.executeEndpoint<Locale>(Endpoint.fromSelf<Locale>(), callback, { indicatorID: indicatorID });
         }
 
         /** Gets Indicators by DimensionGraphID.
@@ -7950,15 +7950,15 @@ module hiw {
 
         /** Returns the related DimensionGraph based on the unique ID of the related Indicator.
          *  @return A single Indicator, or null. */
-        public getDimensionGraph(api: API, callback: IAPICallback<Indicator>) {
+        public getDimensionGraph(api: API, callback: IAPICallback<DimensionGraph>) {
             Indicator.getDimensionGraphForIndicator(this.id, api, callback);
         }
 
         /** Returns the related DimensionGraph based on the unique ID of the related Indicator.
          *  @param indicatorID The ID of the Indicator to retrieve.
          *  @return A single Indicator, or null. */
-        public static getDimensionGraphForIndicator(indicatorID: number, api: API, callback: IAPICallback<Indicator>) {
-            api.executeEndpoint<Indicator>(Endpoint.fromSelf<Indicator>(), callback, { indicatorID: indicatorID });
+        public static getDimensionGraphForIndicator(indicatorID: number, api: API, callback: IAPICallback<DimensionGraph>) {
+            api.executeEndpoint<DimensionGraph>(Endpoint.fromSelf<DimensionGraph>(), callback, { indicatorID: indicatorID });
         }
 
         /** Gets Indicators by ModifierGraphID.
@@ -7984,15 +7984,15 @@ module hiw {
 
         /** Returns the related ModifierGraph based on the unique ID of the related Indicator.
          *  @return A single Indicator, or null. */
-        public getModifierGraph(api: API, callback: IAPICallback<Indicator>) {
+        public getModifierGraph(api: API, callback: IAPICallback<ModifierGraph>) {
             Indicator.getModifierGraphForIndicator(this.id, api, callback);
         }
 
         /** Returns the related ModifierGraph based on the unique ID of the related Indicator.
          *  @param indicatorID The ID of the Indicator to retrieve.
          *  @return A single Indicator, or null. */
-        public static getModifierGraphForIndicator(indicatorID: number, api: API, callback: IAPICallback<Indicator>) {
-            api.executeEndpoint<Indicator>(Endpoint.fromSelf<Indicator>(), callback, { indicatorID: indicatorID });
+        public static getModifierGraphForIndicator(indicatorID: number, api: API, callback: IAPICallback<ModifierGraph>) {
+            api.executeEndpoint<ModifierGraph>(Endpoint.fromSelf<ModifierGraph>(), callback, { indicatorID: indicatorID });
         }
     }
     
@@ -8168,15 +8168,15 @@ module hiw {
 
         /** Returns the related Url based on the unique ID of the related Intervention.
          *  @return A single Intervention, or null. */
-        public getUrl(api: API, callback: IAPICallback<Intervention>) {
+        public getUrl(api: API, callback: IAPICallback<Url>) {
             Intervention.getUrlForIntervention(this.id, api, callback);
         }
 
         /** Returns the related Url based on the unique ID of the related Intervention.
          *  @param interventionID The ID of the Intervention to retrieve.
          *  @return A single Intervention, or null. */
-        public static getUrlForIntervention(interventionID: number, api: API, callback: IAPICallback<Intervention>) {
-            api.executeEndpoint<Intervention>(Endpoint.fromSelf<Intervention>(), callback, { interventionID: interventionID });
+        public static getUrlForIntervention(interventionID: number, api: API, callback: IAPICallback<Url>) {
+            api.executeEndpoint<Url>(Endpoint.fromSelf<Url>(), callback, { interventionID: interventionID });
         }
     }
     
@@ -8398,15 +8398,15 @@ module hiw {
 
         /** Returns the related AncestorLocale based on the unique ID of the related LocaleRelation.
          *  @return A single LocaleRelation, or null. */
-        public getAncestorLocale(api: API, callback: IAPICallback<LocaleRelation>) {
+        public getAncestorLocale(api: API, callback: IAPICallback<Locale>) {
             LocaleRelation.getAncestorLocaleForLocaleRelation(this.id, api, callback);
         }
 
         /** Returns the related AncestorLocale based on the unique ID of the related LocaleRelation.
          *  @param localeRelationID The ID of the LocaleRelation to retrieve.
          *  @return A single LocaleRelation, or null. */
-        public static getAncestorLocaleForLocaleRelation(localeRelationID: number, api: API, callback: IAPICallback<LocaleRelation>) {
-            api.executeEndpoint<LocaleRelation>(Endpoint.fromSelf<LocaleRelation>(), callback, { localeRelationID: localeRelationID });
+        public static getAncestorLocaleForLocaleRelation(localeRelationID: number, api: API, callback: IAPICallback<Locale>) {
+            api.executeEndpoint<Locale>(Endpoint.fromSelf<Locale>(), callback, { localeRelationID: localeRelationID });
         }
 
         /** Gets LocaleRelations by DescendantLocaleID.
@@ -8432,15 +8432,15 @@ module hiw {
 
         /** Returns the related DescendantLocale based on the unique ID of the related LocaleRelation.
          *  @return A single LocaleRelation, or null. */
-        public getDescendantLocale(api: API, callback: IAPICallback<LocaleRelation>) {
+        public getDescendantLocale(api: API, callback: IAPICallback<Locale>) {
             LocaleRelation.getDescendantLocaleForLocaleRelation(this.id, api, callback);
         }
 
         /** Returns the related DescendantLocale based on the unique ID of the related LocaleRelation.
          *  @param localeRelationID The ID of the LocaleRelation to retrieve.
          *  @return A single LocaleRelation, or null. */
-        public static getDescendantLocaleForLocaleRelation(localeRelationID: number, api: API, callback: IAPICallback<LocaleRelation>) {
-            api.executeEndpoint<LocaleRelation>(Endpoint.fromSelf<LocaleRelation>(), callback, { localeRelationID: localeRelationID });
+        public static getDescendantLocaleForLocaleRelation(localeRelationID: number, api: API, callback: IAPICallback<Locale>) {
+            api.executeEndpoint<Locale>(Endpoint.fromSelf<Locale>(), callback, { localeRelationID: localeRelationID });
         }
 
         /** Gets a unique LocaleRelation based on the provided values.
@@ -8604,15 +8604,15 @@ module hiw {
 
         /** Returns the related LocaleLevel based on the unique ID of the related Locale.
          *  @return A single Locale, or null. */
-        public getLocaleLevel(api: API, callback: IAPICallback<Locale>) {
+        public getLocaleLevel(api: API, callback: IAPICallback<LocaleLevel>) {
             Locale.getLocaleLevelForLocale(this.id, api, callback);
         }
 
         /** Returns the related LocaleLevel based on the unique ID of the related Locale.
          *  @param localeID The ID of the Locale to retrieve.
          *  @return A single Locale, or null. */
-        public static getLocaleLevelForLocale(localeID: number, api: API, callback: IAPICallback<Locale>) {
-            api.executeEndpoint<Locale>(Endpoint.fromSelf<Locale>(), callback, { localeID: localeID });
+        public static getLocaleLevelForLocale(localeID: number, api: API, callback: IAPICallback<LocaleLevel>) {
+            api.executeEndpoint<LocaleLevel>(Endpoint.fromSelf<LocaleLevel>(), callback, { localeID: localeID });
         }
     }
     
@@ -8826,15 +8826,15 @@ module hiw {
 
         /** Returns the related AncestorMaritalStatus based on the unique ID of the related MaritalStatusRelation.
          *  @return A single MaritalStatusRelation, or null. */
-        public getAncestorMaritalStatus(api: API, callback: IAPICallback<MaritalStatusRelation>) {
+        public getAncestorMaritalStatus(api: API, callback: IAPICallback<MaritalStatus>) {
             MaritalStatusRelation.getAncestorMaritalStatusForMaritalStatusRelation(this.id, api, callback);
         }
 
         /** Returns the related AncestorMaritalStatus based on the unique ID of the related MaritalStatusRelation.
          *  @param maritalStatusRelationID The ID of the MaritalStatusRelation to retrieve.
          *  @return A single MaritalStatusRelation, or null. */
-        public static getAncestorMaritalStatusForMaritalStatusRelation(maritalStatusRelationID: number, api: API, callback: IAPICallback<MaritalStatusRelation>) {
-            api.executeEndpoint<MaritalStatusRelation>(Endpoint.fromSelf<MaritalStatusRelation>(), callback, { maritalStatusRelationID: maritalStatusRelationID });
+        public static getAncestorMaritalStatusForMaritalStatusRelation(maritalStatusRelationID: number, api: API, callback: IAPICallback<MaritalStatus>) {
+            api.executeEndpoint<MaritalStatus>(Endpoint.fromSelf<MaritalStatus>(), callback, { maritalStatusRelationID: maritalStatusRelationID });
         }
 
         /** Gets MaritalStatusRelations by DescendantMaritalStatusID.
@@ -8860,15 +8860,15 @@ module hiw {
 
         /** Returns the related DescendantMaritalStatus based on the unique ID of the related MaritalStatusRelation.
          *  @return A single MaritalStatusRelation, or null. */
-        public getDescendantMaritalStatus(api: API, callback: IAPICallback<MaritalStatusRelation>) {
+        public getDescendantMaritalStatus(api: API, callback: IAPICallback<MaritalStatus>) {
             MaritalStatusRelation.getDescendantMaritalStatusForMaritalStatusRelation(this.id, api, callback);
         }
 
         /** Returns the related DescendantMaritalStatus based on the unique ID of the related MaritalStatusRelation.
          *  @param maritalStatusRelationID The ID of the MaritalStatusRelation to retrieve.
          *  @return A single MaritalStatusRelation, or null. */
-        public static getDescendantMaritalStatusForMaritalStatusRelation(maritalStatusRelationID: number, api: API, callback: IAPICallback<MaritalStatusRelation>) {
-            api.executeEndpoint<MaritalStatusRelation>(Endpoint.fromSelf<MaritalStatusRelation>(), callback, { maritalStatusRelationID: maritalStatusRelationID });
+        public static getDescendantMaritalStatusForMaritalStatusRelation(maritalStatusRelationID: number, api: API, callback: IAPICallback<MaritalStatus>) {
+            api.executeEndpoint<MaritalStatus>(Endpoint.fromSelf<MaritalStatus>(), callback, { maritalStatusRelationID: maritalStatusRelationID });
         }
     }
     
@@ -9144,15 +9144,15 @@ module hiw {
 
         /** Returns the related Modifier1 based on the unique ID of the related ModifierGraph.
          *  @return A single ModifierGraph, or null. */
-        public getModifier1(api: API, callback: IAPICallback<ModifierGraph>) {
+        public getModifier1(api: API, callback: IAPICallback<Modifier>) {
             ModifierGraph.getModifier1ForModifierGraph(this.id, api, callback);
         }
 
         /** Returns the related Modifier1 based on the unique ID of the related ModifierGraph.
          *  @param modifierGraphID The ID of the ModifierGraph to retrieve.
          *  @return A single ModifierGraph, or null. */
-        public static getModifier1ForModifierGraph(modifierGraphID: number, api: API, callback: IAPICallback<ModifierGraph>) {
-            api.executeEndpoint<ModifierGraph>(Endpoint.fromSelf<ModifierGraph>(), callback, { modifierGraphID: modifierGraphID });
+        public static getModifier1ForModifierGraph(modifierGraphID: number, api: API, callback: IAPICallback<Modifier>) {
+            api.executeEndpoint<Modifier>(Endpoint.fromSelf<Modifier>(), callback, { modifierGraphID: modifierGraphID });
         }
 
         /** Gets ModifierGraphs by Modifier2ID.
@@ -9178,15 +9178,15 @@ module hiw {
 
         /** Returns the related Modifier2 based on the unique ID of the related ModifierGraph.
          *  @return A single ModifierGraph, or null. */
-        public getModifier2(api: API, callback: IAPICallback<ModifierGraph>) {
+        public getModifier2(api: API, callback: IAPICallback<Modifier>) {
             ModifierGraph.getModifier2ForModifierGraph(this.id, api, callback);
         }
 
         /** Returns the related Modifier2 based on the unique ID of the related ModifierGraph.
          *  @param modifierGraphID The ID of the ModifierGraph to retrieve.
          *  @return A single ModifierGraph, or null. */
-        public static getModifier2ForModifierGraph(modifierGraphID: number, api: API, callback: IAPICallback<ModifierGraph>) {
-            api.executeEndpoint<ModifierGraph>(Endpoint.fromSelf<ModifierGraph>(), callback, { modifierGraphID: modifierGraphID });
+        public static getModifier2ForModifierGraph(modifierGraphID: number, api: API, callback: IAPICallback<Modifier>) {
+            api.executeEndpoint<Modifier>(Endpoint.fromSelf<Modifier>(), callback, { modifierGraphID: modifierGraphID });
         }
 
         /** Gets ModifierGraphs by Modifier3ID.
@@ -9212,15 +9212,15 @@ module hiw {
 
         /** Returns the related Modifier3 based on the unique ID of the related ModifierGraph.
          *  @return A single ModifierGraph, or null. */
-        public getModifier3(api: API, callback: IAPICallback<ModifierGraph>) {
+        public getModifier3(api: API, callback: IAPICallback<Modifier>) {
             ModifierGraph.getModifier3ForModifierGraph(this.id, api, callback);
         }
 
         /** Returns the related Modifier3 based on the unique ID of the related ModifierGraph.
          *  @param modifierGraphID The ID of the ModifierGraph to retrieve.
          *  @return A single ModifierGraph, or null. */
-        public static getModifier3ForModifierGraph(modifierGraphID: number, api: API, callback: IAPICallback<ModifierGraph>) {
-            api.executeEndpoint<ModifierGraph>(Endpoint.fromSelf<ModifierGraph>(), callback, { modifierGraphID: modifierGraphID });
+        public static getModifier3ForModifierGraph(modifierGraphID: number, api: API, callback: IAPICallback<Modifier>) {
+            api.executeEndpoint<Modifier>(Endpoint.fromSelf<Modifier>(), callback, { modifierGraphID: modifierGraphID });
         }
 
         /** Gets ModifierGraphs by Modifier4ID.
@@ -9246,15 +9246,15 @@ module hiw {
 
         /** Returns the related Modifier4 based on the unique ID of the related ModifierGraph.
          *  @return A single ModifierGraph, or null. */
-        public getModifier4(api: API, callback: IAPICallback<ModifierGraph>) {
+        public getModifier4(api: API, callback: IAPICallback<Modifier>) {
             ModifierGraph.getModifier4ForModifierGraph(this.id, api, callback);
         }
 
         /** Returns the related Modifier4 based on the unique ID of the related ModifierGraph.
          *  @param modifierGraphID The ID of the ModifierGraph to retrieve.
          *  @return A single ModifierGraph, or null. */
-        public static getModifier4ForModifierGraph(modifierGraphID: number, api: API, callback: IAPICallback<ModifierGraph>) {
-            api.executeEndpoint<ModifierGraph>(Endpoint.fromSelf<ModifierGraph>(), callback, { modifierGraphID: modifierGraphID });
+        public static getModifier4ForModifierGraph(modifierGraphID: number, api: API, callback: IAPICallback<Modifier>) {
+            api.executeEndpoint<Modifier>(Endpoint.fromSelf<Modifier>(), callback, { modifierGraphID: modifierGraphID });
         }
 
         /** Gets ModifierGraphs by Modifier5ID.
@@ -9280,15 +9280,15 @@ module hiw {
 
         /** Returns the related Modifier5 based on the unique ID of the related ModifierGraph.
          *  @return A single ModifierGraph, or null. */
-        public getModifier5(api: API, callback: IAPICallback<ModifierGraph>) {
+        public getModifier5(api: API, callback: IAPICallback<Modifier>) {
             ModifierGraph.getModifier5ForModifierGraph(this.id, api, callback);
         }
 
         /** Returns the related Modifier5 based on the unique ID of the related ModifierGraph.
          *  @param modifierGraphID The ID of the ModifierGraph to retrieve.
          *  @return A single ModifierGraph, or null. */
-        public static getModifier5ForModifierGraph(modifierGraphID: number, api: API, callback: IAPICallback<ModifierGraph>) {
-            api.executeEndpoint<ModifierGraph>(Endpoint.fromSelf<ModifierGraph>(), callback, { modifierGraphID: modifierGraphID });
+        public static getModifier5ForModifierGraph(modifierGraphID: number, api: API, callback: IAPICallback<Modifier>) {
+            api.executeEndpoint<Modifier>(Endpoint.fromSelf<Modifier>(), callback, { modifierGraphID: modifierGraphID });
         }
     }
     
@@ -9502,15 +9502,15 @@ module hiw {
 
         /** Returns the related AncestorObesityStatus based on the unique ID of the related ObesityStatusRelation.
          *  @return A single ObesityStatusRelation, or null. */
-        public getAncestorObesityStatus(api: API, callback: IAPICallback<ObesityStatusRelation>) {
+        public getAncestorObesityStatus(api: API, callback: IAPICallback<ObesityStatus>) {
             ObesityStatusRelation.getAncestorObesityStatusForObesityStatusRelation(this.id, api, callback);
         }
 
         /** Returns the related AncestorObesityStatus based on the unique ID of the related ObesityStatusRelation.
          *  @param obesityStatusRelationID The ID of the ObesityStatusRelation to retrieve.
          *  @return A single ObesityStatusRelation, or null. */
-        public static getAncestorObesityStatusForObesityStatusRelation(obesityStatusRelationID: number, api: API, callback: IAPICallback<ObesityStatusRelation>) {
-            api.executeEndpoint<ObesityStatusRelation>(Endpoint.fromSelf<ObesityStatusRelation>(), callback, { obesityStatusRelationID: obesityStatusRelationID });
+        public static getAncestorObesityStatusForObesityStatusRelation(obesityStatusRelationID: number, api: API, callback: IAPICallback<ObesityStatus>) {
+            api.executeEndpoint<ObesityStatus>(Endpoint.fromSelf<ObesityStatus>(), callback, { obesityStatusRelationID: obesityStatusRelationID });
         }
 
         /** Gets ObesityStatusRelations by DescendantObesityStatusID.
@@ -9536,15 +9536,15 @@ module hiw {
 
         /** Returns the related DescendantObesityStatus based on the unique ID of the related ObesityStatusRelation.
          *  @return A single ObesityStatusRelation, or null. */
-        public getDescendantObesityStatus(api: API, callback: IAPICallback<ObesityStatusRelation>) {
+        public getDescendantObesityStatus(api: API, callback: IAPICallback<ObesityStatus>) {
             ObesityStatusRelation.getDescendantObesityStatusForObesityStatusRelation(this.id, api, callback);
         }
 
         /** Returns the related DescendantObesityStatus based on the unique ID of the related ObesityStatusRelation.
          *  @param obesityStatusRelationID The ID of the ObesityStatusRelation to retrieve.
          *  @return A single ObesityStatusRelation, or null. */
-        public static getDescendantObesityStatusForObesityStatusRelation(obesityStatusRelationID: number, api: API, callback: IAPICallback<ObesityStatusRelation>) {
-            api.executeEndpoint<ObesityStatusRelation>(Endpoint.fromSelf<ObesityStatusRelation>(), callback, { obesityStatusRelationID: obesityStatusRelationID });
+        public static getDescendantObesityStatusForObesityStatusRelation(obesityStatusRelationID: number, api: API, callback: IAPICallback<ObesityStatus>) {
+            api.executeEndpoint<ObesityStatus>(Endpoint.fromSelf<ObesityStatus>(), callback, { obesityStatusRelationID: obesityStatusRelationID });
         }
     }
     
@@ -9758,15 +9758,15 @@ module hiw {
 
         /** Returns the related AncestorOther based on the unique ID of the related OtherRelation.
          *  @return A single OtherRelation, or null. */
-        public getAncestorOther(api: API, callback: IAPICallback<OtherRelation>) {
+        public getAncestorOther(api: API, callback: IAPICallback<Other>) {
             OtherRelation.getAncestorOtherForOtherRelation(this.id, api, callback);
         }
 
         /** Returns the related AncestorOther based on the unique ID of the related OtherRelation.
          *  @param otherRelationID The ID of the OtherRelation to retrieve.
          *  @return A single OtherRelation, or null. */
-        public static getAncestorOtherForOtherRelation(otherRelationID: number, api: API, callback: IAPICallback<OtherRelation>) {
-            api.executeEndpoint<OtherRelation>(Endpoint.fromSelf<OtherRelation>(), callback, { otherRelationID: otherRelationID });
+        public static getAncestorOtherForOtherRelation(otherRelationID: number, api: API, callback: IAPICallback<Other>) {
+            api.executeEndpoint<Other>(Endpoint.fromSelf<Other>(), callback, { otherRelationID: otherRelationID });
         }
 
         /** Gets OtherRelations by DescendantOtherID.
@@ -9792,15 +9792,15 @@ module hiw {
 
         /** Returns the related DescendantOther based on the unique ID of the related OtherRelation.
          *  @return A single OtherRelation, or null. */
-        public getDescendantOther(api: API, callback: IAPICallback<OtherRelation>) {
+        public getDescendantOther(api: API, callback: IAPICallback<Other>) {
             OtherRelation.getDescendantOtherForOtherRelation(this.id, api, callback);
         }
 
         /** Returns the related DescendantOther based on the unique ID of the related OtherRelation.
          *  @param otherRelationID The ID of the OtherRelation to retrieve.
          *  @return A single OtherRelation, or null. */
-        public static getDescendantOtherForOtherRelation(otherRelationID: number, api: API, callback: IAPICallback<OtherRelation>) {
-            api.executeEndpoint<OtherRelation>(Endpoint.fromSelf<OtherRelation>(), callback, { otherRelationID: otherRelationID });
+        public static getDescendantOtherForOtherRelation(otherRelationID: number, api: API, callback: IAPICallback<Other>) {
+            api.executeEndpoint<Other>(Endpoint.fromSelf<Other>(), callback, { otherRelationID: otherRelationID });
         }
     }
     
@@ -10014,15 +10014,15 @@ module hiw {
 
         /** Returns the related AncestorRaceEthnicity based on the unique ID of the related RaceEthnicityRelation.
          *  @return A single RaceEthnicityRelation, or null. */
-        public getAncestorRaceEthnicity(api: API, callback: IAPICallback<RaceEthnicityRelation>) {
+        public getAncestorRaceEthnicity(api: API, callback: IAPICallback<RaceEthnicity>) {
             RaceEthnicityRelation.getAncestorRaceEthnicityForRaceEthnicityRelation(this.id, api, callback);
         }
 
         /** Returns the related AncestorRaceEthnicity based on the unique ID of the related RaceEthnicityRelation.
          *  @param raceEthnicityRelationID The ID of the RaceEthnicityRelation to retrieve.
          *  @return A single RaceEthnicityRelation, or null. */
-        public static getAncestorRaceEthnicityForRaceEthnicityRelation(raceEthnicityRelationID: number, api: API, callback: IAPICallback<RaceEthnicityRelation>) {
-            api.executeEndpoint<RaceEthnicityRelation>(Endpoint.fromSelf<RaceEthnicityRelation>(), callback, { raceEthnicityRelationID: raceEthnicityRelationID });
+        public static getAncestorRaceEthnicityForRaceEthnicityRelation(raceEthnicityRelationID: number, api: API, callback: IAPICallback<RaceEthnicity>) {
+            api.executeEndpoint<RaceEthnicity>(Endpoint.fromSelf<RaceEthnicity>(), callback, { raceEthnicityRelationID: raceEthnicityRelationID });
         }
 
         /** Gets RaceEthnicityRelations by DescendantRaceEthnicityID.
@@ -10048,15 +10048,15 @@ module hiw {
 
         /** Returns the related DescendantRaceEthnicity based on the unique ID of the related RaceEthnicityRelation.
          *  @return A single RaceEthnicityRelation, or null. */
-        public getDescendantRaceEthnicity(api: API, callback: IAPICallback<RaceEthnicityRelation>) {
+        public getDescendantRaceEthnicity(api: API, callback: IAPICallback<RaceEthnicity>) {
             RaceEthnicityRelation.getDescendantRaceEthnicityForRaceEthnicityRelation(this.id, api, callback);
         }
 
         /** Returns the related DescendantRaceEthnicity based on the unique ID of the related RaceEthnicityRelation.
          *  @param raceEthnicityRelationID The ID of the RaceEthnicityRelation to retrieve.
          *  @return A single RaceEthnicityRelation, or null. */
-        public static getDescendantRaceEthnicityForRaceEthnicityRelation(raceEthnicityRelationID: number, api: API, callback: IAPICallback<RaceEthnicityRelation>) {
-            api.executeEndpoint<RaceEthnicityRelation>(Endpoint.fromSelf<RaceEthnicityRelation>(), callback, { raceEthnicityRelationID: raceEthnicityRelationID });
+        public static getDescendantRaceEthnicityForRaceEthnicityRelation(raceEthnicityRelationID: number, api: API, callback: IAPICallback<RaceEthnicity>) {
+            api.executeEndpoint<RaceEthnicity>(Endpoint.fromSelf<RaceEthnicity>(), callback, { raceEthnicityRelationID: raceEthnicityRelationID });
         }
     }
     
@@ -10270,15 +10270,15 @@ module hiw {
 
         /** Returns the related AncestorSex based on the unique ID of the related SexRelation.
          *  @return A single SexRelation, or null. */
-        public getAncestorSex(api: API, callback: IAPICallback<SexRelation>) {
+        public getAncestorSex(api: API, callback: IAPICallback<Sex>) {
             SexRelation.getAncestorSexForSexRelation(this.id, api, callback);
         }
 
         /** Returns the related AncestorSex based on the unique ID of the related SexRelation.
          *  @param sexRelationID The ID of the SexRelation to retrieve.
          *  @return A single SexRelation, or null. */
-        public static getAncestorSexForSexRelation(sexRelationID: number, api: API, callback: IAPICallback<SexRelation>) {
-            api.executeEndpoint<SexRelation>(Endpoint.fromSelf<SexRelation>(), callback, { sexRelationID: sexRelationID });
+        public static getAncestorSexForSexRelation(sexRelationID: number, api: API, callback: IAPICallback<Sex>) {
+            api.executeEndpoint<Sex>(Endpoint.fromSelf<Sex>(), callback, { sexRelationID: sexRelationID });
         }
 
         /** Gets SexRelations by DescendantSexID.
@@ -10304,15 +10304,15 @@ module hiw {
 
         /** Returns the related DescendantSex based on the unique ID of the related SexRelation.
          *  @return A single SexRelation, or null. */
-        public getDescendantSex(api: API, callback: IAPICallback<SexRelation>) {
+        public getDescendantSex(api: API, callback: IAPICallback<Sex>) {
             SexRelation.getDescendantSexForSexRelation(this.id, api, callback);
         }
 
         /** Returns the related DescendantSex based on the unique ID of the related SexRelation.
          *  @param sexRelationID The ID of the SexRelation to retrieve.
          *  @return A single SexRelation, or null. */
-        public static getDescendantSexForSexRelation(sexRelationID: number, api: API, callback: IAPICallback<SexRelation>) {
-            api.executeEndpoint<SexRelation>(Endpoint.fromSelf<SexRelation>(), callback, { sexRelationID: sexRelationID });
+        public static getDescendantSexForSexRelation(sexRelationID: number, api: API, callback: IAPICallback<Sex>) {
+            api.executeEndpoint<Sex>(Endpoint.fromSelf<Sex>(), callback, { sexRelationID: sexRelationID });
         }
     }
     
@@ -10526,15 +10526,15 @@ module hiw {
 
         /** Returns the related AncestorSexualOrientation based on the unique ID of the related SexualOrientationRelation.
          *  @return A single SexualOrientationRelation, or null. */
-        public getAncestorSexualOrientation(api: API, callback: IAPICallback<SexualOrientationRelation>) {
+        public getAncestorSexualOrientation(api: API, callback: IAPICallback<SexualOrientation>) {
             SexualOrientationRelation.getAncestorSexualOrientationForSexualOrientationRelation(this.id, api, callback);
         }
 
         /** Returns the related AncestorSexualOrientation based on the unique ID of the related SexualOrientationRelation.
          *  @param sexualOrientationRelationID The ID of the SexualOrientationRelation to retrieve.
          *  @return A single SexualOrientationRelation, or null. */
-        public static getAncestorSexualOrientationForSexualOrientationRelation(sexualOrientationRelationID: number, api: API, callback: IAPICallback<SexualOrientationRelation>) {
-            api.executeEndpoint<SexualOrientationRelation>(Endpoint.fromSelf<SexualOrientationRelation>(), callback, { sexualOrientationRelationID: sexualOrientationRelationID });
+        public static getAncestorSexualOrientationForSexualOrientationRelation(sexualOrientationRelationID: number, api: API, callback: IAPICallback<SexualOrientation>) {
+            api.executeEndpoint<SexualOrientation>(Endpoint.fromSelf<SexualOrientation>(), callback, { sexualOrientationRelationID: sexualOrientationRelationID });
         }
 
         /** Gets SexualOrientationRelations by DescendantSexualOrientationID.
@@ -10560,15 +10560,15 @@ module hiw {
 
         /** Returns the related DescendantSexualOrientation based on the unique ID of the related SexualOrientationRelation.
          *  @return A single SexualOrientationRelation, or null. */
-        public getDescendantSexualOrientation(api: API, callback: IAPICallback<SexualOrientationRelation>) {
+        public getDescendantSexualOrientation(api: API, callback: IAPICallback<SexualOrientation>) {
             SexualOrientationRelation.getDescendantSexualOrientationForSexualOrientationRelation(this.id, api, callback);
         }
 
         /** Returns the related DescendantSexualOrientation based on the unique ID of the related SexualOrientationRelation.
          *  @param sexualOrientationRelationID The ID of the SexualOrientationRelation to retrieve.
          *  @return A single SexualOrientationRelation, or null. */
-        public static getDescendantSexualOrientationForSexualOrientationRelation(sexualOrientationRelationID: number, api: API, callback: IAPICallback<SexualOrientationRelation>) {
-            api.executeEndpoint<SexualOrientationRelation>(Endpoint.fromSelf<SexualOrientationRelation>(), callback, { sexualOrientationRelationID: sexualOrientationRelationID });
+        public static getDescendantSexualOrientationForSexualOrientationRelation(sexualOrientationRelationID: number, api: API, callback: IAPICallback<SexualOrientation>) {
+            api.executeEndpoint<SexualOrientation>(Endpoint.fromSelf<SexualOrientation>(), callback, { sexualOrientationRelationID: sexualOrientationRelationID });
         }
     }
     
@@ -10852,15 +10852,15 @@ module hiw {
 
         /** Returns the related AncestorTotal based on the unique ID of the related TotalRelation.
          *  @return A single TotalRelation, or null. */
-        public getAncestorTotal(api: API, callback: IAPICallback<TotalRelation>) {
+        public getAncestorTotal(api: API, callback: IAPICallback<Total>) {
             TotalRelation.getAncestorTotalForTotalRelation(this.id, api, callback);
         }
 
         /** Returns the related AncestorTotal based on the unique ID of the related TotalRelation.
          *  @param totalRelationID The ID of the TotalRelation to retrieve.
          *  @return A single TotalRelation, or null. */
-        public static getAncestorTotalForTotalRelation(totalRelationID: number, api: API, callback: IAPICallback<TotalRelation>) {
-            api.executeEndpoint<TotalRelation>(Endpoint.fromSelf<TotalRelation>(), callback, { totalRelationID: totalRelationID });
+        public static getAncestorTotalForTotalRelation(totalRelationID: number, api: API, callback: IAPICallback<Total>) {
+            api.executeEndpoint<Total>(Endpoint.fromSelf<Total>(), callback, { totalRelationID: totalRelationID });
         }
 
         /** Gets TotalRelations by DescendantTotalID.
@@ -10886,15 +10886,15 @@ module hiw {
 
         /** Returns the related DescendantTotal based on the unique ID of the related TotalRelation.
          *  @return A single TotalRelation, or null. */
-        public getDescendantTotal(api: API, callback: IAPICallback<TotalRelation>) {
+        public getDescendantTotal(api: API, callback: IAPICallback<Total>) {
             TotalRelation.getDescendantTotalForTotalRelation(this.id, api, callback);
         }
 
         /** Returns the related DescendantTotal based on the unique ID of the related TotalRelation.
          *  @param totalRelationID The ID of the TotalRelation to retrieve.
          *  @return A single TotalRelation, or null. */
-        public static getDescendantTotalForTotalRelation(totalRelationID: number, api: API, callback: IAPICallback<TotalRelation>) {
-            api.executeEndpoint<TotalRelation>(Endpoint.fromSelf<TotalRelation>(), callback, { totalRelationID: totalRelationID });
+        public static getDescendantTotalForTotalRelation(totalRelationID: number, api: API, callback: IAPICallback<Total>) {
+            api.executeEndpoint<Total>(Endpoint.fromSelf<Total>(), callback, { totalRelationID: totalRelationID });
         }
     }
     
@@ -11242,15 +11242,15 @@ module hiw {
 
         /** Returns the related AncestorVeteranStatus based on the unique ID of the related VeteranStatusRelation.
          *  @return A single VeteranStatusRelation, or null. */
-        public getAncestorVeteranStatus(api: API, callback: IAPICallback<VeteranStatusRelation>) {
+        public getAncestorVeteranStatus(api: API, callback: IAPICallback<VeteranStatus>) {
             VeteranStatusRelation.getAncestorVeteranStatusForVeteranStatusRelation(this.id, api, callback);
         }
 
         /** Returns the related AncestorVeteranStatus based on the unique ID of the related VeteranStatusRelation.
          *  @param veteranStatusRelationID The ID of the VeteranStatusRelation to retrieve.
          *  @return A single VeteranStatusRelation, or null. */
-        public static getAncestorVeteranStatusForVeteranStatusRelation(veteranStatusRelationID: number, api: API, callback: IAPICallback<VeteranStatusRelation>) {
-            api.executeEndpoint<VeteranStatusRelation>(Endpoint.fromSelf<VeteranStatusRelation>(), callback, { veteranStatusRelationID: veteranStatusRelationID });
+        public static getAncestorVeteranStatusForVeteranStatusRelation(veteranStatusRelationID: number, api: API, callback: IAPICallback<VeteranStatus>) {
+            api.executeEndpoint<VeteranStatus>(Endpoint.fromSelf<VeteranStatus>(), callback, { veteranStatusRelationID: veteranStatusRelationID });
         }
 
         /** Gets VeteranStatusRelations by DescendantVeteranStatusID.
@@ -11276,15 +11276,15 @@ module hiw {
 
         /** Returns the related DescendantVeteranStatus based on the unique ID of the related VeteranStatusRelation.
          *  @return A single VeteranStatusRelation, or null. */
-        public getDescendantVeteranStatus(api: API, callback: IAPICallback<VeteranStatusRelation>) {
+        public getDescendantVeteranStatus(api: API, callback: IAPICallback<VeteranStatus>) {
             VeteranStatusRelation.getDescendantVeteranStatusForVeteranStatusRelation(this.id, api, callback);
         }
 
         /** Returns the related DescendantVeteranStatus based on the unique ID of the related VeteranStatusRelation.
          *  @param veteranStatusRelationID The ID of the VeteranStatusRelation to retrieve.
          *  @return A single VeteranStatusRelation, or null. */
-        public static getDescendantVeteranStatusForVeteranStatusRelation(veteranStatusRelationID: number, api: API, callback: IAPICallback<VeteranStatusRelation>) {
-            api.executeEndpoint<VeteranStatusRelation>(Endpoint.fromSelf<VeteranStatusRelation>(), callback, { veteranStatusRelationID: veteranStatusRelationID });
+        public static getDescendantVeteranStatusForVeteranStatusRelation(veteranStatusRelationID: number, api: API, callback: IAPICallback<VeteranStatus>) {
+            api.executeEndpoint<VeteranStatus>(Endpoint.fromSelf<VeteranStatus>(), callback, { veteranStatusRelationID: veteranStatusRelationID });
         }
     }
     

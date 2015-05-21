@@ -6,7 +6,7 @@
 /// <reference path="Filter.ts"/>
 /// <reference path="IAPIResponseInitializer.ts"/>
 /// <reference path="PropertyMap.ts"/>
-/// <reference path="HTTPMethod.ts"/>
+/// <reference path="HttpMethod.ts"/>
 /// <reference path="Endpoint.ts"/>
 /// <reference path="Link.ts"/>
 /// <reference path="ServiceObject.ts"/>
