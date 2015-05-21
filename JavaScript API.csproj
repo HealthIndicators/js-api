@@ -31,6 +31,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <NoWarn>2008</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -54,6 +55,7 @@
     <TypeScriptCompile Include="Content\Scripts\API\hiw\Common.ts" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\Endpoint.ts" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\Endpoints.Generated.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\Endpoints.ts" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\Enumerations.Generated.ts" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\DataObjects.Generated.ts" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\API.ts" />
@@ -64,6 +66,7 @@
     <TypeScriptCompile Include="Content\Scripts\API\hiw\HttpMethod.ts" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\IAPIResponseInitializer.ts" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\IndicatorDataItem.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\IndicatorDescription.ts" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\Link.ts" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\PropertyMap.ts" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\ServiceDataObject.ts" />
@@ -137,10 +140,10 @@
     <Copy SourceFiles="Content\Scripts\API\Output\hiw-api-lite.js" DestinationFiles="Content\Scripts\API\Output\hiw-api-lite.min.js" />
     <JSCompress Files="Content\Scripts\API\Output\hiw-api-lite.min.js" />
     <ItemGroup>
-        <JSAPIOutputs Include="Content\Scripts\API\Output\*.ts" />
-        <JSAPIOutputs Include="Content\Scripts\API\Output\*.js" />
-        <JSAPIOutputs Include="Content\Scripts\API\Output\LICENSE.md" />
-        <JSAPIOutputs Include="Content\Scripts\API\Output\README.md" />
+      <JSAPIOutputs Include="Content\Scripts\API\Output\*.ts" />
+      <JSAPIOutputs Include="Content\Scripts\API\Output\*.js" />
+      <JSAPIOutputs Include="Content\Scripts\API\Output\LICENSE.md" />
+      <JSAPIOutputs Include="Content\Scripts\API\Output\README.md" />
     </ItemGroup>
     <ItemGroup>
       <JSAPIOutputs-JS Include="%(JSAPIOutputs.Identity)" Condition="'%(Extension)' == '.ts' Or '%(Extension)' == '.js'" />

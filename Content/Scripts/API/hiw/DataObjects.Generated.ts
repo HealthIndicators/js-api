@@ -1,6 +1,7 @@
+
 module hiw {
     /** Contains properties and static functionality for the Age type. */
-    export class Age extends ServiceDataObject {
+    export class BaseAge extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             name: new PropertyMap("name", "Name"),
@@ -21,7 +22,7 @@ module hiw {
         public sortOrder: number = null;
         public depth: number = null;
 
-        protected getFields(): any { return Age.Fields; }
+        protected getFields(): any { return BaseAge.Fields; }
 
         /** Gets a list of all of the Ages in the database.
          *  @param  page The page of data to retrieve.
@@ -120,9 +121,11 @@ module hiw {
             api.executeEndpoint<Age>(Endpoint.fromSelf<Age>(), callback, { ageID: ageID });
         }
     }
+    
+    export class Age extends BaseAge { }
 
     /** Contains properties and static functionality for the AgeRelation type. */
-    export class AgeRelation extends ServiceDataObject {
+    export class BaseAgeRelation extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             ancestorAgeID: new PropertyMap("ancestorAgeID", "AncestorAgeID"),
@@ -135,7 +138,7 @@ module hiw {
         public descendantAgeID: number = null;
         public hops: number = null;
 
-        protected getFields(): any { return AgeRelation.Fields; }
+        protected getFields(): any { return BaseAgeRelation.Fields; }
 
         /** Gets a list of all of the AgeRelations in the database.
          *  @param  page The page of data to retrieve.
@@ -250,9 +253,11 @@ module hiw {
             api.executeEndpoint<AgeRelation>(Endpoint.fromSelf<AgeRelation>(), callback, { ageRelationID: ageRelationID });
         }
     }
+    
+    export class AgeRelation extends BaseAgeRelation { }
 
     /** Contains properties and static functionality for the CharacteristicOfSchoolOrStudent type. */
-    export class CharacteristicOfSchoolOrStudent extends ServiceDataObject {
+    export class BaseCharacteristicOfSchoolOrStudent extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             name: new PropertyMap("name", "Name"),
@@ -273,7 +278,7 @@ module hiw {
         public sortOrder: number = null;
         public depth: number = null;
 
-        protected getFields(): any { return CharacteristicOfSchoolOrStudent.Fields; }
+        protected getFields(): any { return BaseCharacteristicOfSchoolOrStudent.Fields; }
 
         /** Gets a list of all of the CharacteristicOfSchoolOrStudents in the database.
          *  @param  page The page of data to retrieve.
@@ -372,9 +377,11 @@ module hiw {
             api.executeEndpoint<CharacteristicOfSchoolOrStudent>(Endpoint.fromSelf<CharacteristicOfSchoolOrStudent>(), callback, { characteristicOfSchoolOrStudentID: characteristicOfSchoolOrStudentID });
         }
     }
+    
+    export class CharacteristicOfSchoolOrStudent extends BaseCharacteristicOfSchoolOrStudent { }
 
     /** Contains properties and static functionality for the CharacteristicOfSchoolOrStudentRelation type. */
-    export class CharacteristicOfSchoolOrStudentRelation extends ServiceDataObject {
+    export class BaseCharacteristicOfSchoolOrStudentRelation extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             ancestorCharacteristicOfSchoolOrStudentID: new PropertyMap("ancestorCharacteristicOfSchoolOrStudentID", "AncestorCharacteristicOfSchoolOrStudentID"),
@@ -387,7 +394,7 @@ module hiw {
         public descendantCharacteristicOfSchoolOrStudentID: number = null;
         public hops: number = null;
 
-        protected getFields(): any { return CharacteristicOfSchoolOrStudentRelation.Fields; }
+        protected getFields(): any { return BaseCharacteristicOfSchoolOrStudentRelation.Fields; }
 
         /** Gets a list of all of the CharacteristicOfSchoolOrStudentRelations in the database.
          *  @param  page The page of data to retrieve.
@@ -502,9 +509,11 @@ module hiw {
             api.executeEndpoint<CharacteristicOfSchoolOrStudentRelation>(Endpoint.fromSelf<CharacteristicOfSchoolOrStudentRelation>(), callback, { characteristicOfSchoolOrStudentRelationID: characteristicOfSchoolOrStudentRelationID });
         }
     }
+    
+    export class CharacteristicOfSchoolOrStudentRelation extends BaseCharacteristicOfSchoolOrStudentRelation { }
 
     /** Contains properties and static functionality for the CountryOfBirth type. */
-    export class CountryOfBirth extends ServiceDataObject {
+    export class BaseCountryOfBirth extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             name: new PropertyMap("name", "Name"),
@@ -525,7 +534,7 @@ module hiw {
         public sortOrder: number = null;
         public depth: number = null;
 
-        protected getFields(): any { return CountryOfBirth.Fields; }
+        protected getFields(): any { return BaseCountryOfBirth.Fields; }
 
         /** Gets a list of all of the CountryOfBirths in the database.
          *  @param  page The page of data to retrieve.
@@ -624,9 +633,11 @@ module hiw {
             api.executeEndpoint<CountryOfBirth>(Endpoint.fromSelf<CountryOfBirth>(), callback, { countryOfBirthID: countryOfBirthID });
         }
     }
+    
+    export class CountryOfBirth extends BaseCountryOfBirth { }
 
     /** Contains properties and static functionality for the CountryOfBirthRelation type. */
-    export class CountryOfBirthRelation extends ServiceDataObject {
+    export class BaseCountryOfBirthRelation extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             ancestorCountryOfBirthID: new PropertyMap("ancestorCountryOfBirthID", "AncestorCountryOfBirthID"),
@@ -639,7 +650,7 @@ module hiw {
         public descendantCountryOfBirthID: number = null;
         public hops: number = null;
 
-        protected getFields(): any { return CountryOfBirthRelation.Fields; }
+        protected getFields(): any { return BaseCountryOfBirthRelation.Fields; }
 
         /** Gets a list of all of the CountryOfBirthRelations in the database.
          *  @param  page The page of data to retrieve.
@@ -754,9 +765,11 @@ module hiw {
             api.executeEndpoint<CountryOfBirthRelation>(Endpoint.fromSelf<CountryOfBirthRelation>(), callback, { countryOfBirthRelationID: countryOfBirthRelationID });
         }
     }
+    
+    export class CountryOfBirthRelation extends BaseCountryOfBirthRelation { }
 
     /** Contains properties and static functionality for the DataCategory type. */
-    export class DataCategory extends ServiceDataObject {
+    export class BaseDataCategory extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             rank: new PropertyMap("rank", "Rank"),
@@ -789,7 +802,7 @@ module hiw {
         public categoryGraph: string = null;
         public modifyDate: Date = null;
 
-        protected getFields(): any { return DataCategory.Fields; }
+        protected getFields(): any { return BaseDataCategory.Fields; }
 
         /** Gets a list of all of the DataCategories in the database.
          *  @param  page The page of data to retrieve.
@@ -922,9 +935,11 @@ module hiw {
             api.executeEndpoint<DataCategory>(Endpoint.fromSelf<DataCategory>(), callback, { dataCategoryID: dataCategoryID });
         }
     }
+    
+    export class DataCategory extends BaseDataCategory { }
 
     /** Contains properties and static functionality for the DataCategoryRelation type. */
-    export class DataCategoryRelation extends ServiceDataObject {
+    export class BaseDataCategoryRelation extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             ancestorDataCategoryID: new PropertyMap("ancestorDataCategoryID", "AncestorDataCategoryID"),
@@ -937,7 +952,7 @@ module hiw {
         public descendantDataCategoryID: number = null;
         public hops: number = null;
 
-        protected getFields(): any { return DataCategoryRelation.Fields; }
+        protected getFields(): any { return BaseDataCategoryRelation.Fields; }
 
         /** Gets a list of all of the DataCategoryRelations in the database.
          *  @param  page The page of data to retrieve.
@@ -1052,9 +1067,11 @@ module hiw {
             api.executeEndpoint<DataCategoryRelation>(Endpoint.fromSelf<DataCategoryRelation>(), callback, { dataCategoryRelationID: dataCategoryRelationID });
         }
     }
+    
+    export class DataCategoryRelation extends BaseDataCategoryRelation { }
 
     /** Contains properties and static functionality for the DataSourceDataSupplier type. */
-    export class DataSourceDataSupplier extends ServiceDataObject {
+    export class BaseDataSourceDataSupplier extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             dataSourceID: new PropertyMap("dataSourceID", "DataSourceID"),
@@ -1067,7 +1084,7 @@ module hiw {
         public dataSupplierID: number = null;
         public modificationDate: Date = null;
 
-        protected getFields(): any { return DataSourceDataSupplier.Fields; }
+        protected getFields(): any { return BaseDataSourceDataSupplier.Fields; }
 
         /** Gets a list of all of the DataSourceDataSuppliers in the database.
          *  @param  page The page of data to retrieve.
@@ -1182,9 +1199,11 @@ module hiw {
             api.executeEndpoint<DataSourceDataSupplier>(Endpoint.fromSelf<DataSourceDataSupplier>(), callback, { dataSourceDataSupplierID: dataSourceDataSupplierID });
         }
     }
+    
+    export class DataSourceDataSupplier extends BaseDataSourceDataSupplier { }
 
     /** Contains properties and static functionality for the DataSource type. */
-    export class DataSource extends ServiceDataObject {
+    export class BaseDataSource extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             name: new PropertyMap("name", "Name"),
@@ -1233,7 +1252,7 @@ module hiw {
         public modifyDate: Date = null;
         public showMe: boolean = null;
 
-        protected getFields(): any { return DataSource.Fields; }
+        protected getFields(): any { return BaseDataSource.Fields; }
 
         /** Gets a list of all of the DataSources in the database.
          *  @param  page The page of data to retrieve.
@@ -1280,9 +1299,11 @@ module hiw {
             api.executeEndpoint<number>(Endpoint.fromSelf<number>(), callback, null, filter.toJSON());
         }
     }
+    
+    export class DataSource extends BaseDataSource { }
 
     /** Contains properties and static functionality for the DataSourceURL type. */
-    export class DataSourceURL extends ServiceDataObject {
+    export class BaseDataSourceURL extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             dataSourceID: new PropertyMap("dataSourceID", "DataSourceID"),
@@ -1295,7 +1316,7 @@ module hiw {
         public urlID: number = null;
         public sortOrder: number = null;
 
-        protected getFields(): any { return DataSourceURL.Fields; }
+        protected getFields(): any { return BaseDataSourceURL.Fields; }
 
         /** Gets a list of all of the DataSourceURLs in the database.
          *  @param  page The page of data to retrieve.
@@ -1410,9 +1431,11 @@ module hiw {
             api.executeEndpoint<DataSourceURL>(Endpoint.fromSelf<DataSourceURL>(), callback, { dataSourceURLID: dataSourceURLID });
         }
     }
+    
+    export class DataSourceURL extends BaseDataSourceURL { }
 
     /** Contains properties and static functionality for the DataSupplier type. */
-    export class DataSupplier extends ServiceDataObject {
+    export class BaseDataSupplier extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             acronym: new PropertyMap("acronym", "Acronym"),
@@ -1437,7 +1460,7 @@ module hiw {
         public validationDate: Date = null;
         public validationStatus: number = null;
 
-        protected getFields(): any { return DataSupplier.Fields; }
+        protected getFields(): any { return BaseDataSupplier.Fields; }
 
         /** Gets a list of all of the DataSuppliers in the database.
          *  @param  page The page of data to retrieve.
@@ -1518,9 +1541,11 @@ module hiw {
             api.executeEndpoint<DataSupplier>(Endpoint.fromSelf<DataSupplier>(), callback, { dataSupplierID: dataSupplierID });
         }
     }
+    
+    export class DataSupplier extends BaseDataSupplier { }
 
     /** Contains properties and static functionality for the DimensionBook type. */
-    export class DimensionBook extends ServiceDataObject {
+    export class BaseDimensionBook extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             key: new PropertyMap("key", "Key"),
@@ -1553,7 +1578,7 @@ module hiw {
         public chartName: string = null;
         public downloadName: string = null;
 
-        protected getFields(): any { return DimensionBook.Fields; }
+        protected getFields(): any { return BaseDimensionBook.Fields; }
 
         /** Gets a list of all of the DimensionBooks in the database.
          *  @param  page The page of data to retrieve.
@@ -1692,9 +1717,11 @@ module hiw {
             api.executeEndpoint<DimensionBook>(Endpoint.fromSelf<DimensionBook>(), callback, { key: key });
         }
     }
+    
+    export class DimensionBook extends BaseDimensionBook { }
 
     /** Contains properties and static functionality for the DimensionBookRelation type. */
-    export class DimensionBookRelation extends ServiceDataObject {
+    export class BaseDimensionBookRelation extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             ancestorDimensionBookID: new PropertyMap("ancestorDimensionBookID", "AncestorDimensionBookID"),
@@ -1707,7 +1734,7 @@ module hiw {
         public descendantDimensionBookID: number = null;
         public hops: number = null;
 
-        protected getFields(): any { return DimensionBookRelation.Fields; }
+        protected getFields(): any { return BaseDimensionBookRelation.Fields; }
 
         /** Gets a list of all of the DimensionBookRelations in the database.
          *  @param  page The page of data to retrieve.
@@ -1822,9 +1849,11 @@ module hiw {
             api.executeEndpoint<DimensionBookRelation>(Endpoint.fromSelf<DimensionBookRelation>(), callback, { dimensionBookRelationID: dimensionBookRelationID });
         }
     }
+    
+    export class DimensionBookRelation extends BaseDimensionBookRelation { }
 
     /** Contains properties and static functionality for the DimensionGraph type. */
-    export class DimensionGraph extends ServiceDataObject {
+    export class BaseDimensionGraph extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             header: new PropertyMap("header", "Header"),
@@ -1987,7 +2016,7 @@ module hiw {
         public geographyKey: string = null;
         public geographySortOrder: number = null;
 
-        protected getFields(): any { return DimensionGraph.Fields; }
+        protected getFields(): any { return BaseDimensionGraph.Fields; }
 
         /** Gets a list of all of the DimensionGraphs in the database.
          *  @param  page The page of data to retrieve.
@@ -2612,9 +2641,11 @@ module hiw {
             api.executeEndpoint<DimensionGraph>(Endpoint.fromSelf<DimensionGraph>(), callback, { dimensionGraphID: dimensionGraphID });
         }
     }
+    
+    export class DimensionGraph extends BaseDimensionGraph { }
 
     /** Contains properties and static functionality for the DimensionList type. */
-    export class DimensionList extends ServiceDataObject {
+    export class BaseDimensionList extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             singular: new PropertyMap("singular", "Singular"),
@@ -2629,7 +2660,7 @@ module hiw {
         public singularDescriptiveName: string = null;
         public IsActive: boolean = null;
 
-        protected getFields(): any { return DimensionList.Fields; }
+        protected getFields(): any { return BaseDimensionList.Fields; }
 
         /** Gets a list of all of the DimensionLists in the database.
          *  @param  page The page of data to retrieve.
@@ -2676,9 +2707,11 @@ module hiw {
             api.executeEndpoint<number>(Endpoint.fromSelf<number>(), callback, null, filter.toJSON());
         }
     }
+    
+    export class DimensionList extends BaseDimensionList { }
 
     /** Contains properties and static functionality for the DisabilityStatus type. */
-    export class DisabilityStatus extends ServiceDataObject {
+    export class BaseDisabilityStatus extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             name: new PropertyMap("name", "Name"),
@@ -2699,7 +2732,7 @@ module hiw {
         public sortOrder: number = null;
         public depth: number = null;
 
-        protected getFields(): any { return DisabilityStatus.Fields; }
+        protected getFields(): any { return BaseDisabilityStatus.Fields; }
 
         /** Gets a list of all of the DisabilityStatuses in the database.
          *  @param  page The page of data to retrieve.
@@ -2798,9 +2831,11 @@ module hiw {
             api.executeEndpoint<DisabilityStatus>(Endpoint.fromSelf<DisabilityStatus>(), callback, { disabilityStatusID: disabilityStatusID });
         }
     }
+    
+    export class DisabilityStatus extends BaseDisabilityStatus { }
 
     /** Contains properties and static functionality for the DisabilityStatusRelation type. */
-    export class DisabilityStatusRelation extends ServiceDataObject {
+    export class BaseDisabilityStatusRelation extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             ancestorDisabilityStatusID: new PropertyMap("ancestorDisabilityStatusID", "AncestorDisabilityStatusID"),
@@ -2813,7 +2848,7 @@ module hiw {
         public descendantDisabilityStatusID: number = null;
         public hops: number = null;
 
-        protected getFields(): any { return DisabilityStatusRelation.Fields; }
+        protected getFields(): any { return BaseDisabilityStatusRelation.Fields; }
 
         /** Gets a list of all of the DisabilityStatusRelations in the database.
          *  @param  page The page of data to retrieve.
@@ -2928,9 +2963,11 @@ module hiw {
             api.executeEndpoint<DisabilityStatusRelation>(Endpoint.fromSelf<DisabilityStatusRelation>(), callback, { disabilityStatusRelationID: disabilityStatusRelationID });
         }
     }
+    
+    export class DisabilityStatusRelation extends BaseDisabilityStatusRelation { }
 
     /** Contains properties and static functionality for the EducationalAttainment type. */
-    export class EducationalAttainment extends ServiceDataObject {
+    export class BaseEducationalAttainment extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             name: new PropertyMap("name", "Name"),
@@ -2951,7 +2988,7 @@ module hiw {
         public sortOrder: number = null;
         public depth: number = null;
 
-        protected getFields(): any { return EducationalAttainment.Fields; }
+        protected getFields(): any { return BaseEducationalAttainment.Fields; }
 
         /** Gets a list of all of the EducationalAttainments in the database.
          *  @param  page The page of data to retrieve.
@@ -3050,9 +3087,11 @@ module hiw {
             api.executeEndpoint<EducationalAttainment>(Endpoint.fromSelf<EducationalAttainment>(), callback, { educationalAttainmentID: educationalAttainmentID });
         }
     }
+    
+    export class EducationalAttainment extends BaseEducationalAttainment { }
 
     /** Contains properties and static functionality for the EducationalAttainmentRelation type. */
-    export class EducationalAttainmentRelation extends ServiceDataObject {
+    export class BaseEducationalAttainmentRelation extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             ancestorEducationalAttainmentID: new PropertyMap("ancestorEducationalAttainmentID", "AncestorEducationalAttainmentID"),
@@ -3065,7 +3104,7 @@ module hiw {
         public descendantEducationalAttainmentID: number = null;
         public hops: number = null;
 
-        protected getFields(): any { return EducationalAttainmentRelation.Fields; }
+        protected getFields(): any { return BaseEducationalAttainmentRelation.Fields; }
 
         /** Gets a list of all of the EducationalAttainmentRelations in the database.
          *  @param  page The page of data to retrieve.
@@ -3180,9 +3219,11 @@ module hiw {
             api.executeEndpoint<EducationalAttainmentRelation>(Endpoint.fromSelf<EducationalAttainmentRelation>(), callback, { educationalAttainmentRelationID: educationalAttainmentRelationID });
         }
     }
+    
+    export class EducationalAttainmentRelation extends BaseEducationalAttainmentRelation { }
 
     /** Contains properties and static functionality for the FamilyType type. */
-    export class FamilyType extends ServiceDataObject {
+    export class BaseFamilyType extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             name: new PropertyMap("name", "Name"),
@@ -3203,7 +3244,7 @@ module hiw {
         public sortOrder: number = null;
         public depth: number = null;
 
-        protected getFields(): any { return FamilyType.Fields; }
+        protected getFields(): any { return BaseFamilyType.Fields; }
 
         /** Gets a list of all of the FamilyTypes in the database.
          *  @param  page The page of data to retrieve.
@@ -3302,9 +3343,11 @@ module hiw {
             api.executeEndpoint<FamilyType>(Endpoint.fromSelf<FamilyType>(), callback, { familyTypeID: familyTypeID });
         }
     }
+    
+    export class FamilyType extends BaseFamilyType { }
 
     /** Contains properties and static functionality for the FamilyTypeRelation type. */
-    export class FamilyTypeRelation extends ServiceDataObject {
+    export class BaseFamilyTypeRelation extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             ancestorFamilyTypeID: new PropertyMap("ancestorFamilyTypeID", "AncestorFamilyTypeID"),
@@ -3317,7 +3360,7 @@ module hiw {
         public descendantFamilyTypeID: number = null;
         public hops: number = null;
 
-        protected getFields(): any { return FamilyTypeRelation.Fields; }
+        protected getFields(): any { return BaseFamilyTypeRelation.Fields; }
 
         /** Gets a list of all of the FamilyTypeRelations in the database.
          *  @param  page The page of data to retrieve.
@@ -3432,9 +3475,11 @@ module hiw {
             api.executeEndpoint<FamilyTypeRelation>(Endpoint.fromSelf<FamilyTypeRelation>(), callback, { familyTypeRelationID: familyTypeRelationID });
         }
     }
+    
+    export class FamilyTypeRelation extends BaseFamilyTypeRelation { }
 
     /** Contains properties and static functionality for the Geography type. */
-    export class Geography extends ServiceDataObject {
+    export class BaseGeography extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             name: new PropertyMap("name", "Name"),
@@ -3455,7 +3500,7 @@ module hiw {
         public sortOrder: number = null;
         public depth: number = null;
 
-        protected getFields(): any { return Geography.Fields; }
+        protected getFields(): any { return BaseGeography.Fields; }
 
         /** Gets a list of all of the Geographies in the database.
          *  @param  page The page of data to retrieve.
@@ -3554,9 +3599,11 @@ module hiw {
             api.executeEndpoint<Geography>(Endpoint.fromSelf<Geography>(), callback, { geographyID: geographyID });
         }
     }
+    
+    export class Geography extends BaseGeography { }
 
     /** Contains properties and static functionality for the GeographyRelation type. */
-    export class GeographyRelation extends ServiceDataObject {
+    export class BaseGeographyRelation extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             ancestorGeographyID: new PropertyMap("ancestorGeographyID", "AncestorGeographyID"),
@@ -3569,7 +3616,7 @@ module hiw {
         public descendantGeographyID: number = null;
         public hops: number = null;
 
-        protected getFields(): any { return GeographyRelation.Fields; }
+        protected getFields(): any { return BaseGeographyRelation.Fields; }
 
         /** Gets a list of all of the GeographyRelations in the database.
          *  @param  page The page of data to retrieve.
@@ -3684,9 +3731,11 @@ module hiw {
             api.executeEndpoint<GeographyRelation>(Endpoint.fromSelf<GeographyRelation>(), callback, { geographyRelationID: geographyRelationID });
         }
     }
+    
+    export class GeographyRelation extends BaseGeographyRelation { }
 
     /** Contains properties and static functionality for the GlossaryTerm type. */
-    export class GlossaryTerm extends ServiceDataObject {
+    export class BaseGlossaryTerm extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             term: new PropertyMap("term", "Term"),
@@ -3705,7 +3754,7 @@ module hiw {
         public sourceUrl2ID: number = null;
         public modificationDate: Date = null;
 
-        protected getFields(): any { return GlossaryTerm.Fields; }
+        protected getFields(): any { return BaseGlossaryTerm.Fields; }
 
         /** Gets a list of all of the GlossaryTerms in the database.
          *  @param  page The page of data to retrieve.
@@ -3820,9 +3869,11 @@ module hiw {
             api.executeEndpoint<GlossaryTerm>(Endpoint.fromSelf<GlossaryTerm>(), callback, { glossaryTermID: glossaryTermID });
         }
     }
+    
+    export class GlossaryTerm extends BaseGlossaryTerm { }
 
     /** Contains properties and static functionality for the HealthInsuranceStatus type. */
-    export class HealthInsuranceStatus extends ServiceDataObject {
+    export class BaseHealthInsuranceStatus extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             name: new PropertyMap("name", "Name"),
@@ -3843,7 +3894,7 @@ module hiw {
         public sortOrder: number = null;
         public depth: number = null;
 
-        protected getFields(): any { return HealthInsuranceStatus.Fields; }
+        protected getFields(): any { return BaseHealthInsuranceStatus.Fields; }
 
         /** Gets a list of all of the HealthInsuranceStatuses in the database.
          *  @param  page The page of data to retrieve.
@@ -3942,9 +3993,11 @@ module hiw {
             api.executeEndpoint<HealthInsuranceStatus>(Endpoint.fromSelf<HealthInsuranceStatus>(), callback, { healthInsuranceStatusID: healthInsuranceStatusID });
         }
     }
+    
+    export class HealthInsuranceStatus extends BaseHealthInsuranceStatus { }
 
     /** Contains properties and static functionality for the HealthInsuranceStatusRelation type. */
-    export class HealthInsuranceStatusRelation extends ServiceDataObject {
+    export class BaseHealthInsuranceStatusRelation extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             ancestorHealthInsuranceStatusID: new PropertyMap("ancestorHealthInsuranceStatusID", "AncestorHealthInsuranceStatusID"),
@@ -3957,7 +4010,7 @@ module hiw {
         public descendantHealthInsuranceStatusID: number = null;
         public hops: number = null;
 
-        protected getFields(): any { return HealthInsuranceStatusRelation.Fields; }
+        protected getFields(): any { return BaseHealthInsuranceStatusRelation.Fields; }
 
         /** Gets a list of all of the HealthInsuranceStatusRelations in the database.
          *  @param  page The page of data to retrieve.
@@ -4072,9 +4125,11 @@ module hiw {
             api.executeEndpoint<HealthInsuranceStatusRelation>(Endpoint.fromSelf<HealthInsuranceStatusRelation>(), callback, { healthInsuranceStatusRelationID: healthInsuranceStatusRelationID });
         }
     }
+    
+    export class HealthInsuranceStatusRelation extends BaseHealthInsuranceStatusRelation { }
 
     /** Contains properties and static functionality for the HP2020TSM type. */
-    export class HP2020TSM extends ServiceDataObject {
+    export class BaseHP2020TSM extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             HP2020TSMName: new PropertyMap("HP2020TSMName", "HP2020TSMName"),
@@ -4085,7 +4140,7 @@ module hiw {
         public HP2020TSMName: string = null;
         public modifyDate: Date = null;
 
-        protected getFields(): any { return HP2020TSM.Fields; }
+        protected getFields(): any { return BaseHP2020TSM.Fields; }
 
         /** Gets a list of all of the HP2020TSMs in the database.
          *  @param  page The page of data to retrieve.
@@ -4132,9 +4187,11 @@ module hiw {
             api.executeEndpoint<number>(Endpoint.fromSelf<number>(), callback, null, filter.toJSON());
         }
     }
+    
+    export class HP2020TSM extends BaseHP2020TSM { }
 
     /** Contains properties and static functionality for the IncomeAndPovertyStatus type. */
-    export class IncomeAndPovertyStatus extends ServiceDataObject {
+    export class BaseIncomeAndPovertyStatus extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             name: new PropertyMap("name", "Name"),
@@ -4155,7 +4212,7 @@ module hiw {
         public sortOrder: number = null;
         public depth: number = null;
 
-        protected getFields(): any { return IncomeAndPovertyStatus.Fields; }
+        protected getFields(): any { return BaseIncomeAndPovertyStatus.Fields; }
 
         /** Gets a list of all of the IncomeAndPovertyStatuses in the database.
          *  @param  page The page of data to retrieve.
@@ -4254,9 +4311,11 @@ module hiw {
             api.executeEndpoint<IncomeAndPovertyStatus>(Endpoint.fromSelf<IncomeAndPovertyStatus>(), callback, { incomeAndPovertyStatusID: incomeAndPovertyStatusID });
         }
     }
+    
+    export class IncomeAndPovertyStatus extends BaseIncomeAndPovertyStatus { }
 
     /** Contains properties and static functionality for the IncomeAndPovertyStatusRelation type. */
-    export class IncomeAndPovertyStatusRelation extends ServiceDataObject {
+    export class BaseIncomeAndPovertyStatusRelation extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             ancestorIncomeAndPovertyStatusID: new PropertyMap("ancestorIncomeAndPovertyStatusID", "AncestorIncomeAndPovertyStatusID"),
@@ -4269,7 +4328,7 @@ module hiw {
         public descendantIncomeAndPovertyStatusID: number = null;
         public hops: number = null;
 
-        protected getFields(): any { return IncomeAndPovertyStatusRelation.Fields; }
+        protected getFields(): any { return BaseIncomeAndPovertyStatusRelation.Fields; }
 
         /** Gets a list of all of the IncomeAndPovertyStatusRelations in the database.
          *  @param  page The page of data to retrieve.
@@ -4384,9 +4443,11 @@ module hiw {
             api.executeEndpoint<IncomeAndPovertyStatusRelation>(Endpoint.fromSelf<IncomeAndPovertyStatusRelation>(), callback, { incomeAndPovertyStatusRelationID: incomeAndPovertyStatusRelationID });
         }
     }
+    
+    export class IncomeAndPovertyStatusRelation extends BaseIncomeAndPovertyStatusRelation { }
 
     /** Contains properties and static functionality for the IndicatorDescriptionDataCategory type. */
-    export class IndicatorDescriptionDataCategory extends ServiceDataObject {
+    export class BaseIndicatorDescriptionDataCategory extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             indicatorDescriptionID: new PropertyMap("indicatorDescriptionID", "IndicatorDescriptionID"),
@@ -4397,7 +4458,7 @@ module hiw {
         public indicatorDescriptionID: number = null;
         public dataCategoryID: number = null;
 
-        protected getFields(): any { return IndicatorDescriptionDataCategory.Fields; }
+        protected getFields(): any { return BaseIndicatorDescriptionDataCategory.Fields; }
 
         /** Gets a list of all of the IndicatorDescriptionDataCategories in the database.
          *  @param  page The page of data to retrieve.
@@ -4512,9 +4573,11 @@ module hiw {
             api.executeEndpoint<IndicatorDescriptionDataCategory>(Endpoint.fromSelf<IndicatorDescriptionDataCategory>(), callback, { indicatorDescriptionDataCategoryID: indicatorDescriptionDataCategoryID });
         }
     }
+    
+    export class IndicatorDescriptionDataCategory extends BaseIndicatorDescriptionDataCategory { }
 
     /** Contains properties and static functionality for the IndicatorDescriptionDataSource type. */
-    export class IndicatorDescriptionDataSource extends ServiceDataObject {
+    export class BaseIndicatorDescriptionDataSource extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             dataDescription: new PropertyMap("dataDescription", "DataDescription"),
@@ -4529,7 +4592,7 @@ module hiw {
         public dataSourceID: number = null;
         public sortOrder: number = null;
 
-        protected getFields(): any { return IndicatorDescriptionDataSource.Fields; }
+        protected getFields(): any { return BaseIndicatorDescriptionDataSource.Fields; }
 
         /** Gets a list of all of the IndicatorDescriptionDataSources in the database.
          *  @param  page The page of data to retrieve.
@@ -4644,9 +4707,11 @@ module hiw {
             api.executeEndpoint<IndicatorDescriptionDataSource>(Endpoint.fromSelf<IndicatorDescriptionDataSource>(), callback, { indicatorDescriptionDataSourceID: indicatorDescriptionDataSourceID });
         }
     }
+    
+    export class IndicatorDescriptionDataSource extends BaseIndicatorDescriptionDataSource { }
 
     /** Contains properties and static functionality for the IndicatorDescriptionDefaultDimensionGraph type. */
-    export class IndicatorDescriptionDefaultDimensionGraph extends ServiceDataObject {
+    export class BaseIndicatorDescriptionDefaultDimensionGraph extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             indicatorDescriptionID: new PropertyMap("indicatorDescriptionID", "IndicatorDescriptionID"),
@@ -4659,7 +4724,7 @@ module hiw {
         public localeLevelID: number = null;
         public dimensionGraphID: number = null;
 
-        protected getFields(): any { return IndicatorDescriptionDefaultDimensionGraph.Fields; }
+        protected getFields(): any { return BaseIndicatorDescriptionDefaultDimensionGraph.Fields; }
 
         /** Gets a list of all of the IndicatorDescriptionDefaultDimensionGraphs in the database.
          *  @param  page The page of data to retrieve.
@@ -4808,9 +4873,11 @@ module hiw {
             api.executeEndpoint<IndicatorDescriptionDefaultDimensionGraph>(Endpoint.fromSelf<IndicatorDescriptionDefaultDimensionGraph>(), callback, { indicatorDescriptionDefaultDimensionGraphID: indicatorDescriptionDefaultDimensionGraphID });
         }
     }
+    
+    export class IndicatorDescriptionDefaultDimensionGraph extends BaseIndicatorDescriptionDefaultDimensionGraph { }
 
     /** Contains properties and static functionality for the IndicatorDescriptionDimension type. */
-    export class IndicatorDescriptionDimension extends ServiceDataObject {
+    export class BaseIndicatorDescriptionDimension extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             indicatorDescriptionID: new PropertyMap("indicatorDescriptionID", "IndicatorDescriptionID"),
@@ -4821,7 +4888,7 @@ module hiw {
         public indicatorDescriptionID: number = null;
         public dimensionListID: number = null;
 
-        protected getFields(): any { return IndicatorDescriptionDimension.Fields; }
+        protected getFields(): any { return BaseIndicatorDescriptionDimension.Fields; }
 
         /** Gets a list of all of the IndicatorDescriptionDimensions in the database.
          *  @param  page The page of data to retrieve.
@@ -4942,9 +5009,11 @@ module hiw {
             api.executeEndpoint<IndicatorDescriptionDimension>(Endpoint.fromSelf<IndicatorDescriptionDimension>(), callback, { indicatorDescriptionID: indicatorDescriptionID, dimensionListID: dimensionListID });
         }
     }
+    
+    export class IndicatorDescriptionDimension extends BaseIndicatorDescriptionDimension { }
 
     /** Contains properties and static functionality for the IndicatorDescriptionDimensionGraph type. */
-    export class IndicatorDescriptionDimensionGraph extends ServiceDataObject {
+    export class BaseIndicatorDescriptionDimensionGraph extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             indicatorDescriptionID: new PropertyMap("indicatorDescriptionID", "IndicatorDescriptionID"),
@@ -4957,7 +5026,7 @@ module hiw {
         public localeLevelID: number = null;
         public dimensionGraphID: number = null;
 
-        protected getFields(): any { return IndicatorDescriptionDimensionGraph.Fields; }
+        protected getFields(): any { return BaseIndicatorDescriptionDimensionGraph.Fields; }
 
         /** Gets a list of all of the IndicatorDescriptionDimensionGraphs in the database.
          *  @param  page The page of data to retrieve.
@@ -5106,9 +5175,11 @@ module hiw {
             api.executeEndpoint<IndicatorDescriptionDimensionGraph>(Endpoint.fromSelf<IndicatorDescriptionDimensionGraph>(), callback, { indicatorDescriptionDimensionGraphID: indicatorDescriptionDimensionGraphID });
         }
     }
+    
+    export class IndicatorDescriptionDimensionGraph extends BaseIndicatorDescriptionDimensionGraph { }
 
     /** Contains properties and static functionality for the IndicatorDescriptionDimensionValue type. */
-    export class IndicatorDescriptionDimensionValue extends ServiceDataObject {
+    export class BaseIndicatorDescriptionDimensionValue extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             indicatorDescriptionID: new PropertyMap("indicatorDescriptionID", "IndicatorDescriptionID"),
@@ -5119,7 +5190,7 @@ module hiw {
         public indicatorDescriptionID: number = null;
         public dimensionBookID: number = null;
 
-        protected getFields(): any { return IndicatorDescriptionDimensionValue.Fields; }
+        protected getFields(): any { return BaseIndicatorDescriptionDimensionValue.Fields; }
 
         /** Gets a list of all of the IndicatorDescriptionDimensionValues in the database.
          *  @param  page The page of data to retrieve.
@@ -5240,9 +5311,11 @@ module hiw {
             api.executeEndpoint<IndicatorDescriptionDimensionValue>(Endpoint.fromSelf<IndicatorDescriptionDimensionValue>(), callback, { indicatorDescriptionID: indicatorDescriptionID, dimensionBookID: dimensionBookID });
         }
     }
+    
+    export class IndicatorDescriptionDimensionValue extends BaseIndicatorDescriptionDimensionValue { }
 
     /** Contains properties and static functionality for the IndicatorDescriptionInitiative type. */
-    export class IndicatorDescriptionInitiative extends ServiceDataObject {
+    export class BaseIndicatorDescriptionInitiative extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             indicatorDescriptionID: new PropertyMap("indicatorDescriptionID", "IndicatorDescriptionID"),
@@ -5253,7 +5326,7 @@ module hiw {
         public indicatorDescriptionID: number = null;
         public initiativeID: number = null;
 
-        protected getFields(): any { return IndicatorDescriptionInitiative.Fields; }
+        protected getFields(): any { return BaseIndicatorDescriptionInitiative.Fields; }
 
         /** Gets a list of all of the IndicatorDescriptionInitiatives in the database.
          *  @param  page The page of data to retrieve.
@@ -5368,9 +5441,11 @@ module hiw {
             api.executeEndpoint<IndicatorDescriptionInitiative>(Endpoint.fromSelf<IndicatorDescriptionInitiative>(), callback, { indicatorDescriptionInitiativeID: indicatorDescriptionInitiativeID });
         }
     }
+    
+    export class IndicatorDescriptionInitiative extends BaseIndicatorDescriptionInitiative { }
 
     /** Contains properties and static functionality for the IndicatorDescriptionIntervention type. */
-    export class IndicatorDescriptionIntervention extends ServiceDataObject {
+    export class BaseIndicatorDescriptionIntervention extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             indicatorDescriptionID: new PropertyMap("indicatorDescriptionID", "IndicatorDescriptionID"),
@@ -5383,7 +5458,7 @@ module hiw {
         public interventionID: number = null;
         public sortOrder: number = null;
 
-        protected getFields(): any { return IndicatorDescriptionIntervention.Fields; }
+        protected getFields(): any { return BaseIndicatorDescriptionIntervention.Fields; }
 
         /** Gets a list of all of the IndicatorDescriptionInterventions in the database.
          *  @param  page The page of data to retrieve.
@@ -5498,9 +5573,11 @@ module hiw {
             api.executeEndpoint<IndicatorDescriptionIntervention>(Endpoint.fromSelf<IndicatorDescriptionIntervention>(), callback, { indicatorDescriptionInterventionID: indicatorDescriptionInterventionID });
         }
     }
+    
+    export class IndicatorDescriptionIntervention extends BaseIndicatorDescriptionIntervention { }
 
     /** Contains properties and static functionality for the IndicatorDescriptionKeyword type. */
-    export class IndicatorDescriptionKeyword extends ServiceDataObject {
+    export class BaseIndicatorDescriptionKeyword extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             indicatorDescriptionID: new PropertyMap("indicatorDescriptionID", "IndicatorDescriptionID"),
@@ -5511,7 +5588,7 @@ module hiw {
         public indicatorDescriptionID: number = null;
         public keywordID: number = null;
 
-        protected getFields(): any { return IndicatorDescriptionKeyword.Fields; }
+        protected getFields(): any { return BaseIndicatorDescriptionKeyword.Fields; }
 
         /** Gets a list of all of the IndicatorDescriptionKeywords in the database.
          *  @param  page The page of data to retrieve.
@@ -5632,9 +5709,11 @@ module hiw {
             api.executeEndpoint<IndicatorDescriptionKeyword>(Endpoint.fromSelf<IndicatorDescriptionKeyword>(), callback, { indicatorDescriptionID: indicatorDescriptionID, keywordID: keywordID });
         }
     }
+    
+    export class IndicatorDescriptionKeyword extends BaseIndicatorDescriptionKeyword { }
 
     /** Contains properties and static functionality for the IndicatorDescriptionLocaleCounty type. */
-    export class IndicatorDescriptionLocaleCounty extends ServiceDataObject {
+    export class BaseIndicatorDescriptionLocaleCounty extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             indicatorDescriptionID: new PropertyMap("indicatorDescriptionID", "IndicatorDescriptionID"),
@@ -5645,7 +5724,7 @@ module hiw {
         public indicatorDescriptionID: number = null;
         public localeID: number = null;
 
-        protected getFields(): any { return IndicatorDescriptionLocaleCounty.Fields; }
+        protected getFields(): any { return BaseIndicatorDescriptionLocaleCounty.Fields; }
 
         /** Gets a list of all of the IndicatorDescriptionLocaleCounties in the database.
          *  @param  page The page of data to retrieve.
@@ -5760,9 +5839,11 @@ module hiw {
             api.executeEndpoint<IndicatorDescriptionLocaleCounty>(Endpoint.fromSelf<IndicatorDescriptionLocaleCounty>(), callback, { indicatorDescriptionLocaleCountyID: indicatorDescriptionLocaleCountyID });
         }
     }
+    
+    export class IndicatorDescriptionLocaleCounty extends BaseIndicatorDescriptionLocaleCounty { }
 
     /** Contains properties and static functionality for the IndicatorDescriptionLocaleHospitalReferralRegion type. */
-    export class IndicatorDescriptionLocaleHospitalReferralRegion extends ServiceDataObject {
+    export class BaseIndicatorDescriptionLocaleHospitalReferralRegion extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             indicatorDescriptionID: new PropertyMap("indicatorDescriptionID", "IndicatorDescriptionID"),
@@ -5773,7 +5854,7 @@ module hiw {
         public indicatorDescriptionID: number = null;
         public localeID: number = null;
 
-        protected getFields(): any { return IndicatorDescriptionLocaleHospitalReferralRegion.Fields; }
+        protected getFields(): any { return BaseIndicatorDescriptionLocaleHospitalReferralRegion.Fields; }
 
         /** Gets a list of all of the IndicatorDescriptionLocaleHospitalReferralRegions in the database.
          *  @param  page The page of data to retrieve.
@@ -5888,9 +5969,11 @@ module hiw {
             api.executeEndpoint<IndicatorDescriptionLocaleHospitalReferralRegion>(Endpoint.fromSelf<IndicatorDescriptionLocaleHospitalReferralRegion>(), callback, { indicatorDescriptionLocaleHospitalReferralRegionID: indicatorDescriptionLocaleHospitalReferralRegionID });
         }
     }
+    
+    export class IndicatorDescriptionLocaleHospitalReferralRegion extends BaseIndicatorDescriptionLocaleHospitalReferralRegion { }
 
     /** Contains properties and static functionality for the IndicatorDescriptionLocaleLevel type. */
-    export class IndicatorDescriptionLocaleLevel extends ServiceDataObject {
+    export class BaseIndicatorDescriptionLocaleLevel extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             indicatorDescriptionID: new PropertyMap("indicatorDescriptionID", "IndicatorDescriptionID"),
@@ -5901,7 +5984,7 @@ module hiw {
         public indicatorDescriptionID: number = null;
         public localeLevelID: number = null;
 
-        protected getFields(): any { return IndicatorDescriptionLocaleLevel.Fields; }
+        protected getFields(): any { return BaseIndicatorDescriptionLocaleLevel.Fields; }
 
         /** Gets a list of all of the IndicatorDescriptionLocaleLevels in the database.
          *  @param  page The page of data to retrieve.
@@ -6016,9 +6099,11 @@ module hiw {
             api.executeEndpoint<IndicatorDescriptionLocaleLevel>(Endpoint.fromSelf<IndicatorDescriptionLocaleLevel>(), callback, { indicatorDescriptionLocaleLevelID: indicatorDescriptionLocaleLevelID });
         }
     }
+    
+    export class IndicatorDescriptionLocaleLevel extends BaseIndicatorDescriptionLocaleLevel { }
 
     /** Contains properties and static functionality for the IndicatorDescriptionLocale type. */
-    export class IndicatorDescriptionLocale extends ServiceDataObject {
+    export class BaseIndicatorDescriptionLocale extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             indicatorDescriptionID: new PropertyMap("indicatorDescriptionID", "IndicatorDescriptionID"),
@@ -6029,7 +6114,7 @@ module hiw {
         public indicatorDescriptionID: number = null;
         public localeID: number = null;
 
-        protected getFields(): any { return IndicatorDescriptionLocale.Fields; }
+        protected getFields(): any { return BaseIndicatorDescriptionLocale.Fields; }
 
         /** Gets a list of all of the IndicatorDescriptionLocales in the database.
          *  @param  page The page of data to retrieve.
@@ -6144,9 +6229,11 @@ module hiw {
             api.executeEndpoint<IndicatorDescriptionLocale>(Endpoint.fromSelf<IndicatorDescriptionLocale>(), callback, { indicatorDescriptionLocaleID: indicatorDescriptionLocaleID });
         }
     }
+    
+    export class IndicatorDescriptionLocale extends BaseIndicatorDescriptionLocale { }
 
     /** Contains properties and static functionality for the IndicatorDescriptionLocaleState type. */
-    export class IndicatorDescriptionLocaleState extends ServiceDataObject {
+    export class BaseIndicatorDescriptionLocaleState extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             indicatorDescriptionID: new PropertyMap("indicatorDescriptionID", "IndicatorDescriptionID"),
@@ -6157,7 +6244,7 @@ module hiw {
         public indicatorDescriptionID: number = null;
         public localeID: number = null;
 
-        protected getFields(): any { return IndicatorDescriptionLocaleState.Fields; }
+        protected getFields(): any { return BaseIndicatorDescriptionLocaleState.Fields; }
 
         /** Gets a list of all of the IndicatorDescriptionLocaleStates in the database.
          *  @param  page The page of data to retrieve.
@@ -6272,9 +6359,11 @@ module hiw {
             api.executeEndpoint<IndicatorDescriptionLocaleState>(Endpoint.fromSelf<IndicatorDescriptionLocaleState>(), callback, { indicatorDescriptionLocaleStateID: indicatorDescriptionLocaleStateID });
         }
     }
+    
+    export class IndicatorDescriptionLocaleState extends BaseIndicatorDescriptionLocaleState { }
 
     /** Contains properties and static functionality for the IndicatorDescriptionMethodologyNote type. */
-    export class IndicatorDescriptionMethodologyNote extends ServiceDataObject {
+    export class BaseIndicatorDescriptionMethodologyNote extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             indicatorDescriptionID: new PropertyMap("indicatorDescriptionID", "IndicatorDescriptionID"),
@@ -6295,7 +6384,7 @@ module hiw {
         public isFootnote: boolean = null;
         public sortOrder: number = null;
 
-        protected getFields(): any { return IndicatorDescriptionMethodologyNote.Fields; }
+        protected getFields(): any { return BaseIndicatorDescriptionMethodologyNote.Fields; }
 
         /** Gets a list of all of the IndicatorDescriptionMethodologyNotes in the database.
          *  @param  page The page of data to retrieve.
@@ -6376,9 +6465,11 @@ module hiw {
             api.executeEndpoint<IndicatorDescriptionMethodologyNote>(Endpoint.fromSelf<IndicatorDescriptionMethodologyNote>(), callback, { indicatorDescriptionMethodologyNoteID: indicatorDescriptionMethodologyNoteID });
         }
     }
+    
+    export class IndicatorDescriptionMethodologyNote extends BaseIndicatorDescriptionMethodologyNote { }
 
     /** Contains properties and static functionality for the IndicatorDescriptionMoreInfo type. */
-    export class IndicatorDescriptionMoreInfo extends ServiceDataObject {
+    export class BaseIndicatorDescriptionMoreInfo extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             indicatorDescriptionID: new PropertyMap("indicatorDescriptionID", "IndicatorDescriptionID"),
@@ -6393,7 +6484,7 @@ module hiw {
         public urlID: number = null;
         public sortOrder: number = null;
 
-        protected getFields(): any { return IndicatorDescriptionMoreInfo.Fields; }
+        protected getFields(): any { return BaseIndicatorDescriptionMoreInfo.Fields; }
 
         /** Gets a list of all of the IndicatorDescriptionMoreInfos in the database.
          *  @param  page The page of data to retrieve.
@@ -6508,9 +6599,11 @@ module hiw {
             api.executeEndpoint<IndicatorDescriptionMoreInfo>(Endpoint.fromSelf<IndicatorDescriptionMoreInfo>(), callback, { indicatorDescriptionMoreInfoID: indicatorDescriptionMoreInfoID });
         }
     }
+    
+    export class IndicatorDescriptionMoreInfo extends BaseIndicatorDescriptionMoreInfo { }
 
     /** Contains properties and static functionality for the IndicatorDescriptionReference type. */
-    export class IndicatorDescriptionReference extends ServiceDataObject {
+    export class BaseIndicatorDescriptionReference extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             indicatorDescriptionID: new PropertyMap("indicatorDescriptionID", "IndicatorDescriptionID"),
@@ -6525,7 +6618,7 @@ module hiw {
         public urlID: number = null;
         public sortOrder: number = null;
 
-        protected getFields(): any { return IndicatorDescriptionReference.Fields; }
+        protected getFields(): any { return BaseIndicatorDescriptionReference.Fields; }
 
         /** Gets a list of all of the IndicatorDescriptionReferences in the database.
          *  @param  page The page of data to retrieve.
@@ -6640,9 +6733,11 @@ module hiw {
             api.executeEndpoint<IndicatorDescriptionReference>(Endpoint.fromSelf<IndicatorDescriptionReference>(), callback, { indicatorDescriptionReferenceID: indicatorDescriptionReferenceID });
         }
     }
+    
+    export class IndicatorDescriptionReference extends BaseIndicatorDescriptionReference { }
 
     /** Contains properties and static functionality for the IndicatorDescriptionResource type. */
-    export class IndicatorDescriptionResource extends ServiceDataObject {
+    export class BaseIndicatorDescriptionResource extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             indicatorDescriptionID: new PropertyMap("indicatorDescriptionID", "IndicatorDescriptionID"),
@@ -6657,7 +6752,7 @@ module hiw {
         public urlID: number = null;
         public sortOrder: number = null;
 
-        protected getFields(): any { return IndicatorDescriptionResource.Fields; }
+        protected getFields(): any { return BaseIndicatorDescriptionResource.Fields; }
 
         /** Gets a list of all of the IndicatorDescriptionResources in the database.
          *  @param  page The page of data to retrieve.
@@ -6772,9 +6867,11 @@ module hiw {
             api.executeEndpoint<IndicatorDescriptionResource>(Endpoint.fromSelf<IndicatorDescriptionResource>(), callback, { indicatorDescriptionResourceID: indicatorDescriptionResourceID });
         }
     }
+    
+    export class IndicatorDescriptionResource extends BaseIndicatorDescriptionResource { }
 
     /** Contains properties and static functionality for the IndicatorDescription type. */
-    export class IndicatorDescription extends ServiceDataObject {
+    export class BaseIndicatorDescription extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             shortDescription: new PropertyMap("shortDescription", "ShortDescription"),
@@ -6821,7 +6918,7 @@ module hiw {
         public maximumCacheValue: number = null;
         public modifyDate: Date = null;
 
-        protected getFields(): any { return IndicatorDescription.Fields; }
+        protected getFields(): any { return BaseIndicatorDescription.Fields; }
 
         /** Gets a list of all of the IndicatorDescriptions in the database.
          *  @param  page The page of data to retrieve.
@@ -6904,7 +7001,7 @@ module hiw {
     }
 
     /** Contains properties and static functionality for the IndicatorDescriptionHP2020 type. */
-    export class IndicatorDescriptionHP2020 extends ServiceDataObject {
+    export class BaseIndicatorDescriptionHP2020 extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             indicatorDescriptionID: new PropertyMap("indicatorDescriptionID", "IndicatorDescriptionID"),
@@ -6927,7 +7024,7 @@ module hiw {
         public HP2020TSMID: number = null;
         public initiativeSpecificTopicArea: string = null;
 
-        protected getFields(): any { return IndicatorDescriptionHP2020.Fields; }
+        protected getFields(): any { return BaseIndicatorDescriptionHP2020.Fields; }
 
         /** Gets a list of all of the IndicatorDescriptionHP2020s in the database.
          *  @param  page The page of data to retrieve.
@@ -7042,9 +7139,11 @@ module hiw {
             api.executeEndpoint<IndicatorDescriptionHP2020>(Endpoint.fromSelf<IndicatorDescriptionHP2020>(), callback, { indicatorDescriptionHP2020ID: indicatorDescriptionHP2020ID });
         }
     }
+    
+    export class IndicatorDescriptionHP2020 extends BaseIndicatorDescriptionHP2020 { }
 
     /** Contains properties and static functionality for the IndicatorDescriptionTimeFrame type. */
-    export class IndicatorDescriptionTimeFrame extends ServiceDataObject {
+    export class BaseIndicatorDescriptionTimeFrame extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             indicatorDescriptionID: new PropertyMap("indicatorDescriptionID", "IndicatorDescriptionID"),
@@ -7055,7 +7154,7 @@ module hiw {
         public indicatorDescriptionID: number = null;
         public timeframeID: number = null;
 
-        protected getFields(): any { return IndicatorDescriptionTimeFrame.Fields; }
+        protected getFields(): any { return BaseIndicatorDescriptionTimeFrame.Fields; }
 
         /** Gets a list of all of the IndicatorDescriptionTimeFrames in the database.
          *  @param  page The page of data to retrieve.
@@ -7170,9 +7269,11 @@ module hiw {
             api.executeEndpoint<IndicatorDescriptionTimeFrame>(Endpoint.fromSelf<IndicatorDescriptionTimeFrame>(), callback, { indicatorDescriptionTimeFrameID: indicatorDescriptionTimeFrameID });
         }
     }
+    
+    export class IndicatorDescriptionTimeFrame extends BaseIndicatorDescriptionTimeFrame { }
 
     /** Contains properties and static functionality for the IndicatorDescriptionYear type. */
-    export class IndicatorDescriptionYear extends ServiceDataObject {
+    export class BaseIndicatorDescriptionYear extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             indicatorDescriptionID: new PropertyMap("indicatorDescriptionID", "IndicatorDescriptionID"),
@@ -7183,7 +7284,7 @@ module hiw {
         public indicatorDescriptionID: number = null;
         public yearID: number = null;
 
-        protected getFields(): any { return IndicatorDescriptionYear.Fields; }
+        protected getFields(): any { return BaseIndicatorDescriptionYear.Fields; }
 
         /** Gets a list of all of the IndicatorDescriptionYears in the database.
          *  @param  page The page of data to retrieve.
@@ -7304,9 +7405,11 @@ module hiw {
             api.executeEndpoint<IndicatorDescriptionYear>(Endpoint.fromSelf<IndicatorDescriptionYear>(), callback, { indicatorDescriptionID: indicatorDescriptionID, yearID: yearID });
         }
     }
+    
+    export class IndicatorDescriptionYear extends BaseIndicatorDescriptionYear { }
 
     /** Contains properties and static functionality for the IndicatorDimensionGraph type. */
-    export class IndicatorDimensionGraph extends ServiceDataObject {
+    export class BaseIndicatorDimensionGraph extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             indicatorDescriptionID: new PropertyMap("indicatorDescriptionID", "IndicatorDescriptionID"),
@@ -7319,7 +7422,7 @@ module hiw {
         public localeLevelID: number = null;
         public dimensionGraphID: number = null;
 
-        protected getFields(): any { return IndicatorDimensionGraph.Fields; }
+        protected getFields(): any { return BaseIndicatorDimensionGraph.Fields; }
 
         /** Gets a list of all of the IndicatorDimensionGraphs in the database.
          *  @param  page The page of data to retrieve.
@@ -7468,9 +7571,11 @@ module hiw {
             api.executeEndpoint<IndicatorDimensionGraph>(Endpoint.fromSelf<IndicatorDimensionGraph>(), callback, { indicatorDimensionGraphID: indicatorDimensionGraphID });
         }
     }
+    
+    export class IndicatorDimensionGraph extends BaseIndicatorDimensionGraph { }
 
     /** Contains properties and static functionality for the IndicatorDimension type. */
-    export class IndicatorDimension extends ServiceDataObject {
+    export class BaseIndicatorDimension extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             indicatorID: new PropertyMap("indicatorID", "IndicatorID"),
@@ -7481,7 +7586,7 @@ module hiw {
         public indicatorID: number = null;
         public dimensionBookID: number = null;
 
-        protected getFields(): any { return IndicatorDimension.Fields; }
+        protected getFields(): any { return BaseIndicatorDimension.Fields; }
 
         /** Gets a list of all of the IndicatorDimensions in the database.
          *  @param  page The page of data to retrieve.
@@ -7602,9 +7707,11 @@ module hiw {
             api.executeEndpoint<IndicatorDimension>(Endpoint.fromSelf<IndicatorDimension>(), callback, { dimensionBookID: dimensionBookID, indicatorID: indicatorID });
         }
     }
+    
+    export class IndicatorDimension extends BaseIndicatorDimension { }
 
     /** Contains properties and static functionality for the Indicator type. */
-    export class Indicator extends ServiceDataObject {
+    export class BaseIndicator extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             indicatorDescriptionID: new PropertyMap("indicatorDescriptionID", "IndicatorDescriptionID"),
@@ -7671,7 +7778,7 @@ module hiw {
         public hrrCode: number = null;
         public ssaCode: number = null;
 
-        protected getFields(): any { return Indicator.Fields; }
+        protected getFields(): any { return BaseIndicator.Fields; }
 
         /** Gets a list of all of the Indicators in the database.
          *  @param  page The page of data to retrieve.
@@ -7888,9 +7995,11 @@ module hiw {
             api.executeEndpoint<Indicator>(Endpoint.fromSelf<Indicator>(), callback, { indicatorID: indicatorID });
         }
     }
+    
+    export class Indicator extends BaseIndicator { }
 
     /** Contains properties and static functionality for the Initiative type. */
-    export class Initiative extends ServiceDataObject {
+    export class BaseInitiative extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             acronym: new PropertyMap("acronym", "Acronym"),
@@ -7917,7 +8026,7 @@ module hiw {
         public IsSSA: boolean = null;
         public modifyDate: Date = null;
 
-        protected getFields(): any { return Initiative.Fields; }
+        protected getFields(): any { return BaseInitiative.Fields; }
 
         /** Gets a list of all of the Initiatives in the database.
          *  @param  page The page of data to retrieve.
@@ -7964,9 +8073,11 @@ module hiw {
             api.executeEndpoint<number>(Endpoint.fromSelf<number>(), callback, null, filter.toJSON());
         }
     }
+    
+    export class Initiative extends BaseInitiative { }
 
     /** Contains properties and static functionality for the Intervention type. */
-    export class Intervention extends ServiceDataObject {
+    export class BaseIntervention extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             topic: new PropertyMap("topic", "Topic"),
@@ -7987,7 +8098,7 @@ module hiw {
         public interventionSource: string = null;
         public sortOrder: number = null;
 
-        protected getFields(): any { return Intervention.Fields; }
+        protected getFields(): any { return BaseIntervention.Fields; }
 
         /** Gets a list of all of the Interventions in the database.
          *  @param  page The page of data to retrieve.
@@ -8068,9 +8179,11 @@ module hiw {
             api.executeEndpoint<Intervention>(Endpoint.fromSelf<Intervention>(), callback, { interventionID: interventionID });
         }
     }
+    
+    export class Intervention extends BaseIntervention { }
 
     /** Contains properties and static functionality for the Keyword type. */
-    export class Keyword extends ServiceDataObject {
+    export class BaseKeyword extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             name: new PropertyMap("name", "Name"),
@@ -8089,7 +8202,7 @@ module hiw {
         public modifyDate: Date = null;
         public countOfIndicatorDescription: number = null;
 
-        protected getFields(): any { return Keyword.Fields; }
+        protected getFields(): any { return BaseKeyword.Fields; }
 
         /** Gets a list of all of the Keywords in the database.
          *  @param  page The page of data to retrieve.
@@ -8136,9 +8249,11 @@ module hiw {
             api.executeEndpoint<number>(Endpoint.fromSelf<number>(), callback, null, filter.toJSON());
         }
     }
+    
+    export class Keyword extends BaseKeyword { }
 
     /** Contains properties and static functionality for the LocaleLevel type. */
-    export class LocaleLevel extends ServiceDataObject {
+    export class BaseLocaleLevel extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             name: new PropertyMap("name", "Name"),
@@ -8149,7 +8264,7 @@ module hiw {
         public name: LocaleLevelName = null;
         public sortOrder: number = null;
 
-        protected getFields(): any { return LocaleLevel.Fields; }
+        protected getFields(): any { return BaseLocaleLevel.Fields; }
 
         /** Gets a list of all of the LocaleLevels in the database.
          *  @param  page The page of data to retrieve.
@@ -8196,9 +8311,11 @@ module hiw {
             api.executeEndpoint<number>(Endpoint.fromSelf<number>(), callback, null, filter.toJSON());
         }
     }
+    
+    export class LocaleLevel extends BaseLocaleLevel { }
 
     /** Contains properties and static functionality for the LocaleRelation type. */
-    export class LocaleRelation extends ServiceDataObject {
+    export class BaseLocaleRelation extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             ancestorLocaleID: new PropertyMap("ancestorLocaleID", "AncestorLocaleID"),
@@ -8211,7 +8328,7 @@ module hiw {
         public descendantLocaleID: number = null;
         public hops: number = null;
 
-        protected getFields(): any { return LocaleRelation.Fields; }
+        protected getFields(): any { return BaseLocaleRelation.Fields; }
 
         /** Gets a list of all of the LocaleRelations in the database.
          *  @param  page The page of data to retrieve.
@@ -8332,9 +8449,11 @@ module hiw {
             api.executeEndpoint<LocaleRelation>(Endpoint.fromSelf<LocaleRelation>(), callback, { ancestorLocaleID: ancestorLocaleID, descendantLocaleID: descendantLocaleID });
         }
     }
+    
+    export class LocaleRelation extends BaseLocaleRelation { }
 
     /** Contains properties and static functionality for the Locale type. */
-    export class Locale extends ServiceDataObject {
+    export class BaseLocale extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             parentLocaleID: new PropertyMap("parentLocaleID", "ParentLocaleID"),
@@ -8363,7 +8482,7 @@ module hiw {
         public abbreviation: string = null;
         public localeLevelID: number = null;
 
-        protected getFields(): any { return Locale.Fields; }
+        protected getFields(): any { return BaseLocale.Fields; }
 
         /** Gets a list of all of the Locales in the database.
          *  @param  page The page of data to retrieve.
@@ -8496,9 +8615,11 @@ module hiw {
             api.executeEndpoint<Locale>(Endpoint.fromSelf<Locale>(), callback, { localeID: localeID });
         }
     }
+    
+    export class Locale extends BaseLocale { }
 
     /** Contains properties and static functionality for the MaritalStatus type. */
-    export class MaritalStatus extends ServiceDataObject {
+    export class BaseMaritalStatus extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             name: new PropertyMap("name", "Name"),
@@ -8519,7 +8640,7 @@ module hiw {
         public sortOrder: number = null;
         public depth: number = null;
 
-        protected getFields(): any { return MaritalStatus.Fields; }
+        protected getFields(): any { return BaseMaritalStatus.Fields; }
 
         /** Gets a list of all of the MaritalStatuses in the database.
          *  @param  page The page of data to retrieve.
@@ -8618,9 +8739,11 @@ module hiw {
             api.executeEndpoint<MaritalStatus>(Endpoint.fromSelf<MaritalStatus>(), callback, { maritalStatusID: maritalStatusID });
         }
     }
+    
+    export class MaritalStatus extends BaseMaritalStatus { }
 
     /** Contains properties and static functionality for the MaritalStatusRelation type. */
-    export class MaritalStatusRelation extends ServiceDataObject {
+    export class BaseMaritalStatusRelation extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             ancestorMaritalStatusID: new PropertyMap("ancestorMaritalStatusID", "AncestorMaritalStatusID"),
@@ -8633,7 +8756,7 @@ module hiw {
         public descendantMaritalStatusID: number = null;
         public hops: number = null;
 
-        protected getFields(): any { return MaritalStatusRelation.Fields; }
+        protected getFields(): any { return BaseMaritalStatusRelation.Fields; }
 
         /** Gets a list of all of the MaritalStatusRelations in the database.
          *  @param  page The page of data to retrieve.
@@ -8748,9 +8871,11 @@ module hiw {
             api.executeEndpoint<MaritalStatusRelation>(Endpoint.fromSelf<MaritalStatusRelation>(), callback, { maritalStatusRelationID: maritalStatusRelationID });
         }
     }
+    
+    export class MaritalStatusRelation extends BaseMaritalStatusRelation { }
 
     /** Contains properties and static functionality for the Modifier type. */
-    export class Modifier extends ServiceDataObject {
+    export class BaseModifier extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             key: new PropertyMap("key", "Key"),
@@ -8785,7 +8910,7 @@ module hiw {
         public chartName: string = null;
         public downloadName: string = null;
 
-        protected getFields(): any { return Modifier.Fields; }
+        protected getFields(): any { return BaseModifier.Fields; }
 
         /** Gets a list of all of the Modifiers in the database.
          *  @param  page The page of data to retrieve.
@@ -8884,9 +9009,11 @@ module hiw {
             api.executeEndpoint<Modifier>(Endpoint.fromSelf<Modifier>(), callback, { modifierID: modifierID });
         }
     }
+    
+    export class Modifier extends BaseModifier { }
 
     /** Contains properties and static functionality for the ModifierGraph type. */
-    export class ModifierGraph extends ServiceDataObject {
+    export class BaseModifierGraph extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             label: new PropertyMap("label", "Label"),
@@ -8947,7 +9074,7 @@ module hiw {
         public modifier5Key: string = null;
         public modifier5SortOrder: number = null;
 
-        protected getFields(): any { return ModifierGraph.Fields; }
+        protected getFields(): any { return BaseModifierGraph.Fields; }
 
         /** Gets a list of all of the ModifierGraphs in the database.
          *  @param  page The page of data to retrieve.
@@ -9164,9 +9291,11 @@ module hiw {
             api.executeEndpoint<ModifierGraph>(Endpoint.fromSelf<ModifierGraph>(), callback, { modifierGraphID: modifierGraphID });
         }
     }
+    
+    export class ModifierGraph extends BaseModifierGraph { }
 
     /** Contains properties and static functionality for the ObesityStatus type. */
-    export class ObesityStatus extends ServiceDataObject {
+    export class BaseObesityStatus extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             name: new PropertyMap("name", "Name"),
@@ -9187,7 +9316,7 @@ module hiw {
         public sortOrder: number = null;
         public depth: number = null;
 
-        protected getFields(): any { return ObesityStatus.Fields; }
+        protected getFields(): any { return BaseObesityStatus.Fields; }
 
         /** Gets a list of all of the ObesityStatuses in the database.
          *  @param  page The page of data to retrieve.
@@ -9286,9 +9415,11 @@ module hiw {
             api.executeEndpoint<ObesityStatus>(Endpoint.fromSelf<ObesityStatus>(), callback, { obesityStatusID: obesityStatusID });
         }
     }
+    
+    export class ObesityStatus extends BaseObesityStatus { }
 
     /** Contains properties and static functionality for the ObesityStatusRelation type. */
-    export class ObesityStatusRelation extends ServiceDataObject {
+    export class BaseObesityStatusRelation extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             ancestorObesityStatusID: new PropertyMap("ancestorObesityStatusID", "AncestorObesityStatusID"),
@@ -9301,7 +9432,7 @@ module hiw {
         public descendantObesityStatusID: number = null;
         public hops: number = null;
 
-        protected getFields(): any { return ObesityStatusRelation.Fields; }
+        protected getFields(): any { return BaseObesityStatusRelation.Fields; }
 
         /** Gets a list of all of the ObesityStatusRelations in the database.
          *  @param  page The page of data to retrieve.
@@ -9416,9 +9547,11 @@ module hiw {
             api.executeEndpoint<ObesityStatusRelation>(Endpoint.fromSelf<ObesityStatusRelation>(), callback, { obesityStatusRelationID: obesityStatusRelationID });
         }
     }
+    
+    export class ObesityStatusRelation extends BaseObesityStatusRelation { }
 
     /** Contains properties and static functionality for the Other type. */
-    export class Other extends ServiceDataObject {
+    export class BaseOther extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             name: new PropertyMap("name", "Name"),
@@ -9439,7 +9572,7 @@ module hiw {
         public sortOrder: number = null;
         public depth: number = null;
 
-        protected getFields(): any { return Other.Fields; }
+        protected getFields(): any { return BaseOther.Fields; }
 
         /** Gets a list of all of the Others in the database.
          *  @param  page The page of data to retrieve.
@@ -9538,9 +9671,11 @@ module hiw {
             api.executeEndpoint<Other>(Endpoint.fromSelf<Other>(), callback, { otherID: otherID });
         }
     }
+    
+    export class Other extends BaseOther { }
 
     /** Contains properties and static functionality for the OtherRelation type. */
-    export class OtherRelation extends ServiceDataObject {
+    export class BaseOtherRelation extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             ancestorOtherID: new PropertyMap("ancestorOtherID", "AncestorOtherID"),
@@ -9553,7 +9688,7 @@ module hiw {
         public descendantOtherID: number = null;
         public hops: number = null;
 
-        protected getFields(): any { return OtherRelation.Fields; }
+        protected getFields(): any { return BaseOtherRelation.Fields; }
 
         /** Gets a list of all of the OtherRelations in the database.
          *  @param  page The page of data to retrieve.
@@ -9668,9 +9803,11 @@ module hiw {
             api.executeEndpoint<OtherRelation>(Endpoint.fromSelf<OtherRelation>(), callback, { otherRelationID: otherRelationID });
         }
     }
+    
+    export class OtherRelation extends BaseOtherRelation { }
 
     /** Contains properties and static functionality for the RaceEthnicity type. */
-    export class RaceEthnicity extends ServiceDataObject {
+    export class BaseRaceEthnicity extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             name: new PropertyMap("name", "Name"),
@@ -9691,7 +9828,7 @@ module hiw {
         public sortOrder: number = null;
         public depth: number = null;
 
-        protected getFields(): any { return RaceEthnicity.Fields; }
+        protected getFields(): any { return BaseRaceEthnicity.Fields; }
 
         /** Gets a list of all of the RaceEthnicities in the database.
          *  @param  page The page of data to retrieve.
@@ -9790,9 +9927,11 @@ module hiw {
             api.executeEndpoint<RaceEthnicity>(Endpoint.fromSelf<RaceEthnicity>(), callback, { raceEthnicityID: raceEthnicityID });
         }
     }
+    
+    export class RaceEthnicity extends BaseRaceEthnicity { }
 
     /** Contains properties and static functionality for the RaceEthnicityRelation type. */
-    export class RaceEthnicityRelation extends ServiceDataObject {
+    export class BaseRaceEthnicityRelation extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             ancestorRaceEthnicityID: new PropertyMap("ancestorRaceEthnicityID", "AncestorRaceEthnicityID"),
@@ -9805,7 +9944,7 @@ module hiw {
         public descendantRaceEthnicityID: number = null;
         public hops: number = null;
 
-        protected getFields(): any { return RaceEthnicityRelation.Fields; }
+        protected getFields(): any { return BaseRaceEthnicityRelation.Fields; }
 
         /** Gets a list of all of the RaceEthnicityRelations in the database.
          *  @param  page The page of data to retrieve.
@@ -9920,9 +10059,11 @@ module hiw {
             api.executeEndpoint<RaceEthnicityRelation>(Endpoint.fromSelf<RaceEthnicityRelation>(), callback, { raceEthnicityRelationID: raceEthnicityRelationID });
         }
     }
+    
+    export class RaceEthnicityRelation extends BaseRaceEthnicityRelation { }
 
     /** Contains properties and static functionality for the Sex type. */
-    export class Sex extends ServiceDataObject {
+    export class BaseSex extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             name: new PropertyMap("name", "Name"),
@@ -9943,7 +10084,7 @@ module hiw {
         public sortOrder: number = null;
         public depth: number = null;
 
-        protected getFields(): any { return Sex.Fields; }
+        protected getFields(): any { return BaseSex.Fields; }
 
         /** Gets a list of all of the Sexes in the database.
          *  @param  page The page of data to retrieve.
@@ -10042,9 +10183,11 @@ module hiw {
             api.executeEndpoint<Sex>(Endpoint.fromSelf<Sex>(), callback, { sexID: sexID });
         }
     }
+    
+    export class Sex extends BaseSex { }
 
     /** Contains properties and static functionality for the SexRelation type. */
-    export class SexRelation extends ServiceDataObject {
+    export class BaseSexRelation extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             ancestorSexID: new PropertyMap("ancestorSexID", "AncestorSexID"),
@@ -10057,7 +10200,7 @@ module hiw {
         public descendantSexID: number = null;
         public hops: number = null;
 
-        protected getFields(): any { return SexRelation.Fields; }
+        protected getFields(): any { return BaseSexRelation.Fields; }
 
         /** Gets a list of all of the SexRelations in the database.
          *  @param  page The page of data to retrieve.
@@ -10172,9 +10315,11 @@ module hiw {
             api.executeEndpoint<SexRelation>(Endpoint.fromSelf<SexRelation>(), callback, { sexRelationID: sexRelationID });
         }
     }
+    
+    export class SexRelation extends BaseSexRelation { }
 
     /** Contains properties and static functionality for the SexualOrientation type. */
-    export class SexualOrientation extends ServiceDataObject {
+    export class BaseSexualOrientation extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             name: new PropertyMap("name", "Name"),
@@ -10195,7 +10340,7 @@ module hiw {
         public sortOrder: number = null;
         public depth: number = null;
 
-        protected getFields(): any { return SexualOrientation.Fields; }
+        protected getFields(): any { return BaseSexualOrientation.Fields; }
 
         /** Gets a list of all of the SexualOrientations in the database.
          *  @param  page The page of data to retrieve.
@@ -10294,9 +10439,11 @@ module hiw {
             api.executeEndpoint<SexualOrientation>(Endpoint.fromSelf<SexualOrientation>(), callback, { sexualOrientationID: sexualOrientationID });
         }
     }
+    
+    export class SexualOrientation extends BaseSexualOrientation { }
 
     /** Contains properties and static functionality for the SexualOrientationRelation type. */
-    export class SexualOrientationRelation extends ServiceDataObject {
+    export class BaseSexualOrientationRelation extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             ancestorSexualOrientationID: new PropertyMap("ancestorSexualOrientationID", "AncestorSexualOrientationID"),
@@ -10309,7 +10456,7 @@ module hiw {
         public descendantSexualOrientationID: number = null;
         public hops: number = null;
 
-        protected getFields(): any { return SexualOrientationRelation.Fields; }
+        protected getFields(): any { return BaseSexualOrientationRelation.Fields; }
 
         /** Gets a list of all of the SexualOrientationRelations in the database.
          *  @param  page The page of data to retrieve.
@@ -10424,9 +10571,11 @@ module hiw {
             api.executeEndpoint<SexualOrientationRelation>(Endpoint.fromSelf<SexualOrientationRelation>(), callback, { sexualOrientationRelationID: sexualOrientationRelationID });
         }
     }
+    
+    export class SexualOrientationRelation extends BaseSexualOrientationRelation { }
 
     /** Contains properties and static functionality for the Timeframe type. */
-    export class Timeframe extends ServiceDataObject {
+    export class BaseTimeframe extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             name: new PropertyMap("name", "Name"),
@@ -10445,7 +10594,7 @@ module hiw {
         public twoDigitLastYear: string = null;
         public sortOrder: number = null;
 
-        protected getFields(): any { return Timeframe.Fields; }
+        protected getFields(): any { return BaseTimeframe.Fields; }
 
         /** Gets a list of all of the Timeframes in the database.
          *  @param  page The page of data to retrieve.
@@ -10492,9 +10641,11 @@ module hiw {
             api.executeEndpoint<number>(Endpoint.fromSelf<number>(), callback, null, filter.toJSON());
         }
     }
+    
+    export class Timeframe extends BaseTimeframe { }
 
     /** Contains properties and static functionality for the Total type. */
-    export class Total extends ServiceDataObject {
+    export class BaseTotal extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             name: new PropertyMap("name", "Name"),
@@ -10515,7 +10666,7 @@ module hiw {
         public sortOrder: number = null;
         public depth: number = null;
 
-        protected getFields(): any { return Total.Fields; }
+        protected getFields(): any { return BaseTotal.Fields; }
 
         /** Gets a list of all of the Totals in the database.
          *  @param  page The page of data to retrieve.
@@ -10614,9 +10765,11 @@ module hiw {
             api.executeEndpoint<Total>(Endpoint.fromSelf<Total>(), callback, { totalID: totalID });
         }
     }
+    
+    export class Total extends BaseTotal { }
 
     /** Contains properties and static functionality for the TotalRelation type. */
-    export class TotalRelation extends ServiceDataObject {
+    export class BaseTotalRelation extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             ancestorTotalID: new PropertyMap("ancestorTotalID", "AncestorTotalID"),
@@ -10629,7 +10782,7 @@ module hiw {
         public descendantTotalID: number = null;
         public hops: number = null;
 
-        protected getFields(): any { return TotalRelation.Fields; }
+        protected getFields(): any { return BaseTotalRelation.Fields; }
 
         /** Gets a list of all of the TotalRelations in the database.
          *  @param  page The page of data to retrieve.
@@ -10744,9 +10897,11 @@ module hiw {
             api.executeEndpoint<TotalRelation>(Endpoint.fromSelf<TotalRelation>(), callback, { totalRelationID: totalRelationID });
         }
     }
+    
+    export class TotalRelation extends BaseTotalRelation { }
 
     /** Contains properties and static functionality for the Url type. */
-    export class Url extends ServiceDataObject {
+    export class BaseUrl extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             linkTag: new PropertyMap("linkTag", "LinkTag"),
@@ -10769,7 +10924,7 @@ module hiw {
         public validationDate: Date = null;
         public validationStatus: number = null;
 
-        protected getFields(): any { return Url.Fields; }
+        protected getFields(): any { return BaseUrl.Fields; }
 
         /** Gets a list of all of the Urls in the database.
          *  @param  page The page of data to retrieve.
@@ -10816,9 +10971,11 @@ module hiw {
             api.executeEndpoint<number>(Endpoint.fromSelf<number>(), callback, null, filter.toJSON());
         }
     }
+    
+    export class Url extends BaseUrl { }
 
     /** Contains properties and static functionality for the ValueLabel type. */
-    export class ValueLabel extends ServiceDataObject {
+    export class BaseValueLabel extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             label: new PropertyMap("label", "Label")
@@ -10827,7 +10984,7 @@ module hiw {
         public id: number = null;
         public label: string = null;
 
-        protected getFields(): any { return ValueLabel.Fields; }
+        protected getFields(): any { return BaseValueLabel.Fields; }
 
         /** Gets a list of all of the ValueLabels in the database.
          *  @param  page The page of data to retrieve.
@@ -10874,9 +11031,11 @@ module hiw {
             api.executeEndpoint<number>(Endpoint.fromSelf<number>(), callback, null, filter.toJSON());
         }
     }
+    
+    export class ValueLabel extends BaseValueLabel { }
 
     /** Contains properties and static functionality for the VeteranStatus type. */
-    export class VeteranStatus extends ServiceDataObject {
+    export class BaseVeteranStatus extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             name: new PropertyMap("name", "Name"),
@@ -10897,7 +11056,7 @@ module hiw {
         public sortOrder: number = null;
         public depth: number = null;
 
-        protected getFields(): any { return VeteranStatus.Fields; }
+        protected getFields(): any { return BaseVeteranStatus.Fields; }
 
         /** Gets a list of all of the VeteranStatuses in the database.
          *  @param  page The page of data to retrieve.
@@ -10996,9 +11155,11 @@ module hiw {
             api.executeEndpoint<VeteranStatus>(Endpoint.fromSelf<VeteranStatus>(), callback, { veteranStatusID: veteranStatusID });
         }
     }
+    
+    export class VeteranStatus extends BaseVeteranStatus { }
 
     /** Contains properties and static functionality for the VeteranStatusRelation type. */
-    export class VeteranStatusRelation extends ServiceDataObject {
+    export class BaseVeteranStatusRelation extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             ancestorVeteranStatusID: new PropertyMap("ancestorVeteranStatusID", "AncestorVeteranStatusID"),
@@ -11011,7 +11172,7 @@ module hiw {
         public descendantVeteranStatusID: number = null;
         public hops: number = null;
 
-        protected getFields(): any { return VeteranStatusRelation.Fields; }
+        protected getFields(): any { return BaseVeteranStatusRelation.Fields; }
 
         /** Gets a list of all of the VeteranStatusRelations in the database.
          *  @param  page The page of data to retrieve.
@@ -11126,9 +11287,11 @@ module hiw {
             api.executeEndpoint<VeteranStatusRelation>(Endpoint.fromSelf<VeteranStatusRelation>(), callback, { veteranStatusRelationID: veteranStatusRelationID });
         }
     }
+    
+    export class VeteranStatusRelation extends BaseVeteranStatusRelation { }
 
     /** Contains properties and static functionality for the Year type. */
-    export class Year extends ServiceDataObject {
+    export class BaseYear extends ServiceDataObject {
         public static Fields = {
             id: new PropertyMap("id", "ID"),
             fullYear: new PropertyMap("fullYear", "FullYear"),
@@ -11141,7 +11304,7 @@ module hiw {
         public twoDigitYear: string = null;
         public sortOrder: number = null;
 
-        protected getFields(): any { return Year.Fields; }
+        protected getFields(): any { return BaseYear.Fields; }
 
         /** Gets a list of all of the Years in the database.
          *  @param  page The page of data to retrieve.
@@ -11188,4 +11351,6 @@ module hiw {
             api.executeEndpoint<number>(Endpoint.fromSelf<number>(), callback, null, filter.toJSON());
         }
     }
+    
+    export class Year extends BaseYear { }
     }

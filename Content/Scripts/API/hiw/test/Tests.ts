@@ -1,6 +1,4 @@
-﻿/// <reference path="_dependencies"/>
-
-module hiw.test {
+﻿module hiw.test {
     export function run(apiKey: string, baseURL: string): void {
         var api = new API(apiKey, baseURL);
 
@@ -116,6 +114,9 @@ module hiw.test {
             apiTest<Array<IndicatorDataItem>>(api, "Get Indicator Data for #9", IndicatorDataItem.getByIndicatorDescriptionID, [9],(assert, done, data, response, error) => {
                 assert.equal(response.dataLength, 1000, "Is the data length correct?");
                 assert.isNotNull(data[0].indicatorID, "Is there any data?");
+            }),
+            apiTest<Array<IndicatorDescription>>(api, "Search Indicator Descriptions", IndicatorDescription.search, ["hospital readmissions"],(assert, done, data, response, error) => {
+                assert.equal(response.dataLength, 2, "Were two IDs returned?");
             })
         ]);
     }

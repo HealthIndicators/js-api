@@ -22,6 +22,8 @@ hiw\IAPICallback.ts
 hiw\API.ts
 hiw\DataObjects.Generated.ts
 hiw\IndicatorDataItem.ts
+hiw\IndicatorDescription.ts
 hiw\Version.ts
 hiw\VersionInfo.ts
+hiw\Endpoints.ts
 hiw\Endpoints.Generated.ts

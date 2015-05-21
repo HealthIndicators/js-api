@@ -14,10 +14,12 @@
 /// <reference path="APIResponse.ts"/>
 /// <reference path="IAPICallback.ts"/>
 /// <reference path="Enumerations.Generated.ts"/>
-/// <reference path="API.ts"/>
 /// <reference path="DataObjects.Generated.ts"/>
+/// <reference path="API.ts"/>
 /// <reference path="IndicatorDataItem.ts"/>
+/// <reference path="IndicatorDescription.ts"/>
 /// <reference path="Version.ts"/>
 /// <reference path="VersionInfo.ts"/>
+/// <reference path="Endpoints.ts"/>
 /// <reference path="Endpoints.Generated.ts"/>
 //# sourceMappingURL=_dependencies.js.map
