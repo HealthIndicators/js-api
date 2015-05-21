@@ -2,6 +2,7 @@
 -d
 --sourceMap
 --out Output\hiw-api-test.js
+Output\hiw-api.d.ts
 hiw\test\QUnitAssert.ts
 hiw\test\IQUnitTestCallback.ts
 hiw\test\QUnitTest.ts

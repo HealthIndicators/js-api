@@ -1,4 +1,3 @@
-/// <reference path="_dependencies"/>
 var hiw;
 (function (hiw) {
     var test;

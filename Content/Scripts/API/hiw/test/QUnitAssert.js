@@ -1,4 +1,4 @@
-/// <reference path="../../../Definitions/qunit" />
+/// <reference path="../../../Definitions/qunit.d.ts"/>
 QUnit.assert.isNull = function (actual, message) {
     QUnit.push(actual == null || actual == undefined, actual, null, message);
 };
@@ -28,6 +28,20 @@ QUnit.assert.any = function (items, test, message) {
         for (var i = 0; i < items.length; i++) {
             if (test(items[i])) {
                 hasMatch = true;
+                break;
+            }
+        }
+    }
+    QUnit.push(hasMatch, (isNull ? null : "Array[" + items.length + "]"), test, message);
+};
+QUnit.assert.all = function (items, test, message) {
+    var isNull = (items == null);
+    var isEmpty = (isNull || items.length == 0);
+    var hasMatch = true;
+    if (!isEmpty) {
+        for (var i = 0; i < items.length; i++) {
+            if (!test(items[i])) {
+                hasMatch = false;
                 break;
             }
         }

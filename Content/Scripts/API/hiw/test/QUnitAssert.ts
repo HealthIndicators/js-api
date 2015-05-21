@@ -1,4 +1,4 @@
-﻿/// <reference path="../../../Definitions/qunit" />
+﻿/// <reference path="../../../Definitions/qunit.d.ts"/>
 
 interface QUnitAssert {
     isNull(actual: any, message?: string): void;
@@ -53,4 +53,21 @@ QUnit.assert.any = <T>(items: Array<T>, test: (item: T) => boolean, message?: st
     }
 
     QUnit.push(hasMatch, (isNull ? null : "Array[" + items.length + "]"), test, message);
+};
+
+QUnit.assert.all = <T>(items: Array<T>, test: (item: T) => boolean, message?: string) => {
+    var isNull = (items == null);
+    var isEmpty = (isNull || items.length == 0);
+    var hasMatch = true;
+
+    if (!isEmpty) {
+        for (var i = 0; i < items.length; i++) {
+            if (!test(items[i])) {
+                hasMatch = false;
+                break;
+            }
+        }
+    }
+
+    QUnit.push(hasMatch,(isNull ? null : "Array[" + items.length + "]"), test, message);
 };
