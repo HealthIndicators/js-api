@@ -92,6 +92,10 @@ var hiw;
                 }),
                 apiTest(api, "Search Indicator Descriptions", hiw.IndicatorDescription.search, ["hospital readmissions"], function (assert, done, data, response, error) {
                     assert.equal(response.dataLength, 2, "Were two IDs returned?");
+                }),
+                apiTest(api, "Get ValueLabel for IndicatorDescription", hiw.IndicatorDescription.getValueLabelForIndicatorDescription, [9], function (assert, done, data, response, error) {
+                    assert.equal(hiw.ValueLabel.prototype.isPrototypeOf(data), true, "Is the result a ValueLabel?");
+                    assert.equal("per person", data.label, "Is the value label correct?");
                 })
             ]);
         }

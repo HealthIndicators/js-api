@@ -117,6 +117,10 @@
             }),
             apiTest<Array<IndicatorDescription>>(api, "Search Indicator Descriptions", IndicatorDescription.search, ["hospital readmissions"],(assert, done, data, response, error) => {
                 assert.equal(response.dataLength, 2, "Were two IDs returned?");
+            }),
+            apiTest<ValueLabel>(api, "Get ValueLabel for IndicatorDescription", IndicatorDescription.getValueLabelForIndicatorDescription, [9],(assert, done, data, response, error) => {
+                assert.equal(hiw.ValueLabel.prototype.isPrototypeOf(data), true, "Is the result a ValueLabel?");
+                assert.equal("per person", data.label, "Is the value label correct?");
             })
         ]);
     }
