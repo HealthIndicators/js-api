@@ -51,6 +51,10 @@
     <Content Include="Content\Styles\qunit.css" />
     <Content Include="Index.html" />
     <Content Include="LICENSE.md" />
+    <Content Include="Content\Packages\cdnjs\package.json" />
+    <Content Include="Content\Packages\NPM\package.json" />
+    <Content Include="Content\Packages\NuGet\hiw-api-lite.nuspec" />
+    <Content Include="Content\Packages\NuGet\hiw-api.nuspec" />
     <None Include="README.md" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\Common.ts" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\Endpoint.ts" />
