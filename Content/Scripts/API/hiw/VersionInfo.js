@@ -15,7 +15,7 @@ var hiw;
         VersionInfo.prototype.getFields = function () {
             return VersionInfo.Fields;
         };
-        VersionInfo.Version = function (api, callback) {
+        VersionInfo.version = function (api, callback) {
             api.executeEndpoint(hiw.Endpoint.fromSelf(), callback);
         };
         VersionInfo.Fields = {
@@ -26,6 +26,6 @@ var hiw;
         return VersionInfo;
     })(hiw.ServiceDataObject);
     hiw.VersionInfo = VersionInfo;
-    hiw.Endpoint.addSingle(VersionInfo, 0 /* GET */, "/Version", VersionInfo.Version);
+    hiw.Endpoint.addSingle(VersionInfo, 0 /* GET */, "/Version", VersionInfo.version);
 })(hiw || (hiw = {}));
 //# sourceMappingURL=VersionInfo.js.map

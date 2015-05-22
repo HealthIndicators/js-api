@@ -98,10 +98,8 @@
                 request.send();
         }
         
-        public static VerifyApiKey(api: API, callback: IAPICallback<boolean>) {
+        public static verifyApiKey(api: API, callback: IAPICallback<boolean>) {
             api.executeEndpoint<boolean>(Endpoint.fromSelf<boolean>(), callback);
         }
     }
-
-    Endpoint.addSimple<API, boolean>(API, HttpMethod.GET, "/VerifyApiKey", API.VerifyApiKey);
 }

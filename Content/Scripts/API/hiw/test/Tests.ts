@@ -3,10 +3,10 @@
         var api = new API(apiKey, baseURL);
 
         m("General", null, [
-            apiTest<boolean>(api, "Verify API Key", API.VerifyApiKey, null,(assert, done, data, response, error) => {
+            apiTest<boolean>(api, "Verify API Key", API.verifyApiKey, null,(assert, done, data, response, error) => {
                 assert.strictEqual(data, true, "Did the API key validate?");
             }),
-            apiTest<VersionInfo>(api, "Get Version", VersionInfo.Version, null,(assert, done, data, response, error) => {
+            apiTest<VersionInfo>(api, "Get Version", VersionInfo.version, null,(assert, done, data, response, error) => {
                 assert.isNotNull(data.hiwVersion, "Was a Version instance returned?");
                 assert.equal(data.serviceVersion, hiw.APIVersion.major, "Is the (major) service version the same as the JavaScript API version?");
             }),

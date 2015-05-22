@@ -75,7 +75,7 @@ var hiw;
             else
                 request.send();
         };
-        API.VerifyApiKey = function (api, callback) {
+        API.verifyApiKey = function (api, callback) {
             api.executeEndpoint(hiw.Endpoint.fromSelf(), callback);
         };
         API.DefaultBaseURL = "http://services.healthindicators.gov/v5/REST.svc/";
@@ -83,6 +83,5 @@ var hiw;
         return API;
     })();
     hiw.API = API;
-    hiw.Endpoint.addSimple(API, 0 /* GET */, "/VerifyApiKey", API.VerifyApiKey);
 })(hiw || (hiw = {}));
 //# sourceMappingURL=API.js.map

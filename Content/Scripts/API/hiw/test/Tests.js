@@ -5,10 +5,10 @@ var hiw;
         function run(apiKey, baseURL) {
             var api = new hiw.API(apiKey, baseURL);
             m("General", null, [
-                apiTest(api, "Verify API Key", hiw.API.VerifyApiKey, null, function (assert, done, data, response, error) {
+                apiTest(api, "Verify API Key", hiw.API.verifyApiKey, null, function (assert, done, data, response, error) {
                     assert.strictEqual(data, true, "Did the API key validate?");
                 }),
-                apiTest(api, "Get Version", hiw.VersionInfo.Version, null, function (assert, done, data, response, error) {
+                apiTest(api, "Get Version", hiw.VersionInfo.version, null, function (assert, done, data, response, error) {
                     assert.isNotNull(data.hiwVersion, "Was a Version instance returned?");
                     assert.equal(data.serviceVersion, hiw.APIVersion.major, "Is the (major) service version the same as the JavaScript API version?");
                 }),

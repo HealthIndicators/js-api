@@ -12,10 +12,10 @@
 
         protected getFields(): any { return VersionInfo.Fields; }
 
-        public static Version(api: API, callback: IAPICallback<VersionInfo>) {
+        public static version(api: API, callback: IAPICallback<VersionInfo>) {
             api.executeEndpoint<VersionInfo>(Endpoint.fromSelf<VersionInfo>(), callback);
         }
     }
 
-    Endpoint.addSingle<VersionInfo>(VersionInfo, HttpMethod.GET, "/Version", VersionInfo.Version);
+    Endpoint.addSingle<VersionInfo>(VersionInfo, HttpMethod.GET, "/Version", VersionInfo.version);
 }
