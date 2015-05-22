@@ -4,11 +4,12 @@
     function initialize() {
         var m = eval("module");
 
+        // Check if we're running under Node.JS.
         if (typeof m === "object" && typeof m.exports === "object") {
-            var XMLHttpRequest = eval("require(\"xmlhttprequest\")").XMLHttpRequest;
+            var nodeJSXMLHttpRequest = eval("require(\"xmlhttprequest\")").XMLHttpRequest;
 
             hiw.getHttpRequest = function () {
-                return new XMLHttpRequest();
+                return new nodeJSXMLHttpRequest();
             };
             m.exports = hiw;
         }
