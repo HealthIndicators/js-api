@@ -8,7 +8,10 @@ var hiw;
             if (baseURL === void 0) { baseURL = API.DefaultBaseURL; }
             this.apiKey = apiKey;
             this.baseURL = baseURL;
+            this.initialize();
         }
+        API.prototype.initialize = function () {
+        };
         API.parameterizePath = function (path, params) {
             var parameterizedPath = path;
             if (params)
@@ -44,7 +47,7 @@ var hiw;
             });
         };
         API.prototype.executeUrl = function (method, url, postData, callback) {
-            var request = new XMLHttpRequest();
+            var request = hiw.getHttpRequest();
             request.onreadystatechange = function () {
                 if (request.readyState === 4) {
                     var json = null;

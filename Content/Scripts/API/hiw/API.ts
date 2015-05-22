@@ -14,6 +14,11 @@
         constructor(apiKey: string = null, baseURL: string = API.DefaultBaseURL) {
             this.apiKey = apiKey;
             this.baseURL = baseURL;
+
+            this.initialize();
+        }
+
+        private initialize(): void {
         }
 
         public static parameterizePath(path: string, params?: any) {
@@ -60,7 +65,7 @@
         }
 
         public executeUrl(method: HttpMethod, url: string, postData: any, callback: (json: Object, error: string) => void) {
-            var request = new XMLHttpRequest();
+            var request = hiw.getHttpRequest();
 
             request.onreadystatechange = () => {
                 if (request.readyState === 4) {

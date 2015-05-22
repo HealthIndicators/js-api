@@ -1,5 +1,22 @@
 var hiw;
 (function (hiw) {
+    hiw.getHttpRequest = null;
+    function initialize() {
+        var m = eval("module");
+        if (typeof m === "object" && typeof m.exports === "object") {
+            var XMLHttpRequest = eval("require(\"xmlhttprequest\")").XMLHttpRequest;
+            hiw.getHttpRequest = function () {
+                return new XMLHttpRequest();
+            };
+            m.exports = hiw;
+        }
+        else {
+            hiw.getHttpRequest = function () {
+                return new XMLHttpRequest();
+            };
+        }
+    }
+    initialize();
     function extend(target, source) {
         var exclude = [];
         for (var _i = 2; _i < arguments.length; _i++) {

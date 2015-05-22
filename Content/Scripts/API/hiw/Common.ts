@@ -1,4 +1,26 @@
 ﻿module hiw {
+    export var getHttpRequest: () => XMLHttpRequest = null;
+
+    function initialize() {
+        var m = eval("module");
+
+        if (typeof m === "object" && typeof m.exports === "object") {
+            var XMLHttpRequest = eval("require(\"xmlhttprequest\")").XMLHttpRequest;
+
+            hiw.getHttpRequest = function () {
+                return new XMLHttpRequest();
+            };
+            m.exports = hiw;
+        }
+        else {
+            hiw.getHttpRequest = function () {
+                return new XMLHttpRequest();
+            };
+        }
+    }
+
+    initialize();
+
     export function extend(target: any, source: any, ...exclude: Array<string>) {
         if (source == null) return;
 
