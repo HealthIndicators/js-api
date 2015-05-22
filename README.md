@@ -1,6 +1,15 @@
 ﻿#Health Indicators Warehouse (HIW) JavaScript API
 This read-me file describes the purpose and use of the HIW JavaScript API (herein refered to as simply "JS API").
 
+##Get the API
+You may obtain the JavaScript API via one of the following methods.
+
+- Direct Download: Simply download a ZIP file which contains the API. [Download Now](http://developers.healthindicators.gov/Content/Downloads/hiw-api.zip)
+- Link from cdnjs: Get a link to the API from cdnjs. [Go to cdnjs](https://cdnjs.com/libraries/hiw-api)
+- Install from NuGet: Install the `hiw-api` or `hiw-api-lite` package. [Go to NuGet](http://www.nuget.org/profiles/HealthIndicators)
+- Install from NPM: Install the `hiw-api` package. [Go to NPM](https://www.npmjs.com/package/hiw-api)
+- Browse on GitHub: The API is open source and is available on GitHub – come collaborate with us! [Go to GitHub](https://github.com/HealthIndicators/js-api)
+
 ##Purpose
 The JS API is designed to allow developers to acccess data sotred within the HIW more easily, using JavaScript. By using the 
 JS API, developers won't have to write much of the boilerplate code required to make calls to the HIW's RESTful Service, and 
