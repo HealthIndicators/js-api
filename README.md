@@ -27,8 +27,7 @@ is not required.
 
 ##Usage
 Most developers who are comfortable working with JavaScript should find the JS API fairly straightforward to use. The JS API has 
-been designed to minimize user error. For instance, you won't be required to type and strings such as the API's base URL, API 
-API methods, field names and operators while filtering, etc.
+been designed to minimize user error. For instance, you won't be required to type and strings such as the API's base URL, endpoint URIs, field names and operators while filtering, etc.
 
 _Note:_ Examples shown below assume you have already instantiated a global `hiw.API` instance called `api` and exclude error-checking 
 code for brevity.
@@ -65,7 +64,7 @@ use the HIW Service:
     var apiKey = "your-api-key-goes-here";
     var api = new hiw.API(apiKey);
 
-You must create an instance of the `API` class and use it to call API API methods. You only need a single `API` instance for your 
+You must create an instance of the `hiw.API` class and use it to call API endpoints. You only need a single `API` instance for your 
 entire application.
 
 ###Callbacks
