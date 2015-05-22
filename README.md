@@ -30,7 +30,7 @@ Most developers who are comfortable working with JavaScript should find the JS A
 been designed to minimize user error. For instance, you won't be required to type and strings such as the API's base URL, API 
 API methods, field names and operators while filtering, etc.
 
-_Note:_ Examples shown below assume you have already instantiated a global `API` instance called `api` and exclude error-checking 
+_Note:_ Examples shown below assume you have already instantiated a global `hiw.API` instance called `api` and exclude error-checking 
 code for brevity.
 
 ###Lite or Full?
@@ -136,6 +136,8 @@ API method and get a specific locale (Arkansas):
 
         alert(locale.fullName);
     });
+
+
 
 ##Examples
 The small examples above should have given you the general idea of how to work with the JS API. More examples and tutorials are 
