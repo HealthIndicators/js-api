@@ -197,4 +197,6 @@ FakesAssemblies/
 *.opt
 
 # Other
-Content/Scripts/API/Output/
+Content/Scripts/API/Output/hiw-js-api.zip
+Content/Scripts/API/Output/LICENSE.md
+Content/Scripts/API/Output/README.md
