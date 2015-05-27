@@ -4,6 +4,10 @@
 /// <reference path="Criterion.ts"/>
 /// <reference path="Group.ts"/>
 /// <reference path="Filter.ts"/>
+/// <reference path="IAsyncCompleteCallback.ts"/>
+/// <reference path="ISynchronizerCompleteCallback.ts"/>
+/// <reference path="Async.ts"/>
+/// <reference path="Synchronizer.ts"/>
 /// <reference path="IAPIResponseInitializer.ts"/>
 /// <reference path="PropertyMap.ts"/>
 /// <reference path="HttpMethod.ts"/>

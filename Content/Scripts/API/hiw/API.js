@@ -23,13 +23,14 @@ var hiw;
             if (page === void 0) { page = 1; }
             var parameterizedPath = null;
             var url = null;
+            var async = null;
             if (page != null) {
                 params = (params || {});
                 params.page = page;
             }
             parameterizedPath = API.parameterizePath(endpoint.uriTemplate, params);
             url = this.baseURL + parameterizedPath;
-            this.executeUrl(endpoint.method, url, postData, function (json, error) {
+            async = this.executeUrl(endpoint.method, url, postData, function (json, error) {
                 var response = new hiw.APIResponse(endpoint, url, postData);
                 if (error == null) {
                     try {
@@ -45,9 +46,11 @@ var hiw;
                 if (callback)
                     callback((response ? response.data : null), response, error);
             });
+            return async;
         };
         API.prototype.executeUrl = function (method, url, postData, callback) {
             var request = hiw.getHttpRequest();
+            var async = new hiw.Async();
             request.onreadystatechange = function () {
                 if (request.readyState === 4) {
                     var json = null;
@@ -66,6 +69,7 @@ var hiw;
                         error = "Call to HIW API endpoint \"" + url + "\" returned HTTP status code: " + request.status + " " + request.statusText;
                     if (callback)
                         callback(json, error);
+                    async.complete();
                 }
             };
             request.open(hiw.HttpMethod[method], url);
@@ -77,6 +81,7 @@ var hiw;
             }
             else
                 request.send();
+            return async;
         };
         API.verifyApiKey = function (api, callback) {
             api.executeEndpoint(hiw.Endpoint.fromSelf(), callback);

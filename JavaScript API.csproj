@@ -56,6 +56,7 @@
     <Content Include="Content\Packages\NuGet\hiw-api-lite.nuspec" />
     <Content Include="Content\Packages\NuGet\hiw-api.nuspec" />
     <None Include="README.md" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\Async.ts" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\Common.ts" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\Endpoint.ts" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\Endpoints.Generated.ts" />
@@ -69,12 +70,15 @@
     <TypeScriptCompile Include="Content\Scripts\API\hiw\Group.ts" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\HttpMethod.ts" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\IAPIResponseInitializer.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\IAsyncCompleteCallback.ts" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\IndicatorDataItem.ts" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\IndicatorDescription.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\ISynchronizerCompleteCallback.ts" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\Link.ts" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\PropertyMap.ts" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\ServiceDataObject.ts" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\ServiceObject.ts" />
+    <TypeScriptCompile Include="Content\Scripts\API\hiw\Synchronizer.ts" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\test\IQUnitTestCallback.ts" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\test\QUnitAssert.ts" />
     <TypeScriptCompile Include="Content\Scripts\API\hiw\test\QUnitTest.ts" />

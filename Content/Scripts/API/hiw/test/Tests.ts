@@ -121,6 +121,32 @@
             apiTest<ValueLabel>(api, "Get ValueLabel for IndicatorDescription", IndicatorDescription.getValueLabelForIndicatorDescription, [9],(assert, done, data, response, error) => {
                 assert.equal(hiw.ValueLabel.prototype.isPrototypeOf(data), true, "Is the result a ValueLabel?");
                 assert.equal("per person", data.label, "Is the value label correct?");
+            }),
+            asyncTest("Synchronized API Calls",(assert: QUnitAssert, done?: () => any) => {
+                var indicatorDescriptions: Array<IndicatorDescription> = null;
+                var timeframes: Array<Timeframe> = null;
+                var locales: Array<Locale> = null;
+                var ages: Array<Age> = null;
+
+                Synchronizer.sync([
+                    IndicatorDescription.getAll(api,(data) => {
+                        indicatorDescriptions = data;
+                    }),
+                    Timeframe.getAll(api,(data) => {
+                        timeframes = data;
+                    }),
+                    Locale.getAll(api,(data) => {
+                        locales = data;
+                    }),
+                    Age.getAll(api,(data) => {
+                        ages = data;
+                    })],() => {
+                        assert.isNotNull(indicatorDescriptions, "Were the IndicatorDescriptions received?.");
+                        assert.isNotNull(timeframes, "Were the Timeframes received?.");
+                        assert.isNotNull(locales, "Were the Locales received?.");
+                        assert.isNotNull(ages, "Were the Ages received?.");
+                        done();
+                    });
             })
         ]);
     }

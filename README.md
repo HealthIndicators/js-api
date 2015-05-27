@@ -136,7 +136,33 @@ API method and get a specific locale (Arkansas):
         alert(locale.fullName);
     });
 
+###Synchronizing
+The JS API also includes a simple mechanism which allows you to synchronize any number of API calls. Basically, you can execute 
+multiple API calls and when they have all completed, a callback is execute. This is handy if you need to load data from a few
+different endpoints and then update the UI once all calls have completed. For example:
 
+    var indicatorDescriptions = null;
+    var timeframes = null;
+    var locales = null;
+    var ages = null;
+
+    // Pass an array of API calls, followed by the final callback.
+    hiw.Synchronizer.sync([
+        hiw.IndicatorDescription.getAll(api, (data) => {
+            indicatorDescriptions = data;
+        }),
+        hiw.Timeframe.getAll(api, (data) => {
+            timeframes = data;
+        }),
+        hiw.Locale.getAll(api, (data) => {
+            locales = data;
+        }),
+        hiw.Age.getAll(api, (data) => {
+            ages = data;
+        })],() => {
+            // This final callback is only execute onces the 4 API calls have completed.
+            // Perform UI updates here.
+        });
 
 ##Examples
 The small examples above should have given you the general idea of how to work with the JS API. More examples and tutorials are 

@@ -96,6 +96,32 @@ var hiw;
                 apiTest(api, "Get ValueLabel for IndicatorDescription", hiw.IndicatorDescription.getValueLabelForIndicatorDescription, [9], function (assert, done, data, response, error) {
                     assert.equal(hiw.ValueLabel.prototype.isPrototypeOf(data), true, "Is the result a ValueLabel?");
                     assert.equal("per person", data.label, "Is the value label correct?");
+                }),
+                asyncTest("Synchronized API Calls", function (assert, done) {
+                    var indicatorDescriptions = null;
+                    var timeframes = null;
+                    var locales = null;
+                    var ages = null;
+                    hiw.Synchronizer.sync([
+                        hiw.IndicatorDescription.getAll(api, function (data) {
+                            indicatorDescriptions = data;
+                        }),
+                        hiw.Timeframe.getAll(api, function (data) {
+                            timeframes = data;
+                        }),
+                        hiw.Locale.getAll(api, function (data) {
+                            locales = data;
+                        }),
+                        hiw.Age.getAll(api, function (data) {
+                            ages = data;
+                        })
+                    ], function () {
+                        assert.isNotNull(indicatorDescriptions, "Were the IndicatorDescriptions received?.");
+                        assert.isNotNull(timeframes, "Were the Timeframes received?.");
+                        assert.isNotNull(locales, "Were the Locales received?.");
+                        assert.isNotNull(ages, "Were the Ages received?.");
+                        done();
+                    });
                 })
             ]);
         }

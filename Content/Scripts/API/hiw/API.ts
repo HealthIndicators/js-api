@@ -31,9 +31,10 @@
             return parameterizedPath;
         }
         
-        public executeEndpoint<T>(endpoint: Endpoint<T>, callback: IAPICallback<T>, params?: any, postData?: any, page: number = 1) {
+        public executeEndpoint<T>(endpoint: Endpoint<T>, callback: IAPICallback<T>, params?: any, postData?: any, page: number = 1): Async {
             var parameterizedPath = null;
             var url = null;
+            var async = null;
 
             if (page != null) {
                 params = (params || {});
@@ -43,7 +44,7 @@
             parameterizedPath = API.parameterizePath(endpoint.uriTemplate, params);
             url = this.baseURL + parameterizedPath;
 
-            this.executeUrl(endpoint.method, url, postData,(json: Object, error: string) => {
+            async = this.executeUrl(endpoint.method, url, postData,(json: Object, error: string) => {
                 var response: APIResponse<T> = new APIResponse<T>(endpoint, url, postData);
 
                 if (error == null) {
@@ -62,10 +63,13 @@
                 if (callback)
                     callback((response ? response.data : null), response, error);
             });
+
+            return async;
         }
 
-        public executeUrl(method: HttpMethod, url: string, postData: any, callback: (json: Object, error: string) => void) {
+        public executeUrl(method: HttpMethod, url: string, postData: any, callback: (json: Object, error: string) => void): Async {
             var request = hiw.getHttpRequest();
+            var async = new Async();
 
             request.onreadystatechange = () => {
                 if (request.readyState === 4) {
@@ -88,6 +92,8 @@
 
                     if (callback)
                         callback(json, error);
+
+                    async.complete();
                 }
             };
 
@@ -101,6 +107,8 @@
             }
             else
                 request.send();
+
+            return async;
         }
         
         public static verifyApiKey(api: API, callback: IAPICallback<boolean>) {

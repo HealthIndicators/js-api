@@ -3,6 +3,10 @@
 --sourceMap
 --out Output\hiw-api-lite.js
 hiw\Common.ts
+hiw\IAsyncCompleteCallback.ts
+hiw\ISynchronizerCompleteCallback.ts
+hiw\Async.ts
+hiw\Synchronizer.ts
 hiw\IFilterPart.ts
 hiw\FilterType.ts
 hiw\Operator.ts
