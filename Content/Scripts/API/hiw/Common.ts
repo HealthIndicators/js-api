@@ -2,10 +2,17 @@
     export var getHttpRequest: () => XMLHttpRequest = null;
 
     function initialize() {
-        var m = eval("module");
+        var m = null;
+
+        try {
+            m = eval("module");
+        }
+        catch (ex) {
+            //"module" is not defined - not running under Node.JS.
+        }
 
         // Check if we're running under Node.JS.
-        if (typeof m === "object" && typeof m.exports === "object") {
+        if (m != null && typeof m === "object" && typeof m.exports === "object") {
             var nodeJSXMLHttpRequest = eval("require(\"xmlhttprequest\")").XMLHttpRequest;
 
             hiw.getHttpRequest = function () {
