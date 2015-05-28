@@ -1,5 +1,5 @@
 /* Health Indicators Warehouse (HIW) JavaScript API
- *   v5.0.3 (beta)
+ *   v5.0.4 (beta)
  * 
  * Docs:    http://developers.healthindicators.gov
  * Source:  https://github.com/HealthIndicators/js-api
