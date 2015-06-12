@@ -166,7 +166,7 @@ different endpoints and then update the UI once all calls have completed. For ex
 
 ##Examples
 The small examples above should have given you the general idea of how to work with the JS API. More examples and tutorials are 
-available on the [HIW Developers site](http://localhost:5000/HIW-Developers/Examples) and [JSFiddle](http://jsfiddle.net/user/HealthIndicators).
+available on the [HIW Developers site](http://developers.healthindicators.gov/Examples) and [JSFiddle](http://jsfiddle.net/user/HealthIndicators).
 
 ##Reporting Issues
 If you come across any issues while using the JS API or if something is not clear, please [contact HIW Support](mailto:healthindicators@cdc.gov). Bugs and suggestions [may also be logged on Github](https://github.com/HealthIndicators/js-api/issues).
