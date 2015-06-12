@@ -4,28 +4,46 @@
         public completedAsyncs: Array<Async> = null;
         public completeCallback: ISynchronizerCompleteCallback = null;
 
-        constructor(asyncs: Array<Async>, completeCallback: ISynchronizerCompleteCallback) {
-            this.asyncs = asyncs;
+        constructor(asyncs?: Array<Async>, completeCallback?: ISynchronizerCompleteCallback) {
+            this.asyncs = (asyncs || new Array<Async>());
             this.completedAsyncs = new Array<Async>();
             this.completeCallback = completeCallback;
 
-            this.subscribe();
+            this.subscribeAll();
         }
 
-        private subscribe(): void {
+        public add(async: Async) {
+            this.asyncs.push(async);
+            this.subscribe(async);
+        }
+
+        public subscribeAll(): void {
             for (var i = 0; i < this.asyncs.length; i++)
-                this.asyncs[i].subscribe(this.actionCompleted.bind(this));
+                this.subscribe(this.asyncs[i]);
+        }
+
+        private subscribe(async: Async): void {
+            async.subscribe(this.actionCompleted.bind(this));
         }
 
         private actionCompleted(async: Async): void {
             this.completedAsyncs.push(async);
+            this.notifyIfComplete();
+        }
 
+        public sync(completeCallback: ISynchronizerCompleteCallback): void {
+            this.completeCallback = completeCallback;
+            this.notifyIfComplete();
+        }
+
+        public notifyIfComplete(): void {
             if (this.asyncs.length == this.completedAsyncs.length)
                 this.notify();
         }
 
-        private notify(): void {
-            this.completeCallback();
+        public notify(): void {
+            if (this.completeCallback != null)
+                this.completeCallback();
         }
 
         public static sync(asyncs: Array<Async>, completeCallback: ISynchronizerCompleteCallback): Synchronizer {
