@@ -8,6 +8,7 @@ interface QUnitAssert {
     lessThan(actual: number, expected: number, message?: string): void;
     lessThanOrEqualTo(actual: number, expected: number, message?: string): void;
     any<T>(items: Array<T>, test: (item: T) => boolean, message?: string): void;
+    all<T>(items: Array<T>, test: (item: T) => boolean, message?: string): void;
 }
 
 QUnit.assert.isNull = (actual: any, message?: string) => {
