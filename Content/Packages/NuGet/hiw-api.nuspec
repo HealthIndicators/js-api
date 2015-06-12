@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>hiw-api</id>
-        <version>5.0.3.0</version>
+        <version>5.0.4.1</version>
         <title>Health Indicators Warehouse Javascript API (Complete)</title>
         <authors>Health Indicators Warehouse</authors>
         <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
