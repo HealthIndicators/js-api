@@ -168,8 +168,6 @@
     <Zip ZipFileName="Content\Scripts\API\Output\hiw-js-api.zip" ZipLevel="9" Files="@(JSAPIOutputs)" WorkingDirectory="Content\Scripts\API\Output" />
     <Message Importance="high" Text="Copying API to Developers..." />
     <Copy SourceFiles="Content\Scripts\API\Output\hiw-js-api.zip" DestinationFolder="..\..\Developers\Content\Downloads\" />
-    <Copy SourceFiles="Content\Scripts\API\Output\hiw-api.min.js" DestinationFolder="..\..\Developers\Content\Scripts\" />
-    <Copy SourceFiles="Content\Scripts\API\Output\hiw-api-lite.min.js" DestinationFolder="..\..\Developers\Content\Scripts\" />
   </Target>
   <Target Name="CleanJavaScriptAPIOutput">
     <ItemGroup>
