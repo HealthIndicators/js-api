@@ -87,7 +87,6 @@ var hiw;
                     return false;
                 }),
                 apiTest(api, "Get Indicator Data for #9", hiw.IndicatorDataItem.getByIndicatorDescriptionID, [9], function (assert, done, data, response, error) {
-                    assert.equal(response.dataLength, 1000, "Is the data length correct?");
                     assert.isNotNull(data[0].indicatorID, "Is there any data?");
                 }),
                 apiTest(api, "Search Indicator Descriptions", hiw.IndicatorDescription.search, ["hospital readmissions"], function (assert, done, data, response, error) {

@@ -73,7 +73,7 @@
 
                             assertAPIResponse(assert, data, response, error);
                             assert.equal(response.dataLength, 1, "Was only one dimension graph returned?");
-                            
+
                             dimensionGraph = dimensionGraphs[0];
                             assert.equal(dimensionGraph.label, "Aged <65 years", "Is the dimension graph's label correct?");
 
@@ -112,7 +112,6 @@
                 return false;
             }),
             apiTest<Array<IndicatorDataItem>>(api, "Get Indicator Data for #9", IndicatorDataItem.getByIndicatorDescriptionID, [9],(assert, done, data, response, error) => {
-                assert.equal(response.dataLength, 1000, "Is the data length correct?");
                 assert.isNotNull(data[0].indicatorID, "Is there any data?");
             }),
             apiTest<Array<IndicatorDescription>>(api, "Search Indicator Descriptions", IndicatorDescription.search, ["hospital readmissions"],(assert, done, data, response, error) => {
