@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>hiw-api</id>
-        <version>5.0.4.1</version>
+        <version>5.0.5</version>
         <title>Health Indicators Warehouse Javascript API (Complete)</title>
         <authors>Health Indicators Warehouse</authors>
         <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
@@ -11,19 +11,20 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>By using the HIW JavaScript API, developers won't have to write much of the boilerplate code required to make calls to the HIW's RESTful Service, and it also provides helpful information, such as code-completion, as developers work with the HIW JavaScript API.</description>
         <summary>The HIW JavaScript API is designed to allow developers to access data stored within the HIW more easily, using JavaScript.</summary>
+        <releaseNotes>See GitHub for changes.</releaseNotes>
         <language>en-US</language>
         <tags>hiw health indicators warehouse rest api sdk</tags>
     </metadata>
     <files>
-        <file src="hiw-api-lite.js" target="content\Scripts\hiw-api-lite.js" />
-        <file src="hiw-api-lite.min.js" target="content\Scripts\hiw-api-lite.min.js" />
-        <file src="hiw-api.js" target="content\Scripts\hiw-api.js" />
-        <file src="hiw-api.min.js" target="content\Scripts\hiw-api.min.js" />
-        <file src="hiw-api-lite.d.ts" target="hiw-api-lite.d.ts" />
-        <file src="hiw-api-test.d.ts" target="hiw-api-test.d.ts" />
-        <file src="hiw-api-test.js" target="hiw-api-test.js" />
-        <file src="hiw-api.d.ts" target="hiw-api.d.ts" />
-        <file src="LICENSE.md" target="LICENSE.md" />
-        <file src="README.md" target="README.md" />
+        <file src="Publish\hiw-api-lite.js" target="content\Scripts\hiw-api-lite.js" />
+        <file src="Publish\hiw-api-lite.min.js" target="content\Scripts\hiw-api-lite.min.js" />
+        <file src="Publish\hiw-api.js" target="content\Scripts\hiw-api.js" />
+        <file src="Publish\hiw-api.min.js" target="content\Scripts\hiw-api.min.js" />
+        <file src="Publish\hiw-api-lite.d.ts" target="hiw-api-lite.d.ts" />
+        <file src="Publish\hiw-api-test.d.ts" target="hiw-api-test.d.ts" />
+        <file src="Publish\hiw-api-test.js" target="hiw-api-test.js" />
+        <file src="Publish\hiw-api.d.ts" target="hiw-api.d.ts" />
+        <file src="Publish\LICENSE.md" target="LICENSE.md" />
+        <file src="Publish\README.md" target="README.md" />
     </files>
 </package>

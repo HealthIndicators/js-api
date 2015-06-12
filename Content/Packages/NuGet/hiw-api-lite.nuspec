@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>hiw-api-lite</id>
-        <version>5.0.4.1</version>
+        <version>5.0.5</version>
         <title>Health Indicators Warehouse Javascript API (Lite)</title>
         <authors>Health Indicators Warehouse</authors>
         <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
@@ -13,14 +13,15 @@
 
 The "lite" version of the HIW API is a much smaller library without many of the helpful features of the "complete" version. View the README for more information.</description>
         <summary>The HIW JavaScript API is designed to allow developers to access data stored within the HIW more easily, using JavaScript.</summary>
+        <releaseNotes>See GitHub for changes.</releaseNotes>
         <language>en-US</language>
         <tags>hiw health indicators warehouse rest api sdk</tags>
     </metadata>
     <files>
-        <file src="hiw-api-lite.js" target="content\Scripts\hiw-api-lite.js" />
-        <file src="hiw-api-lite.min.js" target="content\Scripts\hiw-api-lite.min.js" />
-        <file src="hiw-api-lite.d.ts" target="hiw-api-lite.d.ts" />
-        <file src="LICENSE.md" target="LICENSE.md" />
-        <file src="README.md" target="README.md" />
+        <file src="Publish\hiw-api-lite.js" target="content\Scripts\hiw-api-lite.js" />
+        <file src="Publish\hiw-api-lite.min.js" target="content\Scripts\hiw-api-lite.min.js" />
+        <file src="Publish\hiw-api-lite.d.ts" target="hiw-api-lite.d.ts" />
+        <file src="Publish\LICENSE.md" target="LICENSE.md" />
+        <file src="Publish\README.md" target="README.md" />
     </files>
 </package>
