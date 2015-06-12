@@ -133,12 +133,16 @@
     <CallTarget Targets="CleanJavaScriptAPIOutput" />
   </Target>
   <Target Name="AfterBuild">
+  <Message Importance="high" Text="$(WindowsSdkPath)"/>
+	<PropertyGroup>
+		<TSCPath>$(MSBuildProgramFiles32)\Microsoft SDKs\TypeScript\$(TypeScriptToolsVersion)\tsc.exe</TSCPath>
+	</PropertyGroup>
     <Message Importance="high" Text="Compiling 'lite' API..." />
-    <Exec Command="tsc @Lite.txt" WorkingDirectory="Content\Scripts\API\" />
+    <Exec Command="&quot;$(TSCPath)&quot; @Lite.txt" WorkingDirectory="Content\Scripts\API\" />
     <Message Importance="high" Text="Compiling 'full' API..." />
-    <Exec Command="tsc @Full.txt" WorkingDirectory="Content\Scripts\API\" />
+    <Exec Command="&quot;$(TSCPath)&quot; @Full.txt" WorkingDirectory="Content\Scripts\API\" />
     <Message Importance="high" Text="Compiling tests..." />
-    <Exec Command="tsc @Test.txt" WorkingDirectory="Content\Scripts\API\" />
+    <Exec Command="&quot;$(TSCPath)&quot; @Test.txt" WorkingDirectory="Content\Scripts\API\" />
     <Message Importance="high" Text="Copying LICENSE and README..." />
     <Copy SourceFiles="LICENSE.md" DestinationFiles="Content\Scripts\API\Output\LICENSE.md" />
     <Copy SourceFiles="README.md" DestinationFiles="Content\Scripts\API\Output\README.md" />
