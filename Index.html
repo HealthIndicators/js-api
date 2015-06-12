@@ -27,26 +27,31 @@
             var baseURL_Key = "baseURL";
 
             $(document).ready(function () {
-                setParameters();
+                getParameters();
 
-                $("#apiKey").change(function () { localStorage.setItem(apiKey_Key, $(this).val()); });
-                $("#baseURL").change(function () { localStorage.setItem(baseURL_Key, $(this).val()); });
+                $("#apiKey").change(function () { setParameter(apiKey_Key, $(this).val()); });
+                $("#baseURL").change(function () { setParameter(baseURL_Key, $(this).val()); });
                 $("#run").click(function () {
                     hiw.test.run($("#apiKey").val(), $("#baseURL").val());
                 });
             });
 
-            function setParameters() {
+            function getParameters() {
                 var apiKey = null;
-                var baseURL = hiw.API.DefaultBaseURL;
+                var baseURL = null;
 
                 if (typeof (Storage) !== "undefined") {
                     apiKey = localStorage.getItem(apiKey_Key);
-                    baseURL = (localStorage.getItem(baseURL_Key) || baseURL);
+                    baseURL = localStorage.getItem(baseURL_Key);
                 }
 
                 $("#apiKey").val(apiKey);
-                $("#baseURL").val(baseURL);
+                $("#baseURL").val(baseURL || hiw.API.DefaultBaseURL);
+            }
+
+            function setParameter(key, value) {
+                if (typeof (Storage) !== "undefined")
+                    localStorage.setItem(key, value);
             }
         </script>
     </body>
