@@ -44,10 +44,14 @@ declare module hiw {
         asyncs: Array<Async>;
         completedAsyncs: Array<Async>;
         completeCallback: ISynchronizerCompleteCallback;
-        constructor(asyncs: Array<Async>, completeCallback: ISynchronizerCompleteCallback);
-        private subscribe();
+        constructor(asyncs?: Array<Async>, completeCallback?: ISynchronizerCompleteCallback);
+        add(async: Async): void;
+        subscribeAll(): void;
+        private subscribe(async);
         private actionCompleted(async);
-        private notify();
+        sync(completeCallback: ISynchronizerCompleteCallback): void;
+        notifyIfComplete(): void;
+        notify(): void;
         static sync(asyncs: Array<Async>, completeCallback: ISynchronizerCompleteCallback): Synchronizer;
     }
 }
