@@ -1,5 +1,5 @@
 /* Health Indicators Warehouse (HIW) JavaScript API
- *   v5.0.4 (beta)
+ *   v5.0.5 (beta)
  * 
  * Docs:    http://developers.healthindicators.gov
  * Source:  https://github.com/HealthIndicators/js-api
@@ -202,6 +202,17 @@ var hiw;
                         assert.isNotNull(ages, "Were the Ages received?.");
                         done();
                     });
+                }),
+                apiTest(api, "Get timeframes using \"In\" clause", hiw.Timeframe.filter, [new hiw.Filter().add(hiw.Timeframe.Fields.name, 8 /* In */, [2010, 2011, 2012])], function (assert, done, data, response, error) {
+                    assert.equal(data.length, 3, "Were 3 timeframes returned?");
+                    assert.any(data, function (o) { return o.name === "2010"; }, "Was the 2010 timeframe returned?");
+                    assert.any(data, function (o) { return o.name === "2011"; }, "Was the 2011 timeframe returned?");
+                    assert.any(data, function (o) { return o.name === "2012"; }, "Was the 2012 timeframe returned?");
+                }),
+                apiTest(api, "Get timeframes using \"NotIn\" clause", hiw.Timeframe.filter, [new hiw.Filter().add(hiw.Timeframe.Fields.name, 9 /* NotIn */, [2010, 2011, 2012])], function (assert, done, data, response, error) {
+                    assert.all(data, function (o) { return o.name !== "2010"; }, "Was the 2010 timeframe not returned?");
+                    assert.all(data, function (o) { return o.name !== "2011"; }, "Was the 2011 timeframe not returned?");
+                    assert.all(data, function (o) { return o.name !== "2012"; }, "Was the 2012 timeframe not returned?");
                 })
             ]);
         }

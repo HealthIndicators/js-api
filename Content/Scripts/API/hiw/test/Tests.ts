@@ -146,6 +146,17 @@
                         assert.isNotNull(ages, "Were the Ages received?.");
                         done();
                     });
+            }),
+            apiTest<Array<Timeframe>>(api, "Get timeframes using \"In\" clause", Timeframe.filter, [new Filter().add(Timeframe.Fields.name, Operator.In, [2010, 2011, 2012])],(assert, done, data, response, error) => {
+                assert.equal(data.length, 3, "Were 3 timeframes returned?");
+                assert.any(data, o => o.name === "2010", "Was the 2010 timeframe returned?");
+                assert.any(data, o => o.name === "2011", "Was the 2011 timeframe returned?");
+                assert.any(data, o => o.name === "2012", "Was the 2012 timeframe returned?");
+            }),
+            apiTest<Array<Timeframe>>(api, "Get timeframes using \"NotIn\" clause", Timeframe.filter, [new Filter().add(Timeframe.Fields.name, Operator.NotIn, [2010, 2011, 2012])],(assert, done, data, response, error) => {
+                assert.all(data, o => o.name !== "2010", "Was the 2010 timeframe not returned?");
+                assert.all(data, o => o.name !== "2011", "Was the 2011 timeframe not returned?");
+                assert.all(data, o => o.name !== "2012", "Was the 2012 timeframe not returned?");
             })
         ]);
     }
