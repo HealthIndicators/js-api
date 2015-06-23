@@ -1,5 +1,5 @@
 ﻿#Health Indicators Warehouse (HIW) JavaScript API
-This read-me file describes the purpose and use of the HIW JavaScript API (herein refered to as simply "JS API").
+This read-me file describes the purpose and use of the HIW JavaScript API (herein referred to as simply "JS API").
 
 ##Get the API
 You may obtain the JavaScript API via one of the following methods.
@@ -11,7 +11,7 @@ You may obtain the JavaScript API via one of the following methods.
 - Browse on GitHub: The API is open source and is available on GitHub – come collaborate with us! [Go to GitHub](https://github.com/HealthIndicators/js-api)
 
 ##Purpose
-The JS API is designed to allow developers to acccess data sotred within the HIW more easily, using JavaScript. By using the 
+The JS API is designed to allow developers to access data stored within the HIW more easily, using JavaScript. By using the 
 JS API, developers won't have to write much of the boilerplate code required to make calls to the HIW's RESTful Service, and 
 it also provides helpful information, such as intellisense and code-completion, as developers work with the JS API - assuming
 the IDE with which they are working supports these features.
@@ -34,7 +34,7 @@ code for brevity.
 
 ###Lite or Full?
 The JS API offers a "lite" version in addition to the full API. The lite version includes the bare necessities needed to work with
-the HIW API. If you are not interested in intellisense/code-completion and simply want some helpe functions and the basic
+the HIW API. If you are not interested in intellisense/code-completion and simply want some helper functions and the basic
 framework required to interact with the API, then the lite version may work for you. If you are using TypeScript, you will most
 likely want to use the full version of the JS API. The full API is fairly large, at around 500KB whereas the lite API is only
 27KB. Future optimizations will hopefully decrease the size of the full API.
@@ -68,7 +68,7 @@ You must create an instance of the `hiw.API` class and use it to call API endpoi
 entire application.
 
 ###Callbacks
-All API calls are performed asynchronosouly, per usual, in order to not block the browser while executing the call. This means 
+All API calls are performed asynchronously, per usual, in order to not block the browser while executing the call. This means 
 that when you execute an API method, you need to provide a callback which will be called when the service returns the requested 
 data. If you're using TypeScript, this will be much easier and you will benefit from strongly typed data in the callback. All 
 callbacks look the same, regardless of the API method. The `IAPICallback` interface describes the callback as 
@@ -119,11 +119,11 @@ JS API. For instance, if you wish to get all Indicators for the locale Arkansas 
         alert(indicators.length); //Will output a very large number.
     });
 
-This example assumes that you've already requrested the Locale "Arkansas" from the API and stored in the variable called 
+This example assumes that you've already requested the Locale "Arkansas" from the API and stored in the variable called 
 `arkansas'. Note that this will return a lot of data, so it's recommended to use a Filter to refine the results (see below).
 
 ###Filtering
-To ease the creation of filters to pass to [fitler API methods](http://developers.healthindicators.gov/Examples/Filtering), the JS 
+To ease the creation of filters to pass to [filter API methods](http://developers.healthindicators.gov/Examples/Filtering), the JS 
 API includes a set of classes related to creating simple or complex filters. The example below illustrates how to call a filter 
 API method and get a specific locale (Arkansas):
 
@@ -169,4 +169,4 @@ The small examples above should have given you the general idea of how to work w
 available on the [HIW Developers site](http://developers.healthindicators.gov/Examples) and [JSFiddle](http://jsfiddle.net/user/HealthIndicators).
 
 ##Reporting Issues
-If you come across any issues while using the JS API or if something is not clear, please [contact HIW Support](mailto:healthindicators@cdc.gov). Bugs and suggestions [may also be logged on Github](https://github.com/HealthIndicators/js-api/issues).
+If you come across any issues while using the JS API or if something is not clear, please [contact HIW Support](mailto:healthindicators@cdc.gov). Bugs and suggestions [may also be logged on GitHub](https://github.com/HealthIndicators/js-api/issues).
