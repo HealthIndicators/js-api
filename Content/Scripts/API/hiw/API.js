@@ -19,15 +19,15 @@ var hiw;
                     parameterizedPath = parameterizedPath.replace("{" + key + "}", params[key]);
             return parameterizedPath;
         };
-        API.prototype.executeEndpoint = function (endpoint, callback, params, postData, page) {
+        API.prototype.executeEndpoint = function (endpoint, callback, params, postData, page, pageSize) {
             if (page === void 0) { page = 1; }
+            if (pageSize === void 0) { pageSize = API.DefaultPageSize; }
             var parameterizedPath = null;
             var url = null;
             var async = null;
-            if (page != null) {
-                params = (params || {});
-                params.page = page;
-            }
+            params = (params || {});
+            params.page = page;
+            params.pageSize = pageSize;
             parameterizedPath = API.parameterizePath(endpoint.uriTemplate, params);
             url = this.baseURL + parameterizedPath;
             async = this.executeUrl(endpoint.method, url, postData, function (json, error) {
@@ -87,6 +87,7 @@ var hiw;
             api.executeEndpoint(hiw.Endpoint.fromSelf(), callback);
         };
         API.DefaultBaseURL = "http://services.healthindicators.gov/v5/REST.svc/";
+        API.DefaultPageSize = 2000;
         API.Endpoints = new Array();
         return API;
     })();

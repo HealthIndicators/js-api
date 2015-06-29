@@ -270,11 +270,17 @@ var hiw;
     var Filter = (function (_super) {
         __extends(Filter, _super);
         /** Creates a new Filter instance for the specified page, type, and criteria. */
-        function Filter(page, type) {
+        function Filter(page, pageSize, type) {
             if (page === void 0) { page = 1; }
+            if (pageSize === void 0) { pageSize = hiw.API.DefaultPageSize; }
             if (type === void 0) { type = 0 /* And */; }
             _super.call(this, type);
+            /** The page of data to return (default is 1, the first page). */
+            this.page = 1;
+            /** The amount of data to return, per page. */
+            this.pageSize = hiw.API.DefaultPageSize;
             this.page = page;
+            this.pageSize = pageSize;
         }
         /** Adds the specified filter part to the criteria. */
         Filter.prototype.addPart = function (part) {
@@ -294,11 +300,12 @@ var hiw;
             return this;
         };
         /** Converts this instance to JSON in the format the HIW API expects. */
-        Filter.prototype.toJSON = function (page) {
-            if (page === void 0) { page = 1; }
+        Filter.prototype.toJSON = function (page, pageSize) {
             var json = _super.prototype.toJSON.call(this);
             delete json["__type"];
-            json["Page"] = page;
+            json["Page"] = (page || this.page);
+            if (pageSize || this.pageSize)
+                json["PageSize"] = (pageSize || this.pageSize);
             return json;
         };
         return Filter;
@@ -719,15 +726,15 @@ var hiw;
                     parameterizedPath = parameterizedPath.replace("{" + key + "}", params[key]);
             return parameterizedPath;
         };
-        API.prototype.executeEndpoint = function (endpoint, callback, params, postData, page) {
+        API.prototype.executeEndpoint = function (endpoint, callback, params, postData, page, pageSize) {
             if (page === void 0) { page = 1; }
+            if (pageSize === void 0) { pageSize = API.DefaultPageSize; }
             var parameterizedPath = null;
             var url = null;
             var async = null;
-            if (page != null) {
-                params = (params || {});
-                params.page = page;
-            }
+            params = (params || {});
+            params.page = page;
+            params.pageSize = pageSize;
             parameterizedPath = API.parameterizePath(endpoint.uriTemplate, params);
             url = this.baseURL + parameterizedPath;
             async = this.executeUrl(endpoint.method, url, postData, function (json, error) {
@@ -787,6 +794,7 @@ var hiw;
             api.executeEndpoint(hiw.Endpoint.fromSelf(), callback);
         };
         API.DefaultBaseURL = "http://services.healthindicators.gov/v5/REST.svc/";
+        API.DefaultPageSize = 2000;
         API.Endpoints = new Array();
         return API;
     })();

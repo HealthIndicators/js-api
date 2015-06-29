@@ -2,6 +2,7 @@
     /** Provides core functionality to interact with the HIW API. */
     export class API {
         public static DefaultBaseURL = "http://services.healthindicators.gov/v5/REST.svc/";
+        public static DefaultPageSize: number = 2000;
         public static Endpoints = new Array<Endpoint<any>>();
 
         /** The base URL of the HIW API. */
@@ -31,15 +32,14 @@
             return parameterizedPath;
         }
         
-        public executeEndpoint<T>(endpoint: Endpoint<T>, callback: IAPICallback<T>, params?: any, postData?: any, page: number = 1): Async {
+        public executeEndpoint<T>(endpoint: Endpoint<T>, callback: IAPICallback<T>, params?: any, postData?: any, page: number = 1, pageSize: number = API.DefaultPageSize): Async {
             var parameterizedPath = null;
             var url = null;
             var async = null;
 
-            if (page != null) {
-                params = (params || {});
-                params.page = page;
-            }
+            params = (params || {})
+            params.page = page;
+            params.pageSize = pageSize;
 
             parameterizedPath = API.parameterizePath(endpoint.uriTemplate, params);
             url = this.baseURL + parameterizedPath;

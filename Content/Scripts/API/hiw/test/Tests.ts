@@ -157,6 +157,25 @@
                 assert.all(data, o => o.name !== "2010", "Was the 2010 timeframe not returned?");
                 assert.all(data, o => o.name !== "2011", "Was the 2011 timeframe not returned?");
                 assert.all(data, o => o.name !== "2012", "Was the 2012 timeframe not returned?");
+            }),
+            asyncTest("Get -1 indicator",(assert, done) => {
+                Indicator.getAll(api,(data, response, error) => {
+                    assertAPIResponse(assert, data, response, error);
+
+                    assert.equal(data.length, 1, "Was a single result returned?");
+                    done();
+                }, 1, -1);
+            }),
+            asyncTest("Get 12 indicators",(assert, done) => {
+                Indicator.getAll(api,(data, response, error) => {
+                    assertAPIResponse(assert, data, response, error);
+
+                    assert.equal(data.length, 12, "Were 12 indicators returned?");
+                    done();
+                }, 1, 12);
+            }),
+            apiTest<Array<Indicator>>(api, "Get 20 indicators using filter", Indicator.filter, [new Filter(1, 20).add(Indicator.Fields.floatValue, Operator.GreaterThan, 0)],(assert, done, data, response, error) => {
+                assert.equal(data.length, 20, "Were 20 indicators returned?");
             })
         ]);
     }

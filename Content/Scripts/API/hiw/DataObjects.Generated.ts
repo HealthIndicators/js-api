@@ -27,8 +27,8 @@ module hiw {
         /** Gets a list of all of the Ages in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Ages */
-        public static getAll(api: API, callback: IAPICallback<Array<Age>>, page?: number): Async {
-            return api.executeEndpoint<Array<Age>>(Endpoint.fromSelf<Array<Age>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<Age>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Age>>(Endpoint.fromSelf<Array<Age>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many Ages exist. */
@@ -51,8 +51,8 @@ module hiw {
         /** Returns a filtered collection of Ages based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Ages which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Age>>, page?: number): Async {
-            return api.executeEndpoint<Array<Age>>(Endpoint.fromSelf<Array<Age>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Age>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Age>>(Endpoint.fromSelf<Array<Age>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many Ages exist based on the provided filter.
@@ -71,15 +71,15 @@ module hiw {
 
         /** Gets Ages by ParentAgeID.
          *  @return An Array of Ages. */
-        public getAges(api: API, callback: IAPICallback<Array<Age>>, page?: number): Async {
-            return Age.getByParentAgeID(this.id, api, callback, page);
+        public getAges(api: API, callback: IAPICallback<Array<Age>>, page?: number, pageSize?: number): Async {
+            return Age.getByParentAgeID(this.id, api, callback, page, pageSize);
         }
 
         /** Gets Ages by ParentAgeID.
          *  @param ageID The ID of the Age for which to retrieve the child Ages.
          *  @return An Array of Ages. */
-        public static getByParentAgeID(ageID: number, api: API, callback: IAPICallback<Array<Age>>, page?: number): Async {
-            return api.executeEndpoint<Array<Age>>(Endpoint.fromSelf<Array<Age>>(), callback, { ageID: ageID }, null, page);
+        public static getByParentAgeID(ageID: number, api: API, callback: IAPICallback<Array<Age>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Age>>(Endpoint.fromSelf<Array<Age>>(), callback, { ageID: ageID }, null, page, pageSize);
         }
 
         /** Gets how many Ages by ParentAgeID exist. 
@@ -143,8 +143,8 @@ module hiw {
         /** Gets a list of all of the AgeRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of AgeRelations */
-        public static getAll(api: API, callback: IAPICallback<Array<AgeRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<AgeRelation>>(Endpoint.fromSelf<Array<AgeRelation>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<AgeRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<AgeRelation>>(Endpoint.fromSelf<Array<AgeRelation>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many AgeRelations exist. */
@@ -167,8 +167,8 @@ module hiw {
         /** Returns a filtered collection of AgeRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All AgeRelations which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<AgeRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<AgeRelation>>(Endpoint.fromSelf<Array<AgeRelation>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<AgeRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<AgeRelation>>(Endpoint.fromSelf<Array<AgeRelation>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many AgeRelations exist based on the provided filter.
@@ -188,8 +188,8 @@ module hiw {
         /** Gets AgeRelations by AncestorAgeID.
          *  @param ageID The ID of the Age for which to retrieve the child AgeRelations.
          *  @return An Array of AgeRelations. */
-        public static getByAncestorAgeID(ageID: number, api: API, callback: IAPICallback<Array<AgeRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<AgeRelation>>(Endpoint.fromSelf<Array<AgeRelation>>(), callback, { ageID: ageID }, null, page);
+        public static getByAncestorAgeID(ageID: number, api: API, callback: IAPICallback<Array<AgeRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<AgeRelation>>(Endpoint.fromSelf<Array<AgeRelation>>(), callback, { ageID: ageID }, null, page, pageSize);
         }
 
         /** Gets how many AgeRelations by AncestorAgeID exist. 
@@ -222,8 +222,8 @@ module hiw {
         /** Gets AgeRelations by DescendantAgeID.
          *  @param ageID The ID of the Age for which to retrieve the child AgeRelations.
          *  @return An Array of AgeRelations. */
-        public static getByDescendantAgeID(ageID: number, api: API, callback: IAPICallback<Array<AgeRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<AgeRelation>>(Endpoint.fromSelf<Array<AgeRelation>>(), callback, { ageID: ageID }, null, page);
+        public static getByDescendantAgeID(ageID: number, api: API, callback: IAPICallback<Array<AgeRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<AgeRelation>>(Endpoint.fromSelf<Array<AgeRelation>>(), callback, { ageID: ageID }, null, page, pageSize);
         }
 
         /** Gets how many AgeRelations by DescendantAgeID exist. 
@@ -283,8 +283,8 @@ module hiw {
         /** Gets a list of all of the CharacteristicOfSchoolOrStudents in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of CharacteristicOfSchoolOrStudents */
-        public static getAll(api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudent>>, page?: number): Async {
-            return api.executeEndpoint<Array<CharacteristicOfSchoolOrStudent>>(Endpoint.fromSelf<Array<CharacteristicOfSchoolOrStudent>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudent>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<CharacteristicOfSchoolOrStudent>>(Endpoint.fromSelf<Array<CharacteristicOfSchoolOrStudent>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many CharacteristicOfSchoolOrStudents exist. */
@@ -307,8 +307,8 @@ module hiw {
         /** Returns a filtered collection of CharacteristicOfSchoolOrStudents based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All CharacteristicOfSchoolOrStudents which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudent>>, page?: number): Async {
-            return api.executeEndpoint<Array<CharacteristicOfSchoolOrStudent>>(Endpoint.fromSelf<Array<CharacteristicOfSchoolOrStudent>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudent>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<CharacteristicOfSchoolOrStudent>>(Endpoint.fromSelf<Array<CharacteristicOfSchoolOrStudent>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many CharacteristicOfSchoolOrStudents exist based on the provided filter.
@@ -327,15 +327,15 @@ module hiw {
 
         /** Gets CharacteristicOfSchoolOrStudents by ParentCharacteristicOfSchoolOrStudentID.
          *  @return An Array of CharacteristicOfSchoolOrStudents. */
-        public getCharacteristicOfSchoolOrStudents(api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudent>>, page?: number): Async {
-            return CharacteristicOfSchoolOrStudent.getByParentCharacteristicOfSchoolOrStudentID(this.id, api, callback, page);
+        public getCharacteristicOfSchoolOrStudents(api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudent>>, page?: number, pageSize?: number): Async {
+            return CharacteristicOfSchoolOrStudent.getByParentCharacteristicOfSchoolOrStudentID(this.id, api, callback, page, pageSize);
         }
 
         /** Gets CharacteristicOfSchoolOrStudents by ParentCharacteristicOfSchoolOrStudentID.
          *  @param characteristicOfSchoolOrStudentID The ID of the CharacteristicOfSchoolOrStudent for which to retrieve the child CharacteristicOfSchoolOrStudents.
          *  @return An Array of CharacteristicOfSchoolOrStudents. */
-        public static getByParentCharacteristicOfSchoolOrStudentID(characteristicOfSchoolOrStudentID: number, api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudent>>, page?: number): Async {
-            return api.executeEndpoint<Array<CharacteristicOfSchoolOrStudent>>(Endpoint.fromSelf<Array<CharacteristicOfSchoolOrStudent>>(), callback, { characteristicOfSchoolOrStudentID: characteristicOfSchoolOrStudentID }, null, page);
+        public static getByParentCharacteristicOfSchoolOrStudentID(characteristicOfSchoolOrStudentID: number, api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudent>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<CharacteristicOfSchoolOrStudent>>(Endpoint.fromSelf<Array<CharacteristicOfSchoolOrStudent>>(), callback, { characteristicOfSchoolOrStudentID: characteristicOfSchoolOrStudentID }, null, page, pageSize);
         }
 
         /** Gets how many CharacteristicOfSchoolOrStudents by ParentCharacteristicOfSchoolOrStudentID exist. 
@@ -399,8 +399,8 @@ module hiw {
         /** Gets a list of all of the CharacteristicOfSchoolOrStudentRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of CharacteristicOfSchoolOrStudentRelations */
-        public static getAll(api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudentRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<CharacteristicOfSchoolOrStudentRelation>>(Endpoint.fromSelf<Array<CharacteristicOfSchoolOrStudentRelation>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudentRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<CharacteristicOfSchoolOrStudentRelation>>(Endpoint.fromSelf<Array<CharacteristicOfSchoolOrStudentRelation>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many CharacteristicOfSchoolOrStudentRelations exist. */
@@ -423,8 +423,8 @@ module hiw {
         /** Returns a filtered collection of CharacteristicOfSchoolOrStudentRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All CharacteristicOfSchoolOrStudentRelations which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudentRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<CharacteristicOfSchoolOrStudentRelation>>(Endpoint.fromSelf<Array<CharacteristicOfSchoolOrStudentRelation>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudentRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<CharacteristicOfSchoolOrStudentRelation>>(Endpoint.fromSelf<Array<CharacteristicOfSchoolOrStudentRelation>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many CharacteristicOfSchoolOrStudentRelations exist based on the provided filter.
@@ -444,8 +444,8 @@ module hiw {
         /** Gets CharacteristicOfSchoolOrStudentRelations by AncestorCharacteristicOfSchoolOrStudentID.
          *  @param characteristicOfSchoolOrStudentID The ID of the CharacteristicOfSchoolOrStudent for which to retrieve the child CharacteristicOfSchoolOrStudentRelations.
          *  @return An Array of CharacteristicOfSchoolOrStudentRelations. */
-        public static getByAncestorCharacteristicOfSchoolOrStudentID(characteristicOfSchoolOrStudentID: number, api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudentRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<CharacteristicOfSchoolOrStudentRelation>>(Endpoint.fromSelf<Array<CharacteristicOfSchoolOrStudentRelation>>(), callback, { characteristicOfSchoolOrStudentID: characteristicOfSchoolOrStudentID }, null, page);
+        public static getByAncestorCharacteristicOfSchoolOrStudentID(characteristicOfSchoolOrStudentID: number, api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudentRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<CharacteristicOfSchoolOrStudentRelation>>(Endpoint.fromSelf<Array<CharacteristicOfSchoolOrStudentRelation>>(), callback, { characteristicOfSchoolOrStudentID: characteristicOfSchoolOrStudentID }, null, page, pageSize);
         }
 
         /** Gets how many CharacteristicOfSchoolOrStudentRelations by AncestorCharacteristicOfSchoolOrStudentID exist. 
@@ -478,8 +478,8 @@ module hiw {
         /** Gets CharacteristicOfSchoolOrStudentRelations by DescendantCharacteristicOfSchoolOrStudentID.
          *  @param characteristicOfSchoolOrStudentID The ID of the CharacteristicOfSchoolOrStudent for which to retrieve the child CharacteristicOfSchoolOrStudentRelations.
          *  @return An Array of CharacteristicOfSchoolOrStudentRelations. */
-        public static getByDescendantCharacteristicOfSchoolOrStudentID(characteristicOfSchoolOrStudentID: number, api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudentRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<CharacteristicOfSchoolOrStudentRelation>>(Endpoint.fromSelf<Array<CharacteristicOfSchoolOrStudentRelation>>(), callback, { characteristicOfSchoolOrStudentID: characteristicOfSchoolOrStudentID }, null, page);
+        public static getByDescendantCharacteristicOfSchoolOrStudentID(characteristicOfSchoolOrStudentID: number, api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudentRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<CharacteristicOfSchoolOrStudentRelation>>(Endpoint.fromSelf<Array<CharacteristicOfSchoolOrStudentRelation>>(), callback, { characteristicOfSchoolOrStudentID: characteristicOfSchoolOrStudentID }, null, page, pageSize);
         }
 
         /** Gets how many CharacteristicOfSchoolOrStudentRelations by DescendantCharacteristicOfSchoolOrStudentID exist. 
@@ -539,8 +539,8 @@ module hiw {
         /** Gets a list of all of the CountryOfBirths in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of CountryOfBirths */
-        public static getAll(api: API, callback: IAPICallback<Array<CountryOfBirth>>, page?: number): Async {
-            return api.executeEndpoint<Array<CountryOfBirth>>(Endpoint.fromSelf<Array<CountryOfBirth>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<CountryOfBirth>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<CountryOfBirth>>(Endpoint.fromSelf<Array<CountryOfBirth>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many CountryOfBirths exist. */
@@ -563,8 +563,8 @@ module hiw {
         /** Returns a filtered collection of CountryOfBirths based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All CountryOfBirths which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<CountryOfBirth>>, page?: number): Async {
-            return api.executeEndpoint<Array<CountryOfBirth>>(Endpoint.fromSelf<Array<CountryOfBirth>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<CountryOfBirth>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<CountryOfBirth>>(Endpoint.fromSelf<Array<CountryOfBirth>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many CountryOfBirths exist based on the provided filter.
@@ -583,15 +583,15 @@ module hiw {
 
         /** Gets CountryOfBirths by ParentCountryOfBirthID.
          *  @return An Array of CountryOfBirths. */
-        public getCountryOfBirths(api: API, callback: IAPICallback<Array<CountryOfBirth>>, page?: number): Async {
-            return CountryOfBirth.getByParentCountryOfBirthID(this.id, api, callback, page);
+        public getCountryOfBirths(api: API, callback: IAPICallback<Array<CountryOfBirth>>, page?: number, pageSize?: number): Async {
+            return CountryOfBirth.getByParentCountryOfBirthID(this.id, api, callback, page, pageSize);
         }
 
         /** Gets CountryOfBirths by ParentCountryOfBirthID.
          *  @param countryOfBirthID The ID of the CountryOfBirth for which to retrieve the child CountryOfBirths.
          *  @return An Array of CountryOfBirths. */
-        public static getByParentCountryOfBirthID(countryOfBirthID: number, api: API, callback: IAPICallback<Array<CountryOfBirth>>, page?: number): Async {
-            return api.executeEndpoint<Array<CountryOfBirth>>(Endpoint.fromSelf<Array<CountryOfBirth>>(), callback, { countryOfBirthID: countryOfBirthID }, null, page);
+        public static getByParentCountryOfBirthID(countryOfBirthID: number, api: API, callback: IAPICallback<Array<CountryOfBirth>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<CountryOfBirth>>(Endpoint.fromSelf<Array<CountryOfBirth>>(), callback, { countryOfBirthID: countryOfBirthID }, null, page, pageSize);
         }
 
         /** Gets how many CountryOfBirths by ParentCountryOfBirthID exist. 
@@ -655,8 +655,8 @@ module hiw {
         /** Gets a list of all of the CountryOfBirthRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of CountryOfBirthRelations */
-        public static getAll(api: API, callback: IAPICallback<Array<CountryOfBirthRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<CountryOfBirthRelation>>(Endpoint.fromSelf<Array<CountryOfBirthRelation>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<CountryOfBirthRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<CountryOfBirthRelation>>(Endpoint.fromSelf<Array<CountryOfBirthRelation>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many CountryOfBirthRelations exist. */
@@ -679,8 +679,8 @@ module hiw {
         /** Returns a filtered collection of CountryOfBirthRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All CountryOfBirthRelations which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<CountryOfBirthRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<CountryOfBirthRelation>>(Endpoint.fromSelf<Array<CountryOfBirthRelation>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<CountryOfBirthRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<CountryOfBirthRelation>>(Endpoint.fromSelf<Array<CountryOfBirthRelation>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many CountryOfBirthRelations exist based on the provided filter.
@@ -700,8 +700,8 @@ module hiw {
         /** Gets CountryOfBirthRelations by AncestorCountryOfBirthID.
          *  @param countryOfBirthID The ID of the CountryOfBirth for which to retrieve the child CountryOfBirthRelations.
          *  @return An Array of CountryOfBirthRelations. */
-        public static getByAncestorCountryOfBirthID(countryOfBirthID: number, api: API, callback: IAPICallback<Array<CountryOfBirthRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<CountryOfBirthRelation>>(Endpoint.fromSelf<Array<CountryOfBirthRelation>>(), callback, { countryOfBirthID: countryOfBirthID }, null, page);
+        public static getByAncestorCountryOfBirthID(countryOfBirthID: number, api: API, callback: IAPICallback<Array<CountryOfBirthRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<CountryOfBirthRelation>>(Endpoint.fromSelf<Array<CountryOfBirthRelation>>(), callback, { countryOfBirthID: countryOfBirthID }, null, page, pageSize);
         }
 
         /** Gets how many CountryOfBirthRelations by AncestorCountryOfBirthID exist. 
@@ -734,8 +734,8 @@ module hiw {
         /** Gets CountryOfBirthRelations by DescendantCountryOfBirthID.
          *  @param countryOfBirthID The ID of the CountryOfBirth for which to retrieve the child CountryOfBirthRelations.
          *  @return An Array of CountryOfBirthRelations. */
-        public static getByDescendantCountryOfBirthID(countryOfBirthID: number, api: API, callback: IAPICallback<Array<CountryOfBirthRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<CountryOfBirthRelation>>(Endpoint.fromSelf<Array<CountryOfBirthRelation>>(), callback, { countryOfBirthID: countryOfBirthID }, null, page);
+        public static getByDescendantCountryOfBirthID(countryOfBirthID: number, api: API, callback: IAPICallback<Array<CountryOfBirthRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<CountryOfBirthRelation>>(Endpoint.fromSelf<Array<CountryOfBirthRelation>>(), callback, { countryOfBirthID: countryOfBirthID }, null, page, pageSize);
         }
 
         /** Gets how many CountryOfBirthRelations by DescendantCountryOfBirthID exist. 
@@ -807,8 +807,8 @@ module hiw {
         /** Gets a list of all of the DataCategories in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataCategories */
-        public static getAll(api: API, callback: IAPICallback<Array<DataCategory>>, page?: number): Async {
-            return api.executeEndpoint<Array<DataCategory>>(Endpoint.fromSelf<Array<DataCategory>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<DataCategory>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DataCategory>>(Endpoint.fromSelf<Array<DataCategory>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many DataCategories exist. */
@@ -831,8 +831,8 @@ module hiw {
         /** Returns a filtered collection of DataCategories based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DataCategories which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<DataCategory>>, page?: number): Async {
-            return api.executeEndpoint<Array<DataCategory>>(Endpoint.fromSelf<Array<DataCategory>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<DataCategory>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DataCategory>>(Endpoint.fromSelf<Array<DataCategory>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many DataCategories exist based on the provided filter.
@@ -851,15 +851,15 @@ module hiw {
 
         /** Gets DataCategories by ParentDataCategoryID.
          *  @return An Array of DataCategories. */
-        public getParentDataCategories(api: API, callback: IAPICallback<Array<DataCategory>>, page?: number): Async {
-            return DataCategory.getByParentDataCategoryID(this.id, api, callback, page);
+        public getParentDataCategories(api: API, callback: IAPICallback<Array<DataCategory>>, page?: number, pageSize?: number): Async {
+            return DataCategory.getByParentDataCategoryID(this.id, api, callback, page, pageSize);
         }
 
         /** Gets DataCategories by ParentDataCategoryID.
          *  @param dataCategoryID The ID of the DataCategory for which to retrieve the child DataCategories.
          *  @return An Array of DataCategories. */
-        public static getByParentDataCategoryID(dataCategoryID: number, api: API, callback: IAPICallback<Array<DataCategory>>, page?: number): Async {
-            return api.executeEndpoint<Array<DataCategory>>(Endpoint.fromSelf<Array<DataCategory>>(), callback, { dataCategoryID: dataCategoryID }, null, page);
+        public static getByParentDataCategoryID(dataCategoryID: number, api: API, callback: IAPICallback<Array<DataCategory>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DataCategory>>(Endpoint.fromSelf<Array<DataCategory>>(), callback, { dataCategoryID: dataCategoryID }, null, page, pageSize);
         }
 
         /** Gets how many DataCategories by ParentDataCategoryID exist. 
@@ -904,8 +904,8 @@ module hiw {
         /** Gets DataCategories by InitiativeID.
          *  @param initiativeID The ID of the Initiative for which to retrieve the child DataCategories.
          *  @return An Array of DataCategories. */
-        public static getByInitiativeID(initiativeID: number, api: API, callback: IAPICallback<Array<DataCategory>>, page?: number): Async {
-            return api.executeEndpoint<Array<DataCategory>>(Endpoint.fromSelf<Array<DataCategory>>(), callback, { initiativeID: initiativeID }, null, page);
+        public static getByInitiativeID(initiativeID: number, api: API, callback: IAPICallback<Array<DataCategory>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DataCategory>>(Endpoint.fromSelf<Array<DataCategory>>(), callback, { initiativeID: initiativeID }, null, page, pageSize);
         }
 
         /** Gets how many DataCategories by InitiativeID exist. 
@@ -957,8 +957,8 @@ module hiw {
         /** Gets a list of all of the DataCategoryRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataCategoryRelations */
-        public static getAll(api: API, callback: IAPICallback<Array<DataCategoryRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<DataCategoryRelation>>(Endpoint.fromSelf<Array<DataCategoryRelation>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<DataCategoryRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DataCategoryRelation>>(Endpoint.fromSelf<Array<DataCategoryRelation>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many DataCategoryRelations exist. */
@@ -981,8 +981,8 @@ module hiw {
         /** Returns a filtered collection of DataCategoryRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DataCategoryRelations which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<DataCategoryRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<DataCategoryRelation>>(Endpoint.fromSelf<Array<DataCategoryRelation>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<DataCategoryRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DataCategoryRelation>>(Endpoint.fromSelf<Array<DataCategoryRelation>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many DataCategoryRelations exist based on the provided filter.
@@ -1002,8 +1002,8 @@ module hiw {
         /** Gets DataCategoryRelations by AncestorDataCategoryID.
          *  @param dataCategoryID The ID of the DataCategory for which to retrieve the child DataCategoryRelations.
          *  @return An Array of DataCategoryRelations. */
-        public static getByAncestorDataCategoryID(dataCategoryID: number, api: API, callback: IAPICallback<Array<DataCategoryRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<DataCategoryRelation>>(Endpoint.fromSelf<Array<DataCategoryRelation>>(), callback, { dataCategoryID: dataCategoryID }, null, page);
+        public static getByAncestorDataCategoryID(dataCategoryID: number, api: API, callback: IAPICallback<Array<DataCategoryRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DataCategoryRelation>>(Endpoint.fromSelf<Array<DataCategoryRelation>>(), callback, { dataCategoryID: dataCategoryID }, null, page, pageSize);
         }
 
         /** Gets how many DataCategoryRelations by AncestorDataCategoryID exist. 
@@ -1036,8 +1036,8 @@ module hiw {
         /** Gets DataCategoryRelations by DescendantDataCategoryID.
          *  @param dataCategoryID The ID of the DataCategory for which to retrieve the child DataCategoryRelations.
          *  @return An Array of DataCategoryRelations. */
-        public static getByDescendantDataCategoryID(dataCategoryID: number, api: API, callback: IAPICallback<Array<DataCategoryRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<DataCategoryRelation>>(Endpoint.fromSelf<Array<DataCategoryRelation>>(), callback, { dataCategoryID: dataCategoryID }, null, page);
+        public static getByDescendantDataCategoryID(dataCategoryID: number, api: API, callback: IAPICallback<Array<DataCategoryRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DataCategoryRelation>>(Endpoint.fromSelf<Array<DataCategoryRelation>>(), callback, { dataCategoryID: dataCategoryID }, null, page, pageSize);
         }
 
         /** Gets how many DataCategoryRelations by DescendantDataCategoryID exist. 
@@ -1089,8 +1089,8 @@ module hiw {
         /** Gets a list of all of the DataSourceDataSuppliers in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataSourceDataSuppliers */
-        public static getAll(api: API, callback: IAPICallback<Array<DataSourceDataSupplier>>, page?: number): Async {
-            return api.executeEndpoint<Array<DataSourceDataSupplier>>(Endpoint.fromSelf<Array<DataSourceDataSupplier>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<DataSourceDataSupplier>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DataSourceDataSupplier>>(Endpoint.fromSelf<Array<DataSourceDataSupplier>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many DataSourceDataSuppliers exist. */
@@ -1113,8 +1113,8 @@ module hiw {
         /** Returns a filtered collection of DataSourceDataSuppliers based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DataSourceDataSuppliers which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<DataSourceDataSupplier>>, page?: number): Async {
-            return api.executeEndpoint<Array<DataSourceDataSupplier>>(Endpoint.fromSelf<Array<DataSourceDataSupplier>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<DataSourceDataSupplier>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DataSourceDataSupplier>>(Endpoint.fromSelf<Array<DataSourceDataSupplier>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many DataSourceDataSuppliers exist based on the provided filter.
@@ -1134,8 +1134,8 @@ module hiw {
         /** Gets DataSourceDataSuppliers by DataSourceID.
          *  @param dataSourceID The ID of the DataSource for which to retrieve the child DataSourceDataSuppliers.
          *  @return An Array of DataSourceDataSuppliers. */
-        public static getByDataSourceID(dataSourceID: number, api: API, callback: IAPICallback<Array<DataSourceDataSupplier>>, page?: number): Async {
-            return api.executeEndpoint<Array<DataSourceDataSupplier>>(Endpoint.fromSelf<Array<DataSourceDataSupplier>>(), callback, { dataSourceID: dataSourceID }, null, page);
+        public static getByDataSourceID(dataSourceID: number, api: API, callback: IAPICallback<Array<DataSourceDataSupplier>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DataSourceDataSupplier>>(Endpoint.fromSelf<Array<DataSourceDataSupplier>>(), callback, { dataSourceID: dataSourceID }, null, page, pageSize);
         }
 
         /** Gets how many DataSourceDataSuppliers by DataSourceID exist. 
@@ -1168,8 +1168,8 @@ module hiw {
         /** Gets DataSourceDataSuppliers by DataSupplierID.
          *  @param dataSupplierID The ID of the DataSupplier for which to retrieve the child DataSourceDataSuppliers.
          *  @return An Array of DataSourceDataSuppliers. */
-        public static getByDataSupplierID(dataSupplierID: number, api: API, callback: IAPICallback<Array<DataSourceDataSupplier>>, page?: number): Async {
-            return api.executeEndpoint<Array<DataSourceDataSupplier>>(Endpoint.fromSelf<Array<DataSourceDataSupplier>>(), callback, { dataSupplierID: dataSupplierID }, null, page);
+        public static getByDataSupplierID(dataSupplierID: number, api: API, callback: IAPICallback<Array<DataSourceDataSupplier>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DataSourceDataSupplier>>(Endpoint.fromSelf<Array<DataSourceDataSupplier>>(), callback, { dataSupplierID: dataSupplierID }, null, page, pageSize);
         }
 
         /** Gets how many DataSourceDataSuppliers by DataSupplierID exist. 
@@ -1257,8 +1257,8 @@ module hiw {
         /** Gets a list of all of the DataSources in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataSources */
-        public static getAll(api: API, callback: IAPICallback<Array<DataSource>>, page?: number): Async {
-            return api.executeEndpoint<Array<DataSource>>(Endpoint.fromSelf<Array<DataSource>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<DataSource>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DataSource>>(Endpoint.fromSelf<Array<DataSource>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many DataSources exist. */
@@ -1281,8 +1281,8 @@ module hiw {
         /** Returns a filtered collection of DataSources based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DataSources which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<DataSource>>, page?: number): Async {
-            return api.executeEndpoint<Array<DataSource>>(Endpoint.fromSelf<Array<DataSource>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<DataSource>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DataSource>>(Endpoint.fromSelf<Array<DataSource>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many DataSources exist based on the provided filter.
@@ -1321,8 +1321,8 @@ module hiw {
         /** Gets a list of all of the DataSourceURLs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataSourceURLs */
-        public static getAll(api: API, callback: IAPICallback<Array<DataSourceURL>>, page?: number): Async {
-            return api.executeEndpoint<Array<DataSourceURL>>(Endpoint.fromSelf<Array<DataSourceURL>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<DataSourceURL>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DataSourceURL>>(Endpoint.fromSelf<Array<DataSourceURL>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many DataSourceURLs exist. */
@@ -1345,8 +1345,8 @@ module hiw {
         /** Returns a filtered collection of DataSourceURLs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DataSourceURLs which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<DataSourceURL>>, page?: number): Async {
-            return api.executeEndpoint<Array<DataSourceURL>>(Endpoint.fromSelf<Array<DataSourceURL>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<DataSourceURL>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DataSourceURL>>(Endpoint.fromSelf<Array<DataSourceURL>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many DataSourceURLs exist based on the provided filter.
@@ -1366,8 +1366,8 @@ module hiw {
         /** Gets DataSourceURLs by DataSourceID.
          *  @param dataSourceID The ID of the DataSource for which to retrieve the child DataSourceURLs.
          *  @return An Array of DataSourceURLs. */
-        public static getByDataSourceID(dataSourceID: number, api: API, callback: IAPICallback<Array<DataSourceURL>>, page?: number): Async {
-            return api.executeEndpoint<Array<DataSourceURL>>(Endpoint.fromSelf<Array<DataSourceURL>>(), callback, { dataSourceID: dataSourceID }, null, page);
+        public static getByDataSourceID(dataSourceID: number, api: API, callback: IAPICallback<Array<DataSourceURL>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DataSourceURL>>(Endpoint.fromSelf<Array<DataSourceURL>>(), callback, { dataSourceID: dataSourceID }, null, page, pageSize);
         }
 
         /** Gets how many DataSourceURLs by DataSourceID exist. 
@@ -1400,8 +1400,8 @@ module hiw {
         /** Gets DataSourceURLs by UrlID.
          *  @param urlID The ID of the Url for which to retrieve the child DataSourceURLs.
          *  @return An Array of DataSourceURLs. */
-        public static getByUrlID(urlID: number, api: API, callback: IAPICallback<Array<DataSourceURL>>, page?: number): Async {
-            return api.executeEndpoint<Array<DataSourceURL>>(Endpoint.fromSelf<Array<DataSourceURL>>(), callback, { urlID: urlID }, null, page);
+        public static getByUrlID(urlID: number, api: API, callback: IAPICallback<Array<DataSourceURL>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DataSourceURL>>(Endpoint.fromSelf<Array<DataSourceURL>>(), callback, { urlID: urlID }, null, page, pageSize);
         }
 
         /** Gets how many DataSourceURLs by UrlID exist. 
@@ -1465,8 +1465,8 @@ module hiw {
         /** Gets a list of all of the DataSuppliers in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataSuppliers */
-        public static getAll(api: API, callback: IAPICallback<Array<DataSupplier>>, page?: number): Async {
-            return api.executeEndpoint<Array<DataSupplier>>(Endpoint.fromSelf<Array<DataSupplier>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<DataSupplier>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DataSupplier>>(Endpoint.fromSelf<Array<DataSupplier>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many DataSuppliers exist. */
@@ -1489,8 +1489,8 @@ module hiw {
         /** Returns a filtered collection of DataSuppliers based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DataSuppliers which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<DataSupplier>>, page?: number): Async {
-            return api.executeEndpoint<Array<DataSupplier>>(Endpoint.fromSelf<Array<DataSupplier>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<DataSupplier>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DataSupplier>>(Endpoint.fromSelf<Array<DataSupplier>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many DataSuppliers exist based on the provided filter.
@@ -1510,8 +1510,8 @@ module hiw {
         /** Gets DataSuppliers by UrlID.
          *  @param urlID The ID of the Url for which to retrieve the child DataSuppliers.
          *  @return An Array of DataSuppliers. */
-        public static getByUrlID(urlID: number, api: API, callback: IAPICallback<Array<DataSupplier>>, page?: number): Async {
-            return api.executeEndpoint<Array<DataSupplier>>(Endpoint.fromSelf<Array<DataSupplier>>(), callback, { urlID: urlID }, null, page);
+        public static getByUrlID(urlID: number, api: API, callback: IAPICallback<Array<DataSupplier>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DataSupplier>>(Endpoint.fromSelf<Array<DataSupplier>>(), callback, { urlID: urlID }, null, page, pageSize);
         }
 
         /** Gets how many DataSuppliers by UrlID exist. 
@@ -1583,8 +1583,8 @@ module hiw {
         /** Gets a list of all of the DimensionBooks in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DimensionBooks */
-        public static getAll(api: API, callback: IAPICallback<Array<DimensionBook>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionBook>>(Endpoint.fromSelf<Array<DimensionBook>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<DimensionBook>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionBook>>(Endpoint.fromSelf<Array<DimensionBook>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many DimensionBooks exist. */
@@ -1607,8 +1607,8 @@ module hiw {
         /** Returns a filtered collection of DimensionBooks based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DimensionBooks which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<DimensionBook>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionBook>>(Endpoint.fromSelf<Array<DimensionBook>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<DimensionBook>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionBook>>(Endpoint.fromSelf<Array<DimensionBook>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many DimensionBooks exist based on the provided filter.
@@ -1627,15 +1627,15 @@ module hiw {
 
         /** Gets DimensionBooks by ParentDimensionBookID.
          *  @return An Array of DimensionBooks. */
-        public getDimensionBooks(api: API, callback: IAPICallback<Array<DimensionBook>>, page?: number): Async {
-            return DimensionBook.getByParentDimensionBookID(this.id, api, callback, page);
+        public getDimensionBooks(api: API, callback: IAPICallback<Array<DimensionBook>>, page?: number, pageSize?: number): Async {
+            return DimensionBook.getByParentDimensionBookID(this.id, api, callback, page, pageSize);
         }
 
         /** Gets DimensionBooks by ParentDimensionBookID.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child DimensionBooks.
          *  @return An Array of DimensionBooks. */
-        public static getByParentDimensionBookID(dimensionBookID: number, api: API, callback: IAPICallback<Array<DimensionBook>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionBook>>(Endpoint.fromSelf<Array<DimensionBook>>(), callback, { dimensionBookID: dimensionBookID }, null, page);
+        public static getByParentDimensionBookID(dimensionBookID: number, api: API, callback: IAPICallback<Array<DimensionBook>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionBook>>(Endpoint.fromSelf<Array<DimensionBook>>(), callback, { dimensionBookID: dimensionBookID }, null, page, pageSize);
         }
 
         /** Gets how many DimensionBooks by ParentDimensionBookID exist. 
@@ -1680,8 +1680,8 @@ module hiw {
         /** Gets DimensionBooks by DimensionListID.
          *  @param dimensionListID The ID of the DimensionList for which to retrieve the child DimensionBooks.
          *  @return An Array of DimensionBooks. */
-        public static getByDimensionListID(dimensionListID: number, api: API, callback: IAPICallback<Array<DimensionBook>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionBook>>(Endpoint.fromSelf<Array<DimensionBook>>(), callback, { dimensionListID: dimensionListID }, null, page);
+        public static getByDimensionListID(dimensionListID: number, api: API, callback: IAPICallback<Array<DimensionBook>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionBook>>(Endpoint.fromSelf<Array<DimensionBook>>(), callback, { dimensionListID: dimensionListID }, null, page, pageSize);
         }
 
         /** Gets how many DimensionBooks by DimensionListID exist. 
@@ -1739,8 +1739,8 @@ module hiw {
         /** Gets a list of all of the DimensionBookRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DimensionBookRelations */
-        public static getAll(api: API, callback: IAPICallback<Array<DimensionBookRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionBookRelation>>(Endpoint.fromSelf<Array<DimensionBookRelation>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<DimensionBookRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionBookRelation>>(Endpoint.fromSelf<Array<DimensionBookRelation>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many DimensionBookRelations exist. */
@@ -1763,8 +1763,8 @@ module hiw {
         /** Returns a filtered collection of DimensionBookRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DimensionBookRelations which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<DimensionBookRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionBookRelation>>(Endpoint.fromSelf<Array<DimensionBookRelation>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<DimensionBookRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionBookRelation>>(Endpoint.fromSelf<Array<DimensionBookRelation>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many DimensionBookRelations exist based on the provided filter.
@@ -1784,8 +1784,8 @@ module hiw {
         /** Gets DimensionBookRelations by AncestorDimensionBookID.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child DimensionBookRelations.
          *  @return An Array of DimensionBookRelations. */
-        public static getByAncestorDimensionBookID(dimensionBookID: number, api: API, callback: IAPICallback<Array<DimensionBookRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionBookRelation>>(Endpoint.fromSelf<Array<DimensionBookRelation>>(), callback, { dimensionBookID: dimensionBookID }, null, page);
+        public static getByAncestorDimensionBookID(dimensionBookID: number, api: API, callback: IAPICallback<Array<DimensionBookRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionBookRelation>>(Endpoint.fromSelf<Array<DimensionBookRelation>>(), callback, { dimensionBookID: dimensionBookID }, null, page, pageSize);
         }
 
         /** Gets how many DimensionBookRelations by AncestorDimensionBookID exist. 
@@ -1818,8 +1818,8 @@ module hiw {
         /** Gets DimensionBookRelations by DescendantDimensionBookID.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child DimensionBookRelations.
          *  @return An Array of DimensionBookRelations. */
-        public static getByDescendantDimensionBookID(dimensionBookID: number, api: API, callback: IAPICallback<Array<DimensionBookRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionBookRelation>>(Endpoint.fromSelf<Array<DimensionBookRelation>>(), callback, { dimensionBookID: dimensionBookID }, null, page);
+        public static getByDescendantDimensionBookID(dimensionBookID: number, api: API, callback: IAPICallback<Array<DimensionBookRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionBookRelation>>(Endpoint.fromSelf<Array<DimensionBookRelation>>(), callback, { dimensionBookID: dimensionBookID }, null, page, pageSize);
         }
 
         /** Gets how many DimensionBookRelations by DescendantDimensionBookID exist. 
@@ -2021,8 +2021,8 @@ module hiw {
         /** Gets a list of all of the DimensionGraphs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DimensionGraphs */
-        public static getAll(api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many DimensionGraphs exist. */
@@ -2045,8 +2045,8 @@ module hiw {
         /** Returns a filtered collection of DimensionGraphs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DimensionGraphs which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many DimensionGraphs exist based on the provided filter.
@@ -2066,8 +2066,8 @@ module hiw {
         /** Gets DimensionGraphs by TotalID.
          *  @param totalID The ID of the Total for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        public static getByTotalID(totalID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { totalID: totalID }, null, page);
+        public static getByTotalID(totalID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { totalID: totalID }, null, page, pageSize);
         }
 
         /** Gets how many DimensionGraphs by TotalID exist. 
@@ -2100,8 +2100,8 @@ module hiw {
         /** Gets DimensionGraphs by AgeID.
          *  @param ageID The ID of the Age for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        public static getByAgeID(ageID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { ageID: ageID }, null, page);
+        public static getByAgeID(ageID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { ageID: ageID }, null, page, pageSize);
         }
 
         /** Gets how many DimensionGraphs by AgeID exist. 
@@ -2134,8 +2134,8 @@ module hiw {
         /** Gets DimensionGraphs by SexID.
          *  @param sexID The ID of the Sex for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        public static getBySexID(sexID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { sexID: sexID }, null, page);
+        public static getBySexID(sexID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { sexID: sexID }, null, page, pageSize);
         }
 
         /** Gets how many DimensionGraphs by SexID exist. 
@@ -2168,8 +2168,8 @@ module hiw {
         /** Gets DimensionGraphs by RaceEthnicityID.
          *  @param raceEthnicityID The ID of the RaceEthnicity for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        public static getByRaceEthnicityID(raceEthnicityID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { raceEthnicityID: raceEthnicityID }, null, page);
+        public static getByRaceEthnicityID(raceEthnicityID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { raceEthnicityID: raceEthnicityID }, null, page, pageSize);
         }
 
         /** Gets how many DimensionGraphs by RaceEthnicityID exist. 
@@ -2202,8 +2202,8 @@ module hiw {
         /** Gets DimensionGraphs by IncomeAndPovertyStatusID.
          *  @param incomeAndPovertyStatusID The ID of the IncomeAndPovertyStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        public static getByIncomeAndPovertyStatusID(incomeAndPovertyStatusID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { incomeAndPovertyStatusID: incomeAndPovertyStatusID }, null, page);
+        public static getByIncomeAndPovertyStatusID(incomeAndPovertyStatusID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { incomeAndPovertyStatusID: incomeAndPovertyStatusID }, null, page, pageSize);
         }
 
         /** Gets how many DimensionGraphs by IncomeAndPovertyStatusID exist. 
@@ -2236,8 +2236,8 @@ module hiw {
         /** Gets DimensionGraphs by EducationalAttainmentID.
          *  @param educationalAttainmentID The ID of the EducationalAttainment for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        public static getByEducationalAttainmentID(educationalAttainmentID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { educationalAttainmentID: educationalAttainmentID }, null, page);
+        public static getByEducationalAttainmentID(educationalAttainmentID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { educationalAttainmentID: educationalAttainmentID }, null, page, pageSize);
         }
 
         /** Gets how many DimensionGraphs by EducationalAttainmentID exist. 
@@ -2270,8 +2270,8 @@ module hiw {
         /** Gets DimensionGraphs by HealthInsuranceStatusID.
          *  @param healthInsuranceStatusID The ID of the HealthInsuranceStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        public static getByHealthInsuranceStatusID(healthInsuranceStatusID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { healthInsuranceStatusID: healthInsuranceStatusID }, null, page);
+        public static getByHealthInsuranceStatusID(healthInsuranceStatusID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { healthInsuranceStatusID: healthInsuranceStatusID }, null, page, pageSize);
         }
 
         /** Gets how many DimensionGraphs by HealthInsuranceStatusID exist. 
@@ -2304,8 +2304,8 @@ module hiw {
         /** Gets DimensionGraphs by SexualOrientationID.
          *  @param sexualOrientationID The ID of the SexualOrientation for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        public static getBySexualOrientationID(sexualOrientationID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { sexualOrientationID: sexualOrientationID }, null, page);
+        public static getBySexualOrientationID(sexualOrientationID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { sexualOrientationID: sexualOrientationID }, null, page, pageSize);
         }
 
         /** Gets how many DimensionGraphs by SexualOrientationID exist. 
@@ -2338,8 +2338,8 @@ module hiw {
         /** Gets DimensionGraphs by FamilyTypeID.
          *  @param familyTypeID The ID of the FamilyType for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        public static getByFamilyTypeID(familyTypeID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { familyTypeID: familyTypeID }, null, page);
+        public static getByFamilyTypeID(familyTypeID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { familyTypeID: familyTypeID }, null, page, pageSize);
         }
 
         /** Gets how many DimensionGraphs by FamilyTypeID exist. 
@@ -2372,8 +2372,8 @@ module hiw {
         /** Gets DimensionGraphs by MaritalStatusID.
          *  @param maritalStatusID The ID of the MaritalStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        public static getByMaritalStatusID(maritalStatusID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { maritalStatusID: maritalStatusID }, null, page);
+        public static getByMaritalStatusID(maritalStatusID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { maritalStatusID: maritalStatusID }, null, page, pageSize);
         }
 
         /** Gets how many DimensionGraphs by MaritalStatusID exist. 
@@ -2406,8 +2406,8 @@ module hiw {
         /** Gets DimensionGraphs by VeteranStatusID.
          *  @param veteranStatusID The ID of the VeteranStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        public static getByVeteranStatusID(veteranStatusID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { veteranStatusID: veteranStatusID }, null, page);
+        public static getByVeteranStatusID(veteranStatusID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { veteranStatusID: veteranStatusID }, null, page, pageSize);
         }
 
         /** Gets how many DimensionGraphs by VeteranStatusID exist. 
@@ -2440,8 +2440,8 @@ module hiw {
         /** Gets DimensionGraphs by CountryOfBirthID.
          *  @param countryOfBirthID The ID of the CountryOfBirth for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        public static getByCountryOfBirthID(countryOfBirthID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { countryOfBirthID: countryOfBirthID }, null, page);
+        public static getByCountryOfBirthID(countryOfBirthID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { countryOfBirthID: countryOfBirthID }, null, page, pageSize);
         }
 
         /** Gets how many DimensionGraphs by CountryOfBirthID exist. 
@@ -2474,8 +2474,8 @@ module hiw {
         /** Gets DimensionGraphs by DisabilityStatusID.
          *  @param disabilityStatusID The ID of the DisabilityStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        public static getByDisabilityStatusID(disabilityStatusID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { disabilityStatusID: disabilityStatusID }, null, page);
+        public static getByDisabilityStatusID(disabilityStatusID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { disabilityStatusID: disabilityStatusID }, null, page, pageSize);
         }
 
         /** Gets how many DimensionGraphs by DisabilityStatusID exist. 
@@ -2508,8 +2508,8 @@ module hiw {
         /** Gets DimensionGraphs by ObesityStatusID.
          *  @param obesityStatusID The ID of the ObesityStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        public static getByObesityStatusID(obesityStatusID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { obesityStatusID: obesityStatusID }, null, page);
+        public static getByObesityStatusID(obesityStatusID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { obesityStatusID: obesityStatusID }, null, page, pageSize);
         }
 
         /** Gets how many DimensionGraphs by ObesityStatusID exist. 
@@ -2542,8 +2542,8 @@ module hiw {
         /** Gets DimensionGraphs by CharacteristicOfSchoolOrStudentID.
          *  @param characteristicOfSchoolOrStudentID The ID of the CharacteristicOfSchoolOrStudent for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        public static getByCharacteristicOfSchoolOrStudentID(characteristicOfSchoolOrStudentID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { characteristicOfSchoolOrStudentID: characteristicOfSchoolOrStudentID }, null, page);
+        public static getByCharacteristicOfSchoolOrStudentID(characteristicOfSchoolOrStudentID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { characteristicOfSchoolOrStudentID: characteristicOfSchoolOrStudentID }, null, page, pageSize);
         }
 
         /** Gets how many DimensionGraphs by CharacteristicOfSchoolOrStudentID exist. 
@@ -2576,8 +2576,8 @@ module hiw {
         /** Gets DimensionGraphs by OtherID.
          *  @param otherID The ID of the Other for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        public static getByOtherID(otherID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { otherID: otherID }, null, page);
+        public static getByOtherID(otherID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { otherID: otherID }, null, page, pageSize);
         }
 
         /** Gets how many DimensionGraphs by OtherID exist. 
@@ -2610,8 +2610,8 @@ module hiw {
         /** Gets DimensionGraphs by GeographyID.
          *  @param geographyID The ID of the Geography for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        public static getByGeographyID(geographyID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { geographyID: geographyID }, null, page);
+        public static getByGeographyID(geographyID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionGraph>>(Endpoint.fromSelf<Array<DimensionGraph>>(), callback, { geographyID: geographyID }, null, page, pageSize);
         }
 
         /** Gets how many DimensionGraphs by GeographyID exist. 
@@ -2665,8 +2665,8 @@ module hiw {
         /** Gets a list of all of the DimensionLists in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DimensionLists */
-        public static getAll(api: API, callback: IAPICallback<Array<DimensionList>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionList>>(Endpoint.fromSelf<Array<DimensionList>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<DimensionList>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionList>>(Endpoint.fromSelf<Array<DimensionList>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many DimensionLists exist. */
@@ -2689,8 +2689,8 @@ module hiw {
         /** Returns a filtered collection of DimensionLists based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DimensionLists which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<DimensionList>>, page?: number): Async {
-            return api.executeEndpoint<Array<DimensionList>>(Endpoint.fromSelf<Array<DimensionList>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<DimensionList>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DimensionList>>(Endpoint.fromSelf<Array<DimensionList>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many DimensionLists exist based on the provided filter.
@@ -2737,8 +2737,8 @@ module hiw {
         /** Gets a list of all of the DisabilityStatuses in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DisabilityStatuses */
-        public static getAll(api: API, callback: IAPICallback<Array<DisabilityStatus>>, page?: number): Async {
-            return api.executeEndpoint<Array<DisabilityStatus>>(Endpoint.fromSelf<Array<DisabilityStatus>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<DisabilityStatus>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DisabilityStatus>>(Endpoint.fromSelf<Array<DisabilityStatus>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many DisabilityStatuses exist. */
@@ -2761,8 +2761,8 @@ module hiw {
         /** Returns a filtered collection of DisabilityStatuses based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DisabilityStatuses which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<DisabilityStatus>>, page?: number): Async {
-            return api.executeEndpoint<Array<DisabilityStatus>>(Endpoint.fromSelf<Array<DisabilityStatus>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<DisabilityStatus>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DisabilityStatus>>(Endpoint.fromSelf<Array<DisabilityStatus>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many DisabilityStatuses exist based on the provided filter.
@@ -2781,15 +2781,15 @@ module hiw {
 
         /** Gets DisabilityStatuses by ParentDisabilityStatusID.
          *  @return An Array of DisabilityStatuses. */
-        public getDisabilityStatuses(api: API, callback: IAPICallback<Array<DisabilityStatus>>, page?: number): Async {
-            return DisabilityStatus.getByParentDisabilityStatusID(this.id, api, callback, page);
+        public getDisabilityStatuses(api: API, callback: IAPICallback<Array<DisabilityStatus>>, page?: number, pageSize?: number): Async {
+            return DisabilityStatus.getByParentDisabilityStatusID(this.id, api, callback, page, pageSize);
         }
 
         /** Gets DisabilityStatuses by ParentDisabilityStatusID.
          *  @param disabilityStatusID The ID of the DisabilityStatus for which to retrieve the child DisabilityStatuses.
          *  @return An Array of DisabilityStatuses. */
-        public static getByParentDisabilityStatusID(disabilityStatusID: number, api: API, callback: IAPICallback<Array<DisabilityStatus>>, page?: number): Async {
-            return api.executeEndpoint<Array<DisabilityStatus>>(Endpoint.fromSelf<Array<DisabilityStatus>>(), callback, { disabilityStatusID: disabilityStatusID }, null, page);
+        public static getByParentDisabilityStatusID(disabilityStatusID: number, api: API, callback: IAPICallback<Array<DisabilityStatus>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DisabilityStatus>>(Endpoint.fromSelf<Array<DisabilityStatus>>(), callback, { disabilityStatusID: disabilityStatusID }, null, page, pageSize);
         }
 
         /** Gets how many DisabilityStatuses by ParentDisabilityStatusID exist. 
@@ -2853,8 +2853,8 @@ module hiw {
         /** Gets a list of all of the DisabilityStatusRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DisabilityStatusRelations */
-        public static getAll(api: API, callback: IAPICallback<Array<DisabilityStatusRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<DisabilityStatusRelation>>(Endpoint.fromSelf<Array<DisabilityStatusRelation>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<DisabilityStatusRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DisabilityStatusRelation>>(Endpoint.fromSelf<Array<DisabilityStatusRelation>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many DisabilityStatusRelations exist. */
@@ -2877,8 +2877,8 @@ module hiw {
         /** Returns a filtered collection of DisabilityStatusRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DisabilityStatusRelations which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<DisabilityStatusRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<DisabilityStatusRelation>>(Endpoint.fromSelf<Array<DisabilityStatusRelation>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<DisabilityStatusRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DisabilityStatusRelation>>(Endpoint.fromSelf<Array<DisabilityStatusRelation>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many DisabilityStatusRelations exist based on the provided filter.
@@ -2898,8 +2898,8 @@ module hiw {
         /** Gets DisabilityStatusRelations by AncestorDisabilityStatusID.
          *  @param disabilityStatusID The ID of the DisabilityStatus for which to retrieve the child DisabilityStatusRelations.
          *  @return An Array of DisabilityStatusRelations. */
-        public static getByAncestorDisabilityStatusID(disabilityStatusID: number, api: API, callback: IAPICallback<Array<DisabilityStatusRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<DisabilityStatusRelation>>(Endpoint.fromSelf<Array<DisabilityStatusRelation>>(), callback, { disabilityStatusID: disabilityStatusID }, null, page);
+        public static getByAncestorDisabilityStatusID(disabilityStatusID: number, api: API, callback: IAPICallback<Array<DisabilityStatusRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DisabilityStatusRelation>>(Endpoint.fromSelf<Array<DisabilityStatusRelation>>(), callback, { disabilityStatusID: disabilityStatusID }, null, page, pageSize);
         }
 
         /** Gets how many DisabilityStatusRelations by AncestorDisabilityStatusID exist. 
@@ -2932,8 +2932,8 @@ module hiw {
         /** Gets DisabilityStatusRelations by DescendantDisabilityStatusID.
          *  @param disabilityStatusID The ID of the DisabilityStatus for which to retrieve the child DisabilityStatusRelations.
          *  @return An Array of DisabilityStatusRelations. */
-        public static getByDescendantDisabilityStatusID(disabilityStatusID: number, api: API, callback: IAPICallback<Array<DisabilityStatusRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<DisabilityStatusRelation>>(Endpoint.fromSelf<Array<DisabilityStatusRelation>>(), callback, { disabilityStatusID: disabilityStatusID }, null, page);
+        public static getByDescendantDisabilityStatusID(disabilityStatusID: number, api: API, callback: IAPICallback<Array<DisabilityStatusRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<DisabilityStatusRelation>>(Endpoint.fromSelf<Array<DisabilityStatusRelation>>(), callback, { disabilityStatusID: disabilityStatusID }, null, page, pageSize);
         }
 
         /** Gets how many DisabilityStatusRelations by DescendantDisabilityStatusID exist. 
@@ -2993,8 +2993,8 @@ module hiw {
         /** Gets a list of all of the EducationalAttainments in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of EducationalAttainments */
-        public static getAll(api: API, callback: IAPICallback<Array<EducationalAttainment>>, page?: number): Async {
-            return api.executeEndpoint<Array<EducationalAttainment>>(Endpoint.fromSelf<Array<EducationalAttainment>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<EducationalAttainment>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<EducationalAttainment>>(Endpoint.fromSelf<Array<EducationalAttainment>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many EducationalAttainments exist. */
@@ -3017,8 +3017,8 @@ module hiw {
         /** Returns a filtered collection of EducationalAttainments based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All EducationalAttainments which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<EducationalAttainment>>, page?: number): Async {
-            return api.executeEndpoint<Array<EducationalAttainment>>(Endpoint.fromSelf<Array<EducationalAttainment>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<EducationalAttainment>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<EducationalAttainment>>(Endpoint.fromSelf<Array<EducationalAttainment>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many EducationalAttainments exist based on the provided filter.
@@ -3037,15 +3037,15 @@ module hiw {
 
         /** Gets EducationalAttainments by ParentEducationalAttainmentID.
          *  @return An Array of EducationalAttainments. */
-        public getEducationalAttainments(api: API, callback: IAPICallback<Array<EducationalAttainment>>, page?: number): Async {
-            return EducationalAttainment.getByParentEducationalAttainmentID(this.id, api, callback, page);
+        public getEducationalAttainments(api: API, callback: IAPICallback<Array<EducationalAttainment>>, page?: number, pageSize?: number): Async {
+            return EducationalAttainment.getByParentEducationalAttainmentID(this.id, api, callback, page, pageSize);
         }
 
         /** Gets EducationalAttainments by ParentEducationalAttainmentID.
          *  @param educationalAttainmentID The ID of the EducationalAttainment for which to retrieve the child EducationalAttainments.
          *  @return An Array of EducationalAttainments. */
-        public static getByParentEducationalAttainmentID(educationalAttainmentID: number, api: API, callback: IAPICallback<Array<EducationalAttainment>>, page?: number): Async {
-            return api.executeEndpoint<Array<EducationalAttainment>>(Endpoint.fromSelf<Array<EducationalAttainment>>(), callback, { educationalAttainmentID: educationalAttainmentID }, null, page);
+        public static getByParentEducationalAttainmentID(educationalAttainmentID: number, api: API, callback: IAPICallback<Array<EducationalAttainment>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<EducationalAttainment>>(Endpoint.fromSelf<Array<EducationalAttainment>>(), callback, { educationalAttainmentID: educationalAttainmentID }, null, page, pageSize);
         }
 
         /** Gets how many EducationalAttainments by ParentEducationalAttainmentID exist. 
@@ -3109,8 +3109,8 @@ module hiw {
         /** Gets a list of all of the EducationalAttainmentRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of EducationalAttainmentRelations */
-        public static getAll(api: API, callback: IAPICallback<Array<EducationalAttainmentRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<EducationalAttainmentRelation>>(Endpoint.fromSelf<Array<EducationalAttainmentRelation>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<EducationalAttainmentRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<EducationalAttainmentRelation>>(Endpoint.fromSelf<Array<EducationalAttainmentRelation>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many EducationalAttainmentRelations exist. */
@@ -3133,8 +3133,8 @@ module hiw {
         /** Returns a filtered collection of EducationalAttainmentRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All EducationalAttainmentRelations which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<EducationalAttainmentRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<EducationalAttainmentRelation>>(Endpoint.fromSelf<Array<EducationalAttainmentRelation>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<EducationalAttainmentRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<EducationalAttainmentRelation>>(Endpoint.fromSelf<Array<EducationalAttainmentRelation>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many EducationalAttainmentRelations exist based on the provided filter.
@@ -3154,8 +3154,8 @@ module hiw {
         /** Gets EducationalAttainmentRelations by AncestorEducationalAttainmentID.
          *  @param educationalAttainmentID The ID of the EducationalAttainment for which to retrieve the child EducationalAttainmentRelations.
          *  @return An Array of EducationalAttainmentRelations. */
-        public static getByAncestorEducationalAttainmentID(educationalAttainmentID: number, api: API, callback: IAPICallback<Array<EducationalAttainmentRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<EducationalAttainmentRelation>>(Endpoint.fromSelf<Array<EducationalAttainmentRelation>>(), callback, { educationalAttainmentID: educationalAttainmentID }, null, page);
+        public static getByAncestorEducationalAttainmentID(educationalAttainmentID: number, api: API, callback: IAPICallback<Array<EducationalAttainmentRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<EducationalAttainmentRelation>>(Endpoint.fromSelf<Array<EducationalAttainmentRelation>>(), callback, { educationalAttainmentID: educationalAttainmentID }, null, page, pageSize);
         }
 
         /** Gets how many EducationalAttainmentRelations by AncestorEducationalAttainmentID exist. 
@@ -3188,8 +3188,8 @@ module hiw {
         /** Gets EducationalAttainmentRelations by DescendantEducationalAttainmentID.
          *  @param educationalAttainmentID The ID of the EducationalAttainment for which to retrieve the child EducationalAttainmentRelations.
          *  @return An Array of EducationalAttainmentRelations. */
-        public static getByDescendantEducationalAttainmentID(educationalAttainmentID: number, api: API, callback: IAPICallback<Array<EducationalAttainmentRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<EducationalAttainmentRelation>>(Endpoint.fromSelf<Array<EducationalAttainmentRelation>>(), callback, { educationalAttainmentID: educationalAttainmentID }, null, page);
+        public static getByDescendantEducationalAttainmentID(educationalAttainmentID: number, api: API, callback: IAPICallback<Array<EducationalAttainmentRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<EducationalAttainmentRelation>>(Endpoint.fromSelf<Array<EducationalAttainmentRelation>>(), callback, { educationalAttainmentID: educationalAttainmentID }, null, page, pageSize);
         }
 
         /** Gets how many EducationalAttainmentRelations by DescendantEducationalAttainmentID exist. 
@@ -3249,8 +3249,8 @@ module hiw {
         /** Gets a list of all of the FamilyTypes in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of FamilyTypes */
-        public static getAll(api: API, callback: IAPICallback<Array<FamilyType>>, page?: number): Async {
-            return api.executeEndpoint<Array<FamilyType>>(Endpoint.fromSelf<Array<FamilyType>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<FamilyType>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<FamilyType>>(Endpoint.fromSelf<Array<FamilyType>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many FamilyTypes exist. */
@@ -3273,8 +3273,8 @@ module hiw {
         /** Returns a filtered collection of FamilyTypes based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All FamilyTypes which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<FamilyType>>, page?: number): Async {
-            return api.executeEndpoint<Array<FamilyType>>(Endpoint.fromSelf<Array<FamilyType>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<FamilyType>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<FamilyType>>(Endpoint.fromSelf<Array<FamilyType>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many FamilyTypes exist based on the provided filter.
@@ -3293,15 +3293,15 @@ module hiw {
 
         /** Gets FamilyTypes by ParentFamilyTypeID.
          *  @return An Array of FamilyTypes. */
-        public getFamilyTypes(api: API, callback: IAPICallback<Array<FamilyType>>, page?: number): Async {
-            return FamilyType.getByParentFamilyTypeID(this.id, api, callback, page);
+        public getFamilyTypes(api: API, callback: IAPICallback<Array<FamilyType>>, page?: number, pageSize?: number): Async {
+            return FamilyType.getByParentFamilyTypeID(this.id, api, callback, page, pageSize);
         }
 
         /** Gets FamilyTypes by ParentFamilyTypeID.
          *  @param familyTypeID The ID of the FamilyType for which to retrieve the child FamilyTypes.
          *  @return An Array of FamilyTypes. */
-        public static getByParentFamilyTypeID(familyTypeID: number, api: API, callback: IAPICallback<Array<FamilyType>>, page?: number): Async {
-            return api.executeEndpoint<Array<FamilyType>>(Endpoint.fromSelf<Array<FamilyType>>(), callback, { familyTypeID: familyTypeID }, null, page);
+        public static getByParentFamilyTypeID(familyTypeID: number, api: API, callback: IAPICallback<Array<FamilyType>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<FamilyType>>(Endpoint.fromSelf<Array<FamilyType>>(), callback, { familyTypeID: familyTypeID }, null, page, pageSize);
         }
 
         /** Gets how many FamilyTypes by ParentFamilyTypeID exist. 
@@ -3365,8 +3365,8 @@ module hiw {
         /** Gets a list of all of the FamilyTypeRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of FamilyTypeRelations */
-        public static getAll(api: API, callback: IAPICallback<Array<FamilyTypeRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<FamilyTypeRelation>>(Endpoint.fromSelf<Array<FamilyTypeRelation>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<FamilyTypeRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<FamilyTypeRelation>>(Endpoint.fromSelf<Array<FamilyTypeRelation>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many FamilyTypeRelations exist. */
@@ -3389,8 +3389,8 @@ module hiw {
         /** Returns a filtered collection of FamilyTypeRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All FamilyTypeRelations which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<FamilyTypeRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<FamilyTypeRelation>>(Endpoint.fromSelf<Array<FamilyTypeRelation>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<FamilyTypeRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<FamilyTypeRelation>>(Endpoint.fromSelf<Array<FamilyTypeRelation>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many FamilyTypeRelations exist based on the provided filter.
@@ -3410,8 +3410,8 @@ module hiw {
         /** Gets FamilyTypeRelations by AncestorFamilyTypeID.
          *  @param familyTypeID The ID of the FamilyType for which to retrieve the child FamilyTypeRelations.
          *  @return An Array of FamilyTypeRelations. */
-        public static getByAncestorFamilyTypeID(familyTypeID: number, api: API, callback: IAPICallback<Array<FamilyTypeRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<FamilyTypeRelation>>(Endpoint.fromSelf<Array<FamilyTypeRelation>>(), callback, { familyTypeID: familyTypeID }, null, page);
+        public static getByAncestorFamilyTypeID(familyTypeID: number, api: API, callback: IAPICallback<Array<FamilyTypeRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<FamilyTypeRelation>>(Endpoint.fromSelf<Array<FamilyTypeRelation>>(), callback, { familyTypeID: familyTypeID }, null, page, pageSize);
         }
 
         /** Gets how many FamilyTypeRelations by AncestorFamilyTypeID exist. 
@@ -3444,8 +3444,8 @@ module hiw {
         /** Gets FamilyTypeRelations by DescendantFamilyTypeID.
          *  @param familyTypeID The ID of the FamilyType for which to retrieve the child FamilyTypeRelations.
          *  @return An Array of FamilyTypeRelations. */
-        public static getByDescendantFamilyTypeID(familyTypeID: number, api: API, callback: IAPICallback<Array<FamilyTypeRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<FamilyTypeRelation>>(Endpoint.fromSelf<Array<FamilyTypeRelation>>(), callback, { familyTypeID: familyTypeID }, null, page);
+        public static getByDescendantFamilyTypeID(familyTypeID: number, api: API, callback: IAPICallback<Array<FamilyTypeRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<FamilyTypeRelation>>(Endpoint.fromSelf<Array<FamilyTypeRelation>>(), callback, { familyTypeID: familyTypeID }, null, page, pageSize);
         }
 
         /** Gets how many FamilyTypeRelations by DescendantFamilyTypeID exist. 
@@ -3505,8 +3505,8 @@ module hiw {
         /** Gets a list of all of the Geographies in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Geographies */
-        public static getAll(api: API, callback: IAPICallback<Array<Geography>>, page?: number): Async {
-            return api.executeEndpoint<Array<Geography>>(Endpoint.fromSelf<Array<Geography>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<Geography>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Geography>>(Endpoint.fromSelf<Array<Geography>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many Geographies exist. */
@@ -3529,8 +3529,8 @@ module hiw {
         /** Returns a filtered collection of Geographies based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Geographies which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Geography>>, page?: number): Async {
-            return api.executeEndpoint<Array<Geography>>(Endpoint.fromSelf<Array<Geography>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Geography>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Geography>>(Endpoint.fromSelf<Array<Geography>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many Geographies exist based on the provided filter.
@@ -3549,15 +3549,15 @@ module hiw {
 
         /** Gets Geographies by ParentGeographyID.
          *  @return An Array of Geographies. */
-        public getGeographies(api: API, callback: IAPICallback<Array<Geography>>, page?: number): Async {
-            return Geography.getByParentGeographyID(this.id, api, callback, page);
+        public getGeographies(api: API, callback: IAPICallback<Array<Geography>>, page?: number, pageSize?: number): Async {
+            return Geography.getByParentGeographyID(this.id, api, callback, page, pageSize);
         }
 
         /** Gets Geographies by ParentGeographyID.
          *  @param geographyID The ID of the Geography for which to retrieve the child Geographies.
          *  @return An Array of Geographies. */
-        public static getByParentGeographyID(geographyID: number, api: API, callback: IAPICallback<Array<Geography>>, page?: number): Async {
-            return api.executeEndpoint<Array<Geography>>(Endpoint.fromSelf<Array<Geography>>(), callback, { geographyID: geographyID }, null, page);
+        public static getByParentGeographyID(geographyID: number, api: API, callback: IAPICallback<Array<Geography>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Geography>>(Endpoint.fromSelf<Array<Geography>>(), callback, { geographyID: geographyID }, null, page, pageSize);
         }
 
         /** Gets how many Geographies by ParentGeographyID exist. 
@@ -3621,8 +3621,8 @@ module hiw {
         /** Gets a list of all of the GeographyRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of GeographyRelations */
-        public static getAll(api: API, callback: IAPICallback<Array<GeographyRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<GeographyRelation>>(Endpoint.fromSelf<Array<GeographyRelation>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<GeographyRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<GeographyRelation>>(Endpoint.fromSelf<Array<GeographyRelation>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many GeographyRelations exist. */
@@ -3645,8 +3645,8 @@ module hiw {
         /** Returns a filtered collection of GeographyRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All GeographyRelations which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<GeographyRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<GeographyRelation>>(Endpoint.fromSelf<Array<GeographyRelation>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<GeographyRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<GeographyRelation>>(Endpoint.fromSelf<Array<GeographyRelation>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many GeographyRelations exist based on the provided filter.
@@ -3666,8 +3666,8 @@ module hiw {
         /** Gets GeographyRelations by AncestorGeographyID.
          *  @param geographyID The ID of the Geography for which to retrieve the child GeographyRelations.
          *  @return An Array of GeographyRelations. */
-        public static getByAncestorGeographyID(geographyID: number, api: API, callback: IAPICallback<Array<GeographyRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<GeographyRelation>>(Endpoint.fromSelf<Array<GeographyRelation>>(), callback, { geographyID: geographyID }, null, page);
+        public static getByAncestorGeographyID(geographyID: number, api: API, callback: IAPICallback<Array<GeographyRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<GeographyRelation>>(Endpoint.fromSelf<Array<GeographyRelation>>(), callback, { geographyID: geographyID }, null, page, pageSize);
         }
 
         /** Gets how many GeographyRelations by AncestorGeographyID exist. 
@@ -3700,8 +3700,8 @@ module hiw {
         /** Gets GeographyRelations by DescendantGeographyID.
          *  @param geographyID The ID of the Geography for which to retrieve the child GeographyRelations.
          *  @return An Array of GeographyRelations. */
-        public static getByDescendantGeographyID(geographyID: number, api: API, callback: IAPICallback<Array<GeographyRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<GeographyRelation>>(Endpoint.fromSelf<Array<GeographyRelation>>(), callback, { geographyID: geographyID }, null, page);
+        public static getByDescendantGeographyID(geographyID: number, api: API, callback: IAPICallback<Array<GeographyRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<GeographyRelation>>(Endpoint.fromSelf<Array<GeographyRelation>>(), callback, { geographyID: geographyID }, null, page, pageSize);
         }
 
         /** Gets how many GeographyRelations by DescendantGeographyID exist. 
@@ -3759,8 +3759,8 @@ module hiw {
         /** Gets a list of all of the GlossaryTerms in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of GlossaryTerms */
-        public static getAll(api: API, callback: IAPICallback<Array<GlossaryTerm>>, page?: number): Async {
-            return api.executeEndpoint<Array<GlossaryTerm>>(Endpoint.fromSelf<Array<GlossaryTerm>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<GlossaryTerm>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<GlossaryTerm>>(Endpoint.fromSelf<Array<GlossaryTerm>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many GlossaryTerms exist. */
@@ -3783,8 +3783,8 @@ module hiw {
         /** Returns a filtered collection of GlossaryTerms based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All GlossaryTerms which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<GlossaryTerm>>, page?: number): Async {
-            return api.executeEndpoint<Array<GlossaryTerm>>(Endpoint.fromSelf<Array<GlossaryTerm>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<GlossaryTerm>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<GlossaryTerm>>(Endpoint.fromSelf<Array<GlossaryTerm>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many GlossaryTerms exist based on the provided filter.
@@ -3804,8 +3804,8 @@ module hiw {
         /** Gets GlossaryTerms by SourceUrl1ID.
          *  @param urlID The ID of the Url for which to retrieve the child GlossaryTerms.
          *  @return An Array of GlossaryTerms. */
-        public static getBySourceUrl1ID(urlID: number, api: API, callback: IAPICallback<Array<GlossaryTerm>>, page?: number): Async {
-            return api.executeEndpoint<Array<GlossaryTerm>>(Endpoint.fromSelf<Array<GlossaryTerm>>(), callback, { urlID: urlID }, null, page);
+        public static getBySourceUrl1ID(urlID: number, api: API, callback: IAPICallback<Array<GlossaryTerm>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<GlossaryTerm>>(Endpoint.fromSelf<Array<GlossaryTerm>>(), callback, { urlID: urlID }, null, page, pageSize);
         }
 
         /** Gets how many GlossaryTerms by SourceUrl1ID exist. 
@@ -3838,8 +3838,8 @@ module hiw {
         /** Gets GlossaryTerms by SourceUrl2ID.
          *  @param urlID The ID of the Url for which to retrieve the child GlossaryTerms.
          *  @return An Array of GlossaryTerms. */
-        public static getBySourceUrl2ID(urlID: number, api: API, callback: IAPICallback<Array<GlossaryTerm>>, page?: number): Async {
-            return api.executeEndpoint<Array<GlossaryTerm>>(Endpoint.fromSelf<Array<GlossaryTerm>>(), callback, { urlID: urlID }, null, page);
+        public static getBySourceUrl2ID(urlID: number, api: API, callback: IAPICallback<Array<GlossaryTerm>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<GlossaryTerm>>(Endpoint.fromSelf<Array<GlossaryTerm>>(), callback, { urlID: urlID }, null, page, pageSize);
         }
 
         /** Gets how many GlossaryTerms by SourceUrl2ID exist. 
@@ -3899,8 +3899,8 @@ module hiw {
         /** Gets a list of all of the HealthInsuranceStatuses in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of HealthInsuranceStatuses */
-        public static getAll(api: API, callback: IAPICallback<Array<HealthInsuranceStatus>>, page?: number): Async {
-            return api.executeEndpoint<Array<HealthInsuranceStatus>>(Endpoint.fromSelf<Array<HealthInsuranceStatus>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<HealthInsuranceStatus>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<HealthInsuranceStatus>>(Endpoint.fromSelf<Array<HealthInsuranceStatus>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many HealthInsuranceStatuses exist. */
@@ -3923,8 +3923,8 @@ module hiw {
         /** Returns a filtered collection of HealthInsuranceStatuses based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All HealthInsuranceStatuses which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<HealthInsuranceStatus>>, page?: number): Async {
-            return api.executeEndpoint<Array<HealthInsuranceStatus>>(Endpoint.fromSelf<Array<HealthInsuranceStatus>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<HealthInsuranceStatus>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<HealthInsuranceStatus>>(Endpoint.fromSelf<Array<HealthInsuranceStatus>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many HealthInsuranceStatuses exist based on the provided filter.
@@ -3943,15 +3943,15 @@ module hiw {
 
         /** Gets HealthInsuranceStatuses by ParentHealthInsuranceStatusID.
          *  @return An Array of HealthInsuranceStatuses. */
-        public getHealthInsuranceStatuses(api: API, callback: IAPICallback<Array<HealthInsuranceStatus>>, page?: number): Async {
-            return HealthInsuranceStatus.getByParentHealthInsuranceStatusID(this.id, api, callback, page);
+        public getHealthInsuranceStatuses(api: API, callback: IAPICallback<Array<HealthInsuranceStatus>>, page?: number, pageSize?: number): Async {
+            return HealthInsuranceStatus.getByParentHealthInsuranceStatusID(this.id, api, callback, page, pageSize);
         }
 
         /** Gets HealthInsuranceStatuses by ParentHealthInsuranceStatusID.
          *  @param healthInsuranceStatusID The ID of the HealthInsuranceStatus for which to retrieve the child HealthInsuranceStatuses.
          *  @return An Array of HealthInsuranceStatuses. */
-        public static getByParentHealthInsuranceStatusID(healthInsuranceStatusID: number, api: API, callback: IAPICallback<Array<HealthInsuranceStatus>>, page?: number): Async {
-            return api.executeEndpoint<Array<HealthInsuranceStatus>>(Endpoint.fromSelf<Array<HealthInsuranceStatus>>(), callback, { healthInsuranceStatusID: healthInsuranceStatusID }, null, page);
+        public static getByParentHealthInsuranceStatusID(healthInsuranceStatusID: number, api: API, callback: IAPICallback<Array<HealthInsuranceStatus>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<HealthInsuranceStatus>>(Endpoint.fromSelf<Array<HealthInsuranceStatus>>(), callback, { healthInsuranceStatusID: healthInsuranceStatusID }, null, page, pageSize);
         }
 
         /** Gets how many HealthInsuranceStatuses by ParentHealthInsuranceStatusID exist. 
@@ -4015,8 +4015,8 @@ module hiw {
         /** Gets a list of all of the HealthInsuranceStatusRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of HealthInsuranceStatusRelations */
-        public static getAll(api: API, callback: IAPICallback<Array<HealthInsuranceStatusRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<HealthInsuranceStatusRelation>>(Endpoint.fromSelf<Array<HealthInsuranceStatusRelation>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<HealthInsuranceStatusRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<HealthInsuranceStatusRelation>>(Endpoint.fromSelf<Array<HealthInsuranceStatusRelation>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many HealthInsuranceStatusRelations exist. */
@@ -4039,8 +4039,8 @@ module hiw {
         /** Returns a filtered collection of HealthInsuranceStatusRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All HealthInsuranceStatusRelations which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<HealthInsuranceStatusRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<HealthInsuranceStatusRelation>>(Endpoint.fromSelf<Array<HealthInsuranceStatusRelation>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<HealthInsuranceStatusRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<HealthInsuranceStatusRelation>>(Endpoint.fromSelf<Array<HealthInsuranceStatusRelation>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many HealthInsuranceStatusRelations exist based on the provided filter.
@@ -4060,8 +4060,8 @@ module hiw {
         /** Gets HealthInsuranceStatusRelations by AncestorHealthInsuranceStatusID.
          *  @param healthInsuranceStatusID The ID of the HealthInsuranceStatus for which to retrieve the child HealthInsuranceStatusRelations.
          *  @return An Array of HealthInsuranceStatusRelations. */
-        public static getByAncestorHealthInsuranceStatusID(healthInsuranceStatusID: number, api: API, callback: IAPICallback<Array<HealthInsuranceStatusRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<HealthInsuranceStatusRelation>>(Endpoint.fromSelf<Array<HealthInsuranceStatusRelation>>(), callback, { healthInsuranceStatusID: healthInsuranceStatusID }, null, page);
+        public static getByAncestorHealthInsuranceStatusID(healthInsuranceStatusID: number, api: API, callback: IAPICallback<Array<HealthInsuranceStatusRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<HealthInsuranceStatusRelation>>(Endpoint.fromSelf<Array<HealthInsuranceStatusRelation>>(), callback, { healthInsuranceStatusID: healthInsuranceStatusID }, null, page, pageSize);
         }
 
         /** Gets how many HealthInsuranceStatusRelations by AncestorHealthInsuranceStatusID exist. 
@@ -4094,8 +4094,8 @@ module hiw {
         /** Gets HealthInsuranceStatusRelations by DescendantHealthInsuranceStatusID.
          *  @param healthInsuranceStatusID The ID of the HealthInsuranceStatus for which to retrieve the child HealthInsuranceStatusRelations.
          *  @return An Array of HealthInsuranceStatusRelations. */
-        public static getByDescendantHealthInsuranceStatusID(healthInsuranceStatusID: number, api: API, callback: IAPICallback<Array<HealthInsuranceStatusRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<HealthInsuranceStatusRelation>>(Endpoint.fromSelf<Array<HealthInsuranceStatusRelation>>(), callback, { healthInsuranceStatusID: healthInsuranceStatusID }, null, page);
+        public static getByDescendantHealthInsuranceStatusID(healthInsuranceStatusID: number, api: API, callback: IAPICallback<Array<HealthInsuranceStatusRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<HealthInsuranceStatusRelation>>(Endpoint.fromSelf<Array<HealthInsuranceStatusRelation>>(), callback, { healthInsuranceStatusID: healthInsuranceStatusID }, null, page, pageSize);
         }
 
         /** Gets how many HealthInsuranceStatusRelations by DescendantHealthInsuranceStatusID exist. 
@@ -4145,8 +4145,8 @@ module hiw {
         /** Gets a list of all of the HP2020TSMs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of HP2020TSMs */
-        public static getAll(api: API, callback: IAPICallback<Array<HP2020TSM>>, page?: number): Async {
-            return api.executeEndpoint<Array<HP2020TSM>>(Endpoint.fromSelf<Array<HP2020TSM>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<HP2020TSM>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<HP2020TSM>>(Endpoint.fromSelf<Array<HP2020TSM>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many HP2020TSMs exist. */
@@ -4169,8 +4169,8 @@ module hiw {
         /** Returns a filtered collection of HP2020TSMs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All HP2020TSMs which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<HP2020TSM>>, page?: number): Async {
-            return api.executeEndpoint<Array<HP2020TSM>>(Endpoint.fromSelf<Array<HP2020TSM>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<HP2020TSM>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<HP2020TSM>>(Endpoint.fromSelf<Array<HP2020TSM>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many HP2020TSMs exist based on the provided filter.
@@ -4217,8 +4217,8 @@ module hiw {
         /** Gets a list of all of the IncomeAndPovertyStatuses in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IncomeAndPovertyStatuses */
-        public static getAll(api: API, callback: IAPICallback<Array<IncomeAndPovertyStatus>>, page?: number): Async {
-            return api.executeEndpoint<Array<IncomeAndPovertyStatus>>(Endpoint.fromSelf<Array<IncomeAndPovertyStatus>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IncomeAndPovertyStatus>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IncomeAndPovertyStatus>>(Endpoint.fromSelf<Array<IncomeAndPovertyStatus>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IncomeAndPovertyStatuses exist. */
@@ -4241,8 +4241,8 @@ module hiw {
         /** Returns a filtered collection of IncomeAndPovertyStatuses based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IncomeAndPovertyStatuses which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IncomeAndPovertyStatus>>, page?: number): Async {
-            return api.executeEndpoint<Array<IncomeAndPovertyStatus>>(Endpoint.fromSelf<Array<IncomeAndPovertyStatus>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IncomeAndPovertyStatus>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IncomeAndPovertyStatus>>(Endpoint.fromSelf<Array<IncomeAndPovertyStatus>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IncomeAndPovertyStatuses exist based on the provided filter.
@@ -4261,15 +4261,15 @@ module hiw {
 
         /** Gets IncomeAndPovertyStatuses by ParentIncomeAndPovertyStatusID.
          *  @return An Array of IncomeAndPovertyStatuses. */
-        public getIncomeAndPovertyStatuses(api: API, callback: IAPICallback<Array<IncomeAndPovertyStatus>>, page?: number): Async {
-            return IncomeAndPovertyStatus.getByParentIncomeAndPovertyStatusID(this.id, api, callback, page);
+        public getIncomeAndPovertyStatuses(api: API, callback: IAPICallback<Array<IncomeAndPovertyStatus>>, page?: number, pageSize?: number): Async {
+            return IncomeAndPovertyStatus.getByParentIncomeAndPovertyStatusID(this.id, api, callback, page, pageSize);
         }
 
         /** Gets IncomeAndPovertyStatuses by ParentIncomeAndPovertyStatusID.
          *  @param incomeAndPovertyStatusID The ID of the IncomeAndPovertyStatus for which to retrieve the child IncomeAndPovertyStatuses.
          *  @return An Array of IncomeAndPovertyStatuses. */
-        public static getByParentIncomeAndPovertyStatusID(incomeAndPovertyStatusID: number, api: API, callback: IAPICallback<Array<IncomeAndPovertyStatus>>, page?: number): Async {
-            return api.executeEndpoint<Array<IncomeAndPovertyStatus>>(Endpoint.fromSelf<Array<IncomeAndPovertyStatus>>(), callback, { incomeAndPovertyStatusID: incomeAndPovertyStatusID }, null, page);
+        public static getByParentIncomeAndPovertyStatusID(incomeAndPovertyStatusID: number, api: API, callback: IAPICallback<Array<IncomeAndPovertyStatus>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IncomeAndPovertyStatus>>(Endpoint.fromSelf<Array<IncomeAndPovertyStatus>>(), callback, { incomeAndPovertyStatusID: incomeAndPovertyStatusID }, null, page, pageSize);
         }
 
         /** Gets how many IncomeAndPovertyStatuses by ParentIncomeAndPovertyStatusID exist. 
@@ -4333,8 +4333,8 @@ module hiw {
         /** Gets a list of all of the IncomeAndPovertyStatusRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IncomeAndPovertyStatusRelations */
-        public static getAll(api: API, callback: IAPICallback<Array<IncomeAndPovertyStatusRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<IncomeAndPovertyStatusRelation>>(Endpoint.fromSelf<Array<IncomeAndPovertyStatusRelation>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IncomeAndPovertyStatusRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IncomeAndPovertyStatusRelation>>(Endpoint.fromSelf<Array<IncomeAndPovertyStatusRelation>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IncomeAndPovertyStatusRelations exist. */
@@ -4357,8 +4357,8 @@ module hiw {
         /** Returns a filtered collection of IncomeAndPovertyStatusRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IncomeAndPovertyStatusRelations which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IncomeAndPovertyStatusRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<IncomeAndPovertyStatusRelation>>(Endpoint.fromSelf<Array<IncomeAndPovertyStatusRelation>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IncomeAndPovertyStatusRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IncomeAndPovertyStatusRelation>>(Endpoint.fromSelf<Array<IncomeAndPovertyStatusRelation>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IncomeAndPovertyStatusRelations exist based on the provided filter.
@@ -4378,8 +4378,8 @@ module hiw {
         /** Gets IncomeAndPovertyStatusRelations by AncestorIncomeAndPovertyStatusID.
          *  @param incomeAndPovertyStatusID The ID of the IncomeAndPovertyStatus for which to retrieve the child IncomeAndPovertyStatusRelations.
          *  @return An Array of IncomeAndPovertyStatusRelations. */
-        public static getByAncestorIncomeAndPovertyStatusID(incomeAndPovertyStatusID: number, api: API, callback: IAPICallback<Array<IncomeAndPovertyStatusRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<IncomeAndPovertyStatusRelation>>(Endpoint.fromSelf<Array<IncomeAndPovertyStatusRelation>>(), callback, { incomeAndPovertyStatusID: incomeAndPovertyStatusID }, null, page);
+        public static getByAncestorIncomeAndPovertyStatusID(incomeAndPovertyStatusID: number, api: API, callback: IAPICallback<Array<IncomeAndPovertyStatusRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IncomeAndPovertyStatusRelation>>(Endpoint.fromSelf<Array<IncomeAndPovertyStatusRelation>>(), callback, { incomeAndPovertyStatusID: incomeAndPovertyStatusID }, null, page, pageSize);
         }
 
         /** Gets how many IncomeAndPovertyStatusRelations by AncestorIncomeAndPovertyStatusID exist. 
@@ -4412,8 +4412,8 @@ module hiw {
         /** Gets IncomeAndPovertyStatusRelations by DescendantIncomeAndPovertyStatusID.
          *  @param incomeAndPovertyStatusID The ID of the IncomeAndPovertyStatus for which to retrieve the child IncomeAndPovertyStatusRelations.
          *  @return An Array of IncomeAndPovertyStatusRelations. */
-        public static getByDescendantIncomeAndPovertyStatusID(incomeAndPovertyStatusID: number, api: API, callback: IAPICallback<Array<IncomeAndPovertyStatusRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<IncomeAndPovertyStatusRelation>>(Endpoint.fromSelf<Array<IncomeAndPovertyStatusRelation>>(), callback, { incomeAndPovertyStatusID: incomeAndPovertyStatusID }, null, page);
+        public static getByDescendantIncomeAndPovertyStatusID(incomeAndPovertyStatusID: number, api: API, callback: IAPICallback<Array<IncomeAndPovertyStatusRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IncomeAndPovertyStatusRelation>>(Endpoint.fromSelf<Array<IncomeAndPovertyStatusRelation>>(), callback, { incomeAndPovertyStatusID: incomeAndPovertyStatusID }, null, page, pageSize);
         }
 
         /** Gets how many IncomeAndPovertyStatusRelations by DescendantIncomeAndPovertyStatusID exist. 
@@ -4463,8 +4463,8 @@ module hiw {
         /** Gets a list of all of the IndicatorDescriptionDataCategories in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionDataCategories */
-        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionDataCategory>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDataCategory>>(Endpoint.fromSelf<Array<IndicatorDescriptionDataCategory>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionDataCategory>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDataCategory>>(Endpoint.fromSelf<Array<IndicatorDescriptionDataCategory>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionDataCategories exist. */
@@ -4487,8 +4487,8 @@ module hiw {
         /** Returns a filtered collection of IndicatorDescriptionDataCategories based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionDataCategories which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionDataCategory>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDataCategory>>(Endpoint.fromSelf<Array<IndicatorDescriptionDataCategory>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionDataCategory>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDataCategory>>(Endpoint.fromSelf<Array<IndicatorDescriptionDataCategory>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IndicatorDescriptionDataCategories exist based on the provided filter.
@@ -4508,8 +4508,8 @@ module hiw {
         /** Gets IndicatorDescriptionDataCategories by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDataCategories.
          *  @return An Array of IndicatorDescriptionDataCategories. */
-        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDataCategory>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDataCategory>>(Endpoint.fromSelf<Array<IndicatorDescriptionDataCategory>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDataCategory>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDataCategory>>(Endpoint.fromSelf<Array<IndicatorDescriptionDataCategory>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionDataCategories by IndicatorDescriptionID exist. 
@@ -4542,8 +4542,8 @@ module hiw {
         /** Gets IndicatorDescriptionDataCategories by DataCategoryID.
          *  @param dataCategoryID The ID of the DataCategory for which to retrieve the child IndicatorDescriptionDataCategories.
          *  @return An Array of IndicatorDescriptionDataCategories. */
-        public static getByDataCategoryID(dataCategoryID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDataCategory>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDataCategory>>(Endpoint.fromSelf<Array<IndicatorDescriptionDataCategory>>(), callback, { dataCategoryID: dataCategoryID }, null, page);
+        public static getByDataCategoryID(dataCategoryID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDataCategory>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDataCategory>>(Endpoint.fromSelf<Array<IndicatorDescriptionDataCategory>>(), callback, { dataCategoryID: dataCategoryID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionDataCategories by DataCategoryID exist. 
@@ -4597,8 +4597,8 @@ module hiw {
         /** Gets a list of all of the IndicatorDescriptionDataSources in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionDataSources */
-        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionDataSource>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDataSource>>(Endpoint.fromSelf<Array<IndicatorDescriptionDataSource>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionDataSource>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDataSource>>(Endpoint.fromSelf<Array<IndicatorDescriptionDataSource>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionDataSources exist. */
@@ -4621,8 +4621,8 @@ module hiw {
         /** Returns a filtered collection of IndicatorDescriptionDataSources based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionDataSources which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionDataSource>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDataSource>>(Endpoint.fromSelf<Array<IndicatorDescriptionDataSource>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionDataSource>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDataSource>>(Endpoint.fromSelf<Array<IndicatorDescriptionDataSource>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IndicatorDescriptionDataSources exist based on the provided filter.
@@ -4642,8 +4642,8 @@ module hiw {
         /** Gets IndicatorDescriptionDataSources by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDataSources.
          *  @return An Array of IndicatorDescriptionDataSources. */
-        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDataSource>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDataSource>>(Endpoint.fromSelf<Array<IndicatorDescriptionDataSource>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDataSource>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDataSource>>(Endpoint.fromSelf<Array<IndicatorDescriptionDataSource>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionDataSources by IndicatorDescriptionID exist. 
@@ -4676,8 +4676,8 @@ module hiw {
         /** Gets IndicatorDescriptionDataSources by DataSourceID.
          *  @param dataSourceID The ID of the DataSource for which to retrieve the child IndicatorDescriptionDataSources.
          *  @return An Array of IndicatorDescriptionDataSources. */
-        public static getByDataSourceID(dataSourceID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDataSource>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDataSource>>(Endpoint.fromSelf<Array<IndicatorDescriptionDataSource>>(), callback, { dataSourceID: dataSourceID }, null, page);
+        public static getByDataSourceID(dataSourceID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDataSource>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDataSource>>(Endpoint.fromSelf<Array<IndicatorDescriptionDataSource>>(), callback, { dataSourceID: dataSourceID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionDataSources by DataSourceID exist. 
@@ -4729,8 +4729,8 @@ module hiw {
         /** Gets a list of all of the IndicatorDescriptionDefaultDimensionGraphs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionDefaultDimensionGraphs */
-        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionDefaultDimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDefaultDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDescriptionDefaultDimensionGraph>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionDefaultDimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDefaultDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDescriptionDefaultDimensionGraph>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionDefaultDimensionGraphs exist. */
@@ -4753,8 +4753,8 @@ module hiw {
         /** Returns a filtered collection of IndicatorDescriptionDefaultDimensionGraphs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionDefaultDimensionGraphs which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionDefaultDimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDefaultDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDescriptionDefaultDimensionGraph>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionDefaultDimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDefaultDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDescriptionDefaultDimensionGraph>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IndicatorDescriptionDefaultDimensionGraphs exist based on the provided filter.
@@ -4774,8 +4774,8 @@ module hiw {
         /** Gets IndicatorDescriptionDefaultDimensionGraphs by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDefaultDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDefaultDimensionGraphs. */
-        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDefaultDimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDefaultDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDescriptionDefaultDimensionGraph>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDefaultDimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDefaultDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDescriptionDefaultDimensionGraph>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionDefaultDimensionGraphs by IndicatorDescriptionID exist. 
@@ -4808,8 +4808,8 @@ module hiw {
         /** Gets IndicatorDescriptionDefaultDimensionGraphs by LocaleLevelID.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDescriptionDefaultDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDefaultDimensionGraphs. */
-        public static getByLocaleLevelID(localeLevelID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDefaultDimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDefaultDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDescriptionDefaultDimensionGraph>>(), callback, { localeLevelID: localeLevelID }, null, page);
+        public static getByLocaleLevelID(localeLevelID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDefaultDimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDefaultDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDescriptionDefaultDimensionGraph>>(), callback, { localeLevelID: localeLevelID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionDefaultDimensionGraphs by LocaleLevelID exist. 
@@ -4842,8 +4842,8 @@ module hiw {
         /** Gets IndicatorDescriptionDefaultDimensionGraphs by DimensionGraphID.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child IndicatorDescriptionDefaultDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDefaultDimensionGraphs. */
-        public static getByDimensionGraphID(dimensionGraphID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDefaultDimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDefaultDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDescriptionDefaultDimensionGraph>>(), callback, { dimensionGraphID: dimensionGraphID }, null, page);
+        public static getByDimensionGraphID(dimensionGraphID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDefaultDimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDefaultDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDescriptionDefaultDimensionGraph>>(), callback, { dimensionGraphID: dimensionGraphID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionDefaultDimensionGraphs by DimensionGraphID exist. 
@@ -4893,8 +4893,8 @@ module hiw {
         /** Gets a list of all of the IndicatorDescriptionDimensions in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionDimensions */
-        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionDimension>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDimension>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimension>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionDimension>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDimension>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimension>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionDimensions exist. */
@@ -4917,8 +4917,8 @@ module hiw {
         /** Returns a filtered collection of IndicatorDescriptionDimensions based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionDimensions which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimension>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDimension>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimension>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimension>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDimension>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimension>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IndicatorDescriptionDimensions exist based on the provided filter.
@@ -4938,8 +4938,8 @@ module hiw {
         /** Gets IndicatorDescriptionDimensions by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDimensions.
          *  @return An Array of IndicatorDescriptionDimensions. */
-        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimension>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDimension>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimension>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimension>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDimension>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimension>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionDimensions by IndicatorDescriptionID exist. 
@@ -4972,8 +4972,8 @@ module hiw {
         /** Gets IndicatorDescriptionDimensions by DimensionListID.
          *  @param dimensionListID The ID of the DimensionList for which to retrieve the child IndicatorDescriptionDimensions.
          *  @return An Array of IndicatorDescriptionDimensions. */
-        public static getByDimensionListID(dimensionListID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimension>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDimension>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimension>>(), callback, { dimensionListID: dimensionListID }, null, page);
+        public static getByDimensionListID(dimensionListID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimension>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDimension>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimension>>(), callback, { dimensionListID: dimensionListID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionDimensions by DimensionListID exist. 
@@ -5031,8 +5031,8 @@ module hiw {
         /** Gets a list of all of the IndicatorDescriptionDimensionGraphs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionDimensionGraphs */
-        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimensionGraph>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimensionGraph>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionDimensionGraphs exist. */
@@ -5055,8 +5055,8 @@ module hiw {
         /** Returns a filtered collection of IndicatorDescriptionDimensionGraphs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionDimensionGraphs which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimensionGraph>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimensionGraph>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IndicatorDescriptionDimensionGraphs exist based on the provided filter.
@@ -5076,8 +5076,8 @@ module hiw {
         /** Gets IndicatorDescriptionDimensionGraphs by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDimensionGraphs. */
-        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimensionGraph>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimensionGraph>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionDimensionGraphs by IndicatorDescriptionID exist. 
@@ -5110,8 +5110,8 @@ module hiw {
         /** Gets IndicatorDescriptionDimensionGraphs by LocaleLevelID.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDescriptionDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDimensionGraphs. */
-        public static getByLocaleLevelID(localeLevelID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimensionGraph>>(), callback, { localeLevelID: localeLevelID }, null, page);
+        public static getByLocaleLevelID(localeLevelID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimensionGraph>>(), callback, { localeLevelID: localeLevelID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionDimensionGraphs by LocaleLevelID exist. 
@@ -5144,8 +5144,8 @@ module hiw {
         /** Gets IndicatorDescriptionDimensionGraphs by DimensionGraphID.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child IndicatorDescriptionDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDimensionGraphs. */
-        public static getByDimensionGraphID(dimensionGraphID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimensionGraph>>(), callback, { dimensionGraphID: dimensionGraphID }, null, page);
+        public static getByDimensionGraphID(dimensionGraphID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimensionGraph>>(), callback, { dimensionGraphID: dimensionGraphID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionDimensionGraphs by DimensionGraphID exist. 
@@ -5195,8 +5195,8 @@ module hiw {
         /** Gets a list of all of the IndicatorDescriptionDimensionValues in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionDimensionValues */
-        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionValue>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDimensionValue>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimensionValue>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionValue>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDimensionValue>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimensionValue>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionDimensionValues exist. */
@@ -5219,8 +5219,8 @@ module hiw {
         /** Returns a filtered collection of IndicatorDescriptionDimensionValues based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionDimensionValues which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionValue>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDimensionValue>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimensionValue>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionValue>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDimensionValue>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimensionValue>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IndicatorDescriptionDimensionValues exist based on the provided filter.
@@ -5240,8 +5240,8 @@ module hiw {
         /** Gets IndicatorDescriptionDimensionValues by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDimensionValues.
          *  @return An Array of IndicatorDescriptionDimensionValues. */
-        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionValue>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDimensionValue>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimensionValue>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionValue>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDimensionValue>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimensionValue>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionDimensionValues by IndicatorDescriptionID exist. 
@@ -5274,8 +5274,8 @@ module hiw {
         /** Gets IndicatorDescriptionDimensionValues by DimensionBookID.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child IndicatorDescriptionDimensionValues.
          *  @return An Array of IndicatorDescriptionDimensionValues. */
-        public static getByDimensionBookID(dimensionBookID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionValue>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionDimensionValue>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimensionValue>>(), callback, { dimensionBookID: dimensionBookID }, null, page);
+        public static getByDimensionBookID(dimensionBookID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionValue>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionDimensionValue>>(Endpoint.fromSelf<Array<IndicatorDescriptionDimensionValue>>(), callback, { dimensionBookID: dimensionBookID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionDimensionValues by DimensionBookID exist. 
@@ -5331,8 +5331,8 @@ module hiw {
         /** Gets a list of all of the IndicatorDescriptionInitiatives in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionInitiatives */
-        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionInitiative>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionInitiative>>(Endpoint.fromSelf<Array<IndicatorDescriptionInitiative>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionInitiative>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionInitiative>>(Endpoint.fromSelf<Array<IndicatorDescriptionInitiative>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionInitiatives exist. */
@@ -5355,8 +5355,8 @@ module hiw {
         /** Returns a filtered collection of IndicatorDescriptionInitiatives based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionInitiatives which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionInitiative>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionInitiative>>(Endpoint.fromSelf<Array<IndicatorDescriptionInitiative>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionInitiative>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionInitiative>>(Endpoint.fromSelf<Array<IndicatorDescriptionInitiative>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IndicatorDescriptionInitiatives exist based on the provided filter.
@@ -5376,8 +5376,8 @@ module hiw {
         /** Gets IndicatorDescriptionInitiatives by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionInitiatives.
          *  @return An Array of IndicatorDescriptionInitiatives. */
-        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionInitiative>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionInitiative>>(Endpoint.fromSelf<Array<IndicatorDescriptionInitiative>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionInitiative>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionInitiative>>(Endpoint.fromSelf<Array<IndicatorDescriptionInitiative>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionInitiatives by IndicatorDescriptionID exist. 
@@ -5410,8 +5410,8 @@ module hiw {
         /** Gets IndicatorDescriptionInitiatives by InitiativeID.
          *  @param initiativeID The ID of the Initiative for which to retrieve the child IndicatorDescriptionInitiatives.
          *  @return An Array of IndicatorDescriptionInitiatives. */
-        public static getByInitiativeID(initiativeID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionInitiative>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionInitiative>>(Endpoint.fromSelf<Array<IndicatorDescriptionInitiative>>(), callback, { initiativeID: initiativeID }, null, page);
+        public static getByInitiativeID(initiativeID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionInitiative>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionInitiative>>(Endpoint.fromSelf<Array<IndicatorDescriptionInitiative>>(), callback, { initiativeID: initiativeID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionInitiatives by InitiativeID exist. 
@@ -5463,8 +5463,8 @@ module hiw {
         /** Gets a list of all of the IndicatorDescriptionInterventions in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionInterventions */
-        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionIntervention>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionIntervention>>(Endpoint.fromSelf<Array<IndicatorDescriptionIntervention>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionIntervention>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionIntervention>>(Endpoint.fromSelf<Array<IndicatorDescriptionIntervention>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionInterventions exist. */
@@ -5487,8 +5487,8 @@ module hiw {
         /** Returns a filtered collection of IndicatorDescriptionInterventions based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionInterventions which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionIntervention>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionIntervention>>(Endpoint.fromSelf<Array<IndicatorDescriptionIntervention>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionIntervention>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionIntervention>>(Endpoint.fromSelf<Array<IndicatorDescriptionIntervention>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IndicatorDescriptionInterventions exist based on the provided filter.
@@ -5508,8 +5508,8 @@ module hiw {
         /** Gets IndicatorDescriptionInterventions by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionInterventions.
          *  @return An Array of IndicatorDescriptionInterventions. */
-        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionIntervention>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionIntervention>>(Endpoint.fromSelf<Array<IndicatorDescriptionIntervention>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionIntervention>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionIntervention>>(Endpoint.fromSelf<Array<IndicatorDescriptionIntervention>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionInterventions by IndicatorDescriptionID exist. 
@@ -5542,8 +5542,8 @@ module hiw {
         /** Gets IndicatorDescriptionInterventions by InterventionID.
          *  @param interventionID The ID of the Intervention for which to retrieve the child IndicatorDescriptionInterventions.
          *  @return An Array of IndicatorDescriptionInterventions. */
-        public static getByInterventionID(interventionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionIntervention>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionIntervention>>(Endpoint.fromSelf<Array<IndicatorDescriptionIntervention>>(), callback, { interventionID: interventionID }, null, page);
+        public static getByInterventionID(interventionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionIntervention>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionIntervention>>(Endpoint.fromSelf<Array<IndicatorDescriptionIntervention>>(), callback, { interventionID: interventionID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionInterventions by InterventionID exist. 
@@ -5593,8 +5593,8 @@ module hiw {
         /** Gets a list of all of the IndicatorDescriptionKeywords in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionKeywords */
-        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionKeyword>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionKeyword>>(Endpoint.fromSelf<Array<IndicatorDescriptionKeyword>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionKeyword>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionKeyword>>(Endpoint.fromSelf<Array<IndicatorDescriptionKeyword>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionKeywords exist. */
@@ -5617,8 +5617,8 @@ module hiw {
         /** Returns a filtered collection of IndicatorDescriptionKeywords based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionKeywords which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionKeyword>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionKeyword>>(Endpoint.fromSelf<Array<IndicatorDescriptionKeyword>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionKeyword>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionKeyword>>(Endpoint.fromSelf<Array<IndicatorDescriptionKeyword>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IndicatorDescriptionKeywords exist based on the provided filter.
@@ -5638,8 +5638,8 @@ module hiw {
         /** Gets IndicatorDescriptionKeywords by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionKeywords.
          *  @return An Array of IndicatorDescriptionKeywords. */
-        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionKeyword>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionKeyword>>(Endpoint.fromSelf<Array<IndicatorDescriptionKeyword>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionKeyword>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionKeyword>>(Endpoint.fromSelf<Array<IndicatorDescriptionKeyword>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionKeywords by IndicatorDescriptionID exist. 
@@ -5672,8 +5672,8 @@ module hiw {
         /** Gets IndicatorDescriptionKeywords by KeywordID.
          *  @param keywordID The ID of the Keyword for which to retrieve the child IndicatorDescriptionKeywords.
          *  @return An Array of IndicatorDescriptionKeywords. */
-        public static getByKeywordID(keywordID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionKeyword>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionKeyword>>(Endpoint.fromSelf<Array<IndicatorDescriptionKeyword>>(), callback, { keywordID: keywordID }, null, page);
+        public static getByKeywordID(keywordID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionKeyword>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionKeyword>>(Endpoint.fromSelf<Array<IndicatorDescriptionKeyword>>(), callback, { keywordID: keywordID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionKeywords by KeywordID exist. 
@@ -5729,8 +5729,8 @@ module hiw {
         /** Gets a list of all of the IndicatorDescriptionLocaleCounties in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionLocaleCounties */
-        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleCounty>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionLocaleCounty>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleCounty>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleCounty>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionLocaleCounty>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleCounty>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionLocaleCounties exist. */
@@ -5753,8 +5753,8 @@ module hiw {
         /** Returns a filtered collection of IndicatorDescriptionLocaleCounties based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionLocaleCounties which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleCounty>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionLocaleCounty>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleCounty>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleCounty>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionLocaleCounty>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleCounty>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IndicatorDescriptionLocaleCounties exist based on the provided filter.
@@ -5774,8 +5774,8 @@ module hiw {
         /** Gets IndicatorDescriptionLocaleCounties by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleCounties.
          *  @return An Array of IndicatorDescriptionLocaleCounties. */
-        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleCounty>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionLocaleCounty>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleCounty>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleCounty>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionLocaleCounty>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleCounty>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionLocaleCounties by IndicatorDescriptionID exist. 
@@ -5808,8 +5808,8 @@ module hiw {
         /** Gets IndicatorDescriptionLocaleCounties by LocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocaleCounties.
          *  @return An Array of IndicatorDescriptionLocaleCounties. */
-        public static getByLocaleID(localeID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleCounty>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionLocaleCounty>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleCounty>>(), callback, { localeID: localeID }, null, page);
+        public static getByLocaleID(localeID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleCounty>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionLocaleCounty>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleCounty>>(), callback, { localeID: localeID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionLocaleCounties by LocaleID exist. 
@@ -5859,8 +5859,8 @@ module hiw {
         /** Gets a list of all of the IndicatorDescriptionLocaleHospitalReferralRegions in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionLocaleHospitalReferralRegions */
-        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionLocaleHospitalReferralRegions exist. */
@@ -5883,8 +5883,8 @@ module hiw {
         /** Returns a filtered collection of IndicatorDescriptionLocaleHospitalReferralRegions based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionLocaleHospitalReferralRegions which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IndicatorDescriptionLocaleHospitalReferralRegions exist based on the provided filter.
@@ -5904,8 +5904,8 @@ module hiw {
         /** Gets IndicatorDescriptionLocaleHospitalReferralRegions by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleHospitalReferralRegions.
          *  @return An Array of IndicatorDescriptionLocaleHospitalReferralRegions. */
-        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionLocaleHospitalReferralRegions by IndicatorDescriptionID exist. 
@@ -5938,8 +5938,8 @@ module hiw {
         /** Gets IndicatorDescriptionLocaleHospitalReferralRegions by LocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocaleHospitalReferralRegions.
          *  @return An Array of IndicatorDescriptionLocaleHospitalReferralRegions. */
-        public static getByLocaleID(localeID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>(), callback, { localeID: localeID }, null, page);
+        public static getByLocaleID(localeID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>(), callback, { localeID: localeID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionLocaleHospitalReferralRegions by LocaleID exist. 
@@ -5989,8 +5989,8 @@ module hiw {
         /** Gets a list of all of the IndicatorDescriptionLocaleLevels in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionLocaleLevels */
-        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleLevel>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionLocaleLevel>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleLevel>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleLevel>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionLocaleLevel>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleLevel>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionLocaleLevels exist. */
@@ -6013,8 +6013,8 @@ module hiw {
         /** Returns a filtered collection of IndicatorDescriptionLocaleLevels based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionLocaleLevels which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleLevel>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionLocaleLevel>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleLevel>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleLevel>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionLocaleLevel>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleLevel>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IndicatorDescriptionLocaleLevels exist based on the provided filter.
@@ -6034,8 +6034,8 @@ module hiw {
         /** Gets IndicatorDescriptionLocaleLevels by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleLevels.
          *  @return An Array of IndicatorDescriptionLocaleLevels. */
-        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleLevel>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionLocaleLevel>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleLevel>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleLevel>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionLocaleLevel>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleLevel>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionLocaleLevels by IndicatorDescriptionID exist. 
@@ -6068,8 +6068,8 @@ module hiw {
         /** Gets IndicatorDescriptionLocaleLevels by LocaleLevelID.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDescriptionLocaleLevels.
          *  @return An Array of IndicatorDescriptionLocaleLevels. */
-        public static getByLocaleLevelID(localeLevelID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleLevel>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionLocaleLevel>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleLevel>>(), callback, { localeLevelID: localeLevelID }, null, page);
+        public static getByLocaleLevelID(localeLevelID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleLevel>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionLocaleLevel>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleLevel>>(), callback, { localeLevelID: localeLevelID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionLocaleLevels by LocaleLevelID exist. 
@@ -6119,8 +6119,8 @@ module hiw {
         /** Gets a list of all of the IndicatorDescriptionLocales in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionLocales */
-        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionLocale>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionLocale>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocale>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionLocale>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionLocale>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocale>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionLocales exist. */
@@ -6143,8 +6143,8 @@ module hiw {
         /** Returns a filtered collection of IndicatorDescriptionLocales based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionLocales which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocale>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionLocale>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocale>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocale>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionLocale>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocale>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IndicatorDescriptionLocales exist based on the provided filter.
@@ -6164,8 +6164,8 @@ module hiw {
         /** Gets IndicatorDescriptionLocales by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocales.
          *  @return An Array of IndicatorDescriptionLocales. */
-        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocale>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionLocale>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocale>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocale>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionLocale>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocale>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionLocales by IndicatorDescriptionID exist. 
@@ -6198,8 +6198,8 @@ module hiw {
         /** Gets IndicatorDescriptionLocales by LocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocales.
          *  @return An Array of IndicatorDescriptionLocales. */
-        public static getByLocaleID(localeID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocale>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionLocale>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocale>>(), callback, { localeID: localeID }, null, page);
+        public static getByLocaleID(localeID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocale>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionLocale>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocale>>(), callback, { localeID: localeID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionLocales by LocaleID exist. 
@@ -6249,8 +6249,8 @@ module hiw {
         /** Gets a list of all of the IndicatorDescriptionLocaleStates in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionLocaleStates */
-        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleState>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionLocaleState>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleState>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleState>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionLocaleState>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleState>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionLocaleStates exist. */
@@ -6273,8 +6273,8 @@ module hiw {
         /** Returns a filtered collection of IndicatorDescriptionLocaleStates based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionLocaleStates which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleState>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionLocaleState>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleState>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleState>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionLocaleState>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleState>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IndicatorDescriptionLocaleStates exist based on the provided filter.
@@ -6294,8 +6294,8 @@ module hiw {
         /** Gets IndicatorDescriptionLocaleStates by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleStates.
          *  @return An Array of IndicatorDescriptionLocaleStates. */
-        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleState>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionLocaleState>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleState>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleState>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionLocaleState>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleState>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionLocaleStates by IndicatorDescriptionID exist. 
@@ -6328,8 +6328,8 @@ module hiw {
         /** Gets IndicatorDescriptionLocaleStates by LocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocaleStates.
          *  @return An Array of IndicatorDescriptionLocaleStates. */
-        public static getByLocaleID(localeID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleState>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionLocaleState>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleState>>(), callback, { localeID: localeID }, null, page);
+        public static getByLocaleID(localeID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleState>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionLocaleState>>(Endpoint.fromSelf<Array<IndicatorDescriptionLocaleState>>(), callback, { localeID: localeID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionLocaleStates by LocaleID exist. 
@@ -6389,8 +6389,8 @@ module hiw {
         /** Gets a list of all of the IndicatorDescriptionMethodologyNotes in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionMethodologyNotes */
-        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionMethodologyNote>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionMethodologyNote>>(Endpoint.fromSelf<Array<IndicatorDescriptionMethodologyNote>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionMethodologyNote>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionMethodologyNote>>(Endpoint.fromSelf<Array<IndicatorDescriptionMethodologyNote>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionMethodologyNotes exist. */
@@ -6413,8 +6413,8 @@ module hiw {
         /** Returns a filtered collection of IndicatorDescriptionMethodologyNotes based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionMethodologyNotes which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionMethodologyNote>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionMethodologyNote>>(Endpoint.fromSelf<Array<IndicatorDescriptionMethodologyNote>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionMethodologyNote>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionMethodologyNote>>(Endpoint.fromSelf<Array<IndicatorDescriptionMethodologyNote>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IndicatorDescriptionMethodologyNotes exist based on the provided filter.
@@ -6434,8 +6434,8 @@ module hiw {
         /** Gets IndicatorDescriptionMethodologyNotes by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionMethodologyNotes.
          *  @return An Array of IndicatorDescriptionMethodologyNotes. */
-        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionMethodologyNote>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionMethodologyNote>>(Endpoint.fromSelf<Array<IndicatorDescriptionMethodologyNote>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionMethodologyNote>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionMethodologyNote>>(Endpoint.fromSelf<Array<IndicatorDescriptionMethodologyNote>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionMethodologyNotes by IndicatorDescriptionID exist. 
@@ -6489,8 +6489,8 @@ module hiw {
         /** Gets a list of all of the IndicatorDescriptionMoreInfos in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionMoreInfos */
-        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionMoreInfo>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionMoreInfo>>(Endpoint.fromSelf<Array<IndicatorDescriptionMoreInfo>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionMoreInfo>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionMoreInfo>>(Endpoint.fromSelf<Array<IndicatorDescriptionMoreInfo>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionMoreInfos exist. */
@@ -6513,8 +6513,8 @@ module hiw {
         /** Returns a filtered collection of IndicatorDescriptionMoreInfos based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionMoreInfos which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionMoreInfo>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionMoreInfo>>(Endpoint.fromSelf<Array<IndicatorDescriptionMoreInfo>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionMoreInfo>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionMoreInfo>>(Endpoint.fromSelf<Array<IndicatorDescriptionMoreInfo>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IndicatorDescriptionMoreInfos exist based on the provided filter.
@@ -6534,8 +6534,8 @@ module hiw {
         /** Gets IndicatorDescriptionMoreInfos by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionMoreInfos.
          *  @return An Array of IndicatorDescriptionMoreInfos. */
-        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionMoreInfo>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionMoreInfo>>(Endpoint.fromSelf<Array<IndicatorDescriptionMoreInfo>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionMoreInfo>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionMoreInfo>>(Endpoint.fromSelf<Array<IndicatorDescriptionMoreInfo>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionMoreInfos by IndicatorDescriptionID exist. 
@@ -6568,8 +6568,8 @@ module hiw {
         /** Gets IndicatorDescriptionMoreInfos by UrlID.
          *  @param urlID The ID of the Url for which to retrieve the child IndicatorDescriptionMoreInfos.
          *  @return An Array of IndicatorDescriptionMoreInfos. */
-        public static getByUrlID(urlID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionMoreInfo>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionMoreInfo>>(Endpoint.fromSelf<Array<IndicatorDescriptionMoreInfo>>(), callback, { urlID: urlID }, null, page);
+        public static getByUrlID(urlID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionMoreInfo>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionMoreInfo>>(Endpoint.fromSelf<Array<IndicatorDescriptionMoreInfo>>(), callback, { urlID: urlID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionMoreInfos by UrlID exist. 
@@ -6623,8 +6623,8 @@ module hiw {
         /** Gets a list of all of the IndicatorDescriptionReferences in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionReferences */
-        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionReference>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionReference>>(Endpoint.fromSelf<Array<IndicatorDescriptionReference>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionReference>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionReference>>(Endpoint.fromSelf<Array<IndicatorDescriptionReference>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionReferences exist. */
@@ -6647,8 +6647,8 @@ module hiw {
         /** Returns a filtered collection of IndicatorDescriptionReferences based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionReferences which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionReference>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionReference>>(Endpoint.fromSelf<Array<IndicatorDescriptionReference>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionReference>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionReference>>(Endpoint.fromSelf<Array<IndicatorDescriptionReference>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IndicatorDescriptionReferences exist based on the provided filter.
@@ -6668,8 +6668,8 @@ module hiw {
         /** Gets IndicatorDescriptionReferences by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionReferences.
          *  @return An Array of IndicatorDescriptionReferences. */
-        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionReference>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionReference>>(Endpoint.fromSelf<Array<IndicatorDescriptionReference>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionReference>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionReference>>(Endpoint.fromSelf<Array<IndicatorDescriptionReference>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionReferences by IndicatorDescriptionID exist. 
@@ -6702,8 +6702,8 @@ module hiw {
         /** Gets IndicatorDescriptionReferences by UrlID.
          *  @param urlID The ID of the Url for which to retrieve the child IndicatorDescriptionReferences.
          *  @return An Array of IndicatorDescriptionReferences. */
-        public static getByUrlID(urlID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionReference>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionReference>>(Endpoint.fromSelf<Array<IndicatorDescriptionReference>>(), callback, { urlID: urlID }, null, page);
+        public static getByUrlID(urlID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionReference>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionReference>>(Endpoint.fromSelf<Array<IndicatorDescriptionReference>>(), callback, { urlID: urlID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionReferences by UrlID exist. 
@@ -6757,8 +6757,8 @@ module hiw {
         /** Gets a list of all of the IndicatorDescriptionResources in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionResources */
-        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionResource>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionResource>>(Endpoint.fromSelf<Array<IndicatorDescriptionResource>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionResource>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionResource>>(Endpoint.fromSelf<Array<IndicatorDescriptionResource>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionResources exist. */
@@ -6781,8 +6781,8 @@ module hiw {
         /** Returns a filtered collection of IndicatorDescriptionResources based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionResources which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionResource>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionResource>>(Endpoint.fromSelf<Array<IndicatorDescriptionResource>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionResource>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionResource>>(Endpoint.fromSelf<Array<IndicatorDescriptionResource>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IndicatorDescriptionResources exist based on the provided filter.
@@ -6802,8 +6802,8 @@ module hiw {
         /** Gets IndicatorDescriptionResources by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionResources.
          *  @return An Array of IndicatorDescriptionResources. */
-        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionResource>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionResource>>(Endpoint.fromSelf<Array<IndicatorDescriptionResource>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionResource>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionResource>>(Endpoint.fromSelf<Array<IndicatorDescriptionResource>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionResources by IndicatorDescriptionID exist. 
@@ -6836,8 +6836,8 @@ module hiw {
         /** Gets IndicatorDescriptionResources by UrlID.
          *  @param urlID The ID of the Url for which to retrieve the child IndicatorDescriptionResources.
          *  @return An Array of IndicatorDescriptionResources. */
-        public static getByUrlID(urlID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionResource>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionResource>>(Endpoint.fromSelf<Array<IndicatorDescriptionResource>>(), callback, { urlID: urlID }, null, page);
+        public static getByUrlID(urlID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionResource>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionResource>>(Endpoint.fromSelf<Array<IndicatorDescriptionResource>>(), callback, { urlID: urlID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionResources by UrlID exist. 
@@ -6923,8 +6923,8 @@ module hiw {
         /** Gets a list of all of the IndicatorDescriptions in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptions */
-        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescription>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescription>>(Endpoint.fromSelf<Array<IndicatorDescription>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescription>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescription>>(Endpoint.fromSelf<Array<IndicatorDescription>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptions exist. */
@@ -6947,8 +6947,8 @@ module hiw {
         /** Returns a filtered collection of IndicatorDescriptions based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptions which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescription>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescription>>(Endpoint.fromSelf<Array<IndicatorDescription>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescription>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescription>>(Endpoint.fromSelf<Array<IndicatorDescription>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IndicatorDescriptions exist based on the provided filter.
@@ -6968,8 +6968,8 @@ module hiw {
         /** Gets IndicatorDescriptions by ValueLabelID.
          *  @param valueLabelID The ID of the ValueLabel for which to retrieve the child IndicatorDescriptions.
          *  @return An Array of IndicatorDescriptions. */
-        public static getByValueLabelID(valueLabelID: number, api: API, callback: IAPICallback<Array<IndicatorDescription>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescription>>(Endpoint.fromSelf<Array<IndicatorDescription>>(), callback, { valueLabelID: valueLabelID }, null, page);
+        public static getByValueLabelID(valueLabelID: number, api: API, callback: IAPICallback<Array<IndicatorDescription>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescription>>(Endpoint.fromSelf<Array<IndicatorDescription>>(), callback, { valueLabelID: valueLabelID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptions by ValueLabelID exist. 
@@ -7029,8 +7029,8 @@ module hiw {
         /** Gets a list of all of the IndicatorDescriptionHP2020s in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionHP2020s */
-        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionHP2020>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionHP2020>>(Endpoint.fromSelf<Array<IndicatorDescriptionHP2020>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionHP2020>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionHP2020>>(Endpoint.fromSelf<Array<IndicatorDescriptionHP2020>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionHP2020s exist. */
@@ -7053,8 +7053,8 @@ module hiw {
         /** Returns a filtered collection of IndicatorDescriptionHP2020s based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionHP2020s which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionHP2020>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionHP2020>>(Endpoint.fromSelf<Array<IndicatorDescriptionHP2020>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionHP2020>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionHP2020>>(Endpoint.fromSelf<Array<IndicatorDescriptionHP2020>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IndicatorDescriptionHP2020s exist based on the provided filter.
@@ -7074,8 +7074,8 @@ module hiw {
         /** Gets IndicatorDescriptionHP2020s by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionHP2020s.
          *  @return An Array of IndicatorDescriptionHP2020s. */
-        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionHP2020>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionHP2020>>(Endpoint.fromSelf<Array<IndicatorDescriptionHP2020>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionHP2020>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionHP2020>>(Endpoint.fromSelf<Array<IndicatorDescriptionHP2020>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionHP2020s by IndicatorDescriptionID exist. 
@@ -7108,8 +7108,8 @@ module hiw {
         /** Gets IndicatorDescriptionHP2020s by HP2020TSMID.
          *  @param hP2020TSMID The ID of the HP2020TSM for which to retrieve the child IndicatorDescriptionHP2020s.
          *  @return An Array of IndicatorDescriptionHP2020s. */
-        public static getByHP2020TSMID(hP2020TSMID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionHP2020>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionHP2020>>(Endpoint.fromSelf<Array<IndicatorDescriptionHP2020>>(), callback, { hP2020TSMID: hP2020TSMID }, null, page);
+        public static getByHP2020TSMID(hP2020TSMID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionHP2020>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionHP2020>>(Endpoint.fromSelf<Array<IndicatorDescriptionHP2020>>(), callback, { hP2020TSMID: hP2020TSMID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionHP2020s by HP2020TSMID exist. 
@@ -7159,8 +7159,8 @@ module hiw {
         /** Gets a list of all of the IndicatorDescriptionTimeFrames in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionTimeFrames */
-        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionTimeFrame>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionTimeFrame>>(Endpoint.fromSelf<Array<IndicatorDescriptionTimeFrame>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionTimeFrame>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionTimeFrame>>(Endpoint.fromSelf<Array<IndicatorDescriptionTimeFrame>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionTimeFrames exist. */
@@ -7183,8 +7183,8 @@ module hiw {
         /** Returns a filtered collection of IndicatorDescriptionTimeFrames based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionTimeFrames which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionTimeFrame>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionTimeFrame>>(Endpoint.fromSelf<Array<IndicatorDescriptionTimeFrame>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionTimeFrame>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionTimeFrame>>(Endpoint.fromSelf<Array<IndicatorDescriptionTimeFrame>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IndicatorDescriptionTimeFrames exist based on the provided filter.
@@ -7204,8 +7204,8 @@ module hiw {
         /** Gets IndicatorDescriptionTimeFrames by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionTimeFrames.
          *  @return An Array of IndicatorDescriptionTimeFrames. */
-        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionTimeFrame>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionTimeFrame>>(Endpoint.fromSelf<Array<IndicatorDescriptionTimeFrame>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionTimeFrame>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionTimeFrame>>(Endpoint.fromSelf<Array<IndicatorDescriptionTimeFrame>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionTimeFrames by IndicatorDescriptionID exist. 
@@ -7238,8 +7238,8 @@ module hiw {
         /** Gets IndicatorDescriptionTimeFrames by TimeframeID.
          *  @param timeframeID The ID of the Timeframe for which to retrieve the child IndicatorDescriptionTimeFrames.
          *  @return An Array of IndicatorDescriptionTimeFrames. */
-        public static getByTimeframeID(timeframeID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionTimeFrame>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionTimeFrame>>(Endpoint.fromSelf<Array<IndicatorDescriptionTimeFrame>>(), callback, { timeframeID: timeframeID }, null, page);
+        public static getByTimeframeID(timeframeID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionTimeFrame>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionTimeFrame>>(Endpoint.fromSelf<Array<IndicatorDescriptionTimeFrame>>(), callback, { timeframeID: timeframeID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionTimeFrames by TimeframeID exist. 
@@ -7289,8 +7289,8 @@ module hiw {
         /** Gets a list of all of the IndicatorDescriptionYears in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionYears */
-        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionYear>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionYear>>(Endpoint.fromSelf<Array<IndicatorDescriptionYear>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionYear>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionYear>>(Endpoint.fromSelf<Array<IndicatorDescriptionYear>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionYears exist. */
@@ -7313,8 +7313,8 @@ module hiw {
         /** Returns a filtered collection of IndicatorDescriptionYears based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionYears which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionYear>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionYear>>(Endpoint.fromSelf<Array<IndicatorDescriptionYear>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionYear>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionYear>>(Endpoint.fromSelf<Array<IndicatorDescriptionYear>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IndicatorDescriptionYears exist based on the provided filter.
@@ -7334,8 +7334,8 @@ module hiw {
         /** Gets IndicatorDescriptionYears by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionYears.
          *  @return An Array of IndicatorDescriptionYears. */
-        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionYear>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionYear>>(Endpoint.fromSelf<Array<IndicatorDescriptionYear>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionYear>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionYear>>(Endpoint.fromSelf<Array<IndicatorDescriptionYear>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionYears by IndicatorDescriptionID exist. 
@@ -7368,8 +7368,8 @@ module hiw {
         /** Gets IndicatorDescriptionYears by YearID.
          *  @param yearID The ID of the Year for which to retrieve the child IndicatorDescriptionYears.
          *  @return An Array of IndicatorDescriptionYears. */
-        public static getByYearID(yearID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionYear>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDescriptionYear>>(Endpoint.fromSelf<Array<IndicatorDescriptionYear>>(), callback, { yearID: yearID }, null, page);
+        public static getByYearID(yearID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionYear>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDescriptionYear>>(Endpoint.fromSelf<Array<IndicatorDescriptionYear>>(), callback, { yearID: yearID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDescriptionYears by YearID exist. 
@@ -7427,8 +7427,8 @@ module hiw {
         /** Gets a list of all of the IndicatorDimensionGraphs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDimensionGraphs */
-        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDimensionGraph>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDimensionGraph>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDimensionGraphs exist. */
@@ -7451,8 +7451,8 @@ module hiw {
         /** Returns a filtered collection of IndicatorDimensionGraphs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDimensionGraphs which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDimensionGraph>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDimensionGraph>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IndicatorDimensionGraphs exist based on the provided filter.
@@ -7472,8 +7472,8 @@ module hiw {
         /** Gets IndicatorDimensionGraphs by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDimensionGraphs.
          *  @return An Array of IndicatorDimensionGraphs. */
-        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDimensionGraph>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDimensionGraph>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDimensionGraphs by IndicatorDescriptionID exist. 
@@ -7506,8 +7506,8 @@ module hiw {
         /** Gets IndicatorDimensionGraphs by LocaleLevelID.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDimensionGraphs.
          *  @return An Array of IndicatorDimensionGraphs. */
-        public static getByLocaleLevelID(localeLevelID: number, api: API, callback: IAPICallback<Array<IndicatorDimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDimensionGraph>>(), callback, { localeLevelID: localeLevelID }, null, page);
+        public static getByLocaleLevelID(localeLevelID: number, api: API, callback: IAPICallback<Array<IndicatorDimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDimensionGraph>>(), callback, { localeLevelID: localeLevelID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDimensionGraphs by LocaleLevelID exist. 
@@ -7540,8 +7540,8 @@ module hiw {
         /** Gets IndicatorDimensionGraphs by DimensionGraphID.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child IndicatorDimensionGraphs.
          *  @return An Array of IndicatorDimensionGraphs. */
-        public static getByDimensionGraphID(dimensionGraphID: number, api: API, callback: IAPICallback<Array<IndicatorDimensionGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDimensionGraph>>(), callback, { dimensionGraphID: dimensionGraphID }, null, page);
+        public static getByDimensionGraphID(dimensionGraphID: number, api: API, callback: IAPICallback<Array<IndicatorDimensionGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDimensionGraph>>(Endpoint.fromSelf<Array<IndicatorDimensionGraph>>(), callback, { dimensionGraphID: dimensionGraphID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDimensionGraphs by DimensionGraphID exist. 
@@ -7591,8 +7591,8 @@ module hiw {
         /** Gets a list of all of the IndicatorDimensions in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDimensions */
-        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDimension>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDimension>>(Endpoint.fromSelf<Array<IndicatorDimension>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<IndicatorDimension>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDimension>>(Endpoint.fromSelf<Array<IndicatorDimension>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDimensions exist. */
@@ -7615,8 +7615,8 @@ module hiw {
         /** Returns a filtered collection of IndicatorDimensions based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDimensions which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDimension>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDimension>>(Endpoint.fromSelf<Array<IndicatorDimension>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDimension>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDimension>>(Endpoint.fromSelf<Array<IndicatorDimension>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many IndicatorDimensions exist based on the provided filter.
@@ -7636,8 +7636,8 @@ module hiw {
         /** Gets IndicatorDimensions by IndicatorID.
          *  @param indicatorID The ID of the Indicator for which to retrieve the child IndicatorDimensions.
          *  @return An Array of IndicatorDimensions. */
-        public static getByIndicatorID(indicatorID: number, api: API, callback: IAPICallback<Array<IndicatorDimension>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDimension>>(Endpoint.fromSelf<Array<IndicatorDimension>>(), callback, { indicatorID: indicatorID }, null, page);
+        public static getByIndicatorID(indicatorID: number, api: API, callback: IAPICallback<Array<IndicatorDimension>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDimension>>(Endpoint.fromSelf<Array<IndicatorDimension>>(), callback, { indicatorID: indicatorID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDimensions by IndicatorID exist. 
@@ -7670,8 +7670,8 @@ module hiw {
         /** Gets IndicatorDimensions by DimensionBookID.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child IndicatorDimensions.
          *  @return An Array of IndicatorDimensions. */
-        public static getByDimensionBookID(dimensionBookID: number, api: API, callback: IAPICallback<Array<IndicatorDimension>>, page?: number): Async {
-            return api.executeEndpoint<Array<IndicatorDimension>>(Endpoint.fromSelf<Array<IndicatorDimension>>(), callback, { dimensionBookID: dimensionBookID }, null, page);
+        public static getByDimensionBookID(dimensionBookID: number, api: API, callback: IAPICallback<Array<IndicatorDimension>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<IndicatorDimension>>(Endpoint.fromSelf<Array<IndicatorDimension>>(), callback, { dimensionBookID: dimensionBookID }, null, page, pageSize);
         }
 
         /** Gets how many IndicatorDimensions by DimensionBookID exist. 
@@ -7783,8 +7783,8 @@ module hiw {
         /** Gets a list of all of the Indicators in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Indicators */
-        public static getAll(api: API, callback: IAPICallback<Array<Indicator>>, page?: number): Async {
-            return api.executeEndpoint<Array<Indicator>>(Endpoint.fromSelf<Array<Indicator>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<Indicator>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Indicator>>(Endpoint.fromSelf<Array<Indicator>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many Indicators exist. */
@@ -7807,8 +7807,8 @@ module hiw {
         /** Returns a filtered collection of Indicators based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Indicators which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Indicator>>, page?: number): Async {
-            return api.executeEndpoint<Array<Indicator>>(Endpoint.fromSelf<Array<Indicator>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Indicator>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Indicator>>(Endpoint.fromSelf<Array<Indicator>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many Indicators exist based on the provided filter.
@@ -7828,8 +7828,8 @@ module hiw {
         /** Gets Indicators by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child Indicators.
          *  @return An Array of Indicators. */
-        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<Indicator>>, page?: number): Async {
-            return api.executeEndpoint<Array<Indicator>>(Endpoint.fromSelf<Array<Indicator>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        public static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<Indicator>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Indicator>>(Endpoint.fromSelf<Array<Indicator>>(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         }
 
         /** Gets how many Indicators by IndicatorDescriptionID exist. 
@@ -7862,8 +7862,8 @@ module hiw {
         /** Gets Indicators by TimeframeID.
          *  @param timeframeID The ID of the Timeframe for which to retrieve the child Indicators.
          *  @return An Array of Indicators. */
-        public static getByTimeframeID(timeframeID: number, api: API, callback: IAPICallback<Array<Indicator>>, page?: number): Async {
-            return api.executeEndpoint<Array<Indicator>>(Endpoint.fromSelf<Array<Indicator>>(), callback, { timeframeID: timeframeID }, null, page);
+        public static getByTimeframeID(timeframeID: number, api: API, callback: IAPICallback<Array<Indicator>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Indicator>>(Endpoint.fromSelf<Array<Indicator>>(), callback, { timeframeID: timeframeID }, null, page, pageSize);
         }
 
         /** Gets how many Indicators by TimeframeID exist. 
@@ -7896,8 +7896,8 @@ module hiw {
         /** Gets Indicators by LocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child Indicators.
          *  @return An Array of Indicators. */
-        public static getByLocaleID(localeID: number, api: API, callback: IAPICallback<Array<Indicator>>, page?: number): Async {
-            return api.executeEndpoint<Array<Indicator>>(Endpoint.fromSelf<Array<Indicator>>(), callback, { localeID: localeID }, null, page);
+        public static getByLocaleID(localeID: number, api: API, callback: IAPICallback<Array<Indicator>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Indicator>>(Endpoint.fromSelf<Array<Indicator>>(), callback, { localeID: localeID }, null, page, pageSize);
         }
 
         /** Gets how many Indicators by LocaleID exist. 
@@ -7930,8 +7930,8 @@ module hiw {
         /** Gets Indicators by DimensionGraphID.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child Indicators.
          *  @return An Array of Indicators. */
-        public static getByDimensionGraphID(dimensionGraphID: number, api: API, callback: IAPICallback<Array<Indicator>>, page?: number): Async {
-            return api.executeEndpoint<Array<Indicator>>(Endpoint.fromSelf<Array<Indicator>>(), callback, { dimensionGraphID: dimensionGraphID }, null, page);
+        public static getByDimensionGraphID(dimensionGraphID: number, api: API, callback: IAPICallback<Array<Indicator>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Indicator>>(Endpoint.fromSelf<Array<Indicator>>(), callback, { dimensionGraphID: dimensionGraphID }, null, page, pageSize);
         }
 
         /** Gets how many Indicators by DimensionGraphID exist. 
@@ -7964,8 +7964,8 @@ module hiw {
         /** Gets Indicators by ModifierGraphID.
          *  @param modifierGraphID The ID of the ModifierGraph for which to retrieve the child Indicators.
          *  @return An Array of Indicators. */
-        public static getByModifierGraphID(modifierGraphID: number, api: API, callback: IAPICallback<Array<Indicator>>, page?: number): Async {
-            return api.executeEndpoint<Array<Indicator>>(Endpoint.fromSelf<Array<Indicator>>(), callback, { modifierGraphID: modifierGraphID }, null, page);
+        public static getByModifierGraphID(modifierGraphID: number, api: API, callback: IAPICallback<Array<Indicator>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Indicator>>(Endpoint.fromSelf<Array<Indicator>>(), callback, { modifierGraphID: modifierGraphID }, null, page, pageSize);
         }
 
         /** Gets how many Indicators by ModifierGraphID exist. 
@@ -8031,8 +8031,8 @@ module hiw {
         /** Gets a list of all of the Initiatives in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Initiatives */
-        public static getAll(api: API, callback: IAPICallback<Array<Initiative>>, page?: number): Async {
-            return api.executeEndpoint<Array<Initiative>>(Endpoint.fromSelf<Array<Initiative>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<Initiative>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Initiative>>(Endpoint.fromSelf<Array<Initiative>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many Initiatives exist. */
@@ -8055,8 +8055,8 @@ module hiw {
         /** Returns a filtered collection of Initiatives based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Initiatives which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Initiative>>, page?: number): Async {
-            return api.executeEndpoint<Array<Initiative>>(Endpoint.fromSelf<Array<Initiative>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Initiative>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Initiative>>(Endpoint.fromSelf<Array<Initiative>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many Initiatives exist based on the provided filter.
@@ -8103,8 +8103,8 @@ module hiw {
         /** Gets a list of all of the Interventions in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Interventions */
-        public static getAll(api: API, callback: IAPICallback<Array<Intervention>>, page?: number): Async {
-            return api.executeEndpoint<Array<Intervention>>(Endpoint.fromSelf<Array<Intervention>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<Intervention>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Intervention>>(Endpoint.fromSelf<Array<Intervention>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many Interventions exist. */
@@ -8127,8 +8127,8 @@ module hiw {
         /** Returns a filtered collection of Interventions based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Interventions which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Intervention>>, page?: number): Async {
-            return api.executeEndpoint<Array<Intervention>>(Endpoint.fromSelf<Array<Intervention>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Intervention>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Intervention>>(Endpoint.fromSelf<Array<Intervention>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many Interventions exist based on the provided filter.
@@ -8148,8 +8148,8 @@ module hiw {
         /** Gets Interventions by UrlID.
          *  @param urlID The ID of the Url for which to retrieve the child Interventions.
          *  @return An Array of Interventions. */
-        public static getByUrlID(urlID: number, api: API, callback: IAPICallback<Array<Intervention>>, page?: number): Async {
-            return api.executeEndpoint<Array<Intervention>>(Endpoint.fromSelf<Array<Intervention>>(), callback, { urlID: urlID }, null, page);
+        public static getByUrlID(urlID: number, api: API, callback: IAPICallback<Array<Intervention>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Intervention>>(Endpoint.fromSelf<Array<Intervention>>(), callback, { urlID: urlID }, null, page, pageSize);
         }
 
         /** Gets how many Interventions by UrlID exist. 
@@ -8207,8 +8207,8 @@ module hiw {
         /** Gets a list of all of the Keywords in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Keywords */
-        public static getAll(api: API, callback: IAPICallback<Array<Keyword>>, page?: number): Async {
-            return api.executeEndpoint<Array<Keyword>>(Endpoint.fromSelf<Array<Keyword>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<Keyword>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Keyword>>(Endpoint.fromSelf<Array<Keyword>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many Keywords exist. */
@@ -8231,8 +8231,8 @@ module hiw {
         /** Returns a filtered collection of Keywords based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Keywords which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Keyword>>, page?: number): Async {
-            return api.executeEndpoint<Array<Keyword>>(Endpoint.fromSelf<Array<Keyword>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Keyword>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Keyword>>(Endpoint.fromSelf<Array<Keyword>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many Keywords exist based on the provided filter.
@@ -8269,8 +8269,8 @@ module hiw {
         /** Gets a list of all of the LocaleLevels in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of LocaleLevels */
-        public static getAll(api: API, callback: IAPICallback<Array<LocaleLevel>>, page?: number): Async {
-            return api.executeEndpoint<Array<LocaleLevel>>(Endpoint.fromSelf<Array<LocaleLevel>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<LocaleLevel>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<LocaleLevel>>(Endpoint.fromSelf<Array<LocaleLevel>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many LocaleLevels exist. */
@@ -8293,8 +8293,8 @@ module hiw {
         /** Returns a filtered collection of LocaleLevels based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All LocaleLevels which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<LocaleLevel>>, page?: number): Async {
-            return api.executeEndpoint<Array<LocaleLevel>>(Endpoint.fromSelf<Array<LocaleLevel>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<LocaleLevel>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<LocaleLevel>>(Endpoint.fromSelf<Array<LocaleLevel>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many LocaleLevels exist based on the provided filter.
@@ -8333,8 +8333,8 @@ module hiw {
         /** Gets a list of all of the LocaleRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of LocaleRelations */
-        public static getAll(api: API, callback: IAPICallback<Array<LocaleRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<LocaleRelation>>(Endpoint.fromSelf<Array<LocaleRelation>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<LocaleRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<LocaleRelation>>(Endpoint.fromSelf<Array<LocaleRelation>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many LocaleRelations exist. */
@@ -8357,8 +8357,8 @@ module hiw {
         /** Returns a filtered collection of LocaleRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All LocaleRelations which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<LocaleRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<LocaleRelation>>(Endpoint.fromSelf<Array<LocaleRelation>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<LocaleRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<LocaleRelation>>(Endpoint.fromSelf<Array<LocaleRelation>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many LocaleRelations exist based on the provided filter.
@@ -8378,8 +8378,8 @@ module hiw {
         /** Gets LocaleRelations by AncestorLocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child LocaleRelations.
          *  @return An Array of LocaleRelations. */
-        public static getByAncestorLocaleID(localeID: number, api: API, callback: IAPICallback<Array<LocaleRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<LocaleRelation>>(Endpoint.fromSelf<Array<LocaleRelation>>(), callback, { localeID: localeID }, null, page);
+        public static getByAncestorLocaleID(localeID: number, api: API, callback: IAPICallback<Array<LocaleRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<LocaleRelation>>(Endpoint.fromSelf<Array<LocaleRelation>>(), callback, { localeID: localeID }, null, page, pageSize);
         }
 
         /** Gets how many LocaleRelations by AncestorLocaleID exist. 
@@ -8412,8 +8412,8 @@ module hiw {
         /** Gets LocaleRelations by DescendantLocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child LocaleRelations.
          *  @return An Array of LocaleRelations. */
-        public static getByDescendantLocaleID(localeID: number, api: API, callback: IAPICallback<Array<LocaleRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<LocaleRelation>>(Endpoint.fromSelf<Array<LocaleRelation>>(), callback, { localeID: localeID }, null, page);
+        public static getByDescendantLocaleID(localeID: number, api: API, callback: IAPICallback<Array<LocaleRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<LocaleRelation>>(Endpoint.fromSelf<Array<LocaleRelation>>(), callback, { localeID: localeID }, null, page, pageSize);
         }
 
         /** Gets how many LocaleRelations by DescendantLocaleID exist. 
@@ -8487,8 +8487,8 @@ module hiw {
         /** Gets a list of all of the Locales in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Locales */
-        public static getAll(api: API, callback: IAPICallback<Array<Locale>>, page?: number): Async {
-            return api.executeEndpoint<Array<Locale>>(Endpoint.fromSelf<Array<Locale>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<Locale>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Locale>>(Endpoint.fromSelf<Array<Locale>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many Locales exist. */
@@ -8511,8 +8511,8 @@ module hiw {
         /** Returns a filtered collection of Locales based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Locales which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Locale>>, page?: number): Async {
-            return api.executeEndpoint<Array<Locale>>(Endpoint.fromSelf<Array<Locale>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Locale>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Locale>>(Endpoint.fromSelf<Array<Locale>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many Locales exist based on the provided filter.
@@ -8531,15 +8531,15 @@ module hiw {
 
         /** Gets Locales by ParentLocaleID.
          *  @return An Array of Locales. */
-        public getLocales(api: API, callback: IAPICallback<Array<Locale>>, page?: number): Async {
-            return Locale.getByParentLocaleID(this.id, api, callback, page);
+        public getLocales(api: API, callback: IAPICallback<Array<Locale>>, page?: number, pageSize?: number): Async {
+            return Locale.getByParentLocaleID(this.id, api, callback, page, pageSize);
         }
 
         /** Gets Locales by ParentLocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child Locales.
          *  @return An Array of Locales. */
-        public static getByParentLocaleID(localeID: number, api: API, callback: IAPICallback<Array<Locale>>, page?: number): Async {
-            return api.executeEndpoint<Array<Locale>>(Endpoint.fromSelf<Array<Locale>>(), callback, { localeID: localeID }, null, page);
+        public static getByParentLocaleID(localeID: number, api: API, callback: IAPICallback<Array<Locale>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Locale>>(Endpoint.fromSelf<Array<Locale>>(), callback, { localeID: localeID }, null, page, pageSize);
         }
 
         /** Gets how many Locales by ParentLocaleID exist. 
@@ -8584,8 +8584,8 @@ module hiw {
         /** Gets Locales by LocaleLevelID.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child Locales.
          *  @return An Array of Locales. */
-        public static getByLocaleLevelID(localeLevelID: number, api: API, callback: IAPICallback<Array<Locale>>, page?: number): Async {
-            return api.executeEndpoint<Array<Locale>>(Endpoint.fromSelf<Array<Locale>>(), callback, { localeLevelID: localeLevelID }, null, page);
+        public static getByLocaleLevelID(localeLevelID: number, api: API, callback: IAPICallback<Array<Locale>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Locale>>(Endpoint.fromSelf<Array<Locale>>(), callback, { localeLevelID: localeLevelID }, null, page, pageSize);
         }
 
         /** Gets how many Locales by LocaleLevelID exist. 
@@ -8645,8 +8645,8 @@ module hiw {
         /** Gets a list of all of the MaritalStatuses in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of MaritalStatuses */
-        public static getAll(api: API, callback: IAPICallback<Array<MaritalStatus>>, page?: number): Async {
-            return api.executeEndpoint<Array<MaritalStatus>>(Endpoint.fromSelf<Array<MaritalStatus>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<MaritalStatus>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<MaritalStatus>>(Endpoint.fromSelf<Array<MaritalStatus>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many MaritalStatuses exist. */
@@ -8669,8 +8669,8 @@ module hiw {
         /** Returns a filtered collection of MaritalStatuses based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All MaritalStatuses which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<MaritalStatus>>, page?: number): Async {
-            return api.executeEndpoint<Array<MaritalStatus>>(Endpoint.fromSelf<Array<MaritalStatus>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<MaritalStatus>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<MaritalStatus>>(Endpoint.fromSelf<Array<MaritalStatus>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many MaritalStatuses exist based on the provided filter.
@@ -8689,15 +8689,15 @@ module hiw {
 
         /** Gets MaritalStatuses by ParentMaritalStatusID.
          *  @return An Array of MaritalStatuses. */
-        public getMaritalStatuses(api: API, callback: IAPICallback<Array<MaritalStatus>>, page?: number): Async {
-            return MaritalStatus.getByParentMaritalStatusID(this.id, api, callback, page);
+        public getMaritalStatuses(api: API, callback: IAPICallback<Array<MaritalStatus>>, page?: number, pageSize?: number): Async {
+            return MaritalStatus.getByParentMaritalStatusID(this.id, api, callback, page, pageSize);
         }
 
         /** Gets MaritalStatuses by ParentMaritalStatusID.
          *  @param maritalStatusID The ID of the MaritalStatus for which to retrieve the child MaritalStatuses.
          *  @return An Array of MaritalStatuses. */
-        public static getByParentMaritalStatusID(maritalStatusID: number, api: API, callback: IAPICallback<Array<MaritalStatus>>, page?: number): Async {
-            return api.executeEndpoint<Array<MaritalStatus>>(Endpoint.fromSelf<Array<MaritalStatus>>(), callback, { maritalStatusID: maritalStatusID }, null, page);
+        public static getByParentMaritalStatusID(maritalStatusID: number, api: API, callback: IAPICallback<Array<MaritalStatus>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<MaritalStatus>>(Endpoint.fromSelf<Array<MaritalStatus>>(), callback, { maritalStatusID: maritalStatusID }, null, page, pageSize);
         }
 
         /** Gets how many MaritalStatuses by ParentMaritalStatusID exist. 
@@ -8761,8 +8761,8 @@ module hiw {
         /** Gets a list of all of the MaritalStatusRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of MaritalStatusRelations */
-        public static getAll(api: API, callback: IAPICallback<Array<MaritalStatusRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<MaritalStatusRelation>>(Endpoint.fromSelf<Array<MaritalStatusRelation>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<MaritalStatusRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<MaritalStatusRelation>>(Endpoint.fromSelf<Array<MaritalStatusRelation>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many MaritalStatusRelations exist. */
@@ -8785,8 +8785,8 @@ module hiw {
         /** Returns a filtered collection of MaritalStatusRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All MaritalStatusRelations which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<MaritalStatusRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<MaritalStatusRelation>>(Endpoint.fromSelf<Array<MaritalStatusRelation>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<MaritalStatusRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<MaritalStatusRelation>>(Endpoint.fromSelf<Array<MaritalStatusRelation>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many MaritalStatusRelations exist based on the provided filter.
@@ -8806,8 +8806,8 @@ module hiw {
         /** Gets MaritalStatusRelations by AncestorMaritalStatusID.
          *  @param maritalStatusID The ID of the MaritalStatus for which to retrieve the child MaritalStatusRelations.
          *  @return An Array of MaritalStatusRelations. */
-        public static getByAncestorMaritalStatusID(maritalStatusID: number, api: API, callback: IAPICallback<Array<MaritalStatusRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<MaritalStatusRelation>>(Endpoint.fromSelf<Array<MaritalStatusRelation>>(), callback, { maritalStatusID: maritalStatusID }, null, page);
+        public static getByAncestorMaritalStatusID(maritalStatusID: number, api: API, callback: IAPICallback<Array<MaritalStatusRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<MaritalStatusRelation>>(Endpoint.fromSelf<Array<MaritalStatusRelation>>(), callback, { maritalStatusID: maritalStatusID }, null, page, pageSize);
         }
 
         /** Gets how many MaritalStatusRelations by AncestorMaritalStatusID exist. 
@@ -8840,8 +8840,8 @@ module hiw {
         /** Gets MaritalStatusRelations by DescendantMaritalStatusID.
          *  @param maritalStatusID The ID of the MaritalStatus for which to retrieve the child MaritalStatusRelations.
          *  @return An Array of MaritalStatusRelations. */
-        public static getByDescendantMaritalStatusID(maritalStatusID: number, api: API, callback: IAPICallback<Array<MaritalStatusRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<MaritalStatusRelation>>(Endpoint.fromSelf<Array<MaritalStatusRelation>>(), callback, { maritalStatusID: maritalStatusID }, null, page);
+        public static getByDescendantMaritalStatusID(maritalStatusID: number, api: API, callback: IAPICallback<Array<MaritalStatusRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<MaritalStatusRelation>>(Endpoint.fromSelf<Array<MaritalStatusRelation>>(), callback, { maritalStatusID: maritalStatusID }, null, page, pageSize);
         }
 
         /** Gets how many MaritalStatusRelations by DescendantMaritalStatusID exist. 
@@ -8915,8 +8915,8 @@ module hiw {
         /** Gets a list of all of the Modifiers in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Modifiers */
-        public static getAll(api: API, callback: IAPICallback<Array<Modifier>>, page?: number): Async {
-            return api.executeEndpoint<Array<Modifier>>(Endpoint.fromSelf<Array<Modifier>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<Modifier>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Modifier>>(Endpoint.fromSelf<Array<Modifier>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many Modifiers exist. */
@@ -8939,8 +8939,8 @@ module hiw {
         /** Returns a filtered collection of Modifiers based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Modifiers which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Modifier>>, page?: number): Async {
-            return api.executeEndpoint<Array<Modifier>>(Endpoint.fromSelf<Array<Modifier>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Modifier>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Modifier>>(Endpoint.fromSelf<Array<Modifier>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many Modifiers exist based on the provided filter.
@@ -8959,15 +8959,15 @@ module hiw {
 
         /** Gets Modifiers by ParentModifierID.
          *  @return An Array of Modifiers. */
-        public getModifiers(api: API, callback: IAPICallback<Array<Modifier>>, page?: number): Async {
-            return Modifier.getByParentModifierID(this.id, api, callback, page);
+        public getModifiers(api: API, callback: IAPICallback<Array<Modifier>>, page?: number, pageSize?: number): Async {
+            return Modifier.getByParentModifierID(this.id, api, callback, page, pageSize);
         }
 
         /** Gets Modifiers by ParentModifierID.
          *  @param modifierID The ID of the Modifier for which to retrieve the child Modifiers.
          *  @return An Array of Modifiers. */
-        public static getByParentModifierID(modifierID: number, api: API, callback: IAPICallback<Array<Modifier>>, page?: number): Async {
-            return api.executeEndpoint<Array<Modifier>>(Endpoint.fromSelf<Array<Modifier>>(), callback, { modifierID: modifierID }, null, page);
+        public static getByParentModifierID(modifierID: number, api: API, callback: IAPICallback<Array<Modifier>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Modifier>>(Endpoint.fromSelf<Array<Modifier>>(), callback, { modifierID: modifierID }, null, page, pageSize);
         }
 
         /** Gets how many Modifiers by ParentModifierID exist. 
@@ -9079,8 +9079,8 @@ module hiw {
         /** Gets a list of all of the ModifierGraphs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of ModifierGraphs */
-        public static getAll(api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<ModifierGraph>>(Endpoint.fromSelf<Array<ModifierGraph>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<ModifierGraph>>(Endpoint.fromSelf<Array<ModifierGraph>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many ModifierGraphs exist. */
@@ -9103,8 +9103,8 @@ module hiw {
         /** Returns a filtered collection of ModifierGraphs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All ModifierGraphs which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<ModifierGraph>>(Endpoint.fromSelf<Array<ModifierGraph>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<ModifierGraph>>(Endpoint.fromSelf<Array<ModifierGraph>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many ModifierGraphs exist based on the provided filter.
@@ -9124,8 +9124,8 @@ module hiw {
         /** Gets ModifierGraphs by Modifier1ID.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
          *  @return An Array of ModifierGraphs. */
-        public static getByModifier1ID(modifierID: number, api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<ModifierGraph>>(Endpoint.fromSelf<Array<ModifierGraph>>(), callback, { modifierID: modifierID }, null, page);
+        public static getByModifier1ID(modifierID: number, api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<ModifierGraph>>(Endpoint.fromSelf<Array<ModifierGraph>>(), callback, { modifierID: modifierID }, null, page, pageSize);
         }
 
         /** Gets how many ModifierGraphs by Modifier1ID exist. 
@@ -9158,8 +9158,8 @@ module hiw {
         /** Gets ModifierGraphs by Modifier2ID.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
          *  @return An Array of ModifierGraphs. */
-        public static getByModifier2ID(modifierID: number, api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<ModifierGraph>>(Endpoint.fromSelf<Array<ModifierGraph>>(), callback, { modifierID: modifierID }, null, page);
+        public static getByModifier2ID(modifierID: number, api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<ModifierGraph>>(Endpoint.fromSelf<Array<ModifierGraph>>(), callback, { modifierID: modifierID }, null, page, pageSize);
         }
 
         /** Gets how many ModifierGraphs by Modifier2ID exist. 
@@ -9192,8 +9192,8 @@ module hiw {
         /** Gets ModifierGraphs by Modifier3ID.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
          *  @return An Array of ModifierGraphs. */
-        public static getByModifier3ID(modifierID: number, api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<ModifierGraph>>(Endpoint.fromSelf<Array<ModifierGraph>>(), callback, { modifierID: modifierID }, null, page);
+        public static getByModifier3ID(modifierID: number, api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<ModifierGraph>>(Endpoint.fromSelf<Array<ModifierGraph>>(), callback, { modifierID: modifierID }, null, page, pageSize);
         }
 
         /** Gets how many ModifierGraphs by Modifier3ID exist. 
@@ -9226,8 +9226,8 @@ module hiw {
         /** Gets ModifierGraphs by Modifier4ID.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
          *  @return An Array of ModifierGraphs. */
-        public static getByModifier4ID(modifierID: number, api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<ModifierGraph>>(Endpoint.fromSelf<Array<ModifierGraph>>(), callback, { modifierID: modifierID }, null, page);
+        public static getByModifier4ID(modifierID: number, api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<ModifierGraph>>(Endpoint.fromSelf<Array<ModifierGraph>>(), callback, { modifierID: modifierID }, null, page, pageSize);
         }
 
         /** Gets how many ModifierGraphs by Modifier4ID exist. 
@@ -9260,8 +9260,8 @@ module hiw {
         /** Gets ModifierGraphs by Modifier5ID.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
          *  @return An Array of ModifierGraphs. */
-        public static getByModifier5ID(modifierID: number, api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number): Async {
-            return api.executeEndpoint<Array<ModifierGraph>>(Endpoint.fromSelf<Array<ModifierGraph>>(), callback, { modifierID: modifierID }, null, page);
+        public static getByModifier5ID(modifierID: number, api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<ModifierGraph>>(Endpoint.fromSelf<Array<ModifierGraph>>(), callback, { modifierID: modifierID }, null, page, pageSize);
         }
 
         /** Gets how many ModifierGraphs by Modifier5ID exist. 
@@ -9321,8 +9321,8 @@ module hiw {
         /** Gets a list of all of the ObesityStatuses in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of ObesityStatuses */
-        public static getAll(api: API, callback: IAPICallback<Array<ObesityStatus>>, page?: number): Async {
-            return api.executeEndpoint<Array<ObesityStatus>>(Endpoint.fromSelf<Array<ObesityStatus>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<ObesityStatus>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<ObesityStatus>>(Endpoint.fromSelf<Array<ObesityStatus>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many ObesityStatuses exist. */
@@ -9345,8 +9345,8 @@ module hiw {
         /** Returns a filtered collection of ObesityStatuses based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All ObesityStatuses which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<ObesityStatus>>, page?: number): Async {
-            return api.executeEndpoint<Array<ObesityStatus>>(Endpoint.fromSelf<Array<ObesityStatus>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<ObesityStatus>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<ObesityStatus>>(Endpoint.fromSelf<Array<ObesityStatus>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many ObesityStatuses exist based on the provided filter.
@@ -9365,15 +9365,15 @@ module hiw {
 
         /** Gets ObesityStatuses by ParentObesityStatusID.
          *  @return An Array of ObesityStatuses. */
-        public getObesityStatuses(api: API, callback: IAPICallback<Array<ObesityStatus>>, page?: number): Async {
-            return ObesityStatus.getByParentObesityStatusID(this.id, api, callback, page);
+        public getObesityStatuses(api: API, callback: IAPICallback<Array<ObesityStatus>>, page?: number, pageSize?: number): Async {
+            return ObesityStatus.getByParentObesityStatusID(this.id, api, callback, page, pageSize);
         }
 
         /** Gets ObesityStatuses by ParentObesityStatusID.
          *  @param obesityStatusID The ID of the ObesityStatus for which to retrieve the child ObesityStatuses.
          *  @return An Array of ObesityStatuses. */
-        public static getByParentObesityStatusID(obesityStatusID: number, api: API, callback: IAPICallback<Array<ObesityStatus>>, page?: number): Async {
-            return api.executeEndpoint<Array<ObesityStatus>>(Endpoint.fromSelf<Array<ObesityStatus>>(), callback, { obesityStatusID: obesityStatusID }, null, page);
+        public static getByParentObesityStatusID(obesityStatusID: number, api: API, callback: IAPICallback<Array<ObesityStatus>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<ObesityStatus>>(Endpoint.fromSelf<Array<ObesityStatus>>(), callback, { obesityStatusID: obesityStatusID }, null, page, pageSize);
         }
 
         /** Gets how many ObesityStatuses by ParentObesityStatusID exist. 
@@ -9437,8 +9437,8 @@ module hiw {
         /** Gets a list of all of the ObesityStatusRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of ObesityStatusRelations */
-        public static getAll(api: API, callback: IAPICallback<Array<ObesityStatusRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<ObesityStatusRelation>>(Endpoint.fromSelf<Array<ObesityStatusRelation>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<ObesityStatusRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<ObesityStatusRelation>>(Endpoint.fromSelf<Array<ObesityStatusRelation>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many ObesityStatusRelations exist. */
@@ -9461,8 +9461,8 @@ module hiw {
         /** Returns a filtered collection of ObesityStatusRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All ObesityStatusRelations which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<ObesityStatusRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<ObesityStatusRelation>>(Endpoint.fromSelf<Array<ObesityStatusRelation>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<ObesityStatusRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<ObesityStatusRelation>>(Endpoint.fromSelf<Array<ObesityStatusRelation>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many ObesityStatusRelations exist based on the provided filter.
@@ -9482,8 +9482,8 @@ module hiw {
         /** Gets ObesityStatusRelations by AncestorObesityStatusID.
          *  @param obesityStatusID The ID of the ObesityStatus for which to retrieve the child ObesityStatusRelations.
          *  @return An Array of ObesityStatusRelations. */
-        public static getByAncestorObesityStatusID(obesityStatusID: number, api: API, callback: IAPICallback<Array<ObesityStatusRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<ObesityStatusRelation>>(Endpoint.fromSelf<Array<ObesityStatusRelation>>(), callback, { obesityStatusID: obesityStatusID }, null, page);
+        public static getByAncestorObesityStatusID(obesityStatusID: number, api: API, callback: IAPICallback<Array<ObesityStatusRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<ObesityStatusRelation>>(Endpoint.fromSelf<Array<ObesityStatusRelation>>(), callback, { obesityStatusID: obesityStatusID }, null, page, pageSize);
         }
 
         /** Gets how many ObesityStatusRelations by AncestorObesityStatusID exist. 
@@ -9516,8 +9516,8 @@ module hiw {
         /** Gets ObesityStatusRelations by DescendantObesityStatusID.
          *  @param obesityStatusID The ID of the ObesityStatus for which to retrieve the child ObesityStatusRelations.
          *  @return An Array of ObesityStatusRelations. */
-        public static getByDescendantObesityStatusID(obesityStatusID: number, api: API, callback: IAPICallback<Array<ObesityStatusRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<ObesityStatusRelation>>(Endpoint.fromSelf<Array<ObesityStatusRelation>>(), callback, { obesityStatusID: obesityStatusID }, null, page);
+        public static getByDescendantObesityStatusID(obesityStatusID: number, api: API, callback: IAPICallback<Array<ObesityStatusRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<ObesityStatusRelation>>(Endpoint.fromSelf<Array<ObesityStatusRelation>>(), callback, { obesityStatusID: obesityStatusID }, null, page, pageSize);
         }
 
         /** Gets how many ObesityStatusRelations by DescendantObesityStatusID exist. 
@@ -9577,8 +9577,8 @@ module hiw {
         /** Gets a list of all of the Others in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Others */
-        public static getAll(api: API, callback: IAPICallback<Array<Other>>, page?: number): Async {
-            return api.executeEndpoint<Array<Other>>(Endpoint.fromSelf<Array<Other>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<Other>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Other>>(Endpoint.fromSelf<Array<Other>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many Others exist. */
@@ -9601,8 +9601,8 @@ module hiw {
         /** Returns a filtered collection of Others based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Others which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Other>>, page?: number): Async {
-            return api.executeEndpoint<Array<Other>>(Endpoint.fromSelf<Array<Other>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Other>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Other>>(Endpoint.fromSelf<Array<Other>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many Others exist based on the provided filter.
@@ -9621,15 +9621,15 @@ module hiw {
 
         /** Gets Others by ParentOtherID.
          *  @return An Array of Others. */
-        public getOthers(api: API, callback: IAPICallback<Array<Other>>, page?: number): Async {
-            return Other.getByParentOtherID(this.id, api, callback, page);
+        public getOthers(api: API, callback: IAPICallback<Array<Other>>, page?: number, pageSize?: number): Async {
+            return Other.getByParentOtherID(this.id, api, callback, page, pageSize);
         }
 
         /** Gets Others by ParentOtherID.
          *  @param otherID The ID of the Other for which to retrieve the child Others.
          *  @return An Array of Others. */
-        public static getByParentOtherID(otherID: number, api: API, callback: IAPICallback<Array<Other>>, page?: number): Async {
-            return api.executeEndpoint<Array<Other>>(Endpoint.fromSelf<Array<Other>>(), callback, { otherID: otherID }, null, page);
+        public static getByParentOtherID(otherID: number, api: API, callback: IAPICallback<Array<Other>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Other>>(Endpoint.fromSelf<Array<Other>>(), callback, { otherID: otherID }, null, page, pageSize);
         }
 
         /** Gets how many Others by ParentOtherID exist. 
@@ -9693,8 +9693,8 @@ module hiw {
         /** Gets a list of all of the OtherRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of OtherRelations */
-        public static getAll(api: API, callback: IAPICallback<Array<OtherRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<OtherRelation>>(Endpoint.fromSelf<Array<OtherRelation>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<OtherRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<OtherRelation>>(Endpoint.fromSelf<Array<OtherRelation>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many OtherRelations exist. */
@@ -9717,8 +9717,8 @@ module hiw {
         /** Returns a filtered collection of OtherRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All OtherRelations which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<OtherRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<OtherRelation>>(Endpoint.fromSelf<Array<OtherRelation>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<OtherRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<OtherRelation>>(Endpoint.fromSelf<Array<OtherRelation>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many OtherRelations exist based on the provided filter.
@@ -9738,8 +9738,8 @@ module hiw {
         /** Gets OtherRelations by AncestorOtherID.
          *  @param otherID The ID of the Other for which to retrieve the child OtherRelations.
          *  @return An Array of OtherRelations. */
-        public static getByAncestorOtherID(otherID: number, api: API, callback: IAPICallback<Array<OtherRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<OtherRelation>>(Endpoint.fromSelf<Array<OtherRelation>>(), callback, { otherID: otherID }, null, page);
+        public static getByAncestorOtherID(otherID: number, api: API, callback: IAPICallback<Array<OtherRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<OtherRelation>>(Endpoint.fromSelf<Array<OtherRelation>>(), callback, { otherID: otherID }, null, page, pageSize);
         }
 
         /** Gets how many OtherRelations by AncestorOtherID exist. 
@@ -9772,8 +9772,8 @@ module hiw {
         /** Gets OtherRelations by DescendantOtherID.
          *  @param otherID The ID of the Other for which to retrieve the child OtherRelations.
          *  @return An Array of OtherRelations. */
-        public static getByDescendantOtherID(otherID: number, api: API, callback: IAPICallback<Array<OtherRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<OtherRelation>>(Endpoint.fromSelf<Array<OtherRelation>>(), callback, { otherID: otherID }, null, page);
+        public static getByDescendantOtherID(otherID: number, api: API, callback: IAPICallback<Array<OtherRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<OtherRelation>>(Endpoint.fromSelf<Array<OtherRelation>>(), callback, { otherID: otherID }, null, page, pageSize);
         }
 
         /** Gets how many OtherRelations by DescendantOtherID exist. 
@@ -9833,8 +9833,8 @@ module hiw {
         /** Gets a list of all of the RaceEthnicities in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of RaceEthnicities */
-        public static getAll(api: API, callback: IAPICallback<Array<RaceEthnicity>>, page?: number): Async {
-            return api.executeEndpoint<Array<RaceEthnicity>>(Endpoint.fromSelf<Array<RaceEthnicity>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<RaceEthnicity>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<RaceEthnicity>>(Endpoint.fromSelf<Array<RaceEthnicity>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many RaceEthnicities exist. */
@@ -9857,8 +9857,8 @@ module hiw {
         /** Returns a filtered collection of RaceEthnicities based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All RaceEthnicities which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<RaceEthnicity>>, page?: number): Async {
-            return api.executeEndpoint<Array<RaceEthnicity>>(Endpoint.fromSelf<Array<RaceEthnicity>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<RaceEthnicity>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<RaceEthnicity>>(Endpoint.fromSelf<Array<RaceEthnicity>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many RaceEthnicities exist based on the provided filter.
@@ -9877,15 +9877,15 @@ module hiw {
 
         /** Gets RaceEthnicities by ParentRaceEthnicityID.
          *  @return An Array of RaceEthnicities. */
-        public getRaceEthnicities(api: API, callback: IAPICallback<Array<RaceEthnicity>>, page?: number): Async {
-            return RaceEthnicity.getByParentRaceEthnicityID(this.id, api, callback, page);
+        public getRaceEthnicities(api: API, callback: IAPICallback<Array<RaceEthnicity>>, page?: number, pageSize?: number): Async {
+            return RaceEthnicity.getByParentRaceEthnicityID(this.id, api, callback, page, pageSize);
         }
 
         /** Gets RaceEthnicities by ParentRaceEthnicityID.
          *  @param raceEthnicityID The ID of the RaceEthnicity for which to retrieve the child RaceEthnicities.
          *  @return An Array of RaceEthnicities. */
-        public static getByParentRaceEthnicityID(raceEthnicityID: number, api: API, callback: IAPICallback<Array<RaceEthnicity>>, page?: number): Async {
-            return api.executeEndpoint<Array<RaceEthnicity>>(Endpoint.fromSelf<Array<RaceEthnicity>>(), callback, { raceEthnicityID: raceEthnicityID }, null, page);
+        public static getByParentRaceEthnicityID(raceEthnicityID: number, api: API, callback: IAPICallback<Array<RaceEthnicity>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<RaceEthnicity>>(Endpoint.fromSelf<Array<RaceEthnicity>>(), callback, { raceEthnicityID: raceEthnicityID }, null, page, pageSize);
         }
 
         /** Gets how many RaceEthnicities by ParentRaceEthnicityID exist. 
@@ -9949,8 +9949,8 @@ module hiw {
         /** Gets a list of all of the RaceEthnicityRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of RaceEthnicityRelations */
-        public static getAll(api: API, callback: IAPICallback<Array<RaceEthnicityRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<RaceEthnicityRelation>>(Endpoint.fromSelf<Array<RaceEthnicityRelation>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<RaceEthnicityRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<RaceEthnicityRelation>>(Endpoint.fromSelf<Array<RaceEthnicityRelation>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many RaceEthnicityRelations exist. */
@@ -9973,8 +9973,8 @@ module hiw {
         /** Returns a filtered collection of RaceEthnicityRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All RaceEthnicityRelations which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<RaceEthnicityRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<RaceEthnicityRelation>>(Endpoint.fromSelf<Array<RaceEthnicityRelation>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<RaceEthnicityRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<RaceEthnicityRelation>>(Endpoint.fromSelf<Array<RaceEthnicityRelation>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many RaceEthnicityRelations exist based on the provided filter.
@@ -9994,8 +9994,8 @@ module hiw {
         /** Gets RaceEthnicityRelations by AncestorRaceEthnicityID.
          *  @param raceEthnicityID The ID of the RaceEthnicity for which to retrieve the child RaceEthnicityRelations.
          *  @return An Array of RaceEthnicityRelations. */
-        public static getByAncestorRaceEthnicityID(raceEthnicityID: number, api: API, callback: IAPICallback<Array<RaceEthnicityRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<RaceEthnicityRelation>>(Endpoint.fromSelf<Array<RaceEthnicityRelation>>(), callback, { raceEthnicityID: raceEthnicityID }, null, page);
+        public static getByAncestorRaceEthnicityID(raceEthnicityID: number, api: API, callback: IAPICallback<Array<RaceEthnicityRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<RaceEthnicityRelation>>(Endpoint.fromSelf<Array<RaceEthnicityRelation>>(), callback, { raceEthnicityID: raceEthnicityID }, null, page, pageSize);
         }
 
         /** Gets how many RaceEthnicityRelations by AncestorRaceEthnicityID exist. 
@@ -10028,8 +10028,8 @@ module hiw {
         /** Gets RaceEthnicityRelations by DescendantRaceEthnicityID.
          *  @param raceEthnicityID The ID of the RaceEthnicity for which to retrieve the child RaceEthnicityRelations.
          *  @return An Array of RaceEthnicityRelations. */
-        public static getByDescendantRaceEthnicityID(raceEthnicityID: number, api: API, callback: IAPICallback<Array<RaceEthnicityRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<RaceEthnicityRelation>>(Endpoint.fromSelf<Array<RaceEthnicityRelation>>(), callback, { raceEthnicityID: raceEthnicityID }, null, page);
+        public static getByDescendantRaceEthnicityID(raceEthnicityID: number, api: API, callback: IAPICallback<Array<RaceEthnicityRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<RaceEthnicityRelation>>(Endpoint.fromSelf<Array<RaceEthnicityRelation>>(), callback, { raceEthnicityID: raceEthnicityID }, null, page, pageSize);
         }
 
         /** Gets how many RaceEthnicityRelations by DescendantRaceEthnicityID exist. 
@@ -10089,8 +10089,8 @@ module hiw {
         /** Gets a list of all of the Sexes in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Sexes */
-        public static getAll(api: API, callback: IAPICallback<Array<Sex>>, page?: number): Async {
-            return api.executeEndpoint<Array<Sex>>(Endpoint.fromSelf<Array<Sex>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<Sex>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Sex>>(Endpoint.fromSelf<Array<Sex>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many Sexes exist. */
@@ -10113,8 +10113,8 @@ module hiw {
         /** Returns a filtered collection of Sexes based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Sexes which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Sex>>, page?: number): Async {
-            return api.executeEndpoint<Array<Sex>>(Endpoint.fromSelf<Array<Sex>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Sex>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Sex>>(Endpoint.fromSelf<Array<Sex>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many Sexes exist based on the provided filter.
@@ -10133,15 +10133,15 @@ module hiw {
 
         /** Gets Sexes by ParentSexID.
          *  @return An Array of Sexes. */
-        public getSexes(api: API, callback: IAPICallback<Array<Sex>>, page?: number): Async {
-            return Sex.getByParentSexID(this.id, api, callback, page);
+        public getSexes(api: API, callback: IAPICallback<Array<Sex>>, page?: number, pageSize?: number): Async {
+            return Sex.getByParentSexID(this.id, api, callback, page, pageSize);
         }
 
         /** Gets Sexes by ParentSexID.
          *  @param sexID The ID of the Sex for which to retrieve the child Sexes.
          *  @return An Array of Sexes. */
-        public static getByParentSexID(sexID: number, api: API, callback: IAPICallback<Array<Sex>>, page?: number): Async {
-            return api.executeEndpoint<Array<Sex>>(Endpoint.fromSelf<Array<Sex>>(), callback, { sexID: sexID }, null, page);
+        public static getByParentSexID(sexID: number, api: API, callback: IAPICallback<Array<Sex>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Sex>>(Endpoint.fromSelf<Array<Sex>>(), callback, { sexID: sexID }, null, page, pageSize);
         }
 
         /** Gets how many Sexes by ParentSexID exist. 
@@ -10205,8 +10205,8 @@ module hiw {
         /** Gets a list of all of the SexRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of SexRelations */
-        public static getAll(api: API, callback: IAPICallback<Array<SexRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<SexRelation>>(Endpoint.fromSelf<Array<SexRelation>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<SexRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<SexRelation>>(Endpoint.fromSelf<Array<SexRelation>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many SexRelations exist. */
@@ -10229,8 +10229,8 @@ module hiw {
         /** Returns a filtered collection of SexRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All SexRelations which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<SexRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<SexRelation>>(Endpoint.fromSelf<Array<SexRelation>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<SexRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<SexRelation>>(Endpoint.fromSelf<Array<SexRelation>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many SexRelations exist based on the provided filter.
@@ -10250,8 +10250,8 @@ module hiw {
         /** Gets SexRelations by AncestorSexID.
          *  @param sexID The ID of the Sex for which to retrieve the child SexRelations.
          *  @return An Array of SexRelations. */
-        public static getByAncestorSexID(sexID: number, api: API, callback: IAPICallback<Array<SexRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<SexRelation>>(Endpoint.fromSelf<Array<SexRelation>>(), callback, { sexID: sexID }, null, page);
+        public static getByAncestorSexID(sexID: number, api: API, callback: IAPICallback<Array<SexRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<SexRelation>>(Endpoint.fromSelf<Array<SexRelation>>(), callback, { sexID: sexID }, null, page, pageSize);
         }
 
         /** Gets how many SexRelations by AncestorSexID exist. 
@@ -10284,8 +10284,8 @@ module hiw {
         /** Gets SexRelations by DescendantSexID.
          *  @param sexID The ID of the Sex for which to retrieve the child SexRelations.
          *  @return An Array of SexRelations. */
-        public static getByDescendantSexID(sexID: number, api: API, callback: IAPICallback<Array<SexRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<SexRelation>>(Endpoint.fromSelf<Array<SexRelation>>(), callback, { sexID: sexID }, null, page);
+        public static getByDescendantSexID(sexID: number, api: API, callback: IAPICallback<Array<SexRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<SexRelation>>(Endpoint.fromSelf<Array<SexRelation>>(), callback, { sexID: sexID }, null, page, pageSize);
         }
 
         /** Gets how many SexRelations by DescendantSexID exist. 
@@ -10345,8 +10345,8 @@ module hiw {
         /** Gets a list of all of the SexualOrientations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of SexualOrientations */
-        public static getAll(api: API, callback: IAPICallback<Array<SexualOrientation>>, page?: number): Async {
-            return api.executeEndpoint<Array<SexualOrientation>>(Endpoint.fromSelf<Array<SexualOrientation>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<SexualOrientation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<SexualOrientation>>(Endpoint.fromSelf<Array<SexualOrientation>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many SexualOrientations exist. */
@@ -10369,8 +10369,8 @@ module hiw {
         /** Returns a filtered collection of SexualOrientations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All SexualOrientations which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<SexualOrientation>>, page?: number): Async {
-            return api.executeEndpoint<Array<SexualOrientation>>(Endpoint.fromSelf<Array<SexualOrientation>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<SexualOrientation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<SexualOrientation>>(Endpoint.fromSelf<Array<SexualOrientation>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many SexualOrientations exist based on the provided filter.
@@ -10389,15 +10389,15 @@ module hiw {
 
         /** Gets SexualOrientations by ParentSexualOrientationID.
          *  @return An Array of SexualOrientations. */
-        public getSexualOrientations(api: API, callback: IAPICallback<Array<SexualOrientation>>, page?: number): Async {
-            return SexualOrientation.getByParentSexualOrientationID(this.id, api, callback, page);
+        public getSexualOrientations(api: API, callback: IAPICallback<Array<SexualOrientation>>, page?: number, pageSize?: number): Async {
+            return SexualOrientation.getByParentSexualOrientationID(this.id, api, callback, page, pageSize);
         }
 
         /** Gets SexualOrientations by ParentSexualOrientationID.
          *  @param sexualOrientationID The ID of the SexualOrientation for which to retrieve the child SexualOrientations.
          *  @return An Array of SexualOrientations. */
-        public static getByParentSexualOrientationID(sexualOrientationID: number, api: API, callback: IAPICallback<Array<SexualOrientation>>, page?: number): Async {
-            return api.executeEndpoint<Array<SexualOrientation>>(Endpoint.fromSelf<Array<SexualOrientation>>(), callback, { sexualOrientationID: sexualOrientationID }, null, page);
+        public static getByParentSexualOrientationID(sexualOrientationID: number, api: API, callback: IAPICallback<Array<SexualOrientation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<SexualOrientation>>(Endpoint.fromSelf<Array<SexualOrientation>>(), callback, { sexualOrientationID: sexualOrientationID }, null, page, pageSize);
         }
 
         /** Gets how many SexualOrientations by ParentSexualOrientationID exist. 
@@ -10461,8 +10461,8 @@ module hiw {
         /** Gets a list of all of the SexualOrientationRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of SexualOrientationRelations */
-        public static getAll(api: API, callback: IAPICallback<Array<SexualOrientationRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<SexualOrientationRelation>>(Endpoint.fromSelf<Array<SexualOrientationRelation>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<SexualOrientationRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<SexualOrientationRelation>>(Endpoint.fromSelf<Array<SexualOrientationRelation>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many SexualOrientationRelations exist. */
@@ -10485,8 +10485,8 @@ module hiw {
         /** Returns a filtered collection of SexualOrientationRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All SexualOrientationRelations which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<SexualOrientationRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<SexualOrientationRelation>>(Endpoint.fromSelf<Array<SexualOrientationRelation>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<SexualOrientationRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<SexualOrientationRelation>>(Endpoint.fromSelf<Array<SexualOrientationRelation>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many SexualOrientationRelations exist based on the provided filter.
@@ -10506,8 +10506,8 @@ module hiw {
         /** Gets SexualOrientationRelations by AncestorSexualOrientationID.
          *  @param sexualOrientationID The ID of the SexualOrientation for which to retrieve the child SexualOrientationRelations.
          *  @return An Array of SexualOrientationRelations. */
-        public static getByAncestorSexualOrientationID(sexualOrientationID: number, api: API, callback: IAPICallback<Array<SexualOrientationRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<SexualOrientationRelation>>(Endpoint.fromSelf<Array<SexualOrientationRelation>>(), callback, { sexualOrientationID: sexualOrientationID }, null, page);
+        public static getByAncestorSexualOrientationID(sexualOrientationID: number, api: API, callback: IAPICallback<Array<SexualOrientationRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<SexualOrientationRelation>>(Endpoint.fromSelf<Array<SexualOrientationRelation>>(), callback, { sexualOrientationID: sexualOrientationID }, null, page, pageSize);
         }
 
         /** Gets how many SexualOrientationRelations by AncestorSexualOrientationID exist. 
@@ -10540,8 +10540,8 @@ module hiw {
         /** Gets SexualOrientationRelations by DescendantSexualOrientationID.
          *  @param sexualOrientationID The ID of the SexualOrientation for which to retrieve the child SexualOrientationRelations.
          *  @return An Array of SexualOrientationRelations. */
-        public static getByDescendantSexualOrientationID(sexualOrientationID: number, api: API, callback: IAPICallback<Array<SexualOrientationRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<SexualOrientationRelation>>(Endpoint.fromSelf<Array<SexualOrientationRelation>>(), callback, { sexualOrientationID: sexualOrientationID }, null, page);
+        public static getByDescendantSexualOrientationID(sexualOrientationID: number, api: API, callback: IAPICallback<Array<SexualOrientationRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<SexualOrientationRelation>>(Endpoint.fromSelf<Array<SexualOrientationRelation>>(), callback, { sexualOrientationID: sexualOrientationID }, null, page, pageSize);
         }
 
         /** Gets how many SexualOrientationRelations by DescendantSexualOrientationID exist. 
@@ -10599,8 +10599,8 @@ module hiw {
         /** Gets a list of all of the Timeframes in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Timeframes */
-        public static getAll(api: API, callback: IAPICallback<Array<Timeframe>>, page?: number): Async {
-            return api.executeEndpoint<Array<Timeframe>>(Endpoint.fromSelf<Array<Timeframe>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<Timeframe>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Timeframe>>(Endpoint.fromSelf<Array<Timeframe>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many Timeframes exist. */
@@ -10623,8 +10623,8 @@ module hiw {
         /** Returns a filtered collection of Timeframes based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Timeframes which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Timeframe>>, page?: number): Async {
-            return api.executeEndpoint<Array<Timeframe>>(Endpoint.fromSelf<Array<Timeframe>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Timeframe>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Timeframe>>(Endpoint.fromSelf<Array<Timeframe>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many Timeframes exist based on the provided filter.
@@ -10671,8 +10671,8 @@ module hiw {
         /** Gets a list of all of the Totals in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Totals */
-        public static getAll(api: API, callback: IAPICallback<Array<Total>>, page?: number): Async {
-            return api.executeEndpoint<Array<Total>>(Endpoint.fromSelf<Array<Total>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<Total>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Total>>(Endpoint.fromSelf<Array<Total>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many Totals exist. */
@@ -10695,8 +10695,8 @@ module hiw {
         /** Returns a filtered collection of Totals based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Totals which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Total>>, page?: number): Async {
-            return api.executeEndpoint<Array<Total>>(Endpoint.fromSelf<Array<Total>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Total>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Total>>(Endpoint.fromSelf<Array<Total>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many Totals exist based on the provided filter.
@@ -10715,15 +10715,15 @@ module hiw {
 
         /** Gets Totals by ParentTotalID.
          *  @return An Array of Totals. */
-        public getTotals(api: API, callback: IAPICallback<Array<Total>>, page?: number): Async {
-            return Total.getByParentTotalID(this.id, api, callback, page);
+        public getTotals(api: API, callback: IAPICallback<Array<Total>>, page?: number, pageSize?: number): Async {
+            return Total.getByParentTotalID(this.id, api, callback, page, pageSize);
         }
 
         /** Gets Totals by ParentTotalID.
          *  @param totalID The ID of the Total for which to retrieve the child Totals.
          *  @return An Array of Totals. */
-        public static getByParentTotalID(totalID: number, api: API, callback: IAPICallback<Array<Total>>, page?: number): Async {
-            return api.executeEndpoint<Array<Total>>(Endpoint.fromSelf<Array<Total>>(), callback, { totalID: totalID }, null, page);
+        public static getByParentTotalID(totalID: number, api: API, callback: IAPICallback<Array<Total>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Total>>(Endpoint.fromSelf<Array<Total>>(), callback, { totalID: totalID }, null, page, pageSize);
         }
 
         /** Gets how many Totals by ParentTotalID exist. 
@@ -10787,8 +10787,8 @@ module hiw {
         /** Gets a list of all of the TotalRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of TotalRelations */
-        public static getAll(api: API, callback: IAPICallback<Array<TotalRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<TotalRelation>>(Endpoint.fromSelf<Array<TotalRelation>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<TotalRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<TotalRelation>>(Endpoint.fromSelf<Array<TotalRelation>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many TotalRelations exist. */
@@ -10811,8 +10811,8 @@ module hiw {
         /** Returns a filtered collection of TotalRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All TotalRelations which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<TotalRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<TotalRelation>>(Endpoint.fromSelf<Array<TotalRelation>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<TotalRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<TotalRelation>>(Endpoint.fromSelf<Array<TotalRelation>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many TotalRelations exist based on the provided filter.
@@ -10832,8 +10832,8 @@ module hiw {
         /** Gets TotalRelations by AncestorTotalID.
          *  @param totalID The ID of the Total for which to retrieve the child TotalRelations.
          *  @return An Array of TotalRelations. */
-        public static getByAncestorTotalID(totalID: number, api: API, callback: IAPICallback<Array<TotalRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<TotalRelation>>(Endpoint.fromSelf<Array<TotalRelation>>(), callback, { totalID: totalID }, null, page);
+        public static getByAncestorTotalID(totalID: number, api: API, callback: IAPICallback<Array<TotalRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<TotalRelation>>(Endpoint.fromSelf<Array<TotalRelation>>(), callback, { totalID: totalID }, null, page, pageSize);
         }
 
         /** Gets how many TotalRelations by AncestorTotalID exist. 
@@ -10866,8 +10866,8 @@ module hiw {
         /** Gets TotalRelations by DescendantTotalID.
          *  @param totalID The ID of the Total for which to retrieve the child TotalRelations.
          *  @return An Array of TotalRelations. */
-        public static getByDescendantTotalID(totalID: number, api: API, callback: IAPICallback<Array<TotalRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<TotalRelation>>(Endpoint.fromSelf<Array<TotalRelation>>(), callback, { totalID: totalID }, null, page);
+        public static getByDescendantTotalID(totalID: number, api: API, callback: IAPICallback<Array<TotalRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<TotalRelation>>(Endpoint.fromSelf<Array<TotalRelation>>(), callback, { totalID: totalID }, null, page, pageSize);
         }
 
         /** Gets how many TotalRelations by DescendantTotalID exist. 
@@ -10929,8 +10929,8 @@ module hiw {
         /** Gets a list of all of the Urls in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Urls */
-        public static getAll(api: API, callback: IAPICallback<Array<Url>>, page?: number): Async {
-            return api.executeEndpoint<Array<Url>>(Endpoint.fromSelf<Array<Url>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<Url>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Url>>(Endpoint.fromSelf<Array<Url>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many Urls exist. */
@@ -10953,8 +10953,8 @@ module hiw {
         /** Returns a filtered collection of Urls based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Urls which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Url>>, page?: number): Async {
-            return api.executeEndpoint<Array<Url>>(Endpoint.fromSelf<Array<Url>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Url>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Url>>(Endpoint.fromSelf<Array<Url>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many Urls exist based on the provided filter.
@@ -10989,8 +10989,8 @@ module hiw {
         /** Gets a list of all of the ValueLabels in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of ValueLabels */
-        public static getAll(api: API, callback: IAPICallback<Array<ValueLabel>>, page?: number): Async {
-            return api.executeEndpoint<Array<ValueLabel>>(Endpoint.fromSelf<Array<ValueLabel>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<ValueLabel>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<ValueLabel>>(Endpoint.fromSelf<Array<ValueLabel>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many ValueLabels exist. */
@@ -11013,8 +11013,8 @@ module hiw {
         /** Returns a filtered collection of ValueLabels based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All ValueLabels which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<ValueLabel>>, page?: number): Async {
-            return api.executeEndpoint<Array<ValueLabel>>(Endpoint.fromSelf<Array<ValueLabel>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<ValueLabel>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<ValueLabel>>(Endpoint.fromSelf<Array<ValueLabel>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many ValueLabels exist based on the provided filter.
@@ -11061,8 +11061,8 @@ module hiw {
         /** Gets a list of all of the VeteranStatuses in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of VeteranStatuses */
-        public static getAll(api: API, callback: IAPICallback<Array<VeteranStatus>>, page?: number): Async {
-            return api.executeEndpoint<Array<VeteranStatus>>(Endpoint.fromSelf<Array<VeteranStatus>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<VeteranStatus>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<VeteranStatus>>(Endpoint.fromSelf<Array<VeteranStatus>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many VeteranStatuses exist. */
@@ -11085,8 +11085,8 @@ module hiw {
         /** Returns a filtered collection of VeteranStatuses based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All VeteranStatuses which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<VeteranStatus>>, page?: number): Async {
-            return api.executeEndpoint<Array<VeteranStatus>>(Endpoint.fromSelf<Array<VeteranStatus>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<VeteranStatus>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<VeteranStatus>>(Endpoint.fromSelf<Array<VeteranStatus>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many VeteranStatuses exist based on the provided filter.
@@ -11105,15 +11105,15 @@ module hiw {
 
         /** Gets VeteranStatuses by ParentVeteranStatusID.
          *  @return An Array of VeteranStatuses. */
-        public getVeteranStatuses(api: API, callback: IAPICallback<Array<VeteranStatus>>, page?: number): Async {
-            return VeteranStatus.getByParentVeteranStatusID(this.id, api, callback, page);
+        public getVeteranStatuses(api: API, callback: IAPICallback<Array<VeteranStatus>>, page?: number, pageSize?: number): Async {
+            return VeteranStatus.getByParentVeteranStatusID(this.id, api, callback, page, pageSize);
         }
 
         /** Gets VeteranStatuses by ParentVeteranStatusID.
          *  @param veteranStatusID The ID of the VeteranStatus for which to retrieve the child VeteranStatuses.
          *  @return An Array of VeteranStatuses. */
-        public static getByParentVeteranStatusID(veteranStatusID: number, api: API, callback: IAPICallback<Array<VeteranStatus>>, page?: number): Async {
-            return api.executeEndpoint<Array<VeteranStatus>>(Endpoint.fromSelf<Array<VeteranStatus>>(), callback, { veteranStatusID: veteranStatusID }, null, page);
+        public static getByParentVeteranStatusID(veteranStatusID: number, api: API, callback: IAPICallback<Array<VeteranStatus>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<VeteranStatus>>(Endpoint.fromSelf<Array<VeteranStatus>>(), callback, { veteranStatusID: veteranStatusID }, null, page, pageSize);
         }
 
         /** Gets how many VeteranStatuses by ParentVeteranStatusID exist. 
@@ -11177,8 +11177,8 @@ module hiw {
         /** Gets a list of all of the VeteranStatusRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of VeteranStatusRelations */
-        public static getAll(api: API, callback: IAPICallback<Array<VeteranStatusRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<VeteranStatusRelation>>(Endpoint.fromSelf<Array<VeteranStatusRelation>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<VeteranStatusRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<VeteranStatusRelation>>(Endpoint.fromSelf<Array<VeteranStatusRelation>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many VeteranStatusRelations exist. */
@@ -11201,8 +11201,8 @@ module hiw {
         /** Returns a filtered collection of VeteranStatusRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All VeteranStatusRelations which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<VeteranStatusRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<VeteranStatusRelation>>(Endpoint.fromSelf<Array<VeteranStatusRelation>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<VeteranStatusRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<VeteranStatusRelation>>(Endpoint.fromSelf<Array<VeteranStatusRelation>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many VeteranStatusRelations exist based on the provided filter.
@@ -11222,8 +11222,8 @@ module hiw {
         /** Gets VeteranStatusRelations by AncestorVeteranStatusID.
          *  @param veteranStatusID The ID of the VeteranStatus for which to retrieve the child VeteranStatusRelations.
          *  @return An Array of VeteranStatusRelations. */
-        public static getByAncestorVeteranStatusID(veteranStatusID: number, api: API, callback: IAPICallback<Array<VeteranStatusRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<VeteranStatusRelation>>(Endpoint.fromSelf<Array<VeteranStatusRelation>>(), callback, { veteranStatusID: veteranStatusID }, null, page);
+        public static getByAncestorVeteranStatusID(veteranStatusID: number, api: API, callback: IAPICallback<Array<VeteranStatusRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<VeteranStatusRelation>>(Endpoint.fromSelf<Array<VeteranStatusRelation>>(), callback, { veteranStatusID: veteranStatusID }, null, page, pageSize);
         }
 
         /** Gets how many VeteranStatusRelations by AncestorVeteranStatusID exist. 
@@ -11256,8 +11256,8 @@ module hiw {
         /** Gets VeteranStatusRelations by DescendantVeteranStatusID.
          *  @param veteranStatusID The ID of the VeteranStatus for which to retrieve the child VeteranStatusRelations.
          *  @return An Array of VeteranStatusRelations. */
-        public static getByDescendantVeteranStatusID(veteranStatusID: number, api: API, callback: IAPICallback<Array<VeteranStatusRelation>>, page?: number): Async {
-            return api.executeEndpoint<Array<VeteranStatusRelation>>(Endpoint.fromSelf<Array<VeteranStatusRelation>>(), callback, { veteranStatusID: veteranStatusID }, null, page);
+        public static getByDescendantVeteranStatusID(veteranStatusID: number, api: API, callback: IAPICallback<Array<VeteranStatusRelation>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<VeteranStatusRelation>>(Endpoint.fromSelf<Array<VeteranStatusRelation>>(), callback, { veteranStatusID: veteranStatusID }, null, page, pageSize);
         }
 
         /** Gets how many VeteranStatusRelations by DescendantVeteranStatusID exist. 
@@ -11309,8 +11309,8 @@ module hiw {
         /** Gets a list of all of the Years in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Years */
-        public static getAll(api: API, callback: IAPICallback<Array<Year>>, page?: number): Async {
-            return api.executeEndpoint<Array<Year>>(Endpoint.fromSelf<Array<Year>>(), callback, null, null, page);
+        public static getAll(api: API, callback: IAPICallback<Array<Year>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Year>>(Endpoint.fromSelf<Array<Year>>(), callback, null, null, page, pageSize);
         }
 
         /** Gets how many Years exist. */
@@ -11333,8 +11333,8 @@ module hiw {
         /** Returns a filtered collection of Years based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Years which match the provided filter. */
-        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Year>>, page?: number): Async {
-            return api.executeEndpoint<Array<Year>>(Endpoint.fromSelf<Array<Year>>(), callback, null, filter.toJSON(page));
+        public static filter(filter: Filter, api: API, callback: IAPICallback<Array<Year>>, page?: number, pageSize?: number): Async {
+            return api.executeEndpoint<Array<Year>>(Endpoint.fromSelf<Array<Year>>(), callback, null, filter.toJSON(page, pageSize));
         }
 
         /** Returns a count of how many Years exist based on the provided filter.

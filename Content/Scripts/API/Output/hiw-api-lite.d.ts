@@ -119,11 +119,15 @@ declare module hiw {
     class Filter extends Group {
         /** The page of data to return (default is 1, the first page). */
         page: Number;
+        /** The amount of data to return, per page. */
+        pageSize: Number;
         /** Creates a new, default, Filter instance. */
         constructor();
         /** Creates a new Filter for the specified page. */
         constructor(page: number);
         /** Creates a new Filter instance of the specified page and type. */
+        constructor(page: number, type: FilterType);
+        /** Creates a new Filter instance for the specified page, type, and criteria. */
         constructor(page: number, type: FilterType);
         /** Adds the specified filter part to the criteria. */
         addPart(part: IFilterPart): Filter;
@@ -132,7 +136,7 @@ declare module hiw {
         /** Creates a new criterion and adds it to the criteria. */
         add(field: PropertyMap | string, operator?: Operator, value?: Object): Filter;
         /** Converts this instance to JSON in the format the HIW API expects. */
-        toJSON(page?: number): Object;
+        toJSON(page?: number, pageSize?: number): Object;
     }
 }
 declare module hiw {
@@ -425,6 +429,7 @@ declare module hiw {
     /** Provides core functionality to interact with the HIW API. */
     class API {
         static DefaultBaseURL: string;
+        static DefaultPageSize: number;
         static Endpoints: Endpoint<any>[];
         /** The base URL of the HIW API. */
         baseURL: string;
@@ -434,7 +439,7 @@ declare module hiw {
         constructor(apiKey?: string, baseURL?: string);
         private initialize();
         static parameterizePath(path: string, params?: any): string;
-        executeEndpoint<T>(endpoint: Endpoint<T>, callback: IAPICallback<T>, params?: any, postData?: any, page?: number): Async;
+        executeEndpoint<T>(endpoint: Endpoint<T>, callback: IAPICallback<T>, params?: any, postData?: any, page?: number, pageSize?: number): Async;
         executeUrl(method: HttpMethod, url: string, postData: any, callback: (json: Object, error: string) => void): Async;
         static verifyApiKey(api: API, callback: IAPICallback<boolean>): void;
     }

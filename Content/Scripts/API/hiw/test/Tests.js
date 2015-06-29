@@ -132,7 +132,24 @@ var hiw;
                     assert.all(data, function (o) { return o.name !== "2010"; }, "Was the 2010 timeframe not returned?");
                     assert.all(data, function (o) { return o.name !== "2011"; }, "Was the 2011 timeframe not returned?");
                     assert.all(data, function (o) { return o.name !== "2012"; }, "Was the 2012 timeframe not returned?");
-                })
+                }),
+                asyncTest("Get -1 indicator", function (assert, done) {
+                    hiw.Indicator.getAll(api, function (data, response, error) {
+                        assertAPIResponse(assert, data, response, error);
+                        assert.equal(data.length, 1, "Was a single result returned?");
+                        done();
+                    }, 1, -1);
+                }),
+                asyncTest("Get 12 indicators", function (assert, done) {
+                    hiw.Indicator.getAll(api, function (data, response, error) {
+                        assertAPIResponse(assert, data, response, error);
+                        assert.equal(data.length, 12, "Were 12 indicators returned?");
+                        done();
+                    }, 1, 12);
+                }),
+                apiTest(api, "Get 20 indicators using filter", hiw.Indicator.filter, [new hiw.Filter(1, 20).add(hiw.Indicator.Fields.floatValue, 5 /* GreaterThan */, 0)], function (assert, done, data, response, error) {
+                    assert.equal(data.length, 20, "Were 20 indicators returned?");
+                }),
             ]);
         }
         _test.run = run;

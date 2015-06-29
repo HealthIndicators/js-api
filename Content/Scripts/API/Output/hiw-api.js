@@ -270,11 +270,17 @@ var hiw;
     var Filter = (function (_super) {
         __extends(Filter, _super);
         /** Creates a new Filter instance for the specified page, type, and criteria. */
-        function Filter(page, type) {
+        function Filter(page, pageSize, type) {
             if (page === void 0) { page = 1; }
+            if (pageSize === void 0) { pageSize = hiw.API.DefaultPageSize; }
             if (type === void 0) { type = 0 /* And */; }
             _super.call(this, type);
+            /** The page of data to return (default is 1, the first page). */
+            this.page = 1;
+            /** The amount of data to return, per page. */
+            this.pageSize = hiw.API.DefaultPageSize;
             this.page = page;
+            this.pageSize = pageSize;
         }
         /** Adds the specified filter part to the criteria. */
         Filter.prototype.addPart = function (part) {
@@ -294,11 +300,12 @@ var hiw;
             return this;
         };
         /** Converts this instance to JSON in the format the HIW API expects. */
-        Filter.prototype.toJSON = function (page) {
-            if (page === void 0) { page = 1; }
+        Filter.prototype.toJSON = function (page, pageSize) {
             var json = _super.prototype.toJSON.call(this);
             delete json["__type"];
-            json["Page"] = page;
+            json["Page"] = (page || this.page);
+            if (pageSize || this.pageSize)
+                json["PageSize"] = (pageSize || this.pageSize);
             return json;
         };
         return Filter;
@@ -719,15 +726,15 @@ var hiw;
                     parameterizedPath = parameterizedPath.replace("{" + key + "}", params[key]);
             return parameterizedPath;
         };
-        API.prototype.executeEndpoint = function (endpoint, callback, params, postData, page) {
+        API.prototype.executeEndpoint = function (endpoint, callback, params, postData, page, pageSize) {
             if (page === void 0) { page = 1; }
+            if (pageSize === void 0) { pageSize = API.DefaultPageSize; }
             var parameterizedPath = null;
             var url = null;
             var async = null;
-            if (page != null) {
-                params = (params || {});
-                params.page = page;
-            }
+            params = (params || {});
+            params.page = page;
+            params.pageSize = pageSize;
             parameterizedPath = API.parameterizePath(endpoint.uriTemplate, params);
             url = this.baseURL + parameterizedPath;
             async = this.executeUrl(endpoint.method, url, postData, function (json, error) {
@@ -787,6 +794,7 @@ var hiw;
             api.executeEndpoint(hiw.Endpoint.fromSelf(), callback);
         };
         API.DefaultBaseURL = "http://services.healthindicators.gov/v5/REST.svc/";
+        API.DefaultPageSize = 2000;
         API.Endpoints = new Array();
         return API;
     })();
@@ -814,8 +822,8 @@ var hiw;
         /** Gets a list of all of the Ages in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Ages */
-        BaseAge.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseAge.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Ages exist. */
         BaseAge.getAllCount = function (api, callback) {
@@ -834,8 +842,8 @@ var hiw;
         /** Returns a filtered collection of Ages based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Ages which match the provided filter. */
-        BaseAge.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseAge.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Ages exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -851,14 +859,14 @@ var hiw;
         };
         /** Gets Ages by ParentAgeID.
          *  @return An Array of Ages. */
-        BaseAge.prototype.getAges = function (api, callback, page) {
-            return Age.getByParentAgeID(this.id, api, callback, page);
+        BaseAge.prototype.getAges = function (api, callback, page, pageSize) {
+            return Age.getByParentAgeID(this.id, api, callback, page, pageSize);
         };
         /** Gets Ages by ParentAgeID.
          *  @param ageID The ID of the Age for which to retrieve the child Ages.
          *  @return An Array of Ages. */
-        BaseAge.getByParentAgeID = function (ageID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { ageID: ageID }, null, page);
+        BaseAge.getByParentAgeID = function (ageID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { ageID: ageID }, null, page, pageSize);
         };
         /** Gets how many Ages by ParentAgeID exist.
          *  @return An Array of Ages. */
@@ -930,8 +938,8 @@ var hiw;
         /** Gets a list of all of the AgeRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of AgeRelations */
-        BaseAgeRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseAgeRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many AgeRelations exist. */
         BaseAgeRelation.getAllCount = function (api, callback) {
@@ -950,8 +958,8 @@ var hiw;
         /** Returns a filtered collection of AgeRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All AgeRelations which match the provided filter. */
-        BaseAgeRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseAgeRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many AgeRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -968,8 +976,8 @@ var hiw;
         /** Gets AgeRelations by AncestorAgeID.
          *  @param ageID The ID of the Age for which to retrieve the child AgeRelations.
          *  @return An Array of AgeRelations. */
-        BaseAgeRelation.getByAncestorAgeID = function (ageID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { ageID: ageID }, null, page);
+        BaseAgeRelation.getByAncestorAgeID = function (ageID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { ageID: ageID }, null, page, pageSize);
         };
         /** Gets how many AgeRelations by AncestorAgeID exist.
          *  @param ageID The ID of the Age for which to retrieve the child AgeRelations.
@@ -997,8 +1005,8 @@ var hiw;
         /** Gets AgeRelations by DescendantAgeID.
          *  @param ageID The ID of the Age for which to retrieve the child AgeRelations.
          *  @return An Array of AgeRelations. */
-        BaseAgeRelation.getByDescendantAgeID = function (ageID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { ageID: ageID }, null, page);
+        BaseAgeRelation.getByDescendantAgeID = function (ageID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { ageID: ageID }, null, page, pageSize);
         };
         /** Gets how many AgeRelations by DescendantAgeID exist.
          *  @param ageID The ID of the Age for which to retrieve the child AgeRelations.
@@ -1060,8 +1068,8 @@ var hiw;
         /** Gets a list of all of the CharacteristicOfSchoolOrStudents in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of CharacteristicOfSchoolOrStudents */
-        BaseCharacteristicOfSchoolOrStudent.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseCharacteristicOfSchoolOrStudent.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many CharacteristicOfSchoolOrStudents exist. */
         BaseCharacteristicOfSchoolOrStudent.getAllCount = function (api, callback) {
@@ -1080,8 +1088,8 @@ var hiw;
         /** Returns a filtered collection of CharacteristicOfSchoolOrStudents based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All CharacteristicOfSchoolOrStudents which match the provided filter. */
-        BaseCharacteristicOfSchoolOrStudent.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseCharacteristicOfSchoolOrStudent.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many CharacteristicOfSchoolOrStudents exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -1097,14 +1105,14 @@ var hiw;
         };
         /** Gets CharacteristicOfSchoolOrStudents by ParentCharacteristicOfSchoolOrStudentID.
          *  @return An Array of CharacteristicOfSchoolOrStudents. */
-        BaseCharacteristicOfSchoolOrStudent.prototype.getCharacteristicOfSchoolOrStudents = function (api, callback, page) {
-            return CharacteristicOfSchoolOrStudent.getByParentCharacteristicOfSchoolOrStudentID(this.id, api, callback, page);
+        BaseCharacteristicOfSchoolOrStudent.prototype.getCharacteristicOfSchoolOrStudents = function (api, callback, page, pageSize) {
+            return CharacteristicOfSchoolOrStudent.getByParentCharacteristicOfSchoolOrStudentID(this.id, api, callback, page, pageSize);
         };
         /** Gets CharacteristicOfSchoolOrStudents by ParentCharacteristicOfSchoolOrStudentID.
          *  @param characteristicOfSchoolOrStudentID The ID of the CharacteristicOfSchoolOrStudent for which to retrieve the child CharacteristicOfSchoolOrStudents.
          *  @return An Array of CharacteristicOfSchoolOrStudents. */
-        BaseCharacteristicOfSchoolOrStudent.getByParentCharacteristicOfSchoolOrStudentID = function (characteristicOfSchoolOrStudentID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { characteristicOfSchoolOrStudentID: characteristicOfSchoolOrStudentID }, null, page);
+        BaseCharacteristicOfSchoolOrStudent.getByParentCharacteristicOfSchoolOrStudentID = function (characteristicOfSchoolOrStudentID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { characteristicOfSchoolOrStudentID: characteristicOfSchoolOrStudentID }, null, page, pageSize);
         };
         /** Gets how many CharacteristicOfSchoolOrStudents by ParentCharacteristicOfSchoolOrStudentID exist.
          *  @return An Array of CharacteristicOfSchoolOrStudents. */
@@ -1176,8 +1184,8 @@ var hiw;
         /** Gets a list of all of the CharacteristicOfSchoolOrStudentRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of CharacteristicOfSchoolOrStudentRelations */
-        BaseCharacteristicOfSchoolOrStudentRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseCharacteristicOfSchoolOrStudentRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many CharacteristicOfSchoolOrStudentRelations exist. */
         BaseCharacteristicOfSchoolOrStudentRelation.getAllCount = function (api, callback) {
@@ -1196,8 +1204,8 @@ var hiw;
         /** Returns a filtered collection of CharacteristicOfSchoolOrStudentRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All CharacteristicOfSchoolOrStudentRelations which match the provided filter. */
-        BaseCharacteristicOfSchoolOrStudentRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseCharacteristicOfSchoolOrStudentRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many CharacteristicOfSchoolOrStudentRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -1214,8 +1222,8 @@ var hiw;
         /** Gets CharacteristicOfSchoolOrStudentRelations by AncestorCharacteristicOfSchoolOrStudentID.
          *  @param characteristicOfSchoolOrStudentID The ID of the CharacteristicOfSchoolOrStudent for which to retrieve the child CharacteristicOfSchoolOrStudentRelations.
          *  @return An Array of CharacteristicOfSchoolOrStudentRelations. */
-        BaseCharacteristicOfSchoolOrStudentRelation.getByAncestorCharacteristicOfSchoolOrStudentID = function (characteristicOfSchoolOrStudentID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { characteristicOfSchoolOrStudentID: characteristicOfSchoolOrStudentID }, null, page);
+        BaseCharacteristicOfSchoolOrStudentRelation.getByAncestorCharacteristicOfSchoolOrStudentID = function (characteristicOfSchoolOrStudentID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { characteristicOfSchoolOrStudentID: characteristicOfSchoolOrStudentID }, null, page, pageSize);
         };
         /** Gets how many CharacteristicOfSchoolOrStudentRelations by AncestorCharacteristicOfSchoolOrStudentID exist.
          *  @param characteristicOfSchoolOrStudentID The ID of the CharacteristicOfSchoolOrStudent for which to retrieve the child CharacteristicOfSchoolOrStudentRelations.
@@ -1243,8 +1251,8 @@ var hiw;
         /** Gets CharacteristicOfSchoolOrStudentRelations by DescendantCharacteristicOfSchoolOrStudentID.
          *  @param characteristicOfSchoolOrStudentID The ID of the CharacteristicOfSchoolOrStudent for which to retrieve the child CharacteristicOfSchoolOrStudentRelations.
          *  @return An Array of CharacteristicOfSchoolOrStudentRelations. */
-        BaseCharacteristicOfSchoolOrStudentRelation.getByDescendantCharacteristicOfSchoolOrStudentID = function (characteristicOfSchoolOrStudentID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { characteristicOfSchoolOrStudentID: characteristicOfSchoolOrStudentID }, null, page);
+        BaseCharacteristicOfSchoolOrStudentRelation.getByDescendantCharacteristicOfSchoolOrStudentID = function (characteristicOfSchoolOrStudentID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { characteristicOfSchoolOrStudentID: characteristicOfSchoolOrStudentID }, null, page, pageSize);
         };
         /** Gets how many CharacteristicOfSchoolOrStudentRelations by DescendantCharacteristicOfSchoolOrStudentID exist.
          *  @param characteristicOfSchoolOrStudentID The ID of the CharacteristicOfSchoolOrStudent for which to retrieve the child CharacteristicOfSchoolOrStudentRelations.
@@ -1306,8 +1314,8 @@ var hiw;
         /** Gets a list of all of the CountryOfBirths in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of CountryOfBirths */
-        BaseCountryOfBirth.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseCountryOfBirth.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many CountryOfBirths exist. */
         BaseCountryOfBirth.getAllCount = function (api, callback) {
@@ -1326,8 +1334,8 @@ var hiw;
         /** Returns a filtered collection of CountryOfBirths based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All CountryOfBirths which match the provided filter. */
-        BaseCountryOfBirth.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseCountryOfBirth.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many CountryOfBirths exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -1343,14 +1351,14 @@ var hiw;
         };
         /** Gets CountryOfBirths by ParentCountryOfBirthID.
          *  @return An Array of CountryOfBirths. */
-        BaseCountryOfBirth.prototype.getCountryOfBirths = function (api, callback, page) {
-            return CountryOfBirth.getByParentCountryOfBirthID(this.id, api, callback, page);
+        BaseCountryOfBirth.prototype.getCountryOfBirths = function (api, callback, page, pageSize) {
+            return CountryOfBirth.getByParentCountryOfBirthID(this.id, api, callback, page, pageSize);
         };
         /** Gets CountryOfBirths by ParentCountryOfBirthID.
          *  @param countryOfBirthID The ID of the CountryOfBirth for which to retrieve the child CountryOfBirths.
          *  @return An Array of CountryOfBirths. */
-        BaseCountryOfBirth.getByParentCountryOfBirthID = function (countryOfBirthID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { countryOfBirthID: countryOfBirthID }, null, page);
+        BaseCountryOfBirth.getByParentCountryOfBirthID = function (countryOfBirthID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { countryOfBirthID: countryOfBirthID }, null, page, pageSize);
         };
         /** Gets how many CountryOfBirths by ParentCountryOfBirthID exist.
          *  @return An Array of CountryOfBirths. */
@@ -1422,8 +1430,8 @@ var hiw;
         /** Gets a list of all of the CountryOfBirthRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of CountryOfBirthRelations */
-        BaseCountryOfBirthRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseCountryOfBirthRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many CountryOfBirthRelations exist. */
         BaseCountryOfBirthRelation.getAllCount = function (api, callback) {
@@ -1442,8 +1450,8 @@ var hiw;
         /** Returns a filtered collection of CountryOfBirthRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All CountryOfBirthRelations which match the provided filter. */
-        BaseCountryOfBirthRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseCountryOfBirthRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many CountryOfBirthRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -1460,8 +1468,8 @@ var hiw;
         /** Gets CountryOfBirthRelations by AncestorCountryOfBirthID.
          *  @param countryOfBirthID The ID of the CountryOfBirth for which to retrieve the child CountryOfBirthRelations.
          *  @return An Array of CountryOfBirthRelations. */
-        BaseCountryOfBirthRelation.getByAncestorCountryOfBirthID = function (countryOfBirthID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { countryOfBirthID: countryOfBirthID }, null, page);
+        BaseCountryOfBirthRelation.getByAncestorCountryOfBirthID = function (countryOfBirthID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { countryOfBirthID: countryOfBirthID }, null, page, pageSize);
         };
         /** Gets how many CountryOfBirthRelations by AncestorCountryOfBirthID exist.
          *  @param countryOfBirthID The ID of the CountryOfBirth for which to retrieve the child CountryOfBirthRelations.
@@ -1489,8 +1497,8 @@ var hiw;
         /** Gets CountryOfBirthRelations by DescendantCountryOfBirthID.
          *  @param countryOfBirthID The ID of the CountryOfBirth for which to retrieve the child CountryOfBirthRelations.
          *  @return An Array of CountryOfBirthRelations. */
-        BaseCountryOfBirthRelation.getByDescendantCountryOfBirthID = function (countryOfBirthID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { countryOfBirthID: countryOfBirthID }, null, page);
+        BaseCountryOfBirthRelation.getByDescendantCountryOfBirthID = function (countryOfBirthID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { countryOfBirthID: countryOfBirthID }, null, page, pageSize);
         };
         /** Gets how many CountryOfBirthRelations by DescendantCountryOfBirthID exist.
          *  @param countryOfBirthID The ID of the CountryOfBirth for which to retrieve the child CountryOfBirthRelations.
@@ -1558,8 +1566,8 @@ var hiw;
         /** Gets a list of all of the DataCategories in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataCategories */
-        BaseDataCategory.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseDataCategory.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many DataCategories exist. */
         BaseDataCategory.getAllCount = function (api, callback) {
@@ -1578,8 +1586,8 @@ var hiw;
         /** Returns a filtered collection of DataCategories based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DataCategories which match the provided filter. */
-        BaseDataCategory.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseDataCategory.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many DataCategories exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -1595,14 +1603,14 @@ var hiw;
         };
         /** Gets DataCategories by ParentDataCategoryID.
          *  @return An Array of DataCategories. */
-        BaseDataCategory.prototype.getParentDataCategories = function (api, callback, page) {
-            return DataCategory.getByParentDataCategoryID(this.id, api, callback, page);
+        BaseDataCategory.prototype.getParentDataCategories = function (api, callback, page, pageSize) {
+            return DataCategory.getByParentDataCategoryID(this.id, api, callback, page, pageSize);
         };
         /** Gets DataCategories by ParentDataCategoryID.
          *  @param dataCategoryID The ID of the DataCategory for which to retrieve the child DataCategories.
          *  @return An Array of DataCategories. */
-        BaseDataCategory.getByParentDataCategoryID = function (dataCategoryID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataCategoryID: dataCategoryID }, null, page);
+        BaseDataCategory.getByParentDataCategoryID = function (dataCategoryID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataCategoryID: dataCategoryID }, null, page, pageSize);
         };
         /** Gets how many DataCategories by ParentDataCategoryID exist.
          *  @return An Array of DataCategories. */
@@ -1640,8 +1648,8 @@ var hiw;
         /** Gets DataCategories by InitiativeID.
          *  @param initiativeID The ID of the Initiative for which to retrieve the child DataCategories.
          *  @return An Array of DataCategories. */
-        BaseDataCategory.getByInitiativeID = function (initiativeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { initiativeID: initiativeID }, null, page);
+        BaseDataCategory.getByInitiativeID = function (initiativeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { initiativeID: initiativeID }, null, page, pageSize);
         };
         /** Gets how many DataCategories by InitiativeID exist.
          *  @param initiativeID The ID of the Initiative for which to retrieve the child DataCategories.
@@ -1709,8 +1717,8 @@ var hiw;
         /** Gets a list of all of the DataCategoryRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataCategoryRelations */
-        BaseDataCategoryRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseDataCategoryRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many DataCategoryRelations exist. */
         BaseDataCategoryRelation.getAllCount = function (api, callback) {
@@ -1729,8 +1737,8 @@ var hiw;
         /** Returns a filtered collection of DataCategoryRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DataCategoryRelations which match the provided filter. */
-        BaseDataCategoryRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseDataCategoryRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many DataCategoryRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -1747,8 +1755,8 @@ var hiw;
         /** Gets DataCategoryRelations by AncestorDataCategoryID.
          *  @param dataCategoryID The ID of the DataCategory for which to retrieve the child DataCategoryRelations.
          *  @return An Array of DataCategoryRelations. */
-        BaseDataCategoryRelation.getByAncestorDataCategoryID = function (dataCategoryID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataCategoryID: dataCategoryID }, null, page);
+        BaseDataCategoryRelation.getByAncestorDataCategoryID = function (dataCategoryID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataCategoryID: dataCategoryID }, null, page, pageSize);
         };
         /** Gets how many DataCategoryRelations by AncestorDataCategoryID exist.
          *  @param dataCategoryID The ID of the DataCategory for which to retrieve the child DataCategoryRelations.
@@ -1776,8 +1784,8 @@ var hiw;
         /** Gets DataCategoryRelations by DescendantDataCategoryID.
          *  @param dataCategoryID The ID of the DataCategory for which to retrieve the child DataCategoryRelations.
          *  @return An Array of DataCategoryRelations. */
-        BaseDataCategoryRelation.getByDescendantDataCategoryID = function (dataCategoryID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataCategoryID: dataCategoryID }, null, page);
+        BaseDataCategoryRelation.getByDescendantDataCategoryID = function (dataCategoryID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataCategoryID: dataCategoryID }, null, page, pageSize);
         };
         /** Gets how many DataCategoryRelations by DescendantDataCategoryID exist.
          *  @param dataCategoryID The ID of the DataCategory for which to retrieve the child DataCategoryRelations.
@@ -1835,8 +1843,8 @@ var hiw;
         /** Gets a list of all of the DataSourceDataSuppliers in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataSourceDataSuppliers */
-        BaseDataSourceDataSupplier.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseDataSourceDataSupplier.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many DataSourceDataSuppliers exist. */
         BaseDataSourceDataSupplier.getAllCount = function (api, callback) {
@@ -1855,8 +1863,8 @@ var hiw;
         /** Returns a filtered collection of DataSourceDataSuppliers based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DataSourceDataSuppliers which match the provided filter. */
-        BaseDataSourceDataSupplier.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseDataSourceDataSupplier.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many DataSourceDataSuppliers exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -1873,8 +1881,8 @@ var hiw;
         /** Gets DataSourceDataSuppliers by DataSourceID.
          *  @param dataSourceID The ID of the DataSource for which to retrieve the child DataSourceDataSuppliers.
          *  @return An Array of DataSourceDataSuppliers. */
-        BaseDataSourceDataSupplier.getByDataSourceID = function (dataSourceID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataSourceID: dataSourceID }, null, page);
+        BaseDataSourceDataSupplier.getByDataSourceID = function (dataSourceID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataSourceID: dataSourceID }, null, page, pageSize);
         };
         /** Gets how many DataSourceDataSuppliers by DataSourceID exist.
          *  @param dataSourceID The ID of the DataSource for which to retrieve the child DataSourceDataSuppliers.
@@ -1902,8 +1910,8 @@ var hiw;
         /** Gets DataSourceDataSuppliers by DataSupplierID.
          *  @param dataSupplierID The ID of the DataSupplier for which to retrieve the child DataSourceDataSuppliers.
          *  @return An Array of DataSourceDataSuppliers. */
-        BaseDataSourceDataSupplier.getByDataSupplierID = function (dataSupplierID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataSupplierID: dataSupplierID }, null, page);
+        BaseDataSourceDataSupplier.getByDataSupplierID = function (dataSupplierID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataSupplierID: dataSupplierID }, null, page, pageSize);
         };
         /** Gets how many DataSourceDataSuppliers by DataSupplierID exist.
          *  @param dataSupplierID The ID of the DataSupplier for which to retrieve the child DataSourceDataSuppliers.
@@ -1979,8 +1987,8 @@ var hiw;
         /** Gets a list of all of the DataSources in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataSources */
-        BaseDataSource.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseDataSource.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many DataSources exist. */
         BaseDataSource.getAllCount = function (api, callback) {
@@ -1999,8 +2007,8 @@ var hiw;
         /** Returns a filtered collection of DataSources based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DataSources which match the provided filter. */
-        BaseDataSource.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseDataSource.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many DataSources exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -2065,8 +2073,8 @@ var hiw;
         /** Gets a list of all of the DataSourceURLs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataSourceURLs */
-        BaseDataSourceURL.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseDataSourceURL.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many DataSourceURLs exist. */
         BaseDataSourceURL.getAllCount = function (api, callback) {
@@ -2085,8 +2093,8 @@ var hiw;
         /** Returns a filtered collection of DataSourceURLs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DataSourceURLs which match the provided filter. */
-        BaseDataSourceURL.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseDataSourceURL.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many DataSourceURLs exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -2103,8 +2111,8 @@ var hiw;
         /** Gets DataSourceURLs by DataSourceID.
          *  @param dataSourceID The ID of the DataSource for which to retrieve the child DataSourceURLs.
          *  @return An Array of DataSourceURLs. */
-        BaseDataSourceURL.getByDataSourceID = function (dataSourceID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataSourceID: dataSourceID }, null, page);
+        BaseDataSourceURL.getByDataSourceID = function (dataSourceID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataSourceID: dataSourceID }, null, page, pageSize);
         };
         /** Gets how many DataSourceURLs by DataSourceID exist.
          *  @param dataSourceID The ID of the DataSource for which to retrieve the child DataSourceURLs.
@@ -2132,8 +2140,8 @@ var hiw;
         /** Gets DataSourceURLs by UrlID.
          *  @param urlID The ID of the Url for which to retrieve the child DataSourceURLs.
          *  @return An Array of DataSourceURLs. */
-        BaseDataSourceURL.getByUrlID = function (urlID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page);
+        BaseDataSourceURL.getByUrlID = function (urlID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page, pageSize);
         };
         /** Gets how many DataSourceURLs by UrlID exist.
          *  @param urlID The ID of the Url for which to retrieve the child DataSourceURLs.
@@ -2197,8 +2205,8 @@ var hiw;
         /** Gets a list of all of the DataSuppliers in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataSuppliers */
-        BaseDataSupplier.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseDataSupplier.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many DataSuppliers exist. */
         BaseDataSupplier.getAllCount = function (api, callback) {
@@ -2217,8 +2225,8 @@ var hiw;
         /** Returns a filtered collection of DataSuppliers based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DataSuppliers which match the provided filter. */
-        BaseDataSupplier.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseDataSupplier.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many DataSuppliers exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -2235,8 +2243,8 @@ var hiw;
         /** Gets DataSuppliers by UrlID.
          *  @param urlID The ID of the Url for which to retrieve the child DataSuppliers.
          *  @return An Array of DataSuppliers. */
-        BaseDataSupplier.getByUrlID = function (urlID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page);
+        BaseDataSupplier.getByUrlID = function (urlID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page, pageSize);
         };
         /** Gets how many DataSuppliers by UrlID exist.
          *  @param urlID The ID of the Url for which to retrieve the child DataSuppliers.
@@ -2310,8 +2318,8 @@ var hiw;
         /** Gets a list of all of the DimensionBooks in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DimensionBooks */
-        BaseDimensionBook.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseDimensionBook.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many DimensionBooks exist. */
         BaseDimensionBook.getAllCount = function (api, callback) {
@@ -2330,8 +2338,8 @@ var hiw;
         /** Returns a filtered collection of DimensionBooks based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DimensionBooks which match the provided filter. */
-        BaseDimensionBook.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseDimensionBook.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many DimensionBooks exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -2347,14 +2355,14 @@ var hiw;
         };
         /** Gets DimensionBooks by ParentDimensionBookID.
          *  @return An Array of DimensionBooks. */
-        BaseDimensionBook.prototype.getDimensionBooks = function (api, callback, page) {
-            return DimensionBook.getByParentDimensionBookID(this.id, api, callback, page);
+        BaseDimensionBook.prototype.getDimensionBooks = function (api, callback, page, pageSize) {
+            return DimensionBook.getByParentDimensionBookID(this.id, api, callback, page, pageSize);
         };
         /** Gets DimensionBooks by ParentDimensionBookID.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child DimensionBooks.
          *  @return An Array of DimensionBooks. */
-        BaseDimensionBook.getByParentDimensionBookID = function (dimensionBookID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionBookID: dimensionBookID }, null, page);
+        BaseDimensionBook.getByParentDimensionBookID = function (dimensionBookID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionBookID: dimensionBookID }, null, page, pageSize);
         };
         /** Gets how many DimensionBooks by ParentDimensionBookID exist.
          *  @return An Array of DimensionBooks. */
@@ -2392,8 +2400,8 @@ var hiw;
         /** Gets DimensionBooks by DimensionListID.
          *  @param dimensionListID The ID of the DimensionList for which to retrieve the child DimensionBooks.
          *  @return An Array of DimensionBooks. */
-        BaseDimensionBook.getByDimensionListID = function (dimensionListID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionListID: dimensionListID }, null, page);
+        BaseDimensionBook.getByDimensionListID = function (dimensionListID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionListID: dimensionListID }, null, page, pageSize);
         };
         /** Gets how many DimensionBooks by DimensionListID exist.
          *  @param dimensionListID The ID of the DimensionList for which to retrieve the child DimensionBooks.
@@ -2466,8 +2474,8 @@ var hiw;
         /** Gets a list of all of the DimensionBookRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DimensionBookRelations */
-        BaseDimensionBookRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseDimensionBookRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many DimensionBookRelations exist. */
         BaseDimensionBookRelation.getAllCount = function (api, callback) {
@@ -2486,8 +2494,8 @@ var hiw;
         /** Returns a filtered collection of DimensionBookRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DimensionBookRelations which match the provided filter. */
-        BaseDimensionBookRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseDimensionBookRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many DimensionBookRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -2504,8 +2512,8 @@ var hiw;
         /** Gets DimensionBookRelations by AncestorDimensionBookID.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child DimensionBookRelations.
          *  @return An Array of DimensionBookRelations. */
-        BaseDimensionBookRelation.getByAncestorDimensionBookID = function (dimensionBookID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionBookID: dimensionBookID }, null, page);
+        BaseDimensionBookRelation.getByAncestorDimensionBookID = function (dimensionBookID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionBookID: dimensionBookID }, null, page, pageSize);
         };
         /** Gets how many DimensionBookRelations by AncestorDimensionBookID exist.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child DimensionBookRelations.
@@ -2533,8 +2541,8 @@ var hiw;
         /** Gets DimensionBookRelations by DescendantDimensionBookID.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child DimensionBookRelations.
          *  @return An Array of DimensionBookRelations. */
-        BaseDimensionBookRelation.getByDescendantDimensionBookID = function (dimensionBookID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionBookID: dimensionBookID }, null, page);
+        BaseDimensionBookRelation.getByDescendantDimensionBookID = function (dimensionBookID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionBookID: dimensionBookID }, null, page, pageSize);
         };
         /** Gets how many DimensionBookRelations by DescendantDimensionBookID exist.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child DimensionBookRelations.
@@ -2667,8 +2675,8 @@ var hiw;
         /** Gets a list of all of the DimensionGraphs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DimensionGraphs */
-        BaseDimensionGraph.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseDimensionGraph.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs exist. */
         BaseDimensionGraph.getAllCount = function (api, callback) {
@@ -2687,8 +2695,8 @@ var hiw;
         /** Returns a filtered collection of DimensionGraphs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DimensionGraphs which match the provided filter. */
-        BaseDimensionGraph.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseDimensionGraph.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many DimensionGraphs exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -2705,8 +2713,8 @@ var hiw;
         /** Gets DimensionGraphs by TotalID.
          *  @param totalID The ID of the Total for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByTotalID = function (totalID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { totalID: totalID }, null, page);
+        BaseDimensionGraph.getByTotalID = function (totalID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { totalID: totalID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by TotalID exist.
          *  @param totalID The ID of the Total for which to retrieve the child DimensionGraphs.
@@ -2734,8 +2742,8 @@ var hiw;
         /** Gets DimensionGraphs by AgeID.
          *  @param ageID The ID of the Age for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByAgeID = function (ageID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { ageID: ageID }, null, page);
+        BaseDimensionGraph.getByAgeID = function (ageID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { ageID: ageID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by AgeID exist.
          *  @param ageID The ID of the Age for which to retrieve the child DimensionGraphs.
@@ -2763,8 +2771,8 @@ var hiw;
         /** Gets DimensionGraphs by SexID.
          *  @param sexID The ID of the Sex for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getBySexID = function (sexID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexID: sexID }, null, page);
+        BaseDimensionGraph.getBySexID = function (sexID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexID: sexID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by SexID exist.
          *  @param sexID The ID of the Sex for which to retrieve the child DimensionGraphs.
@@ -2792,8 +2800,8 @@ var hiw;
         /** Gets DimensionGraphs by RaceEthnicityID.
          *  @param raceEthnicityID The ID of the RaceEthnicity for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByRaceEthnicityID = function (raceEthnicityID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { raceEthnicityID: raceEthnicityID }, null, page);
+        BaseDimensionGraph.getByRaceEthnicityID = function (raceEthnicityID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { raceEthnicityID: raceEthnicityID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by RaceEthnicityID exist.
          *  @param raceEthnicityID The ID of the RaceEthnicity for which to retrieve the child DimensionGraphs.
@@ -2821,8 +2829,8 @@ var hiw;
         /** Gets DimensionGraphs by IncomeAndPovertyStatusID.
          *  @param incomeAndPovertyStatusID The ID of the IncomeAndPovertyStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByIncomeAndPovertyStatusID = function (incomeAndPovertyStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { incomeAndPovertyStatusID: incomeAndPovertyStatusID }, null, page);
+        BaseDimensionGraph.getByIncomeAndPovertyStatusID = function (incomeAndPovertyStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { incomeAndPovertyStatusID: incomeAndPovertyStatusID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by IncomeAndPovertyStatusID exist.
          *  @param incomeAndPovertyStatusID The ID of the IncomeAndPovertyStatus for which to retrieve the child DimensionGraphs.
@@ -2850,8 +2858,8 @@ var hiw;
         /** Gets DimensionGraphs by EducationalAttainmentID.
          *  @param educationalAttainmentID The ID of the EducationalAttainment for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByEducationalAttainmentID = function (educationalAttainmentID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { educationalAttainmentID: educationalAttainmentID }, null, page);
+        BaseDimensionGraph.getByEducationalAttainmentID = function (educationalAttainmentID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { educationalAttainmentID: educationalAttainmentID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by EducationalAttainmentID exist.
          *  @param educationalAttainmentID The ID of the EducationalAttainment for which to retrieve the child DimensionGraphs.
@@ -2879,8 +2887,8 @@ var hiw;
         /** Gets DimensionGraphs by HealthInsuranceStatusID.
          *  @param healthInsuranceStatusID The ID of the HealthInsuranceStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByHealthInsuranceStatusID = function (healthInsuranceStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { healthInsuranceStatusID: healthInsuranceStatusID }, null, page);
+        BaseDimensionGraph.getByHealthInsuranceStatusID = function (healthInsuranceStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { healthInsuranceStatusID: healthInsuranceStatusID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by HealthInsuranceStatusID exist.
          *  @param healthInsuranceStatusID The ID of the HealthInsuranceStatus for which to retrieve the child DimensionGraphs.
@@ -2908,8 +2916,8 @@ var hiw;
         /** Gets DimensionGraphs by SexualOrientationID.
          *  @param sexualOrientationID The ID of the SexualOrientation for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getBySexualOrientationID = function (sexualOrientationID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexualOrientationID: sexualOrientationID }, null, page);
+        BaseDimensionGraph.getBySexualOrientationID = function (sexualOrientationID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexualOrientationID: sexualOrientationID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by SexualOrientationID exist.
          *  @param sexualOrientationID The ID of the SexualOrientation for which to retrieve the child DimensionGraphs.
@@ -2937,8 +2945,8 @@ var hiw;
         /** Gets DimensionGraphs by FamilyTypeID.
          *  @param familyTypeID The ID of the FamilyType for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByFamilyTypeID = function (familyTypeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { familyTypeID: familyTypeID }, null, page);
+        BaseDimensionGraph.getByFamilyTypeID = function (familyTypeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { familyTypeID: familyTypeID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by FamilyTypeID exist.
          *  @param familyTypeID The ID of the FamilyType for which to retrieve the child DimensionGraphs.
@@ -2966,8 +2974,8 @@ var hiw;
         /** Gets DimensionGraphs by MaritalStatusID.
          *  @param maritalStatusID The ID of the MaritalStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByMaritalStatusID = function (maritalStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { maritalStatusID: maritalStatusID }, null, page);
+        BaseDimensionGraph.getByMaritalStatusID = function (maritalStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { maritalStatusID: maritalStatusID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by MaritalStatusID exist.
          *  @param maritalStatusID The ID of the MaritalStatus for which to retrieve the child DimensionGraphs.
@@ -2995,8 +3003,8 @@ var hiw;
         /** Gets DimensionGraphs by VeteranStatusID.
          *  @param veteranStatusID The ID of the VeteranStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByVeteranStatusID = function (veteranStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { veteranStatusID: veteranStatusID }, null, page);
+        BaseDimensionGraph.getByVeteranStatusID = function (veteranStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { veteranStatusID: veteranStatusID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by VeteranStatusID exist.
          *  @param veteranStatusID The ID of the VeteranStatus for which to retrieve the child DimensionGraphs.
@@ -3024,8 +3032,8 @@ var hiw;
         /** Gets DimensionGraphs by CountryOfBirthID.
          *  @param countryOfBirthID The ID of the CountryOfBirth for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByCountryOfBirthID = function (countryOfBirthID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { countryOfBirthID: countryOfBirthID }, null, page);
+        BaseDimensionGraph.getByCountryOfBirthID = function (countryOfBirthID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { countryOfBirthID: countryOfBirthID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by CountryOfBirthID exist.
          *  @param countryOfBirthID The ID of the CountryOfBirth for which to retrieve the child DimensionGraphs.
@@ -3053,8 +3061,8 @@ var hiw;
         /** Gets DimensionGraphs by DisabilityStatusID.
          *  @param disabilityStatusID The ID of the DisabilityStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByDisabilityStatusID = function (disabilityStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { disabilityStatusID: disabilityStatusID }, null, page);
+        BaseDimensionGraph.getByDisabilityStatusID = function (disabilityStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { disabilityStatusID: disabilityStatusID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by DisabilityStatusID exist.
          *  @param disabilityStatusID The ID of the DisabilityStatus for which to retrieve the child DimensionGraphs.
@@ -3082,8 +3090,8 @@ var hiw;
         /** Gets DimensionGraphs by ObesityStatusID.
          *  @param obesityStatusID The ID of the ObesityStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByObesityStatusID = function (obesityStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { obesityStatusID: obesityStatusID }, null, page);
+        BaseDimensionGraph.getByObesityStatusID = function (obesityStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { obesityStatusID: obesityStatusID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by ObesityStatusID exist.
          *  @param obesityStatusID The ID of the ObesityStatus for which to retrieve the child DimensionGraphs.
@@ -3111,8 +3119,8 @@ var hiw;
         /** Gets DimensionGraphs by CharacteristicOfSchoolOrStudentID.
          *  @param characteristicOfSchoolOrStudentID The ID of the CharacteristicOfSchoolOrStudent for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByCharacteristicOfSchoolOrStudentID = function (characteristicOfSchoolOrStudentID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { characteristicOfSchoolOrStudentID: characteristicOfSchoolOrStudentID }, null, page);
+        BaseDimensionGraph.getByCharacteristicOfSchoolOrStudentID = function (characteristicOfSchoolOrStudentID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { characteristicOfSchoolOrStudentID: characteristicOfSchoolOrStudentID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by CharacteristicOfSchoolOrStudentID exist.
          *  @param characteristicOfSchoolOrStudentID The ID of the CharacteristicOfSchoolOrStudent for which to retrieve the child DimensionGraphs.
@@ -3140,8 +3148,8 @@ var hiw;
         /** Gets DimensionGraphs by OtherID.
          *  @param otherID The ID of the Other for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByOtherID = function (otherID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { otherID: otherID }, null, page);
+        BaseDimensionGraph.getByOtherID = function (otherID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { otherID: otherID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by OtherID exist.
          *  @param otherID The ID of the Other for which to retrieve the child DimensionGraphs.
@@ -3169,8 +3177,8 @@ var hiw;
         /** Gets DimensionGraphs by GeographyID.
          *  @param geographyID The ID of the Geography for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByGeographyID = function (geographyID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { geographyID: geographyID }, null, page);
+        BaseDimensionGraph.getByGeographyID = function (geographyID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { geographyID: geographyID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by GeographyID exist.
          *  @param geographyID The ID of the Geography for which to retrieve the child DimensionGraphs.
@@ -3304,8 +3312,8 @@ var hiw;
         /** Gets a list of all of the DimensionLists in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DimensionLists */
-        BaseDimensionList.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseDimensionList.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many DimensionLists exist. */
         BaseDimensionList.getAllCount = function (api, callback) {
@@ -3324,8 +3332,8 @@ var hiw;
         /** Returns a filtered collection of DimensionLists based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DimensionLists which match the provided filter. */
-        BaseDimensionList.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseDimensionList.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many DimensionLists exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -3377,8 +3385,8 @@ var hiw;
         /** Gets a list of all of the DisabilityStatuses in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DisabilityStatuses */
-        BaseDisabilityStatus.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseDisabilityStatus.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many DisabilityStatuses exist. */
         BaseDisabilityStatus.getAllCount = function (api, callback) {
@@ -3397,8 +3405,8 @@ var hiw;
         /** Returns a filtered collection of DisabilityStatuses based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DisabilityStatuses which match the provided filter. */
-        BaseDisabilityStatus.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseDisabilityStatus.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many DisabilityStatuses exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -3414,14 +3422,14 @@ var hiw;
         };
         /** Gets DisabilityStatuses by ParentDisabilityStatusID.
          *  @return An Array of DisabilityStatuses. */
-        BaseDisabilityStatus.prototype.getDisabilityStatuses = function (api, callback, page) {
-            return DisabilityStatus.getByParentDisabilityStatusID(this.id, api, callback, page);
+        BaseDisabilityStatus.prototype.getDisabilityStatuses = function (api, callback, page, pageSize) {
+            return DisabilityStatus.getByParentDisabilityStatusID(this.id, api, callback, page, pageSize);
         };
         /** Gets DisabilityStatuses by ParentDisabilityStatusID.
          *  @param disabilityStatusID The ID of the DisabilityStatus for which to retrieve the child DisabilityStatuses.
          *  @return An Array of DisabilityStatuses. */
-        BaseDisabilityStatus.getByParentDisabilityStatusID = function (disabilityStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { disabilityStatusID: disabilityStatusID }, null, page);
+        BaseDisabilityStatus.getByParentDisabilityStatusID = function (disabilityStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { disabilityStatusID: disabilityStatusID }, null, page, pageSize);
         };
         /** Gets how many DisabilityStatuses by ParentDisabilityStatusID exist.
          *  @return An Array of DisabilityStatuses. */
@@ -3493,8 +3501,8 @@ var hiw;
         /** Gets a list of all of the DisabilityStatusRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DisabilityStatusRelations */
-        BaseDisabilityStatusRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseDisabilityStatusRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many DisabilityStatusRelations exist. */
         BaseDisabilityStatusRelation.getAllCount = function (api, callback) {
@@ -3513,8 +3521,8 @@ var hiw;
         /** Returns a filtered collection of DisabilityStatusRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DisabilityStatusRelations which match the provided filter. */
-        BaseDisabilityStatusRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseDisabilityStatusRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many DisabilityStatusRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -3531,8 +3539,8 @@ var hiw;
         /** Gets DisabilityStatusRelations by AncestorDisabilityStatusID.
          *  @param disabilityStatusID The ID of the DisabilityStatus for which to retrieve the child DisabilityStatusRelations.
          *  @return An Array of DisabilityStatusRelations. */
-        BaseDisabilityStatusRelation.getByAncestorDisabilityStatusID = function (disabilityStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { disabilityStatusID: disabilityStatusID }, null, page);
+        BaseDisabilityStatusRelation.getByAncestorDisabilityStatusID = function (disabilityStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { disabilityStatusID: disabilityStatusID }, null, page, pageSize);
         };
         /** Gets how many DisabilityStatusRelations by AncestorDisabilityStatusID exist.
          *  @param disabilityStatusID The ID of the DisabilityStatus for which to retrieve the child DisabilityStatusRelations.
@@ -3560,8 +3568,8 @@ var hiw;
         /** Gets DisabilityStatusRelations by DescendantDisabilityStatusID.
          *  @param disabilityStatusID The ID of the DisabilityStatus for which to retrieve the child DisabilityStatusRelations.
          *  @return An Array of DisabilityStatusRelations. */
-        BaseDisabilityStatusRelation.getByDescendantDisabilityStatusID = function (disabilityStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { disabilityStatusID: disabilityStatusID }, null, page);
+        BaseDisabilityStatusRelation.getByDescendantDisabilityStatusID = function (disabilityStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { disabilityStatusID: disabilityStatusID }, null, page, pageSize);
         };
         /** Gets how many DisabilityStatusRelations by DescendantDisabilityStatusID exist.
          *  @param disabilityStatusID The ID of the DisabilityStatus for which to retrieve the child DisabilityStatusRelations.
@@ -3623,8 +3631,8 @@ var hiw;
         /** Gets a list of all of the EducationalAttainments in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of EducationalAttainments */
-        BaseEducationalAttainment.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseEducationalAttainment.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many EducationalAttainments exist. */
         BaseEducationalAttainment.getAllCount = function (api, callback) {
@@ -3643,8 +3651,8 @@ var hiw;
         /** Returns a filtered collection of EducationalAttainments based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All EducationalAttainments which match the provided filter. */
-        BaseEducationalAttainment.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseEducationalAttainment.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many EducationalAttainments exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -3660,14 +3668,14 @@ var hiw;
         };
         /** Gets EducationalAttainments by ParentEducationalAttainmentID.
          *  @return An Array of EducationalAttainments. */
-        BaseEducationalAttainment.prototype.getEducationalAttainments = function (api, callback, page) {
-            return EducationalAttainment.getByParentEducationalAttainmentID(this.id, api, callback, page);
+        BaseEducationalAttainment.prototype.getEducationalAttainments = function (api, callback, page, pageSize) {
+            return EducationalAttainment.getByParentEducationalAttainmentID(this.id, api, callback, page, pageSize);
         };
         /** Gets EducationalAttainments by ParentEducationalAttainmentID.
          *  @param educationalAttainmentID The ID of the EducationalAttainment for which to retrieve the child EducationalAttainments.
          *  @return An Array of EducationalAttainments. */
-        BaseEducationalAttainment.getByParentEducationalAttainmentID = function (educationalAttainmentID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { educationalAttainmentID: educationalAttainmentID }, null, page);
+        BaseEducationalAttainment.getByParentEducationalAttainmentID = function (educationalAttainmentID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { educationalAttainmentID: educationalAttainmentID }, null, page, pageSize);
         };
         /** Gets how many EducationalAttainments by ParentEducationalAttainmentID exist.
          *  @return An Array of EducationalAttainments. */
@@ -3739,8 +3747,8 @@ var hiw;
         /** Gets a list of all of the EducationalAttainmentRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of EducationalAttainmentRelations */
-        BaseEducationalAttainmentRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseEducationalAttainmentRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many EducationalAttainmentRelations exist. */
         BaseEducationalAttainmentRelation.getAllCount = function (api, callback) {
@@ -3759,8 +3767,8 @@ var hiw;
         /** Returns a filtered collection of EducationalAttainmentRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All EducationalAttainmentRelations which match the provided filter. */
-        BaseEducationalAttainmentRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseEducationalAttainmentRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many EducationalAttainmentRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -3777,8 +3785,8 @@ var hiw;
         /** Gets EducationalAttainmentRelations by AncestorEducationalAttainmentID.
          *  @param educationalAttainmentID The ID of the EducationalAttainment for which to retrieve the child EducationalAttainmentRelations.
          *  @return An Array of EducationalAttainmentRelations. */
-        BaseEducationalAttainmentRelation.getByAncestorEducationalAttainmentID = function (educationalAttainmentID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { educationalAttainmentID: educationalAttainmentID }, null, page);
+        BaseEducationalAttainmentRelation.getByAncestorEducationalAttainmentID = function (educationalAttainmentID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { educationalAttainmentID: educationalAttainmentID }, null, page, pageSize);
         };
         /** Gets how many EducationalAttainmentRelations by AncestorEducationalAttainmentID exist.
          *  @param educationalAttainmentID The ID of the EducationalAttainment for which to retrieve the child EducationalAttainmentRelations.
@@ -3806,8 +3814,8 @@ var hiw;
         /** Gets EducationalAttainmentRelations by DescendantEducationalAttainmentID.
          *  @param educationalAttainmentID The ID of the EducationalAttainment for which to retrieve the child EducationalAttainmentRelations.
          *  @return An Array of EducationalAttainmentRelations. */
-        BaseEducationalAttainmentRelation.getByDescendantEducationalAttainmentID = function (educationalAttainmentID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { educationalAttainmentID: educationalAttainmentID }, null, page);
+        BaseEducationalAttainmentRelation.getByDescendantEducationalAttainmentID = function (educationalAttainmentID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { educationalAttainmentID: educationalAttainmentID }, null, page, pageSize);
         };
         /** Gets how many EducationalAttainmentRelations by DescendantEducationalAttainmentID exist.
          *  @param educationalAttainmentID The ID of the EducationalAttainment for which to retrieve the child EducationalAttainmentRelations.
@@ -3869,8 +3877,8 @@ var hiw;
         /** Gets a list of all of the FamilyTypes in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of FamilyTypes */
-        BaseFamilyType.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseFamilyType.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many FamilyTypes exist. */
         BaseFamilyType.getAllCount = function (api, callback) {
@@ -3889,8 +3897,8 @@ var hiw;
         /** Returns a filtered collection of FamilyTypes based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All FamilyTypes which match the provided filter. */
-        BaseFamilyType.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseFamilyType.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many FamilyTypes exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -3906,14 +3914,14 @@ var hiw;
         };
         /** Gets FamilyTypes by ParentFamilyTypeID.
          *  @return An Array of FamilyTypes. */
-        BaseFamilyType.prototype.getFamilyTypes = function (api, callback, page) {
-            return FamilyType.getByParentFamilyTypeID(this.id, api, callback, page);
+        BaseFamilyType.prototype.getFamilyTypes = function (api, callback, page, pageSize) {
+            return FamilyType.getByParentFamilyTypeID(this.id, api, callback, page, pageSize);
         };
         /** Gets FamilyTypes by ParentFamilyTypeID.
          *  @param familyTypeID The ID of the FamilyType for which to retrieve the child FamilyTypes.
          *  @return An Array of FamilyTypes. */
-        BaseFamilyType.getByParentFamilyTypeID = function (familyTypeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { familyTypeID: familyTypeID }, null, page);
+        BaseFamilyType.getByParentFamilyTypeID = function (familyTypeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { familyTypeID: familyTypeID }, null, page, pageSize);
         };
         /** Gets how many FamilyTypes by ParentFamilyTypeID exist.
          *  @return An Array of FamilyTypes. */
@@ -3985,8 +3993,8 @@ var hiw;
         /** Gets a list of all of the FamilyTypeRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of FamilyTypeRelations */
-        BaseFamilyTypeRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseFamilyTypeRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many FamilyTypeRelations exist. */
         BaseFamilyTypeRelation.getAllCount = function (api, callback) {
@@ -4005,8 +4013,8 @@ var hiw;
         /** Returns a filtered collection of FamilyTypeRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All FamilyTypeRelations which match the provided filter. */
-        BaseFamilyTypeRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseFamilyTypeRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many FamilyTypeRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -4023,8 +4031,8 @@ var hiw;
         /** Gets FamilyTypeRelations by AncestorFamilyTypeID.
          *  @param familyTypeID The ID of the FamilyType for which to retrieve the child FamilyTypeRelations.
          *  @return An Array of FamilyTypeRelations. */
-        BaseFamilyTypeRelation.getByAncestorFamilyTypeID = function (familyTypeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { familyTypeID: familyTypeID }, null, page);
+        BaseFamilyTypeRelation.getByAncestorFamilyTypeID = function (familyTypeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { familyTypeID: familyTypeID }, null, page, pageSize);
         };
         /** Gets how many FamilyTypeRelations by AncestorFamilyTypeID exist.
          *  @param familyTypeID The ID of the FamilyType for which to retrieve the child FamilyTypeRelations.
@@ -4052,8 +4060,8 @@ var hiw;
         /** Gets FamilyTypeRelations by DescendantFamilyTypeID.
          *  @param familyTypeID The ID of the FamilyType for which to retrieve the child FamilyTypeRelations.
          *  @return An Array of FamilyTypeRelations. */
-        BaseFamilyTypeRelation.getByDescendantFamilyTypeID = function (familyTypeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { familyTypeID: familyTypeID }, null, page);
+        BaseFamilyTypeRelation.getByDescendantFamilyTypeID = function (familyTypeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { familyTypeID: familyTypeID }, null, page, pageSize);
         };
         /** Gets how many FamilyTypeRelations by DescendantFamilyTypeID exist.
          *  @param familyTypeID The ID of the FamilyType for which to retrieve the child FamilyTypeRelations.
@@ -4115,8 +4123,8 @@ var hiw;
         /** Gets a list of all of the Geographies in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Geographies */
-        BaseGeography.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseGeography.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Geographies exist. */
         BaseGeography.getAllCount = function (api, callback) {
@@ -4135,8 +4143,8 @@ var hiw;
         /** Returns a filtered collection of Geographies based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Geographies which match the provided filter. */
-        BaseGeography.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseGeography.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Geographies exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -4152,14 +4160,14 @@ var hiw;
         };
         /** Gets Geographies by ParentGeographyID.
          *  @return An Array of Geographies. */
-        BaseGeography.prototype.getGeographies = function (api, callback, page) {
-            return Geography.getByParentGeographyID(this.id, api, callback, page);
+        BaseGeography.prototype.getGeographies = function (api, callback, page, pageSize) {
+            return Geography.getByParentGeographyID(this.id, api, callback, page, pageSize);
         };
         /** Gets Geographies by ParentGeographyID.
          *  @param geographyID The ID of the Geography for which to retrieve the child Geographies.
          *  @return An Array of Geographies. */
-        BaseGeography.getByParentGeographyID = function (geographyID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { geographyID: geographyID }, null, page);
+        BaseGeography.getByParentGeographyID = function (geographyID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { geographyID: geographyID }, null, page, pageSize);
         };
         /** Gets how many Geographies by ParentGeographyID exist.
          *  @return An Array of Geographies. */
@@ -4231,8 +4239,8 @@ var hiw;
         /** Gets a list of all of the GeographyRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of GeographyRelations */
-        BaseGeographyRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseGeographyRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many GeographyRelations exist. */
         BaseGeographyRelation.getAllCount = function (api, callback) {
@@ -4251,8 +4259,8 @@ var hiw;
         /** Returns a filtered collection of GeographyRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All GeographyRelations which match the provided filter. */
-        BaseGeographyRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseGeographyRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many GeographyRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -4269,8 +4277,8 @@ var hiw;
         /** Gets GeographyRelations by AncestorGeographyID.
          *  @param geographyID The ID of the Geography for which to retrieve the child GeographyRelations.
          *  @return An Array of GeographyRelations. */
-        BaseGeographyRelation.getByAncestorGeographyID = function (geographyID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { geographyID: geographyID }, null, page);
+        BaseGeographyRelation.getByAncestorGeographyID = function (geographyID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { geographyID: geographyID }, null, page, pageSize);
         };
         /** Gets how many GeographyRelations by AncestorGeographyID exist.
          *  @param geographyID The ID of the Geography for which to retrieve the child GeographyRelations.
@@ -4298,8 +4306,8 @@ var hiw;
         /** Gets GeographyRelations by DescendantGeographyID.
          *  @param geographyID The ID of the Geography for which to retrieve the child GeographyRelations.
          *  @return An Array of GeographyRelations. */
-        BaseGeographyRelation.getByDescendantGeographyID = function (geographyID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { geographyID: geographyID }, null, page);
+        BaseGeographyRelation.getByDescendantGeographyID = function (geographyID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { geographyID: geographyID }, null, page, pageSize);
         };
         /** Gets how many GeographyRelations by DescendantGeographyID exist.
          *  @param geographyID The ID of the Geography for which to retrieve the child GeographyRelations.
@@ -4360,8 +4368,8 @@ var hiw;
         /** Gets a list of all of the GlossaryTerms in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of GlossaryTerms */
-        BaseGlossaryTerm.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseGlossaryTerm.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many GlossaryTerms exist. */
         BaseGlossaryTerm.getAllCount = function (api, callback) {
@@ -4380,8 +4388,8 @@ var hiw;
         /** Returns a filtered collection of GlossaryTerms based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All GlossaryTerms which match the provided filter. */
-        BaseGlossaryTerm.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseGlossaryTerm.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many GlossaryTerms exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -4398,8 +4406,8 @@ var hiw;
         /** Gets GlossaryTerms by SourceUrl1ID.
          *  @param urlID The ID of the Url for which to retrieve the child GlossaryTerms.
          *  @return An Array of GlossaryTerms. */
-        BaseGlossaryTerm.getBySourceUrl1ID = function (urlID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page);
+        BaseGlossaryTerm.getBySourceUrl1ID = function (urlID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page, pageSize);
         };
         /** Gets how many GlossaryTerms by SourceUrl1ID exist.
          *  @param urlID The ID of the Url for which to retrieve the child GlossaryTerms.
@@ -4427,8 +4435,8 @@ var hiw;
         /** Gets GlossaryTerms by SourceUrl2ID.
          *  @param urlID The ID of the Url for which to retrieve the child GlossaryTerms.
          *  @return An Array of GlossaryTerms. */
-        BaseGlossaryTerm.getBySourceUrl2ID = function (urlID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page);
+        BaseGlossaryTerm.getBySourceUrl2ID = function (urlID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page, pageSize);
         };
         /** Gets how many GlossaryTerms by SourceUrl2ID exist.
          *  @param urlID The ID of the Url for which to retrieve the child GlossaryTerms.
@@ -4493,8 +4501,8 @@ var hiw;
         /** Gets a list of all of the HealthInsuranceStatuses in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of HealthInsuranceStatuses */
-        BaseHealthInsuranceStatus.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseHealthInsuranceStatus.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many HealthInsuranceStatuses exist. */
         BaseHealthInsuranceStatus.getAllCount = function (api, callback) {
@@ -4513,8 +4521,8 @@ var hiw;
         /** Returns a filtered collection of HealthInsuranceStatuses based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All HealthInsuranceStatuses which match the provided filter. */
-        BaseHealthInsuranceStatus.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseHealthInsuranceStatus.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many HealthInsuranceStatuses exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -4530,14 +4538,14 @@ var hiw;
         };
         /** Gets HealthInsuranceStatuses by ParentHealthInsuranceStatusID.
          *  @return An Array of HealthInsuranceStatuses. */
-        BaseHealthInsuranceStatus.prototype.getHealthInsuranceStatuses = function (api, callback, page) {
-            return HealthInsuranceStatus.getByParentHealthInsuranceStatusID(this.id, api, callback, page);
+        BaseHealthInsuranceStatus.prototype.getHealthInsuranceStatuses = function (api, callback, page, pageSize) {
+            return HealthInsuranceStatus.getByParentHealthInsuranceStatusID(this.id, api, callback, page, pageSize);
         };
         /** Gets HealthInsuranceStatuses by ParentHealthInsuranceStatusID.
          *  @param healthInsuranceStatusID The ID of the HealthInsuranceStatus for which to retrieve the child HealthInsuranceStatuses.
          *  @return An Array of HealthInsuranceStatuses. */
-        BaseHealthInsuranceStatus.getByParentHealthInsuranceStatusID = function (healthInsuranceStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { healthInsuranceStatusID: healthInsuranceStatusID }, null, page);
+        BaseHealthInsuranceStatus.getByParentHealthInsuranceStatusID = function (healthInsuranceStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { healthInsuranceStatusID: healthInsuranceStatusID }, null, page, pageSize);
         };
         /** Gets how many HealthInsuranceStatuses by ParentHealthInsuranceStatusID exist.
          *  @return An Array of HealthInsuranceStatuses. */
@@ -4609,8 +4617,8 @@ var hiw;
         /** Gets a list of all of the HealthInsuranceStatusRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of HealthInsuranceStatusRelations */
-        BaseHealthInsuranceStatusRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseHealthInsuranceStatusRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many HealthInsuranceStatusRelations exist. */
         BaseHealthInsuranceStatusRelation.getAllCount = function (api, callback) {
@@ -4629,8 +4637,8 @@ var hiw;
         /** Returns a filtered collection of HealthInsuranceStatusRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All HealthInsuranceStatusRelations which match the provided filter. */
-        BaseHealthInsuranceStatusRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseHealthInsuranceStatusRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many HealthInsuranceStatusRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -4647,8 +4655,8 @@ var hiw;
         /** Gets HealthInsuranceStatusRelations by AncestorHealthInsuranceStatusID.
          *  @param healthInsuranceStatusID The ID of the HealthInsuranceStatus for which to retrieve the child HealthInsuranceStatusRelations.
          *  @return An Array of HealthInsuranceStatusRelations. */
-        BaseHealthInsuranceStatusRelation.getByAncestorHealthInsuranceStatusID = function (healthInsuranceStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { healthInsuranceStatusID: healthInsuranceStatusID }, null, page);
+        BaseHealthInsuranceStatusRelation.getByAncestorHealthInsuranceStatusID = function (healthInsuranceStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { healthInsuranceStatusID: healthInsuranceStatusID }, null, page, pageSize);
         };
         /** Gets how many HealthInsuranceStatusRelations by AncestorHealthInsuranceStatusID exist.
          *  @param healthInsuranceStatusID The ID of the HealthInsuranceStatus for which to retrieve the child HealthInsuranceStatusRelations.
@@ -4676,8 +4684,8 @@ var hiw;
         /** Gets HealthInsuranceStatusRelations by DescendantHealthInsuranceStatusID.
          *  @param healthInsuranceStatusID The ID of the HealthInsuranceStatus for which to retrieve the child HealthInsuranceStatusRelations.
          *  @return An Array of HealthInsuranceStatusRelations. */
-        BaseHealthInsuranceStatusRelation.getByDescendantHealthInsuranceStatusID = function (healthInsuranceStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { healthInsuranceStatusID: healthInsuranceStatusID }, null, page);
+        BaseHealthInsuranceStatusRelation.getByDescendantHealthInsuranceStatusID = function (healthInsuranceStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { healthInsuranceStatusID: healthInsuranceStatusID }, null, page, pageSize);
         };
         /** Gets how many HealthInsuranceStatusRelations by DescendantHealthInsuranceStatusID exist.
          *  @param healthInsuranceStatusID The ID of the HealthInsuranceStatus for which to retrieve the child HealthInsuranceStatusRelations.
@@ -4734,8 +4742,8 @@ var hiw;
         /** Gets a list of all of the HP2020TSMs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of HP2020TSMs */
-        BaseHP2020TSM.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseHP2020TSM.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many HP2020TSMs exist. */
         BaseHP2020TSM.getAllCount = function (api, callback) {
@@ -4754,8 +4762,8 @@ var hiw;
         /** Returns a filtered collection of HP2020TSMs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All HP2020TSMs which match the provided filter. */
-        BaseHP2020TSM.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseHP2020TSM.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many HP2020TSMs exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -4805,8 +4813,8 @@ var hiw;
         /** Gets a list of all of the IncomeAndPovertyStatuses in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IncomeAndPovertyStatuses */
-        BaseIncomeAndPovertyStatus.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIncomeAndPovertyStatus.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IncomeAndPovertyStatuses exist. */
         BaseIncomeAndPovertyStatus.getAllCount = function (api, callback) {
@@ -4825,8 +4833,8 @@ var hiw;
         /** Returns a filtered collection of IncomeAndPovertyStatuses based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IncomeAndPovertyStatuses which match the provided filter. */
-        BaseIncomeAndPovertyStatus.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIncomeAndPovertyStatus.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IncomeAndPovertyStatuses exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -4842,14 +4850,14 @@ var hiw;
         };
         /** Gets IncomeAndPovertyStatuses by ParentIncomeAndPovertyStatusID.
          *  @return An Array of IncomeAndPovertyStatuses. */
-        BaseIncomeAndPovertyStatus.prototype.getIncomeAndPovertyStatuses = function (api, callback, page) {
-            return IncomeAndPovertyStatus.getByParentIncomeAndPovertyStatusID(this.id, api, callback, page);
+        BaseIncomeAndPovertyStatus.prototype.getIncomeAndPovertyStatuses = function (api, callback, page, pageSize) {
+            return IncomeAndPovertyStatus.getByParentIncomeAndPovertyStatusID(this.id, api, callback, page, pageSize);
         };
         /** Gets IncomeAndPovertyStatuses by ParentIncomeAndPovertyStatusID.
          *  @param incomeAndPovertyStatusID The ID of the IncomeAndPovertyStatus for which to retrieve the child IncomeAndPovertyStatuses.
          *  @return An Array of IncomeAndPovertyStatuses. */
-        BaseIncomeAndPovertyStatus.getByParentIncomeAndPovertyStatusID = function (incomeAndPovertyStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { incomeAndPovertyStatusID: incomeAndPovertyStatusID }, null, page);
+        BaseIncomeAndPovertyStatus.getByParentIncomeAndPovertyStatusID = function (incomeAndPovertyStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { incomeAndPovertyStatusID: incomeAndPovertyStatusID }, null, page, pageSize);
         };
         /** Gets how many IncomeAndPovertyStatuses by ParentIncomeAndPovertyStatusID exist.
          *  @return An Array of IncomeAndPovertyStatuses. */
@@ -4921,8 +4929,8 @@ var hiw;
         /** Gets a list of all of the IncomeAndPovertyStatusRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IncomeAndPovertyStatusRelations */
-        BaseIncomeAndPovertyStatusRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIncomeAndPovertyStatusRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IncomeAndPovertyStatusRelations exist. */
         BaseIncomeAndPovertyStatusRelation.getAllCount = function (api, callback) {
@@ -4941,8 +4949,8 @@ var hiw;
         /** Returns a filtered collection of IncomeAndPovertyStatusRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IncomeAndPovertyStatusRelations which match the provided filter. */
-        BaseIncomeAndPovertyStatusRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIncomeAndPovertyStatusRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IncomeAndPovertyStatusRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -4959,8 +4967,8 @@ var hiw;
         /** Gets IncomeAndPovertyStatusRelations by AncestorIncomeAndPovertyStatusID.
          *  @param incomeAndPovertyStatusID The ID of the IncomeAndPovertyStatus for which to retrieve the child IncomeAndPovertyStatusRelations.
          *  @return An Array of IncomeAndPovertyStatusRelations. */
-        BaseIncomeAndPovertyStatusRelation.getByAncestorIncomeAndPovertyStatusID = function (incomeAndPovertyStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { incomeAndPovertyStatusID: incomeAndPovertyStatusID }, null, page);
+        BaseIncomeAndPovertyStatusRelation.getByAncestorIncomeAndPovertyStatusID = function (incomeAndPovertyStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { incomeAndPovertyStatusID: incomeAndPovertyStatusID }, null, page, pageSize);
         };
         /** Gets how many IncomeAndPovertyStatusRelations by AncestorIncomeAndPovertyStatusID exist.
          *  @param incomeAndPovertyStatusID The ID of the IncomeAndPovertyStatus for which to retrieve the child IncomeAndPovertyStatusRelations.
@@ -4988,8 +4996,8 @@ var hiw;
         /** Gets IncomeAndPovertyStatusRelations by DescendantIncomeAndPovertyStatusID.
          *  @param incomeAndPovertyStatusID The ID of the IncomeAndPovertyStatus for which to retrieve the child IncomeAndPovertyStatusRelations.
          *  @return An Array of IncomeAndPovertyStatusRelations. */
-        BaseIncomeAndPovertyStatusRelation.getByDescendantIncomeAndPovertyStatusID = function (incomeAndPovertyStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { incomeAndPovertyStatusID: incomeAndPovertyStatusID }, null, page);
+        BaseIncomeAndPovertyStatusRelation.getByDescendantIncomeAndPovertyStatusID = function (incomeAndPovertyStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { incomeAndPovertyStatusID: incomeAndPovertyStatusID }, null, page, pageSize);
         };
         /** Gets how many IncomeAndPovertyStatusRelations by DescendantIncomeAndPovertyStatusID exist.
          *  @param incomeAndPovertyStatusID The ID of the IncomeAndPovertyStatus for which to retrieve the child IncomeAndPovertyStatusRelations.
@@ -5046,8 +5054,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionDataCategories in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionDataCategories */
-        BaseIndicatorDescriptionDataCategory.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionDataCategory.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDataCategories exist. */
         BaseIndicatorDescriptionDataCategory.getAllCount = function (api, callback) {
@@ -5066,8 +5074,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionDataCategories based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionDataCategories which match the provided filter. */
-        BaseIndicatorDescriptionDataCategory.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionDataCategory.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionDataCategories exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -5084,8 +5092,8 @@ var hiw;
         /** Gets IndicatorDescriptionDataCategories by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDataCategories.
          *  @return An Array of IndicatorDescriptionDataCategories. */
-        BaseIndicatorDescriptionDataCategory.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionDataCategory.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDataCategories by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDataCategories.
@@ -5113,8 +5121,8 @@ var hiw;
         /** Gets IndicatorDescriptionDataCategories by DataCategoryID.
          *  @param dataCategoryID The ID of the DataCategory for which to retrieve the child IndicatorDescriptionDataCategories.
          *  @return An Array of IndicatorDescriptionDataCategories. */
-        BaseIndicatorDescriptionDataCategory.getByDataCategoryID = function (dataCategoryID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataCategoryID: dataCategoryID }, null, page);
+        BaseIndicatorDescriptionDataCategory.getByDataCategoryID = function (dataCategoryID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataCategoryID: dataCategoryID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDataCategories by DataCategoryID exist.
          *  @param dataCategoryID The ID of the DataCategory for which to retrieve the child IndicatorDescriptionDataCategories.
@@ -5172,8 +5180,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionDataSources in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionDataSources */
-        BaseIndicatorDescriptionDataSource.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionDataSource.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDataSources exist. */
         BaseIndicatorDescriptionDataSource.getAllCount = function (api, callback) {
@@ -5192,8 +5200,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionDataSources based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionDataSources which match the provided filter. */
-        BaseIndicatorDescriptionDataSource.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionDataSource.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionDataSources exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -5210,8 +5218,8 @@ var hiw;
         /** Gets IndicatorDescriptionDataSources by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDataSources.
          *  @return An Array of IndicatorDescriptionDataSources. */
-        BaseIndicatorDescriptionDataSource.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionDataSource.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDataSources by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDataSources.
@@ -5239,8 +5247,8 @@ var hiw;
         /** Gets IndicatorDescriptionDataSources by DataSourceID.
          *  @param dataSourceID The ID of the DataSource for which to retrieve the child IndicatorDescriptionDataSources.
          *  @return An Array of IndicatorDescriptionDataSources. */
-        BaseIndicatorDescriptionDataSource.getByDataSourceID = function (dataSourceID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataSourceID: dataSourceID }, null, page);
+        BaseIndicatorDescriptionDataSource.getByDataSourceID = function (dataSourceID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataSourceID: dataSourceID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDataSources by DataSourceID exist.
          *  @param dataSourceID The ID of the DataSource for which to retrieve the child IndicatorDescriptionDataSources.
@@ -5299,8 +5307,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionDefaultDimensionGraphs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionDefaultDimensionGraphs */
-        BaseIndicatorDescriptionDefaultDimensionGraph.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionDefaultDimensionGraph.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDefaultDimensionGraphs exist. */
         BaseIndicatorDescriptionDefaultDimensionGraph.getAllCount = function (api, callback) {
@@ -5319,8 +5327,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionDefaultDimensionGraphs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionDefaultDimensionGraphs which match the provided filter. */
-        BaseIndicatorDescriptionDefaultDimensionGraph.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionDefaultDimensionGraph.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionDefaultDimensionGraphs exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -5337,8 +5345,8 @@ var hiw;
         /** Gets IndicatorDescriptionDefaultDimensionGraphs by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDefaultDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDefaultDimensionGraphs. */
-        BaseIndicatorDescriptionDefaultDimensionGraph.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionDefaultDimensionGraph.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDefaultDimensionGraphs by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDefaultDimensionGraphs.
@@ -5366,8 +5374,8 @@ var hiw;
         /** Gets IndicatorDescriptionDefaultDimensionGraphs by LocaleLevelID.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDescriptionDefaultDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDefaultDimensionGraphs. */
-        BaseIndicatorDescriptionDefaultDimensionGraph.getByLocaleLevelID = function (localeLevelID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeLevelID: localeLevelID }, null, page);
+        BaseIndicatorDescriptionDefaultDimensionGraph.getByLocaleLevelID = function (localeLevelID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeLevelID: localeLevelID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDefaultDimensionGraphs by LocaleLevelID exist.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDescriptionDefaultDimensionGraphs.
@@ -5395,8 +5403,8 @@ var hiw;
         /** Gets IndicatorDescriptionDefaultDimensionGraphs by DimensionGraphID.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child IndicatorDescriptionDefaultDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDefaultDimensionGraphs. */
-        BaseIndicatorDescriptionDefaultDimensionGraph.getByDimensionGraphID = function (dimensionGraphID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionGraphID: dimensionGraphID }, null, page);
+        BaseIndicatorDescriptionDefaultDimensionGraph.getByDimensionGraphID = function (dimensionGraphID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionGraphID: dimensionGraphID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDefaultDimensionGraphs by DimensionGraphID exist.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child IndicatorDescriptionDefaultDimensionGraphs.
@@ -5453,8 +5461,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionDimensions in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionDimensions */
-        BaseIndicatorDescriptionDimension.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionDimension.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDimensions exist. */
         BaseIndicatorDescriptionDimension.getAllCount = function (api, callback) {
@@ -5473,8 +5481,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionDimensions based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionDimensions which match the provided filter. */
-        BaseIndicatorDescriptionDimension.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionDimension.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionDimensions exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -5491,8 +5499,8 @@ var hiw;
         /** Gets IndicatorDescriptionDimensions by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDimensions.
          *  @return An Array of IndicatorDescriptionDimensions. */
-        BaseIndicatorDescriptionDimension.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionDimension.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDimensions by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDimensions.
@@ -5520,8 +5528,8 @@ var hiw;
         /** Gets IndicatorDescriptionDimensions by DimensionListID.
          *  @param dimensionListID The ID of the DimensionList for which to retrieve the child IndicatorDescriptionDimensions.
          *  @return An Array of IndicatorDescriptionDimensions. */
-        BaseIndicatorDescriptionDimension.getByDimensionListID = function (dimensionListID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionListID: dimensionListID }, null, page);
+        BaseIndicatorDescriptionDimension.getByDimensionListID = function (dimensionListID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionListID: dimensionListID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDimensions by DimensionListID exist.
          *  @param dimensionListID The ID of the DimensionList for which to retrieve the child IndicatorDescriptionDimensions.
@@ -5583,8 +5591,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionDimensionGraphs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionDimensionGraphs */
-        BaseIndicatorDescriptionDimensionGraph.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionDimensionGraph.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDimensionGraphs exist. */
         BaseIndicatorDescriptionDimensionGraph.getAllCount = function (api, callback) {
@@ -5603,8 +5611,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionDimensionGraphs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionDimensionGraphs which match the provided filter. */
-        BaseIndicatorDescriptionDimensionGraph.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionDimensionGraph.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionDimensionGraphs exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -5621,8 +5629,8 @@ var hiw;
         /** Gets IndicatorDescriptionDimensionGraphs by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDimensionGraphs. */
-        BaseIndicatorDescriptionDimensionGraph.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionDimensionGraph.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDimensionGraphs by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDimensionGraphs.
@@ -5650,8 +5658,8 @@ var hiw;
         /** Gets IndicatorDescriptionDimensionGraphs by LocaleLevelID.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDescriptionDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDimensionGraphs. */
-        BaseIndicatorDescriptionDimensionGraph.getByLocaleLevelID = function (localeLevelID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeLevelID: localeLevelID }, null, page);
+        BaseIndicatorDescriptionDimensionGraph.getByLocaleLevelID = function (localeLevelID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeLevelID: localeLevelID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDimensionGraphs by LocaleLevelID exist.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDescriptionDimensionGraphs.
@@ -5679,8 +5687,8 @@ var hiw;
         /** Gets IndicatorDescriptionDimensionGraphs by DimensionGraphID.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child IndicatorDescriptionDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDimensionGraphs. */
-        BaseIndicatorDescriptionDimensionGraph.getByDimensionGraphID = function (dimensionGraphID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionGraphID: dimensionGraphID }, null, page);
+        BaseIndicatorDescriptionDimensionGraph.getByDimensionGraphID = function (dimensionGraphID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionGraphID: dimensionGraphID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDimensionGraphs by DimensionGraphID exist.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child IndicatorDescriptionDimensionGraphs.
@@ -5737,8 +5745,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionDimensionValues in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionDimensionValues */
-        BaseIndicatorDescriptionDimensionValue.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionDimensionValue.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDimensionValues exist. */
         BaseIndicatorDescriptionDimensionValue.getAllCount = function (api, callback) {
@@ -5757,8 +5765,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionDimensionValues based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionDimensionValues which match the provided filter. */
-        BaseIndicatorDescriptionDimensionValue.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionDimensionValue.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionDimensionValues exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -5775,8 +5783,8 @@ var hiw;
         /** Gets IndicatorDescriptionDimensionValues by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDimensionValues.
          *  @return An Array of IndicatorDescriptionDimensionValues. */
-        BaseIndicatorDescriptionDimensionValue.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionDimensionValue.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDimensionValues by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDimensionValues.
@@ -5804,8 +5812,8 @@ var hiw;
         /** Gets IndicatorDescriptionDimensionValues by DimensionBookID.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child IndicatorDescriptionDimensionValues.
          *  @return An Array of IndicatorDescriptionDimensionValues. */
-        BaseIndicatorDescriptionDimensionValue.getByDimensionBookID = function (dimensionBookID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionBookID: dimensionBookID }, null, page);
+        BaseIndicatorDescriptionDimensionValue.getByDimensionBookID = function (dimensionBookID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionBookID: dimensionBookID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDimensionValues by DimensionBookID exist.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child IndicatorDescriptionDimensionValues.
@@ -5866,8 +5874,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionInitiatives in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionInitiatives */
-        BaseIndicatorDescriptionInitiative.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionInitiative.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionInitiatives exist. */
         BaseIndicatorDescriptionInitiative.getAllCount = function (api, callback) {
@@ -5886,8 +5894,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionInitiatives based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionInitiatives which match the provided filter. */
-        BaseIndicatorDescriptionInitiative.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionInitiative.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionInitiatives exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -5904,8 +5912,8 @@ var hiw;
         /** Gets IndicatorDescriptionInitiatives by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionInitiatives.
          *  @return An Array of IndicatorDescriptionInitiatives. */
-        BaseIndicatorDescriptionInitiative.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionInitiative.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionInitiatives by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionInitiatives.
@@ -5933,8 +5941,8 @@ var hiw;
         /** Gets IndicatorDescriptionInitiatives by InitiativeID.
          *  @param initiativeID The ID of the Initiative for which to retrieve the child IndicatorDescriptionInitiatives.
          *  @return An Array of IndicatorDescriptionInitiatives. */
-        BaseIndicatorDescriptionInitiative.getByInitiativeID = function (initiativeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { initiativeID: initiativeID }, null, page);
+        BaseIndicatorDescriptionInitiative.getByInitiativeID = function (initiativeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { initiativeID: initiativeID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionInitiatives by InitiativeID exist.
          *  @param initiativeID The ID of the Initiative for which to retrieve the child IndicatorDescriptionInitiatives.
@@ -5991,8 +5999,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionInterventions in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionInterventions */
-        BaseIndicatorDescriptionIntervention.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionIntervention.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionInterventions exist. */
         BaseIndicatorDescriptionIntervention.getAllCount = function (api, callback) {
@@ -6011,8 +6019,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionInterventions based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionInterventions which match the provided filter. */
-        BaseIndicatorDescriptionIntervention.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionIntervention.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionInterventions exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -6029,8 +6037,8 @@ var hiw;
         /** Gets IndicatorDescriptionInterventions by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionInterventions.
          *  @return An Array of IndicatorDescriptionInterventions. */
-        BaseIndicatorDescriptionIntervention.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionIntervention.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionInterventions by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionInterventions.
@@ -6058,8 +6066,8 @@ var hiw;
         /** Gets IndicatorDescriptionInterventions by InterventionID.
          *  @param interventionID The ID of the Intervention for which to retrieve the child IndicatorDescriptionInterventions.
          *  @return An Array of IndicatorDescriptionInterventions. */
-        BaseIndicatorDescriptionIntervention.getByInterventionID = function (interventionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { interventionID: interventionID }, null, page);
+        BaseIndicatorDescriptionIntervention.getByInterventionID = function (interventionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { interventionID: interventionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionInterventions by InterventionID exist.
          *  @param interventionID The ID of the Intervention for which to retrieve the child IndicatorDescriptionInterventions.
@@ -6116,8 +6124,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionKeywords in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionKeywords */
-        BaseIndicatorDescriptionKeyword.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionKeyword.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionKeywords exist. */
         BaseIndicatorDescriptionKeyword.getAllCount = function (api, callback) {
@@ -6136,8 +6144,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionKeywords based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionKeywords which match the provided filter. */
-        BaseIndicatorDescriptionKeyword.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionKeyword.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionKeywords exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -6154,8 +6162,8 @@ var hiw;
         /** Gets IndicatorDescriptionKeywords by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionKeywords.
          *  @return An Array of IndicatorDescriptionKeywords. */
-        BaseIndicatorDescriptionKeyword.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionKeyword.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionKeywords by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionKeywords.
@@ -6183,8 +6191,8 @@ var hiw;
         /** Gets IndicatorDescriptionKeywords by KeywordID.
          *  @param keywordID The ID of the Keyword for which to retrieve the child IndicatorDescriptionKeywords.
          *  @return An Array of IndicatorDescriptionKeywords. */
-        BaseIndicatorDescriptionKeyword.getByKeywordID = function (keywordID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { keywordID: keywordID }, null, page);
+        BaseIndicatorDescriptionKeyword.getByKeywordID = function (keywordID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { keywordID: keywordID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionKeywords by KeywordID exist.
          *  @param keywordID The ID of the Keyword for which to retrieve the child IndicatorDescriptionKeywords.
@@ -6245,8 +6253,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionLocaleCounties in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionLocaleCounties */
-        BaseIndicatorDescriptionLocaleCounty.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionLocaleCounty.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocaleCounties exist. */
         BaseIndicatorDescriptionLocaleCounty.getAllCount = function (api, callback) {
@@ -6265,8 +6273,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionLocaleCounties based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionLocaleCounties which match the provided filter. */
-        BaseIndicatorDescriptionLocaleCounty.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionLocaleCounty.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionLocaleCounties exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -6283,8 +6291,8 @@ var hiw;
         /** Gets IndicatorDescriptionLocaleCounties by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleCounties.
          *  @return An Array of IndicatorDescriptionLocaleCounties. */
-        BaseIndicatorDescriptionLocaleCounty.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionLocaleCounty.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocaleCounties by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleCounties.
@@ -6312,8 +6320,8 @@ var hiw;
         /** Gets IndicatorDescriptionLocaleCounties by LocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocaleCounties.
          *  @return An Array of IndicatorDescriptionLocaleCounties. */
-        BaseIndicatorDescriptionLocaleCounty.getByLocaleID = function (localeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page);
+        BaseIndicatorDescriptionLocaleCounty.getByLocaleID = function (localeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocaleCounties by LocaleID exist.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocaleCounties.
@@ -6369,8 +6377,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionLocaleHospitalReferralRegions in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionLocaleHospitalReferralRegions */
-        BaseIndicatorDescriptionLocaleHospitalReferralRegion.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionLocaleHospitalReferralRegion.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocaleHospitalReferralRegions exist. */
         BaseIndicatorDescriptionLocaleHospitalReferralRegion.getAllCount = function (api, callback) {
@@ -6389,8 +6397,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionLocaleHospitalReferralRegions based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionLocaleHospitalReferralRegions which match the provided filter. */
-        BaseIndicatorDescriptionLocaleHospitalReferralRegion.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionLocaleHospitalReferralRegion.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionLocaleHospitalReferralRegions exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -6407,8 +6415,8 @@ var hiw;
         /** Gets IndicatorDescriptionLocaleHospitalReferralRegions by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleHospitalReferralRegions.
          *  @return An Array of IndicatorDescriptionLocaleHospitalReferralRegions. */
-        BaseIndicatorDescriptionLocaleHospitalReferralRegion.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionLocaleHospitalReferralRegion.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocaleHospitalReferralRegions by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleHospitalReferralRegions.
@@ -6436,8 +6444,8 @@ var hiw;
         /** Gets IndicatorDescriptionLocaleHospitalReferralRegions by LocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocaleHospitalReferralRegions.
          *  @return An Array of IndicatorDescriptionLocaleHospitalReferralRegions. */
-        BaseIndicatorDescriptionLocaleHospitalReferralRegion.getByLocaleID = function (localeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page);
+        BaseIndicatorDescriptionLocaleHospitalReferralRegion.getByLocaleID = function (localeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocaleHospitalReferralRegions by LocaleID exist.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocaleHospitalReferralRegions.
@@ -6493,8 +6501,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionLocaleLevels in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionLocaleLevels */
-        BaseIndicatorDescriptionLocaleLevel.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionLocaleLevel.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocaleLevels exist. */
         BaseIndicatorDescriptionLocaleLevel.getAllCount = function (api, callback) {
@@ -6513,8 +6521,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionLocaleLevels based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionLocaleLevels which match the provided filter. */
-        BaseIndicatorDescriptionLocaleLevel.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionLocaleLevel.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionLocaleLevels exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -6531,8 +6539,8 @@ var hiw;
         /** Gets IndicatorDescriptionLocaleLevels by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleLevels.
          *  @return An Array of IndicatorDescriptionLocaleLevels. */
-        BaseIndicatorDescriptionLocaleLevel.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionLocaleLevel.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocaleLevels by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleLevels.
@@ -6560,8 +6568,8 @@ var hiw;
         /** Gets IndicatorDescriptionLocaleLevels by LocaleLevelID.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDescriptionLocaleLevels.
          *  @return An Array of IndicatorDescriptionLocaleLevels. */
-        BaseIndicatorDescriptionLocaleLevel.getByLocaleLevelID = function (localeLevelID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeLevelID: localeLevelID }, null, page);
+        BaseIndicatorDescriptionLocaleLevel.getByLocaleLevelID = function (localeLevelID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeLevelID: localeLevelID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocaleLevels by LocaleLevelID exist.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDescriptionLocaleLevels.
@@ -6617,8 +6625,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionLocales in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionLocales */
-        BaseIndicatorDescriptionLocale.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionLocale.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocales exist. */
         BaseIndicatorDescriptionLocale.getAllCount = function (api, callback) {
@@ -6637,8 +6645,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionLocales based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionLocales which match the provided filter. */
-        BaseIndicatorDescriptionLocale.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionLocale.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionLocales exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -6655,8 +6663,8 @@ var hiw;
         /** Gets IndicatorDescriptionLocales by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocales.
          *  @return An Array of IndicatorDescriptionLocales. */
-        BaseIndicatorDescriptionLocale.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionLocale.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocales by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocales.
@@ -6684,8 +6692,8 @@ var hiw;
         /** Gets IndicatorDescriptionLocales by LocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocales.
          *  @return An Array of IndicatorDescriptionLocales. */
-        BaseIndicatorDescriptionLocale.getByLocaleID = function (localeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page);
+        BaseIndicatorDescriptionLocale.getByLocaleID = function (localeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocales by LocaleID exist.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocales.
@@ -6741,8 +6749,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionLocaleStates in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionLocaleStates */
-        BaseIndicatorDescriptionLocaleState.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionLocaleState.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocaleStates exist. */
         BaseIndicatorDescriptionLocaleState.getAllCount = function (api, callback) {
@@ -6761,8 +6769,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionLocaleStates based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionLocaleStates which match the provided filter. */
-        BaseIndicatorDescriptionLocaleState.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionLocaleState.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionLocaleStates exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -6779,8 +6787,8 @@ var hiw;
         /** Gets IndicatorDescriptionLocaleStates by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleStates.
          *  @return An Array of IndicatorDescriptionLocaleStates. */
-        BaseIndicatorDescriptionLocaleState.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionLocaleState.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocaleStates by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleStates.
@@ -6808,8 +6816,8 @@ var hiw;
         /** Gets IndicatorDescriptionLocaleStates by LocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocaleStates.
          *  @return An Array of IndicatorDescriptionLocaleStates. */
-        BaseIndicatorDescriptionLocaleState.getByLocaleID = function (localeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page);
+        BaseIndicatorDescriptionLocaleState.getByLocaleID = function (localeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocaleStates by LocaleID exist.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocaleStates.
@@ -6870,8 +6878,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionMethodologyNotes in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionMethodologyNotes */
-        BaseIndicatorDescriptionMethodologyNote.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionMethodologyNote.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionMethodologyNotes exist. */
         BaseIndicatorDescriptionMethodologyNote.getAllCount = function (api, callback) {
@@ -6890,8 +6898,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionMethodologyNotes based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionMethodologyNotes which match the provided filter. */
-        BaseIndicatorDescriptionMethodologyNote.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionMethodologyNote.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionMethodologyNotes exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -6908,8 +6916,8 @@ var hiw;
         /** Gets IndicatorDescriptionMethodologyNotes by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionMethodologyNotes.
          *  @return An Array of IndicatorDescriptionMethodologyNotes. */
-        BaseIndicatorDescriptionMethodologyNote.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionMethodologyNote.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionMethodologyNotes by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionMethodologyNotes.
@@ -6972,8 +6980,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionMoreInfos in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionMoreInfos */
-        BaseIndicatorDescriptionMoreInfo.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionMoreInfo.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionMoreInfos exist. */
         BaseIndicatorDescriptionMoreInfo.getAllCount = function (api, callback) {
@@ -6992,8 +7000,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionMoreInfos based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionMoreInfos which match the provided filter. */
-        BaseIndicatorDescriptionMoreInfo.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionMoreInfo.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionMoreInfos exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -7010,8 +7018,8 @@ var hiw;
         /** Gets IndicatorDescriptionMoreInfos by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionMoreInfos.
          *  @return An Array of IndicatorDescriptionMoreInfos. */
-        BaseIndicatorDescriptionMoreInfo.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionMoreInfo.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionMoreInfos by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionMoreInfos.
@@ -7039,8 +7047,8 @@ var hiw;
         /** Gets IndicatorDescriptionMoreInfos by UrlID.
          *  @param urlID The ID of the Url for which to retrieve the child IndicatorDescriptionMoreInfos.
          *  @return An Array of IndicatorDescriptionMoreInfos. */
-        BaseIndicatorDescriptionMoreInfo.getByUrlID = function (urlID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page);
+        BaseIndicatorDescriptionMoreInfo.getByUrlID = function (urlID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionMoreInfos by UrlID exist.
          *  @param urlID The ID of the Url for which to retrieve the child IndicatorDescriptionMoreInfos.
@@ -7100,8 +7108,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionReferences in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionReferences */
-        BaseIndicatorDescriptionReference.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionReference.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionReferences exist. */
         BaseIndicatorDescriptionReference.getAllCount = function (api, callback) {
@@ -7120,8 +7128,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionReferences based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionReferences which match the provided filter. */
-        BaseIndicatorDescriptionReference.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionReference.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionReferences exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -7138,8 +7146,8 @@ var hiw;
         /** Gets IndicatorDescriptionReferences by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionReferences.
          *  @return An Array of IndicatorDescriptionReferences. */
-        BaseIndicatorDescriptionReference.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionReference.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionReferences by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionReferences.
@@ -7167,8 +7175,8 @@ var hiw;
         /** Gets IndicatorDescriptionReferences by UrlID.
          *  @param urlID The ID of the Url for which to retrieve the child IndicatorDescriptionReferences.
          *  @return An Array of IndicatorDescriptionReferences. */
-        BaseIndicatorDescriptionReference.getByUrlID = function (urlID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page);
+        BaseIndicatorDescriptionReference.getByUrlID = function (urlID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionReferences by UrlID exist.
          *  @param urlID The ID of the Url for which to retrieve the child IndicatorDescriptionReferences.
@@ -7228,8 +7236,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionResources in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionResources */
-        BaseIndicatorDescriptionResource.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionResource.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionResources exist. */
         BaseIndicatorDescriptionResource.getAllCount = function (api, callback) {
@@ -7248,8 +7256,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionResources based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionResources which match the provided filter. */
-        BaseIndicatorDescriptionResource.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionResource.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionResources exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -7266,8 +7274,8 @@ var hiw;
         /** Gets IndicatorDescriptionResources by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionResources.
          *  @return An Array of IndicatorDescriptionResources. */
-        BaseIndicatorDescriptionResource.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionResource.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionResources by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionResources.
@@ -7295,8 +7303,8 @@ var hiw;
         /** Gets IndicatorDescriptionResources by UrlID.
          *  @param urlID The ID of the Url for which to retrieve the child IndicatorDescriptionResources.
          *  @return An Array of IndicatorDescriptionResources. */
-        BaseIndicatorDescriptionResource.getByUrlID = function (urlID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page);
+        BaseIndicatorDescriptionResource.getByUrlID = function (urlID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionResources by UrlID exist.
          *  @param urlID The ID of the Url for which to retrieve the child IndicatorDescriptionResources.
@@ -7372,8 +7380,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptions in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptions */
-        BaseIndicatorDescription.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescription.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptions exist. */
         BaseIndicatorDescription.getAllCount = function (api, callback) {
@@ -7392,8 +7400,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptions based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptions which match the provided filter. */
-        BaseIndicatorDescription.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescription.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptions exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -7410,8 +7418,8 @@ var hiw;
         /** Gets IndicatorDescriptions by ValueLabelID.
          *  @param valueLabelID The ID of the ValueLabel for which to retrieve the child IndicatorDescriptions.
          *  @return An Array of IndicatorDescriptions. */
-        BaseIndicatorDescription.getByValueLabelID = function (valueLabelID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { valueLabelID: valueLabelID }, null, page);
+        BaseIndicatorDescription.getByValueLabelID = function (valueLabelID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { valueLabelID: valueLabelID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptions by ValueLabelID exist.
          *  @param valueLabelID The ID of the ValueLabel for which to retrieve the child IndicatorDescriptions.
@@ -7483,8 +7491,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionHP2020s in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionHP2020s */
-        BaseIndicatorDescriptionHP2020.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionHP2020.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionHP2020s exist. */
         BaseIndicatorDescriptionHP2020.getAllCount = function (api, callback) {
@@ -7503,8 +7511,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionHP2020s based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionHP2020s which match the provided filter. */
-        BaseIndicatorDescriptionHP2020.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionHP2020.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionHP2020s exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -7521,8 +7529,8 @@ var hiw;
         /** Gets IndicatorDescriptionHP2020s by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionHP2020s.
          *  @return An Array of IndicatorDescriptionHP2020s. */
-        BaseIndicatorDescriptionHP2020.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionHP2020.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionHP2020s by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionHP2020s.
@@ -7550,8 +7558,8 @@ var hiw;
         /** Gets IndicatorDescriptionHP2020s by HP2020TSMID.
          *  @param hP2020TSMID The ID of the HP2020TSM for which to retrieve the child IndicatorDescriptionHP2020s.
          *  @return An Array of IndicatorDescriptionHP2020s. */
-        BaseIndicatorDescriptionHP2020.getByHP2020TSMID = function (hP2020TSMID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { hP2020TSMID: hP2020TSMID }, null, page);
+        BaseIndicatorDescriptionHP2020.getByHP2020TSMID = function (hP2020TSMID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { hP2020TSMID: hP2020TSMID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionHP2020s by HP2020TSMID exist.
          *  @param hP2020TSMID The ID of the HP2020TSM for which to retrieve the child IndicatorDescriptionHP2020s.
@@ -7613,8 +7621,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionTimeFrames in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionTimeFrames */
-        BaseIndicatorDescriptionTimeFrame.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionTimeFrame.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionTimeFrames exist. */
         BaseIndicatorDescriptionTimeFrame.getAllCount = function (api, callback) {
@@ -7633,8 +7641,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionTimeFrames based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionTimeFrames which match the provided filter. */
-        BaseIndicatorDescriptionTimeFrame.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionTimeFrame.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionTimeFrames exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -7651,8 +7659,8 @@ var hiw;
         /** Gets IndicatorDescriptionTimeFrames by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionTimeFrames.
          *  @return An Array of IndicatorDescriptionTimeFrames. */
-        BaseIndicatorDescriptionTimeFrame.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionTimeFrame.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionTimeFrames by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionTimeFrames.
@@ -7680,8 +7688,8 @@ var hiw;
         /** Gets IndicatorDescriptionTimeFrames by TimeframeID.
          *  @param timeframeID The ID of the Timeframe for which to retrieve the child IndicatorDescriptionTimeFrames.
          *  @return An Array of IndicatorDescriptionTimeFrames. */
-        BaseIndicatorDescriptionTimeFrame.getByTimeframeID = function (timeframeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { timeframeID: timeframeID }, null, page);
+        BaseIndicatorDescriptionTimeFrame.getByTimeframeID = function (timeframeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { timeframeID: timeframeID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionTimeFrames by TimeframeID exist.
          *  @param timeframeID The ID of the Timeframe for which to retrieve the child IndicatorDescriptionTimeFrames.
@@ -7737,8 +7745,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionYears in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionYears */
-        BaseIndicatorDescriptionYear.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionYear.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionYears exist. */
         BaseIndicatorDescriptionYear.getAllCount = function (api, callback) {
@@ -7757,8 +7765,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionYears based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionYears which match the provided filter. */
-        BaseIndicatorDescriptionYear.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionYear.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionYears exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -7775,8 +7783,8 @@ var hiw;
         /** Gets IndicatorDescriptionYears by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionYears.
          *  @return An Array of IndicatorDescriptionYears. */
-        BaseIndicatorDescriptionYear.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionYear.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionYears by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionYears.
@@ -7804,8 +7812,8 @@ var hiw;
         /** Gets IndicatorDescriptionYears by YearID.
          *  @param yearID The ID of the Year for which to retrieve the child IndicatorDescriptionYears.
          *  @return An Array of IndicatorDescriptionYears. */
-        BaseIndicatorDescriptionYear.getByYearID = function (yearID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { yearID: yearID }, null, page);
+        BaseIndicatorDescriptionYear.getByYearID = function (yearID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { yearID: yearID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionYears by YearID exist.
          *  @param yearID The ID of the Year for which to retrieve the child IndicatorDescriptionYears.
@@ -7867,8 +7875,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDimensionGraphs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDimensionGraphs */
-        BaseIndicatorDimensionGraph.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDimensionGraph.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDimensionGraphs exist. */
         BaseIndicatorDimensionGraph.getAllCount = function (api, callback) {
@@ -7887,8 +7895,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDimensionGraphs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDimensionGraphs which match the provided filter. */
-        BaseIndicatorDimensionGraph.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDimensionGraph.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDimensionGraphs exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -7905,8 +7913,8 @@ var hiw;
         /** Gets IndicatorDimensionGraphs by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDimensionGraphs.
          *  @return An Array of IndicatorDimensionGraphs. */
-        BaseIndicatorDimensionGraph.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDimensionGraph.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDimensionGraphs by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDimensionGraphs.
@@ -7934,8 +7942,8 @@ var hiw;
         /** Gets IndicatorDimensionGraphs by LocaleLevelID.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDimensionGraphs.
          *  @return An Array of IndicatorDimensionGraphs. */
-        BaseIndicatorDimensionGraph.getByLocaleLevelID = function (localeLevelID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeLevelID: localeLevelID }, null, page);
+        BaseIndicatorDimensionGraph.getByLocaleLevelID = function (localeLevelID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeLevelID: localeLevelID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDimensionGraphs by LocaleLevelID exist.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDimensionGraphs.
@@ -7963,8 +7971,8 @@ var hiw;
         /** Gets IndicatorDimensionGraphs by DimensionGraphID.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child IndicatorDimensionGraphs.
          *  @return An Array of IndicatorDimensionGraphs. */
-        BaseIndicatorDimensionGraph.getByDimensionGraphID = function (dimensionGraphID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionGraphID: dimensionGraphID }, null, page);
+        BaseIndicatorDimensionGraph.getByDimensionGraphID = function (dimensionGraphID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionGraphID: dimensionGraphID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDimensionGraphs by DimensionGraphID exist.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child IndicatorDimensionGraphs.
@@ -8021,8 +8029,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDimensions in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDimensions */
-        BaseIndicatorDimension.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDimension.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDimensions exist. */
         BaseIndicatorDimension.getAllCount = function (api, callback) {
@@ -8041,8 +8049,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDimensions based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDimensions which match the provided filter. */
-        BaseIndicatorDimension.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDimension.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDimensions exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -8059,8 +8067,8 @@ var hiw;
         /** Gets IndicatorDimensions by IndicatorID.
          *  @param indicatorID The ID of the Indicator for which to retrieve the child IndicatorDimensions.
          *  @return An Array of IndicatorDimensions. */
-        BaseIndicatorDimension.getByIndicatorID = function (indicatorID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorID: indicatorID }, null, page);
+        BaseIndicatorDimension.getByIndicatorID = function (indicatorID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorID: indicatorID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDimensions by IndicatorID exist.
          *  @param indicatorID The ID of the Indicator for which to retrieve the child IndicatorDimensions.
@@ -8088,8 +8096,8 @@ var hiw;
         /** Gets IndicatorDimensions by DimensionBookID.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child IndicatorDimensions.
          *  @return An Array of IndicatorDimensions. */
-        BaseIndicatorDimension.getByDimensionBookID = function (dimensionBookID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionBookID: dimensionBookID }, null, page);
+        BaseIndicatorDimension.getByDimensionBookID = function (dimensionBookID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionBookID: dimensionBookID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDimensions by DimensionBookID exist.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child IndicatorDimensions.
@@ -8178,8 +8186,8 @@ var hiw;
         /** Gets a list of all of the Indicators in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Indicators */
-        BaseIndicator.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicator.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Indicators exist. */
         BaseIndicator.getAllCount = function (api, callback) {
@@ -8198,8 +8206,8 @@ var hiw;
         /** Returns a filtered collection of Indicators based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Indicators which match the provided filter. */
-        BaseIndicator.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicator.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Indicators exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -8216,8 +8224,8 @@ var hiw;
         /** Gets Indicators by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child Indicators.
          *  @return An Array of Indicators. */
-        BaseIndicator.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicator.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many Indicators by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child Indicators.
@@ -8245,8 +8253,8 @@ var hiw;
         /** Gets Indicators by TimeframeID.
          *  @param timeframeID The ID of the Timeframe for which to retrieve the child Indicators.
          *  @return An Array of Indicators. */
-        BaseIndicator.getByTimeframeID = function (timeframeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { timeframeID: timeframeID }, null, page);
+        BaseIndicator.getByTimeframeID = function (timeframeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { timeframeID: timeframeID }, null, page, pageSize);
         };
         /** Gets how many Indicators by TimeframeID exist.
          *  @param timeframeID The ID of the Timeframe for which to retrieve the child Indicators.
@@ -8274,8 +8282,8 @@ var hiw;
         /** Gets Indicators by LocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child Indicators.
          *  @return An Array of Indicators. */
-        BaseIndicator.getByLocaleID = function (localeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page);
+        BaseIndicator.getByLocaleID = function (localeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page, pageSize);
         };
         /** Gets how many Indicators by LocaleID exist.
          *  @param localeID The ID of the Locale for which to retrieve the child Indicators.
@@ -8303,8 +8311,8 @@ var hiw;
         /** Gets Indicators by DimensionGraphID.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child Indicators.
          *  @return An Array of Indicators. */
-        BaseIndicator.getByDimensionGraphID = function (dimensionGraphID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionGraphID: dimensionGraphID }, null, page);
+        BaseIndicator.getByDimensionGraphID = function (dimensionGraphID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionGraphID: dimensionGraphID }, null, page, pageSize);
         };
         /** Gets how many Indicators by DimensionGraphID exist.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child Indicators.
@@ -8332,8 +8340,8 @@ var hiw;
         /** Gets Indicators by ModifierGraphID.
          *  @param modifierGraphID The ID of the ModifierGraph for which to retrieve the child Indicators.
          *  @return An Array of Indicators. */
-        BaseIndicator.getByModifierGraphID = function (modifierGraphID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierGraphID: modifierGraphID }, null, page);
+        BaseIndicator.getByModifierGraphID = function (modifierGraphID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierGraphID: modifierGraphID }, null, page, pageSize);
         };
         /** Gets how many Indicators by ModifierGraphID exist.
          *  @param modifierGraphID The ID of the ModifierGraph for which to retrieve the child Indicators.
@@ -8425,8 +8433,8 @@ var hiw;
         /** Gets a list of all of the Initiatives in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Initiatives */
-        BaseInitiative.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseInitiative.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Initiatives exist. */
         BaseInitiative.getAllCount = function (api, callback) {
@@ -8445,8 +8453,8 @@ var hiw;
         /** Returns a filtered collection of Initiatives based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Initiatives which match the provided filter. */
-        BaseInitiative.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseInitiative.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Initiatives exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -8504,8 +8512,8 @@ var hiw;
         /** Gets a list of all of the Interventions in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Interventions */
-        BaseIntervention.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIntervention.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Interventions exist. */
         BaseIntervention.getAllCount = function (api, callback) {
@@ -8524,8 +8532,8 @@ var hiw;
         /** Returns a filtered collection of Interventions based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Interventions which match the provided filter. */
-        BaseIntervention.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIntervention.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Interventions exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -8542,8 +8550,8 @@ var hiw;
         /** Gets Interventions by UrlID.
          *  @param urlID The ID of the Url for which to retrieve the child Interventions.
          *  @return An Array of Interventions. */
-        BaseIntervention.getByUrlID = function (urlID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page);
+        BaseIntervention.getByUrlID = function (urlID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page, pageSize);
         };
         /** Gets how many Interventions by UrlID exist.
          *  @param urlID The ID of the Url for which to retrieve the child Interventions.
@@ -8608,8 +8616,8 @@ var hiw;
         /** Gets a list of all of the Keywords in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Keywords */
-        BaseKeyword.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseKeyword.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Keywords exist. */
         BaseKeyword.getAllCount = function (api, callback) {
@@ -8628,8 +8636,8 @@ var hiw;
         /** Returns a filtered collection of Keywords based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Keywords which match the provided filter. */
-        BaseKeyword.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseKeyword.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Keywords exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -8678,8 +8686,8 @@ var hiw;
         /** Gets a list of all of the LocaleLevels in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of LocaleLevels */
-        BaseLocaleLevel.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseLocaleLevel.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many LocaleLevels exist. */
         BaseLocaleLevel.getAllCount = function (api, callback) {
@@ -8698,8 +8706,8 @@ var hiw;
         /** Returns a filtered collection of LocaleLevels based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All LocaleLevels which match the provided filter. */
-        BaseLocaleLevel.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseLocaleLevel.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many LocaleLevels exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -8745,8 +8753,8 @@ var hiw;
         /** Gets a list of all of the LocaleRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of LocaleRelations */
-        BaseLocaleRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseLocaleRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many LocaleRelations exist. */
         BaseLocaleRelation.getAllCount = function (api, callback) {
@@ -8765,8 +8773,8 @@ var hiw;
         /** Returns a filtered collection of LocaleRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All LocaleRelations which match the provided filter. */
-        BaseLocaleRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseLocaleRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many LocaleRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -8783,8 +8791,8 @@ var hiw;
         /** Gets LocaleRelations by AncestorLocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child LocaleRelations.
          *  @return An Array of LocaleRelations. */
-        BaseLocaleRelation.getByAncestorLocaleID = function (localeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page);
+        BaseLocaleRelation.getByAncestorLocaleID = function (localeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page, pageSize);
         };
         /** Gets how many LocaleRelations by AncestorLocaleID exist.
          *  @param localeID The ID of the Locale for which to retrieve the child LocaleRelations.
@@ -8812,8 +8820,8 @@ var hiw;
         /** Gets LocaleRelations by DescendantLocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child LocaleRelations.
          *  @return An Array of LocaleRelations. */
-        BaseLocaleRelation.getByDescendantLocaleID = function (localeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page);
+        BaseLocaleRelation.getByDescendantLocaleID = function (localeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page, pageSize);
         };
         /** Gets how many LocaleRelations by DescendantLocaleID exist.
          *  @param localeID The ID of the Locale for which to retrieve the child LocaleRelations.
@@ -8884,8 +8892,8 @@ var hiw;
         /** Gets a list of all of the Locales in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Locales */
-        BaseLocale.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseLocale.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Locales exist. */
         BaseLocale.getAllCount = function (api, callback) {
@@ -8904,8 +8912,8 @@ var hiw;
         /** Returns a filtered collection of Locales based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Locales which match the provided filter. */
-        BaseLocale.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseLocale.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Locales exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -8921,14 +8929,14 @@ var hiw;
         };
         /** Gets Locales by ParentLocaleID.
          *  @return An Array of Locales. */
-        BaseLocale.prototype.getLocales = function (api, callback, page) {
-            return Locale.getByParentLocaleID(this.id, api, callback, page);
+        BaseLocale.prototype.getLocales = function (api, callback, page, pageSize) {
+            return Locale.getByParentLocaleID(this.id, api, callback, page, pageSize);
         };
         /** Gets Locales by ParentLocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child Locales.
          *  @return An Array of Locales. */
-        BaseLocale.getByParentLocaleID = function (localeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page);
+        BaseLocale.getByParentLocaleID = function (localeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page, pageSize);
         };
         /** Gets how many Locales by ParentLocaleID exist.
          *  @return An Array of Locales. */
@@ -8966,8 +8974,8 @@ var hiw;
         /** Gets Locales by LocaleLevelID.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child Locales.
          *  @return An Array of Locales. */
-        BaseLocale.getByLocaleLevelID = function (localeLevelID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeLevelID: localeLevelID }, null, page);
+        BaseLocale.getByLocaleLevelID = function (localeLevelID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeLevelID: localeLevelID }, null, page, pageSize);
         };
         /** Gets how many Locales by LocaleLevelID exist.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child Locales.
@@ -9037,8 +9045,8 @@ var hiw;
         /** Gets a list of all of the MaritalStatuses in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of MaritalStatuses */
-        BaseMaritalStatus.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseMaritalStatus.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many MaritalStatuses exist. */
         BaseMaritalStatus.getAllCount = function (api, callback) {
@@ -9057,8 +9065,8 @@ var hiw;
         /** Returns a filtered collection of MaritalStatuses based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All MaritalStatuses which match the provided filter. */
-        BaseMaritalStatus.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseMaritalStatus.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many MaritalStatuses exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -9074,14 +9082,14 @@ var hiw;
         };
         /** Gets MaritalStatuses by ParentMaritalStatusID.
          *  @return An Array of MaritalStatuses. */
-        BaseMaritalStatus.prototype.getMaritalStatuses = function (api, callback, page) {
-            return MaritalStatus.getByParentMaritalStatusID(this.id, api, callback, page);
+        BaseMaritalStatus.prototype.getMaritalStatuses = function (api, callback, page, pageSize) {
+            return MaritalStatus.getByParentMaritalStatusID(this.id, api, callback, page, pageSize);
         };
         /** Gets MaritalStatuses by ParentMaritalStatusID.
          *  @param maritalStatusID The ID of the MaritalStatus for which to retrieve the child MaritalStatuses.
          *  @return An Array of MaritalStatuses. */
-        BaseMaritalStatus.getByParentMaritalStatusID = function (maritalStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { maritalStatusID: maritalStatusID }, null, page);
+        BaseMaritalStatus.getByParentMaritalStatusID = function (maritalStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { maritalStatusID: maritalStatusID }, null, page, pageSize);
         };
         /** Gets how many MaritalStatuses by ParentMaritalStatusID exist.
          *  @return An Array of MaritalStatuses. */
@@ -9153,8 +9161,8 @@ var hiw;
         /** Gets a list of all of the MaritalStatusRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of MaritalStatusRelations */
-        BaseMaritalStatusRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseMaritalStatusRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many MaritalStatusRelations exist. */
         BaseMaritalStatusRelation.getAllCount = function (api, callback) {
@@ -9173,8 +9181,8 @@ var hiw;
         /** Returns a filtered collection of MaritalStatusRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All MaritalStatusRelations which match the provided filter. */
-        BaseMaritalStatusRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseMaritalStatusRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many MaritalStatusRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -9191,8 +9199,8 @@ var hiw;
         /** Gets MaritalStatusRelations by AncestorMaritalStatusID.
          *  @param maritalStatusID The ID of the MaritalStatus for which to retrieve the child MaritalStatusRelations.
          *  @return An Array of MaritalStatusRelations. */
-        BaseMaritalStatusRelation.getByAncestorMaritalStatusID = function (maritalStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { maritalStatusID: maritalStatusID }, null, page);
+        BaseMaritalStatusRelation.getByAncestorMaritalStatusID = function (maritalStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { maritalStatusID: maritalStatusID }, null, page, pageSize);
         };
         /** Gets how many MaritalStatusRelations by AncestorMaritalStatusID exist.
          *  @param maritalStatusID The ID of the MaritalStatus for which to retrieve the child MaritalStatusRelations.
@@ -9220,8 +9228,8 @@ var hiw;
         /** Gets MaritalStatusRelations by DescendantMaritalStatusID.
          *  @param maritalStatusID The ID of the MaritalStatus for which to retrieve the child MaritalStatusRelations.
          *  @return An Array of MaritalStatusRelations. */
-        BaseMaritalStatusRelation.getByDescendantMaritalStatusID = function (maritalStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { maritalStatusID: maritalStatusID }, null, page);
+        BaseMaritalStatusRelation.getByDescendantMaritalStatusID = function (maritalStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { maritalStatusID: maritalStatusID }, null, page, pageSize);
         };
         /** Gets how many MaritalStatusRelations by DescendantMaritalStatusID exist.
          *  @param maritalStatusID The ID of the MaritalStatus for which to retrieve the child MaritalStatusRelations.
@@ -9290,8 +9298,8 @@ var hiw;
         /** Gets a list of all of the Modifiers in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Modifiers */
-        BaseModifier.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseModifier.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Modifiers exist. */
         BaseModifier.getAllCount = function (api, callback) {
@@ -9310,8 +9318,8 @@ var hiw;
         /** Returns a filtered collection of Modifiers based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Modifiers which match the provided filter. */
-        BaseModifier.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseModifier.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Modifiers exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -9327,14 +9335,14 @@ var hiw;
         };
         /** Gets Modifiers by ParentModifierID.
          *  @return An Array of Modifiers. */
-        BaseModifier.prototype.getModifiers = function (api, callback, page) {
-            return Modifier.getByParentModifierID(this.id, api, callback, page);
+        BaseModifier.prototype.getModifiers = function (api, callback, page, pageSize) {
+            return Modifier.getByParentModifierID(this.id, api, callback, page, pageSize);
         };
         /** Gets Modifiers by ParentModifierID.
          *  @param modifierID The ID of the Modifier for which to retrieve the child Modifiers.
          *  @return An Array of Modifiers. */
-        BaseModifier.getByParentModifierID = function (modifierID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierID: modifierID }, null, page);
+        BaseModifier.getByParentModifierID = function (modifierID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierID: modifierID }, null, page, pageSize);
         };
         /** Gets how many Modifiers by ParentModifierID exist.
          *  @return An Array of Modifiers. */
@@ -9437,8 +9445,8 @@ var hiw;
         /** Gets a list of all of the ModifierGraphs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of ModifierGraphs */
-        BaseModifierGraph.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseModifierGraph.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many ModifierGraphs exist. */
         BaseModifierGraph.getAllCount = function (api, callback) {
@@ -9457,8 +9465,8 @@ var hiw;
         /** Returns a filtered collection of ModifierGraphs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All ModifierGraphs which match the provided filter. */
-        BaseModifierGraph.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseModifierGraph.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many ModifierGraphs exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -9475,8 +9483,8 @@ var hiw;
         /** Gets ModifierGraphs by Modifier1ID.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
          *  @return An Array of ModifierGraphs. */
-        BaseModifierGraph.getByModifier1ID = function (modifierID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierID: modifierID }, null, page);
+        BaseModifierGraph.getByModifier1ID = function (modifierID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierID: modifierID }, null, page, pageSize);
         };
         /** Gets how many ModifierGraphs by Modifier1ID exist.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
@@ -9504,8 +9512,8 @@ var hiw;
         /** Gets ModifierGraphs by Modifier2ID.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
          *  @return An Array of ModifierGraphs. */
-        BaseModifierGraph.getByModifier2ID = function (modifierID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierID: modifierID }, null, page);
+        BaseModifierGraph.getByModifier2ID = function (modifierID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierID: modifierID }, null, page, pageSize);
         };
         /** Gets how many ModifierGraphs by Modifier2ID exist.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
@@ -9533,8 +9541,8 @@ var hiw;
         /** Gets ModifierGraphs by Modifier3ID.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
          *  @return An Array of ModifierGraphs. */
-        BaseModifierGraph.getByModifier3ID = function (modifierID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierID: modifierID }, null, page);
+        BaseModifierGraph.getByModifier3ID = function (modifierID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierID: modifierID }, null, page, pageSize);
         };
         /** Gets how many ModifierGraphs by Modifier3ID exist.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
@@ -9562,8 +9570,8 @@ var hiw;
         /** Gets ModifierGraphs by Modifier4ID.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
          *  @return An Array of ModifierGraphs. */
-        BaseModifierGraph.getByModifier4ID = function (modifierID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierID: modifierID }, null, page);
+        BaseModifierGraph.getByModifier4ID = function (modifierID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierID: modifierID }, null, page, pageSize);
         };
         /** Gets how many ModifierGraphs by Modifier4ID exist.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
@@ -9591,8 +9599,8 @@ var hiw;
         /** Gets ModifierGraphs by Modifier5ID.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
          *  @return An Array of ModifierGraphs. */
-        BaseModifierGraph.getByModifier5ID = function (modifierID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierID: modifierID }, null, page);
+        BaseModifierGraph.getByModifier5ID = function (modifierID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierID: modifierID }, null, page, pageSize);
         };
         /** Gets how many ModifierGraphs by Modifier5ID exist.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
@@ -9678,8 +9686,8 @@ var hiw;
         /** Gets a list of all of the ObesityStatuses in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of ObesityStatuses */
-        BaseObesityStatus.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseObesityStatus.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many ObesityStatuses exist. */
         BaseObesityStatus.getAllCount = function (api, callback) {
@@ -9698,8 +9706,8 @@ var hiw;
         /** Returns a filtered collection of ObesityStatuses based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All ObesityStatuses which match the provided filter. */
-        BaseObesityStatus.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseObesityStatus.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many ObesityStatuses exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -9715,14 +9723,14 @@ var hiw;
         };
         /** Gets ObesityStatuses by ParentObesityStatusID.
          *  @return An Array of ObesityStatuses. */
-        BaseObesityStatus.prototype.getObesityStatuses = function (api, callback, page) {
-            return ObesityStatus.getByParentObesityStatusID(this.id, api, callback, page);
+        BaseObesityStatus.prototype.getObesityStatuses = function (api, callback, page, pageSize) {
+            return ObesityStatus.getByParentObesityStatusID(this.id, api, callback, page, pageSize);
         };
         /** Gets ObesityStatuses by ParentObesityStatusID.
          *  @param obesityStatusID The ID of the ObesityStatus for which to retrieve the child ObesityStatuses.
          *  @return An Array of ObesityStatuses. */
-        BaseObesityStatus.getByParentObesityStatusID = function (obesityStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { obesityStatusID: obesityStatusID }, null, page);
+        BaseObesityStatus.getByParentObesityStatusID = function (obesityStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { obesityStatusID: obesityStatusID }, null, page, pageSize);
         };
         /** Gets how many ObesityStatuses by ParentObesityStatusID exist.
          *  @return An Array of ObesityStatuses. */
@@ -9794,8 +9802,8 @@ var hiw;
         /** Gets a list of all of the ObesityStatusRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of ObesityStatusRelations */
-        BaseObesityStatusRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseObesityStatusRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many ObesityStatusRelations exist. */
         BaseObesityStatusRelation.getAllCount = function (api, callback) {
@@ -9814,8 +9822,8 @@ var hiw;
         /** Returns a filtered collection of ObesityStatusRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All ObesityStatusRelations which match the provided filter. */
-        BaseObesityStatusRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseObesityStatusRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many ObesityStatusRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -9832,8 +9840,8 @@ var hiw;
         /** Gets ObesityStatusRelations by AncestorObesityStatusID.
          *  @param obesityStatusID The ID of the ObesityStatus for which to retrieve the child ObesityStatusRelations.
          *  @return An Array of ObesityStatusRelations. */
-        BaseObesityStatusRelation.getByAncestorObesityStatusID = function (obesityStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { obesityStatusID: obesityStatusID }, null, page);
+        BaseObesityStatusRelation.getByAncestorObesityStatusID = function (obesityStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { obesityStatusID: obesityStatusID }, null, page, pageSize);
         };
         /** Gets how many ObesityStatusRelations by AncestorObesityStatusID exist.
          *  @param obesityStatusID The ID of the ObesityStatus for which to retrieve the child ObesityStatusRelations.
@@ -9861,8 +9869,8 @@ var hiw;
         /** Gets ObesityStatusRelations by DescendantObesityStatusID.
          *  @param obesityStatusID The ID of the ObesityStatus for which to retrieve the child ObesityStatusRelations.
          *  @return An Array of ObesityStatusRelations. */
-        BaseObesityStatusRelation.getByDescendantObesityStatusID = function (obesityStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { obesityStatusID: obesityStatusID }, null, page);
+        BaseObesityStatusRelation.getByDescendantObesityStatusID = function (obesityStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { obesityStatusID: obesityStatusID }, null, page, pageSize);
         };
         /** Gets how many ObesityStatusRelations by DescendantObesityStatusID exist.
          *  @param obesityStatusID The ID of the ObesityStatus for which to retrieve the child ObesityStatusRelations.
@@ -9924,8 +9932,8 @@ var hiw;
         /** Gets a list of all of the Others in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Others */
-        BaseOther.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseOther.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Others exist. */
         BaseOther.getAllCount = function (api, callback) {
@@ -9944,8 +9952,8 @@ var hiw;
         /** Returns a filtered collection of Others based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Others which match the provided filter. */
-        BaseOther.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseOther.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Others exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -9961,14 +9969,14 @@ var hiw;
         };
         /** Gets Others by ParentOtherID.
          *  @return An Array of Others. */
-        BaseOther.prototype.getOthers = function (api, callback, page) {
-            return Other.getByParentOtherID(this.id, api, callback, page);
+        BaseOther.prototype.getOthers = function (api, callback, page, pageSize) {
+            return Other.getByParentOtherID(this.id, api, callback, page, pageSize);
         };
         /** Gets Others by ParentOtherID.
          *  @param otherID The ID of the Other for which to retrieve the child Others.
          *  @return An Array of Others. */
-        BaseOther.getByParentOtherID = function (otherID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { otherID: otherID }, null, page);
+        BaseOther.getByParentOtherID = function (otherID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { otherID: otherID }, null, page, pageSize);
         };
         /** Gets how many Others by ParentOtherID exist.
          *  @return An Array of Others. */
@@ -10040,8 +10048,8 @@ var hiw;
         /** Gets a list of all of the OtherRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of OtherRelations */
-        BaseOtherRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseOtherRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many OtherRelations exist. */
         BaseOtherRelation.getAllCount = function (api, callback) {
@@ -10060,8 +10068,8 @@ var hiw;
         /** Returns a filtered collection of OtherRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All OtherRelations which match the provided filter. */
-        BaseOtherRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseOtherRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many OtherRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -10078,8 +10086,8 @@ var hiw;
         /** Gets OtherRelations by AncestorOtherID.
          *  @param otherID The ID of the Other for which to retrieve the child OtherRelations.
          *  @return An Array of OtherRelations. */
-        BaseOtherRelation.getByAncestorOtherID = function (otherID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { otherID: otherID }, null, page);
+        BaseOtherRelation.getByAncestorOtherID = function (otherID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { otherID: otherID }, null, page, pageSize);
         };
         /** Gets how many OtherRelations by AncestorOtherID exist.
          *  @param otherID The ID of the Other for which to retrieve the child OtherRelations.
@@ -10107,8 +10115,8 @@ var hiw;
         /** Gets OtherRelations by DescendantOtherID.
          *  @param otherID The ID of the Other for which to retrieve the child OtherRelations.
          *  @return An Array of OtherRelations. */
-        BaseOtherRelation.getByDescendantOtherID = function (otherID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { otherID: otherID }, null, page);
+        BaseOtherRelation.getByDescendantOtherID = function (otherID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { otherID: otherID }, null, page, pageSize);
         };
         /** Gets how many OtherRelations by DescendantOtherID exist.
          *  @param otherID The ID of the Other for which to retrieve the child OtherRelations.
@@ -10170,8 +10178,8 @@ var hiw;
         /** Gets a list of all of the RaceEthnicities in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of RaceEthnicities */
-        BaseRaceEthnicity.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseRaceEthnicity.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many RaceEthnicities exist. */
         BaseRaceEthnicity.getAllCount = function (api, callback) {
@@ -10190,8 +10198,8 @@ var hiw;
         /** Returns a filtered collection of RaceEthnicities based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All RaceEthnicities which match the provided filter. */
-        BaseRaceEthnicity.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseRaceEthnicity.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many RaceEthnicities exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -10207,14 +10215,14 @@ var hiw;
         };
         /** Gets RaceEthnicities by ParentRaceEthnicityID.
          *  @return An Array of RaceEthnicities. */
-        BaseRaceEthnicity.prototype.getRaceEthnicities = function (api, callback, page) {
-            return RaceEthnicity.getByParentRaceEthnicityID(this.id, api, callback, page);
+        BaseRaceEthnicity.prototype.getRaceEthnicities = function (api, callback, page, pageSize) {
+            return RaceEthnicity.getByParentRaceEthnicityID(this.id, api, callback, page, pageSize);
         };
         /** Gets RaceEthnicities by ParentRaceEthnicityID.
          *  @param raceEthnicityID The ID of the RaceEthnicity for which to retrieve the child RaceEthnicities.
          *  @return An Array of RaceEthnicities. */
-        BaseRaceEthnicity.getByParentRaceEthnicityID = function (raceEthnicityID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { raceEthnicityID: raceEthnicityID }, null, page);
+        BaseRaceEthnicity.getByParentRaceEthnicityID = function (raceEthnicityID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { raceEthnicityID: raceEthnicityID }, null, page, pageSize);
         };
         /** Gets how many RaceEthnicities by ParentRaceEthnicityID exist.
          *  @return An Array of RaceEthnicities. */
@@ -10286,8 +10294,8 @@ var hiw;
         /** Gets a list of all of the RaceEthnicityRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of RaceEthnicityRelations */
-        BaseRaceEthnicityRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseRaceEthnicityRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many RaceEthnicityRelations exist. */
         BaseRaceEthnicityRelation.getAllCount = function (api, callback) {
@@ -10306,8 +10314,8 @@ var hiw;
         /** Returns a filtered collection of RaceEthnicityRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All RaceEthnicityRelations which match the provided filter. */
-        BaseRaceEthnicityRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseRaceEthnicityRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many RaceEthnicityRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -10324,8 +10332,8 @@ var hiw;
         /** Gets RaceEthnicityRelations by AncestorRaceEthnicityID.
          *  @param raceEthnicityID The ID of the RaceEthnicity for which to retrieve the child RaceEthnicityRelations.
          *  @return An Array of RaceEthnicityRelations. */
-        BaseRaceEthnicityRelation.getByAncestorRaceEthnicityID = function (raceEthnicityID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { raceEthnicityID: raceEthnicityID }, null, page);
+        BaseRaceEthnicityRelation.getByAncestorRaceEthnicityID = function (raceEthnicityID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { raceEthnicityID: raceEthnicityID }, null, page, pageSize);
         };
         /** Gets how many RaceEthnicityRelations by AncestorRaceEthnicityID exist.
          *  @param raceEthnicityID The ID of the RaceEthnicity for which to retrieve the child RaceEthnicityRelations.
@@ -10353,8 +10361,8 @@ var hiw;
         /** Gets RaceEthnicityRelations by DescendantRaceEthnicityID.
          *  @param raceEthnicityID The ID of the RaceEthnicity for which to retrieve the child RaceEthnicityRelations.
          *  @return An Array of RaceEthnicityRelations. */
-        BaseRaceEthnicityRelation.getByDescendantRaceEthnicityID = function (raceEthnicityID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { raceEthnicityID: raceEthnicityID }, null, page);
+        BaseRaceEthnicityRelation.getByDescendantRaceEthnicityID = function (raceEthnicityID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { raceEthnicityID: raceEthnicityID }, null, page, pageSize);
         };
         /** Gets how many RaceEthnicityRelations by DescendantRaceEthnicityID exist.
          *  @param raceEthnicityID The ID of the RaceEthnicity for which to retrieve the child RaceEthnicityRelations.
@@ -10416,8 +10424,8 @@ var hiw;
         /** Gets a list of all of the Sexes in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Sexes */
-        BaseSex.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseSex.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Sexes exist. */
         BaseSex.getAllCount = function (api, callback) {
@@ -10436,8 +10444,8 @@ var hiw;
         /** Returns a filtered collection of Sexes based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Sexes which match the provided filter. */
-        BaseSex.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseSex.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Sexes exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -10453,14 +10461,14 @@ var hiw;
         };
         /** Gets Sexes by ParentSexID.
          *  @return An Array of Sexes. */
-        BaseSex.prototype.getSexes = function (api, callback, page) {
-            return Sex.getByParentSexID(this.id, api, callback, page);
+        BaseSex.prototype.getSexes = function (api, callback, page, pageSize) {
+            return Sex.getByParentSexID(this.id, api, callback, page, pageSize);
         };
         /** Gets Sexes by ParentSexID.
          *  @param sexID The ID of the Sex for which to retrieve the child Sexes.
          *  @return An Array of Sexes. */
-        BaseSex.getByParentSexID = function (sexID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexID: sexID }, null, page);
+        BaseSex.getByParentSexID = function (sexID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexID: sexID }, null, page, pageSize);
         };
         /** Gets how many Sexes by ParentSexID exist.
          *  @return An Array of Sexes. */
@@ -10532,8 +10540,8 @@ var hiw;
         /** Gets a list of all of the SexRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of SexRelations */
-        BaseSexRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseSexRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many SexRelations exist. */
         BaseSexRelation.getAllCount = function (api, callback) {
@@ -10552,8 +10560,8 @@ var hiw;
         /** Returns a filtered collection of SexRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All SexRelations which match the provided filter. */
-        BaseSexRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseSexRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many SexRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -10570,8 +10578,8 @@ var hiw;
         /** Gets SexRelations by AncestorSexID.
          *  @param sexID The ID of the Sex for which to retrieve the child SexRelations.
          *  @return An Array of SexRelations. */
-        BaseSexRelation.getByAncestorSexID = function (sexID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexID: sexID }, null, page);
+        BaseSexRelation.getByAncestorSexID = function (sexID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexID: sexID }, null, page, pageSize);
         };
         /** Gets how many SexRelations by AncestorSexID exist.
          *  @param sexID The ID of the Sex for which to retrieve the child SexRelations.
@@ -10599,8 +10607,8 @@ var hiw;
         /** Gets SexRelations by DescendantSexID.
          *  @param sexID The ID of the Sex for which to retrieve the child SexRelations.
          *  @return An Array of SexRelations. */
-        BaseSexRelation.getByDescendantSexID = function (sexID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexID: sexID }, null, page);
+        BaseSexRelation.getByDescendantSexID = function (sexID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexID: sexID }, null, page, pageSize);
         };
         /** Gets how many SexRelations by DescendantSexID exist.
          *  @param sexID The ID of the Sex for which to retrieve the child SexRelations.
@@ -10662,8 +10670,8 @@ var hiw;
         /** Gets a list of all of the SexualOrientations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of SexualOrientations */
-        BaseSexualOrientation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseSexualOrientation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many SexualOrientations exist. */
         BaseSexualOrientation.getAllCount = function (api, callback) {
@@ -10682,8 +10690,8 @@ var hiw;
         /** Returns a filtered collection of SexualOrientations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All SexualOrientations which match the provided filter. */
-        BaseSexualOrientation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseSexualOrientation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many SexualOrientations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -10699,14 +10707,14 @@ var hiw;
         };
         /** Gets SexualOrientations by ParentSexualOrientationID.
          *  @return An Array of SexualOrientations. */
-        BaseSexualOrientation.prototype.getSexualOrientations = function (api, callback, page) {
-            return SexualOrientation.getByParentSexualOrientationID(this.id, api, callback, page);
+        BaseSexualOrientation.prototype.getSexualOrientations = function (api, callback, page, pageSize) {
+            return SexualOrientation.getByParentSexualOrientationID(this.id, api, callback, page, pageSize);
         };
         /** Gets SexualOrientations by ParentSexualOrientationID.
          *  @param sexualOrientationID The ID of the SexualOrientation for which to retrieve the child SexualOrientations.
          *  @return An Array of SexualOrientations. */
-        BaseSexualOrientation.getByParentSexualOrientationID = function (sexualOrientationID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexualOrientationID: sexualOrientationID }, null, page);
+        BaseSexualOrientation.getByParentSexualOrientationID = function (sexualOrientationID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexualOrientationID: sexualOrientationID }, null, page, pageSize);
         };
         /** Gets how many SexualOrientations by ParentSexualOrientationID exist.
          *  @return An Array of SexualOrientations. */
@@ -10778,8 +10786,8 @@ var hiw;
         /** Gets a list of all of the SexualOrientationRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of SexualOrientationRelations */
-        BaseSexualOrientationRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseSexualOrientationRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many SexualOrientationRelations exist. */
         BaseSexualOrientationRelation.getAllCount = function (api, callback) {
@@ -10798,8 +10806,8 @@ var hiw;
         /** Returns a filtered collection of SexualOrientationRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All SexualOrientationRelations which match the provided filter. */
-        BaseSexualOrientationRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseSexualOrientationRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many SexualOrientationRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -10816,8 +10824,8 @@ var hiw;
         /** Gets SexualOrientationRelations by AncestorSexualOrientationID.
          *  @param sexualOrientationID The ID of the SexualOrientation for which to retrieve the child SexualOrientationRelations.
          *  @return An Array of SexualOrientationRelations. */
-        BaseSexualOrientationRelation.getByAncestorSexualOrientationID = function (sexualOrientationID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexualOrientationID: sexualOrientationID }, null, page);
+        BaseSexualOrientationRelation.getByAncestorSexualOrientationID = function (sexualOrientationID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexualOrientationID: sexualOrientationID }, null, page, pageSize);
         };
         /** Gets how many SexualOrientationRelations by AncestorSexualOrientationID exist.
          *  @param sexualOrientationID The ID of the SexualOrientation for which to retrieve the child SexualOrientationRelations.
@@ -10845,8 +10853,8 @@ var hiw;
         /** Gets SexualOrientationRelations by DescendantSexualOrientationID.
          *  @param sexualOrientationID The ID of the SexualOrientation for which to retrieve the child SexualOrientationRelations.
          *  @return An Array of SexualOrientationRelations. */
-        BaseSexualOrientationRelation.getByDescendantSexualOrientationID = function (sexualOrientationID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexualOrientationID: sexualOrientationID }, null, page);
+        BaseSexualOrientationRelation.getByDescendantSexualOrientationID = function (sexualOrientationID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexualOrientationID: sexualOrientationID }, null, page, pageSize);
         };
         /** Gets how many SexualOrientationRelations by DescendantSexualOrientationID exist.
          *  @param sexualOrientationID The ID of the SexualOrientation for which to retrieve the child SexualOrientationRelations.
@@ -10907,8 +10915,8 @@ var hiw;
         /** Gets a list of all of the Timeframes in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Timeframes */
-        BaseTimeframe.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseTimeframe.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Timeframes exist. */
         BaseTimeframe.getAllCount = function (api, callback) {
@@ -10927,8 +10935,8 @@ var hiw;
         /** Returns a filtered collection of Timeframes based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Timeframes which match the provided filter. */
-        BaseTimeframe.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseTimeframe.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Timeframes exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -10982,8 +10990,8 @@ var hiw;
         /** Gets a list of all of the Totals in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Totals */
-        BaseTotal.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseTotal.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Totals exist. */
         BaseTotal.getAllCount = function (api, callback) {
@@ -11002,8 +11010,8 @@ var hiw;
         /** Returns a filtered collection of Totals based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Totals which match the provided filter. */
-        BaseTotal.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseTotal.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Totals exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -11019,14 +11027,14 @@ var hiw;
         };
         /** Gets Totals by ParentTotalID.
          *  @return An Array of Totals. */
-        BaseTotal.prototype.getTotals = function (api, callback, page) {
-            return Total.getByParentTotalID(this.id, api, callback, page);
+        BaseTotal.prototype.getTotals = function (api, callback, page, pageSize) {
+            return Total.getByParentTotalID(this.id, api, callback, page, pageSize);
         };
         /** Gets Totals by ParentTotalID.
          *  @param totalID The ID of the Total for which to retrieve the child Totals.
          *  @return An Array of Totals. */
-        BaseTotal.getByParentTotalID = function (totalID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { totalID: totalID }, null, page);
+        BaseTotal.getByParentTotalID = function (totalID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { totalID: totalID }, null, page, pageSize);
         };
         /** Gets how many Totals by ParentTotalID exist.
          *  @return An Array of Totals. */
@@ -11098,8 +11106,8 @@ var hiw;
         /** Gets a list of all of the TotalRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of TotalRelations */
-        BaseTotalRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseTotalRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many TotalRelations exist. */
         BaseTotalRelation.getAllCount = function (api, callback) {
@@ -11118,8 +11126,8 @@ var hiw;
         /** Returns a filtered collection of TotalRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All TotalRelations which match the provided filter. */
-        BaseTotalRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseTotalRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many TotalRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -11136,8 +11144,8 @@ var hiw;
         /** Gets TotalRelations by AncestorTotalID.
          *  @param totalID The ID of the Total for which to retrieve the child TotalRelations.
          *  @return An Array of TotalRelations. */
-        BaseTotalRelation.getByAncestorTotalID = function (totalID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { totalID: totalID }, null, page);
+        BaseTotalRelation.getByAncestorTotalID = function (totalID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { totalID: totalID }, null, page, pageSize);
         };
         /** Gets how many TotalRelations by AncestorTotalID exist.
          *  @param totalID The ID of the Total for which to retrieve the child TotalRelations.
@@ -11165,8 +11173,8 @@ var hiw;
         /** Gets TotalRelations by DescendantTotalID.
          *  @param totalID The ID of the Total for which to retrieve the child TotalRelations.
          *  @return An Array of TotalRelations. */
-        BaseTotalRelation.getByDescendantTotalID = function (totalID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { totalID: totalID }, null, page);
+        BaseTotalRelation.getByDescendantTotalID = function (totalID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { totalID: totalID }, null, page, pageSize);
         };
         /** Gets how many TotalRelations by DescendantTotalID exist.
          *  @param totalID The ID of the Total for which to retrieve the child TotalRelations.
@@ -11229,8 +11237,8 @@ var hiw;
         /** Gets a list of all of the Urls in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Urls */
-        BaseUrl.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseUrl.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Urls exist. */
         BaseUrl.getAllCount = function (api, callback) {
@@ -11249,8 +11257,8 @@ var hiw;
         /** Returns a filtered collection of Urls based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Urls which match the provided filter. */
-        BaseUrl.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseUrl.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Urls exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -11300,8 +11308,8 @@ var hiw;
         /** Gets a list of all of the ValueLabels in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of ValueLabels */
-        BaseValueLabel.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseValueLabel.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many ValueLabels exist. */
         BaseValueLabel.getAllCount = function (api, callback) {
@@ -11320,8 +11328,8 @@ var hiw;
         /** Returns a filtered collection of ValueLabels based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All ValueLabels which match the provided filter. */
-        BaseValueLabel.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseValueLabel.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many ValueLabels exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -11370,8 +11378,8 @@ var hiw;
         /** Gets a list of all of the VeteranStatuses in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of VeteranStatuses */
-        BaseVeteranStatus.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseVeteranStatus.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many VeteranStatuses exist. */
         BaseVeteranStatus.getAllCount = function (api, callback) {
@@ -11390,8 +11398,8 @@ var hiw;
         /** Returns a filtered collection of VeteranStatuses based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All VeteranStatuses which match the provided filter. */
-        BaseVeteranStatus.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseVeteranStatus.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many VeteranStatuses exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -11407,14 +11415,14 @@ var hiw;
         };
         /** Gets VeteranStatuses by ParentVeteranStatusID.
          *  @return An Array of VeteranStatuses. */
-        BaseVeteranStatus.prototype.getVeteranStatuses = function (api, callback, page) {
-            return VeteranStatus.getByParentVeteranStatusID(this.id, api, callback, page);
+        BaseVeteranStatus.prototype.getVeteranStatuses = function (api, callback, page, pageSize) {
+            return VeteranStatus.getByParentVeteranStatusID(this.id, api, callback, page, pageSize);
         };
         /** Gets VeteranStatuses by ParentVeteranStatusID.
          *  @param veteranStatusID The ID of the VeteranStatus for which to retrieve the child VeteranStatuses.
          *  @return An Array of VeteranStatuses. */
-        BaseVeteranStatus.getByParentVeteranStatusID = function (veteranStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { veteranStatusID: veteranStatusID }, null, page);
+        BaseVeteranStatus.getByParentVeteranStatusID = function (veteranStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { veteranStatusID: veteranStatusID }, null, page, pageSize);
         };
         /** Gets how many VeteranStatuses by ParentVeteranStatusID exist.
          *  @return An Array of VeteranStatuses. */
@@ -11486,8 +11494,8 @@ var hiw;
         /** Gets a list of all of the VeteranStatusRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of VeteranStatusRelations */
-        BaseVeteranStatusRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseVeteranStatusRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many VeteranStatusRelations exist. */
         BaseVeteranStatusRelation.getAllCount = function (api, callback) {
@@ -11506,8 +11514,8 @@ var hiw;
         /** Returns a filtered collection of VeteranStatusRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All VeteranStatusRelations which match the provided filter. */
-        BaseVeteranStatusRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseVeteranStatusRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many VeteranStatusRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -11524,8 +11532,8 @@ var hiw;
         /** Gets VeteranStatusRelations by AncestorVeteranStatusID.
          *  @param veteranStatusID The ID of the VeteranStatus for which to retrieve the child VeteranStatusRelations.
          *  @return An Array of VeteranStatusRelations. */
-        BaseVeteranStatusRelation.getByAncestorVeteranStatusID = function (veteranStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { veteranStatusID: veteranStatusID }, null, page);
+        BaseVeteranStatusRelation.getByAncestorVeteranStatusID = function (veteranStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { veteranStatusID: veteranStatusID }, null, page, pageSize);
         };
         /** Gets how many VeteranStatusRelations by AncestorVeteranStatusID exist.
          *  @param veteranStatusID The ID of the VeteranStatus for which to retrieve the child VeteranStatusRelations.
@@ -11553,8 +11561,8 @@ var hiw;
         /** Gets VeteranStatusRelations by DescendantVeteranStatusID.
          *  @param veteranStatusID The ID of the VeteranStatus for which to retrieve the child VeteranStatusRelations.
          *  @return An Array of VeteranStatusRelations. */
-        BaseVeteranStatusRelation.getByDescendantVeteranStatusID = function (veteranStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { veteranStatusID: veteranStatusID }, null, page);
+        BaseVeteranStatusRelation.getByDescendantVeteranStatusID = function (veteranStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { veteranStatusID: veteranStatusID }, null, page, pageSize);
         };
         /** Gets how many VeteranStatusRelations by DescendantVeteranStatusID exist.
          *  @param veteranStatusID The ID of the VeteranStatus for which to retrieve the child VeteranStatusRelations.
@@ -11612,8 +11620,8 @@ var hiw;
         /** Gets a list of all of the Years in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Years */
-        BaseYear.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseYear.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Years exist. */
         BaseYear.getAllCount = function (api, callback) {
@@ -11632,8 +11640,8 @@ var hiw;
         /** Returns a filtered collection of Years based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Years which match the provided filter. */
-        BaseYear.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseYear.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Years exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -11891,1180 +11899,1180 @@ var hiw;
 /// <reference path="_dependencies" />
 var hiw;
 (function (hiw) {
-    hiw.Endpoint.addArray(hiw.Age, 0 /* GET */, "/Ages/{page}", hiw.Age.getAll);
+    hiw.Endpoint.addArray(hiw.Age, 0 /* GET */, "/Ages/{page}?PageSize={pageSize}", hiw.Age.getAll);
     hiw.Endpoint.addSimple(hiw.Age, 0 /* GET */, "/Ages/Count", hiw.Age.getAllCount);
     hiw.Endpoint.addSimple(hiw.Age, 0 /* GET */, "/Ages/PageCount", hiw.Age.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.Age, 0 /* GET */, "/Age/{id}", hiw.Age.getByID);
     hiw.Endpoint.addArray(hiw.Age, 1 /* POST */, "Ages/Filter", hiw.Age.filter);
     hiw.Endpoint.addSimple(hiw.Age, 1 /* POST */, "Ages/FilterCount", hiw.Age.filterCount);
     hiw.Endpoint.addSimple(hiw.Age, 1 /* POST */, "Ages/FilterPageCount", hiw.Age.filterPageCount);
-    hiw.Endpoint.addArray(hiw.Age, 0 /* GET */, "/Age/{ageID}/Ages/{page}", hiw.Age.getByParentAgeID);
+    hiw.Endpoint.addArray(hiw.Age, 0 /* GET */, "/Age/{ageID}/Ages/{page}?PageSize={pageSize}", hiw.Age.getByParentAgeID);
     hiw.Endpoint.addSimple(hiw.Age, 0 /* GET */, "/Age/{ageID}/Ages/Count", hiw.Age.getByParentAgeIDCount);
     hiw.Endpoint.addSimple(hiw.Age, 0 /* GET */, "/Age/{ageID}/Ages/PageCount", hiw.Age.getByParentAgeIDPageCount);
     hiw.Endpoint.addSingle(hiw.Age, 0 /* GET */, "/Age/{ageID}/ParentAge", hiw.Age.getParentAgeForAge);
-    hiw.Endpoint.addArray(hiw.AgeRelation, 0 /* GET */, "/AgeRelations/{page}", hiw.AgeRelation.getAll);
+    hiw.Endpoint.addArray(hiw.AgeRelation, 0 /* GET */, "/AgeRelations/{page}?PageSize={pageSize}", hiw.AgeRelation.getAll);
     hiw.Endpoint.addSimple(hiw.AgeRelation, 0 /* GET */, "/AgeRelations/Count", hiw.AgeRelation.getAllCount);
     hiw.Endpoint.addSimple(hiw.AgeRelation, 0 /* GET */, "/AgeRelations/PageCount", hiw.AgeRelation.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.AgeRelation, 0 /* GET */, "/AgeRelation/{id}", hiw.AgeRelation.getByID);
     hiw.Endpoint.addArray(hiw.AgeRelation, 1 /* POST */, "AgeRelations/Filter", hiw.AgeRelation.filter);
     hiw.Endpoint.addSimple(hiw.AgeRelation, 1 /* POST */, "AgeRelations/FilterCount", hiw.AgeRelation.filterCount);
     hiw.Endpoint.addSimple(hiw.AgeRelation, 1 /* POST */, "AgeRelations/FilterPageCount", hiw.AgeRelation.filterPageCount);
-    hiw.Endpoint.addArray(hiw.AgeRelation, 0 /* GET */, "/Age/{ageID}/Ancestors/{page}", hiw.AgeRelation.getByAncestorAgeID);
+    hiw.Endpoint.addArray(hiw.AgeRelation, 0 /* GET */, "/Age/{ageID}/Ancestors/{page}?PageSize={pageSize}", hiw.AgeRelation.getByAncestorAgeID);
     hiw.Endpoint.addSimple(hiw.AgeRelation, 0 /* GET */, "/Age/{ageID}/Ancestors/Count", hiw.AgeRelation.getByAncestorAgeIDCount);
     hiw.Endpoint.addSimple(hiw.AgeRelation, 0 /* GET */, "/Age/{ageID}/Ancestors/PageCount", hiw.AgeRelation.getByAncestorAgeIDPageCount);
     hiw.Endpoint.addSingle(hiw.Age, 0 /* GET */, "/AgeRelation/{ageRelationID}/AncestorAge", hiw.AgeRelation.getAncestorAgeForAgeRelation);
-    hiw.Endpoint.addArray(hiw.AgeRelation, 0 /* GET */, "/Age/{ageID}/Descendants/{page}", hiw.AgeRelation.getByDescendantAgeID);
+    hiw.Endpoint.addArray(hiw.AgeRelation, 0 /* GET */, "/Age/{ageID}/Descendants/{page}?PageSize={pageSize}", hiw.AgeRelation.getByDescendantAgeID);
     hiw.Endpoint.addSimple(hiw.AgeRelation, 0 /* GET */, "/Age/{ageID}/Descendants/Count", hiw.AgeRelation.getByDescendantAgeIDCount);
     hiw.Endpoint.addSimple(hiw.AgeRelation, 0 /* GET */, "/Age/{ageID}/Descendants/PageCount", hiw.AgeRelation.getByDescendantAgeIDPageCount);
     hiw.Endpoint.addSingle(hiw.Age, 0 /* GET */, "/AgeRelation/{ageRelationID}/DescendantAge", hiw.AgeRelation.getDescendantAgeForAgeRelation);
-    hiw.Endpoint.addArray(hiw.CharacteristicOfSchoolOrStudent, 0 /* GET */, "/CharacteristicOfSchoolOrStudents/{page}", hiw.CharacteristicOfSchoolOrStudent.getAll);
+    hiw.Endpoint.addArray(hiw.CharacteristicOfSchoolOrStudent, 0 /* GET */, "/CharacteristicOfSchoolOrStudents/{page}?PageSize={pageSize}", hiw.CharacteristicOfSchoolOrStudent.getAll);
     hiw.Endpoint.addSimple(hiw.CharacteristicOfSchoolOrStudent, 0 /* GET */, "/CharacteristicOfSchoolOrStudents/Count", hiw.CharacteristicOfSchoolOrStudent.getAllCount);
     hiw.Endpoint.addSimple(hiw.CharacteristicOfSchoolOrStudent, 0 /* GET */, "/CharacteristicOfSchoolOrStudents/PageCount", hiw.CharacteristicOfSchoolOrStudent.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.CharacteristicOfSchoolOrStudent, 0 /* GET */, "/CharacteristicOfSchoolOrStudent/{id}", hiw.CharacteristicOfSchoolOrStudent.getByID);
     hiw.Endpoint.addArray(hiw.CharacteristicOfSchoolOrStudent, 1 /* POST */, "CharacteristicOfSchoolOrStudents/Filter", hiw.CharacteristicOfSchoolOrStudent.filter);
     hiw.Endpoint.addSimple(hiw.CharacteristicOfSchoolOrStudent, 1 /* POST */, "CharacteristicOfSchoolOrStudents/FilterCount", hiw.CharacteristicOfSchoolOrStudent.filterCount);
     hiw.Endpoint.addSimple(hiw.CharacteristicOfSchoolOrStudent, 1 /* POST */, "CharacteristicOfSchoolOrStudents/FilterPageCount", hiw.CharacteristicOfSchoolOrStudent.filterPageCount);
-    hiw.Endpoint.addArray(hiw.CharacteristicOfSchoolOrStudent, 0 /* GET */, "/CharacteristicOfSchoolOrStudent/{characteristicOfSchoolOrStudentID}/CharacteristicOfSchoolOrStudents/{page}", hiw.CharacteristicOfSchoolOrStudent.getByParentCharacteristicOfSchoolOrStudentID);
+    hiw.Endpoint.addArray(hiw.CharacteristicOfSchoolOrStudent, 0 /* GET */, "/CharacteristicOfSchoolOrStudent/{characteristicOfSchoolOrStudentID}/CharacteristicOfSchoolOrStudents/{page}?PageSize={pageSize}", hiw.CharacteristicOfSchoolOrStudent.getByParentCharacteristicOfSchoolOrStudentID);
     hiw.Endpoint.addSimple(hiw.CharacteristicOfSchoolOrStudent, 0 /* GET */, "/CharacteristicOfSchoolOrStudent/{characteristicOfSchoolOrStudentID}/CharacteristicOfSchoolOrStudents/Count", hiw.CharacteristicOfSchoolOrStudent.getByParentCharacteristicOfSchoolOrStudentIDCount);
     hiw.Endpoint.addSimple(hiw.CharacteristicOfSchoolOrStudent, 0 /* GET */, "/CharacteristicOfSchoolOrStudent/{characteristicOfSchoolOrStudentID}/CharacteristicOfSchoolOrStudents/PageCount", hiw.CharacteristicOfSchoolOrStudent.getByParentCharacteristicOfSchoolOrStudentIDPageCount);
     hiw.Endpoint.addSingle(hiw.CharacteristicOfSchoolOrStudent, 0 /* GET */, "/CharacteristicOfSchoolOrStudent/{characteristicOfSchoolOrStudentID}/ParentCharacteristicOfSchoolOrStudent", hiw.CharacteristicOfSchoolOrStudent.getParentCharacteristicOfSchoolOrStudentForCharacteristicOfSchoolOrStudent);
-    hiw.Endpoint.addArray(hiw.CharacteristicOfSchoolOrStudentRelation, 0 /* GET */, "/CharacteristicOfSchoolOrStudentRelations/{page}", hiw.CharacteristicOfSchoolOrStudentRelation.getAll);
+    hiw.Endpoint.addArray(hiw.CharacteristicOfSchoolOrStudentRelation, 0 /* GET */, "/CharacteristicOfSchoolOrStudentRelations/{page}?PageSize={pageSize}", hiw.CharacteristicOfSchoolOrStudentRelation.getAll);
     hiw.Endpoint.addSimple(hiw.CharacteristicOfSchoolOrStudentRelation, 0 /* GET */, "/CharacteristicOfSchoolOrStudentRelations/Count", hiw.CharacteristicOfSchoolOrStudentRelation.getAllCount);
     hiw.Endpoint.addSimple(hiw.CharacteristicOfSchoolOrStudentRelation, 0 /* GET */, "/CharacteristicOfSchoolOrStudentRelations/PageCount", hiw.CharacteristicOfSchoolOrStudentRelation.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.CharacteristicOfSchoolOrStudentRelation, 0 /* GET */, "/CharacteristicOfSchoolOrStudentRelation/{id}", hiw.CharacteristicOfSchoolOrStudentRelation.getByID);
     hiw.Endpoint.addArray(hiw.CharacteristicOfSchoolOrStudentRelation, 1 /* POST */, "CharacteristicOfSchoolOrStudentRelations/Filter", hiw.CharacteristicOfSchoolOrStudentRelation.filter);
     hiw.Endpoint.addSimple(hiw.CharacteristicOfSchoolOrStudentRelation, 1 /* POST */, "CharacteristicOfSchoolOrStudentRelations/FilterCount", hiw.CharacteristicOfSchoolOrStudentRelation.filterCount);
     hiw.Endpoint.addSimple(hiw.CharacteristicOfSchoolOrStudentRelation, 1 /* POST */, "CharacteristicOfSchoolOrStudentRelations/FilterPageCount", hiw.CharacteristicOfSchoolOrStudentRelation.filterPageCount);
-    hiw.Endpoint.addArray(hiw.CharacteristicOfSchoolOrStudentRelation, 0 /* GET */, "/CharacteristicOfSchoolOrStudent/{characteristicOfSchoolOrStudentID}/Ancestors/{page}", hiw.CharacteristicOfSchoolOrStudentRelation.getByAncestorCharacteristicOfSchoolOrStudentID);
+    hiw.Endpoint.addArray(hiw.CharacteristicOfSchoolOrStudentRelation, 0 /* GET */, "/CharacteristicOfSchoolOrStudent/{characteristicOfSchoolOrStudentID}/Ancestors/{page}?PageSize={pageSize}", hiw.CharacteristicOfSchoolOrStudentRelation.getByAncestorCharacteristicOfSchoolOrStudentID);
     hiw.Endpoint.addSimple(hiw.CharacteristicOfSchoolOrStudentRelation, 0 /* GET */, "/CharacteristicOfSchoolOrStudent/{characteristicOfSchoolOrStudentID}/Ancestors/Count", hiw.CharacteristicOfSchoolOrStudentRelation.getByAncestorCharacteristicOfSchoolOrStudentIDCount);
     hiw.Endpoint.addSimple(hiw.CharacteristicOfSchoolOrStudentRelation, 0 /* GET */, "/CharacteristicOfSchoolOrStudent/{characteristicOfSchoolOrStudentID}/Ancestors/PageCount", hiw.CharacteristicOfSchoolOrStudentRelation.getByAncestorCharacteristicOfSchoolOrStudentIDPageCount);
     hiw.Endpoint.addSingle(hiw.CharacteristicOfSchoolOrStudent, 0 /* GET */, "/CharacteristicOfSchoolOrStudentRelation/{characteristicOfSchoolOrStudentRelationID}/AncestorCharacteristicOfSchoolOrStudent", hiw.CharacteristicOfSchoolOrStudentRelation.getAncestorCharacteristicOfSchoolOrStudentForCharacteristicOfSchoolOrStudentRelation);
-    hiw.Endpoint.addArray(hiw.CharacteristicOfSchoolOrStudentRelation, 0 /* GET */, "/CharacteristicOfSchoolOrStudent/{characteristicOfSchoolOrStudentID}/Descendants/{page}", hiw.CharacteristicOfSchoolOrStudentRelation.getByDescendantCharacteristicOfSchoolOrStudentID);
+    hiw.Endpoint.addArray(hiw.CharacteristicOfSchoolOrStudentRelation, 0 /* GET */, "/CharacteristicOfSchoolOrStudent/{characteristicOfSchoolOrStudentID}/Descendants/{page}?PageSize={pageSize}", hiw.CharacteristicOfSchoolOrStudentRelation.getByDescendantCharacteristicOfSchoolOrStudentID);
     hiw.Endpoint.addSimple(hiw.CharacteristicOfSchoolOrStudentRelation, 0 /* GET */, "/CharacteristicOfSchoolOrStudent/{characteristicOfSchoolOrStudentID}/Descendants/Count", hiw.CharacteristicOfSchoolOrStudentRelation.getByDescendantCharacteristicOfSchoolOrStudentIDCount);
     hiw.Endpoint.addSimple(hiw.CharacteristicOfSchoolOrStudentRelation, 0 /* GET */, "/CharacteristicOfSchoolOrStudent/{characteristicOfSchoolOrStudentID}/Descendants/PageCount", hiw.CharacteristicOfSchoolOrStudentRelation.getByDescendantCharacteristicOfSchoolOrStudentIDPageCount);
     hiw.Endpoint.addSingle(hiw.CharacteristicOfSchoolOrStudent, 0 /* GET */, "/CharacteristicOfSchoolOrStudentRelation/{characteristicOfSchoolOrStudentRelationID}/DescendantCharacteristicOfSchoolOrStudent", hiw.CharacteristicOfSchoolOrStudentRelation.getDescendantCharacteristicOfSchoolOrStudentForCharacteristicOfSchoolOrStudentRelation);
-    hiw.Endpoint.addArray(hiw.CountryOfBirth, 0 /* GET */, "/CountryOfBirths/{page}", hiw.CountryOfBirth.getAll);
+    hiw.Endpoint.addArray(hiw.CountryOfBirth, 0 /* GET */, "/CountryOfBirths/{page}?PageSize={pageSize}", hiw.CountryOfBirth.getAll);
     hiw.Endpoint.addSimple(hiw.CountryOfBirth, 0 /* GET */, "/CountryOfBirths/Count", hiw.CountryOfBirth.getAllCount);
     hiw.Endpoint.addSimple(hiw.CountryOfBirth, 0 /* GET */, "/CountryOfBirths/PageCount", hiw.CountryOfBirth.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.CountryOfBirth, 0 /* GET */, "/CountryOfBirth/{id}", hiw.CountryOfBirth.getByID);
     hiw.Endpoint.addArray(hiw.CountryOfBirth, 1 /* POST */, "CountryOfBirths/Filter", hiw.CountryOfBirth.filter);
     hiw.Endpoint.addSimple(hiw.CountryOfBirth, 1 /* POST */, "CountryOfBirths/FilterCount", hiw.CountryOfBirth.filterCount);
     hiw.Endpoint.addSimple(hiw.CountryOfBirth, 1 /* POST */, "CountryOfBirths/FilterPageCount", hiw.CountryOfBirth.filterPageCount);
-    hiw.Endpoint.addArray(hiw.CountryOfBirth, 0 /* GET */, "/CountryOfBirth/{countryOfBirthID}/CountryOfBirths/{page}", hiw.CountryOfBirth.getByParentCountryOfBirthID);
+    hiw.Endpoint.addArray(hiw.CountryOfBirth, 0 /* GET */, "/CountryOfBirth/{countryOfBirthID}/CountryOfBirths/{page}?PageSize={pageSize}", hiw.CountryOfBirth.getByParentCountryOfBirthID);
     hiw.Endpoint.addSimple(hiw.CountryOfBirth, 0 /* GET */, "/CountryOfBirth/{countryOfBirthID}/CountryOfBirths/Count", hiw.CountryOfBirth.getByParentCountryOfBirthIDCount);
     hiw.Endpoint.addSimple(hiw.CountryOfBirth, 0 /* GET */, "/CountryOfBirth/{countryOfBirthID}/CountryOfBirths/PageCount", hiw.CountryOfBirth.getByParentCountryOfBirthIDPageCount);
     hiw.Endpoint.addSingle(hiw.CountryOfBirth, 0 /* GET */, "/CountryOfBirth/{countryOfBirthID}/ParentCountryOfBirth", hiw.CountryOfBirth.getParentCountryOfBirthForCountryOfBirth);
-    hiw.Endpoint.addArray(hiw.CountryOfBirthRelation, 0 /* GET */, "/CountryOfBirthRelations/{page}", hiw.CountryOfBirthRelation.getAll);
+    hiw.Endpoint.addArray(hiw.CountryOfBirthRelation, 0 /* GET */, "/CountryOfBirthRelations/{page}?PageSize={pageSize}", hiw.CountryOfBirthRelation.getAll);
     hiw.Endpoint.addSimple(hiw.CountryOfBirthRelation, 0 /* GET */, "/CountryOfBirthRelations/Count", hiw.CountryOfBirthRelation.getAllCount);
     hiw.Endpoint.addSimple(hiw.CountryOfBirthRelation, 0 /* GET */, "/CountryOfBirthRelations/PageCount", hiw.CountryOfBirthRelation.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.CountryOfBirthRelation, 0 /* GET */, "/CountryOfBirthRelation/{id}", hiw.CountryOfBirthRelation.getByID);
     hiw.Endpoint.addArray(hiw.CountryOfBirthRelation, 1 /* POST */, "CountryOfBirthRelations/Filter", hiw.CountryOfBirthRelation.filter);
     hiw.Endpoint.addSimple(hiw.CountryOfBirthRelation, 1 /* POST */, "CountryOfBirthRelations/FilterCount", hiw.CountryOfBirthRelation.filterCount);
     hiw.Endpoint.addSimple(hiw.CountryOfBirthRelation, 1 /* POST */, "CountryOfBirthRelations/FilterPageCount", hiw.CountryOfBirthRelation.filterPageCount);
-    hiw.Endpoint.addArray(hiw.CountryOfBirthRelation, 0 /* GET */, "/CountryOfBirth/{countryOfBirthID}/Ancestors/{page}", hiw.CountryOfBirthRelation.getByAncestorCountryOfBirthID);
+    hiw.Endpoint.addArray(hiw.CountryOfBirthRelation, 0 /* GET */, "/CountryOfBirth/{countryOfBirthID}/Ancestors/{page}?PageSize={pageSize}", hiw.CountryOfBirthRelation.getByAncestorCountryOfBirthID);
     hiw.Endpoint.addSimple(hiw.CountryOfBirthRelation, 0 /* GET */, "/CountryOfBirth/{countryOfBirthID}/Ancestors/Count", hiw.CountryOfBirthRelation.getByAncestorCountryOfBirthIDCount);
     hiw.Endpoint.addSimple(hiw.CountryOfBirthRelation, 0 /* GET */, "/CountryOfBirth/{countryOfBirthID}/Ancestors/PageCount", hiw.CountryOfBirthRelation.getByAncestorCountryOfBirthIDPageCount);
     hiw.Endpoint.addSingle(hiw.CountryOfBirth, 0 /* GET */, "/CountryOfBirthRelation/{countryOfBirthRelationID}/AncestorCountryOfBirth", hiw.CountryOfBirthRelation.getAncestorCountryOfBirthForCountryOfBirthRelation);
-    hiw.Endpoint.addArray(hiw.CountryOfBirthRelation, 0 /* GET */, "/CountryOfBirth/{countryOfBirthID}/Descendants/{page}", hiw.CountryOfBirthRelation.getByDescendantCountryOfBirthID);
+    hiw.Endpoint.addArray(hiw.CountryOfBirthRelation, 0 /* GET */, "/CountryOfBirth/{countryOfBirthID}/Descendants/{page}?PageSize={pageSize}", hiw.CountryOfBirthRelation.getByDescendantCountryOfBirthID);
     hiw.Endpoint.addSimple(hiw.CountryOfBirthRelation, 0 /* GET */, "/CountryOfBirth/{countryOfBirthID}/Descendants/Count", hiw.CountryOfBirthRelation.getByDescendantCountryOfBirthIDCount);
     hiw.Endpoint.addSimple(hiw.CountryOfBirthRelation, 0 /* GET */, "/CountryOfBirth/{countryOfBirthID}/Descendants/PageCount", hiw.CountryOfBirthRelation.getByDescendantCountryOfBirthIDPageCount);
     hiw.Endpoint.addSingle(hiw.CountryOfBirth, 0 /* GET */, "/CountryOfBirthRelation/{countryOfBirthRelationID}/DescendantCountryOfBirth", hiw.CountryOfBirthRelation.getDescendantCountryOfBirthForCountryOfBirthRelation);
-    hiw.Endpoint.addArray(hiw.DataCategory, 0 /* GET */, "/DataCategories/{page}", hiw.DataCategory.getAll);
+    hiw.Endpoint.addArray(hiw.DataCategory, 0 /* GET */, "/DataCategories/{page}?PageSize={pageSize}", hiw.DataCategory.getAll);
     hiw.Endpoint.addSimple(hiw.DataCategory, 0 /* GET */, "/DataCategories/Count", hiw.DataCategory.getAllCount);
     hiw.Endpoint.addSimple(hiw.DataCategory, 0 /* GET */, "/DataCategories/PageCount", hiw.DataCategory.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.DataCategory, 0 /* GET */, "/DataCategory/{id}", hiw.DataCategory.getByID);
     hiw.Endpoint.addArray(hiw.DataCategory, 1 /* POST */, "DataCategories/Filter", hiw.DataCategory.filter);
     hiw.Endpoint.addSimple(hiw.DataCategory, 1 /* POST */, "DataCategories/FilterCount", hiw.DataCategory.filterCount);
     hiw.Endpoint.addSimple(hiw.DataCategory, 1 /* POST */, "DataCategories/FilterPageCount", hiw.DataCategory.filterPageCount);
-    hiw.Endpoint.addArray(hiw.DataCategory, 0 /* GET */, "/DataCategory/{dataCategoryID}/ParentDataCategories/{page}", hiw.DataCategory.getByParentDataCategoryID);
+    hiw.Endpoint.addArray(hiw.DataCategory, 0 /* GET */, "/DataCategory/{dataCategoryID}/ParentDataCategories/{page}?PageSize={pageSize}", hiw.DataCategory.getByParentDataCategoryID);
     hiw.Endpoint.addSimple(hiw.DataCategory, 0 /* GET */, "/DataCategory/{dataCategoryID}/ParentDataCategories/Count", hiw.DataCategory.getByParentDataCategoryIDCount);
     hiw.Endpoint.addSimple(hiw.DataCategory, 0 /* GET */, "/DataCategory/{dataCategoryID}/ParentDataCategories/PageCount", hiw.DataCategory.getByParentDataCategoryIDPageCount);
     hiw.Endpoint.addSingle(hiw.DataCategory, 0 /* GET */, "/DataCategory/{dataCategoryID}/ParentDataCategory", hiw.DataCategory.getParentDataCategoryForDataCategory);
-    hiw.Endpoint.addArray(hiw.DataCategory, 0 /* GET */, "/Initiative/{initiativeID}/DataCategories/{page}", hiw.DataCategory.getByInitiativeID);
+    hiw.Endpoint.addArray(hiw.DataCategory, 0 /* GET */, "/Initiative/{initiativeID}/DataCategories/{page}?PageSize={pageSize}", hiw.DataCategory.getByInitiativeID);
     hiw.Endpoint.addSimple(hiw.DataCategory, 0 /* GET */, "/Initiative/{initiativeID}/DataCategories/Count", hiw.DataCategory.getByInitiativeIDCount);
     hiw.Endpoint.addSimple(hiw.DataCategory, 0 /* GET */, "/Initiative/{initiativeID}/DataCategories/PageCount", hiw.DataCategory.getByInitiativeIDPageCount);
     hiw.Endpoint.addSingle(hiw.Initiative, 0 /* GET */, "/DataCategory/{dataCategoryID}/Initiative", hiw.DataCategory.getInitiativeForDataCategory);
-    hiw.Endpoint.addArray(hiw.DataCategoryRelation, 0 /* GET */, "/DataCategoryRelations/{page}", hiw.DataCategoryRelation.getAll);
+    hiw.Endpoint.addArray(hiw.DataCategoryRelation, 0 /* GET */, "/DataCategoryRelations/{page}?PageSize={pageSize}", hiw.DataCategoryRelation.getAll);
     hiw.Endpoint.addSimple(hiw.DataCategoryRelation, 0 /* GET */, "/DataCategoryRelations/Count", hiw.DataCategoryRelation.getAllCount);
     hiw.Endpoint.addSimple(hiw.DataCategoryRelation, 0 /* GET */, "/DataCategoryRelations/PageCount", hiw.DataCategoryRelation.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.DataCategoryRelation, 0 /* GET */, "/DataCategoryRelation/{id}", hiw.DataCategoryRelation.getByID);
     hiw.Endpoint.addArray(hiw.DataCategoryRelation, 1 /* POST */, "DataCategoryRelations/Filter", hiw.DataCategoryRelation.filter);
     hiw.Endpoint.addSimple(hiw.DataCategoryRelation, 1 /* POST */, "DataCategoryRelations/FilterCount", hiw.DataCategoryRelation.filterCount);
     hiw.Endpoint.addSimple(hiw.DataCategoryRelation, 1 /* POST */, "DataCategoryRelations/FilterPageCount", hiw.DataCategoryRelation.filterPageCount);
-    hiw.Endpoint.addArray(hiw.DataCategoryRelation, 0 /* GET */, "/DataCategory/{dataCategoryID}/Ancestors/{page}", hiw.DataCategoryRelation.getByAncestorDataCategoryID);
+    hiw.Endpoint.addArray(hiw.DataCategoryRelation, 0 /* GET */, "/DataCategory/{dataCategoryID}/Ancestors/{page}?PageSize={pageSize}", hiw.DataCategoryRelation.getByAncestorDataCategoryID);
     hiw.Endpoint.addSimple(hiw.DataCategoryRelation, 0 /* GET */, "/DataCategory/{dataCategoryID}/Ancestors/Count", hiw.DataCategoryRelation.getByAncestorDataCategoryIDCount);
     hiw.Endpoint.addSimple(hiw.DataCategoryRelation, 0 /* GET */, "/DataCategory/{dataCategoryID}/Ancestors/PageCount", hiw.DataCategoryRelation.getByAncestorDataCategoryIDPageCount);
     hiw.Endpoint.addSingle(hiw.DataCategory, 0 /* GET */, "/DataCategoryRelation/{dataCategoryRelationID}/AncestorDataCategory", hiw.DataCategoryRelation.getAncestorDataCategoryForDataCategoryRelation);
-    hiw.Endpoint.addArray(hiw.DataCategoryRelation, 0 /* GET */, "/DataCategory/{dataCategoryID}/Descendants/{page}", hiw.DataCategoryRelation.getByDescendantDataCategoryID);
+    hiw.Endpoint.addArray(hiw.DataCategoryRelation, 0 /* GET */, "/DataCategory/{dataCategoryID}/Descendants/{page}?PageSize={pageSize}", hiw.DataCategoryRelation.getByDescendantDataCategoryID);
     hiw.Endpoint.addSimple(hiw.DataCategoryRelation, 0 /* GET */, "/DataCategory/{dataCategoryID}/Descendants/Count", hiw.DataCategoryRelation.getByDescendantDataCategoryIDCount);
     hiw.Endpoint.addSimple(hiw.DataCategoryRelation, 0 /* GET */, "/DataCategory/{dataCategoryID}/Descendants/PageCount", hiw.DataCategoryRelation.getByDescendantDataCategoryIDPageCount);
     hiw.Endpoint.addSingle(hiw.DataCategory, 0 /* GET */, "/DataCategoryRelation/{dataCategoryRelationID}/DescendantDataCategory", hiw.DataCategoryRelation.getDescendantDataCategoryForDataCategoryRelation);
-    hiw.Endpoint.addArray(hiw.DataSourceDataSupplier, 0 /* GET */, "/DataSourceDataSuppliers/{page}", hiw.DataSourceDataSupplier.getAll);
+    hiw.Endpoint.addArray(hiw.DataSourceDataSupplier, 0 /* GET */, "/DataSourceDataSuppliers/{page}?PageSize={pageSize}", hiw.DataSourceDataSupplier.getAll);
     hiw.Endpoint.addSimple(hiw.DataSourceDataSupplier, 0 /* GET */, "/DataSourceDataSuppliers/Count", hiw.DataSourceDataSupplier.getAllCount);
     hiw.Endpoint.addSimple(hiw.DataSourceDataSupplier, 0 /* GET */, "/DataSourceDataSuppliers/PageCount", hiw.DataSourceDataSupplier.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.DataSourceDataSupplier, 0 /* GET */, "/DataSourceDataSupplier/{id}", hiw.DataSourceDataSupplier.getByID);
     hiw.Endpoint.addArray(hiw.DataSourceDataSupplier, 1 /* POST */, "DataSourceDataSuppliers/Filter", hiw.DataSourceDataSupplier.filter);
     hiw.Endpoint.addSimple(hiw.DataSourceDataSupplier, 1 /* POST */, "DataSourceDataSuppliers/FilterCount", hiw.DataSourceDataSupplier.filterCount);
     hiw.Endpoint.addSimple(hiw.DataSourceDataSupplier, 1 /* POST */, "DataSourceDataSuppliers/FilterPageCount", hiw.DataSourceDataSupplier.filterPageCount);
-    hiw.Endpoint.addArray(hiw.DataSourceDataSupplier, 0 /* GET */, "/DataSource/{dataSourceID}/DataSourceDataSuppliers/{page}", hiw.DataSourceDataSupplier.getByDataSourceID);
+    hiw.Endpoint.addArray(hiw.DataSourceDataSupplier, 0 /* GET */, "/DataSource/{dataSourceID}/DataSourceDataSuppliers/{page}?PageSize={pageSize}", hiw.DataSourceDataSupplier.getByDataSourceID);
     hiw.Endpoint.addSimple(hiw.DataSourceDataSupplier, 0 /* GET */, "/DataSource/{dataSourceID}/DataSourceDataSuppliers/Count", hiw.DataSourceDataSupplier.getByDataSourceIDCount);
     hiw.Endpoint.addSimple(hiw.DataSourceDataSupplier, 0 /* GET */, "/DataSource/{dataSourceID}/DataSourceDataSuppliers/PageCount", hiw.DataSourceDataSupplier.getByDataSourceIDPageCount);
     hiw.Endpoint.addSingle(hiw.DataSource, 0 /* GET */, "/DataSourceDataSupplier/{dataSourceDataSupplierID}/DataSource", hiw.DataSourceDataSupplier.getDataSourceForDataSourceDataSupplier);
-    hiw.Endpoint.addArray(hiw.DataSourceDataSupplier, 0 /* GET */, "/DataSupplier/{dataSupplierID}/DataSourceDataSuppliers/{page}", hiw.DataSourceDataSupplier.getByDataSupplierID);
+    hiw.Endpoint.addArray(hiw.DataSourceDataSupplier, 0 /* GET */, "/DataSupplier/{dataSupplierID}/DataSourceDataSuppliers/{page}?PageSize={pageSize}", hiw.DataSourceDataSupplier.getByDataSupplierID);
     hiw.Endpoint.addSimple(hiw.DataSourceDataSupplier, 0 /* GET */, "/DataSupplier/{dataSupplierID}/DataSourceDataSuppliers/Count", hiw.DataSourceDataSupplier.getByDataSupplierIDCount);
     hiw.Endpoint.addSimple(hiw.DataSourceDataSupplier, 0 /* GET */, "/DataSupplier/{dataSupplierID}/DataSourceDataSuppliers/PageCount", hiw.DataSourceDataSupplier.getByDataSupplierIDPageCount);
     hiw.Endpoint.addSingle(hiw.DataSupplier, 0 /* GET */, "/DataSourceDataSupplier/{dataSourceDataSupplierID}/DataSupplier", hiw.DataSourceDataSupplier.getDataSupplierForDataSourceDataSupplier);
-    hiw.Endpoint.addArray(hiw.DataSource, 0 /* GET */, "/DataSources/{page}", hiw.DataSource.getAll);
+    hiw.Endpoint.addArray(hiw.DataSource, 0 /* GET */, "/DataSources/{page}?PageSize={pageSize}", hiw.DataSource.getAll);
     hiw.Endpoint.addSimple(hiw.DataSource, 0 /* GET */, "/DataSources/Count", hiw.DataSource.getAllCount);
     hiw.Endpoint.addSimple(hiw.DataSource, 0 /* GET */, "/DataSources/PageCount", hiw.DataSource.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.DataSource, 0 /* GET */, "/DataSource/{id}", hiw.DataSource.getByID);
     hiw.Endpoint.addArray(hiw.DataSource, 1 /* POST */, "DataSources/Filter", hiw.DataSource.filter);
     hiw.Endpoint.addSimple(hiw.DataSource, 1 /* POST */, "DataSources/FilterCount", hiw.DataSource.filterCount);
     hiw.Endpoint.addSimple(hiw.DataSource, 1 /* POST */, "DataSources/FilterPageCount", hiw.DataSource.filterPageCount);
-    hiw.Endpoint.addArray(hiw.DataSourceURL, 0 /* GET */, "/DataSourceURLs/{page}", hiw.DataSourceURL.getAll);
+    hiw.Endpoint.addArray(hiw.DataSourceURL, 0 /* GET */, "/DataSourceURLs/{page}?PageSize={pageSize}", hiw.DataSourceURL.getAll);
     hiw.Endpoint.addSimple(hiw.DataSourceURL, 0 /* GET */, "/DataSourceURLs/Count", hiw.DataSourceURL.getAllCount);
     hiw.Endpoint.addSimple(hiw.DataSourceURL, 0 /* GET */, "/DataSourceURLs/PageCount", hiw.DataSourceURL.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.DataSourceURL, 0 /* GET */, "/DataSourceURL/{id}", hiw.DataSourceURL.getByID);
     hiw.Endpoint.addArray(hiw.DataSourceURL, 1 /* POST */, "DataSourceURLs/Filter", hiw.DataSourceURL.filter);
     hiw.Endpoint.addSimple(hiw.DataSourceURL, 1 /* POST */, "DataSourceURLs/FilterCount", hiw.DataSourceURL.filterCount);
     hiw.Endpoint.addSimple(hiw.DataSourceURL, 1 /* POST */, "DataSourceURLs/FilterPageCount", hiw.DataSourceURL.filterPageCount);
-    hiw.Endpoint.addArray(hiw.DataSourceURL, 0 /* GET */, "/DataSource/{dataSourceID}/DataSourceURLs/{page}", hiw.DataSourceURL.getByDataSourceID);
+    hiw.Endpoint.addArray(hiw.DataSourceURL, 0 /* GET */, "/DataSource/{dataSourceID}/DataSourceURLs/{page}?PageSize={pageSize}", hiw.DataSourceURL.getByDataSourceID);
     hiw.Endpoint.addSimple(hiw.DataSourceURL, 0 /* GET */, "/DataSource/{dataSourceID}/DataSourceURLs/Count", hiw.DataSourceURL.getByDataSourceIDCount);
     hiw.Endpoint.addSimple(hiw.DataSourceURL, 0 /* GET */, "/DataSource/{dataSourceID}/DataSourceURLs/PageCount", hiw.DataSourceURL.getByDataSourceIDPageCount);
     hiw.Endpoint.addSingle(hiw.DataSource, 0 /* GET */, "/DataSourceURL/{dataSourceURLID}/DataSource", hiw.DataSourceURL.getDataSourceForDataSourceURL);
-    hiw.Endpoint.addArray(hiw.DataSourceURL, 0 /* GET */, "/Url/{urlID}/DataSourceURLs/{page}", hiw.DataSourceURL.getByUrlID);
+    hiw.Endpoint.addArray(hiw.DataSourceURL, 0 /* GET */, "/Url/{urlID}/DataSourceURLs/{page}?PageSize={pageSize}", hiw.DataSourceURL.getByUrlID);
     hiw.Endpoint.addSimple(hiw.DataSourceURL, 0 /* GET */, "/Url/{urlID}/DataSourceURLs/Count", hiw.DataSourceURL.getByUrlIDCount);
     hiw.Endpoint.addSimple(hiw.DataSourceURL, 0 /* GET */, "/Url/{urlID}/DataSourceURLs/PageCount", hiw.DataSourceURL.getByUrlIDPageCount);
     hiw.Endpoint.addSingle(hiw.Url, 0 /* GET */, "/DataSourceURL/{dataSourceURLID}/Url", hiw.DataSourceURL.getUrlForDataSourceURL);
-    hiw.Endpoint.addArray(hiw.DataSupplier, 0 /* GET */, "/DataSuppliers/{page}", hiw.DataSupplier.getAll);
+    hiw.Endpoint.addArray(hiw.DataSupplier, 0 /* GET */, "/DataSuppliers/{page}?PageSize={pageSize}", hiw.DataSupplier.getAll);
     hiw.Endpoint.addSimple(hiw.DataSupplier, 0 /* GET */, "/DataSuppliers/Count", hiw.DataSupplier.getAllCount);
     hiw.Endpoint.addSimple(hiw.DataSupplier, 0 /* GET */, "/DataSuppliers/PageCount", hiw.DataSupplier.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.DataSupplier, 0 /* GET */, "/DataSupplier/{id}", hiw.DataSupplier.getByID);
     hiw.Endpoint.addArray(hiw.DataSupplier, 1 /* POST */, "DataSuppliers/Filter", hiw.DataSupplier.filter);
     hiw.Endpoint.addSimple(hiw.DataSupplier, 1 /* POST */, "DataSuppliers/FilterCount", hiw.DataSupplier.filterCount);
     hiw.Endpoint.addSimple(hiw.DataSupplier, 1 /* POST */, "DataSuppliers/FilterPageCount", hiw.DataSupplier.filterPageCount);
-    hiw.Endpoint.addArray(hiw.DataSupplier, 0 /* GET */, "/Url/{urlID}/DataSuppliers/{page}", hiw.DataSupplier.getByUrlID);
+    hiw.Endpoint.addArray(hiw.DataSupplier, 0 /* GET */, "/Url/{urlID}/DataSuppliers/{page}?PageSize={pageSize}", hiw.DataSupplier.getByUrlID);
     hiw.Endpoint.addSimple(hiw.DataSupplier, 0 /* GET */, "/Url/{urlID}/DataSuppliers/Count", hiw.DataSupplier.getByUrlIDCount);
     hiw.Endpoint.addSimple(hiw.DataSupplier, 0 /* GET */, "/Url/{urlID}/DataSuppliers/PageCount", hiw.DataSupplier.getByUrlIDPageCount);
     hiw.Endpoint.addSingle(hiw.Url, 0 /* GET */, "/DataSupplier/{dataSupplierID}/Url", hiw.DataSupplier.getUrlForDataSupplier);
-    hiw.Endpoint.addArray(hiw.DimensionBook, 0 /* GET */, "/DimensionBooks/{page}", hiw.DimensionBook.getAll);
+    hiw.Endpoint.addArray(hiw.DimensionBook, 0 /* GET */, "/DimensionBooks/{page}?PageSize={pageSize}", hiw.DimensionBook.getAll);
     hiw.Endpoint.addSimple(hiw.DimensionBook, 0 /* GET */, "/DimensionBooks/Count", hiw.DimensionBook.getAllCount);
     hiw.Endpoint.addSimple(hiw.DimensionBook, 0 /* GET */, "/DimensionBooks/PageCount", hiw.DimensionBook.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.DimensionBook, 0 /* GET */, "/DimensionBook/{id}", hiw.DimensionBook.getByID);
     hiw.Endpoint.addArray(hiw.DimensionBook, 1 /* POST */, "DimensionBooks/Filter", hiw.DimensionBook.filter);
     hiw.Endpoint.addSimple(hiw.DimensionBook, 1 /* POST */, "DimensionBooks/FilterCount", hiw.DimensionBook.filterCount);
     hiw.Endpoint.addSimple(hiw.DimensionBook, 1 /* POST */, "DimensionBooks/FilterPageCount", hiw.DimensionBook.filterPageCount);
-    hiw.Endpoint.addArray(hiw.DimensionBook, 0 /* GET */, "/DimensionBook/{dimensionBookID}/DimensionBooks/{page}", hiw.DimensionBook.getByParentDimensionBookID);
+    hiw.Endpoint.addArray(hiw.DimensionBook, 0 /* GET */, "/DimensionBook/{dimensionBookID}/DimensionBooks/{page}?PageSize={pageSize}", hiw.DimensionBook.getByParentDimensionBookID);
     hiw.Endpoint.addSimple(hiw.DimensionBook, 0 /* GET */, "/DimensionBook/{dimensionBookID}/DimensionBooks/Count", hiw.DimensionBook.getByParentDimensionBookIDCount);
     hiw.Endpoint.addSimple(hiw.DimensionBook, 0 /* GET */, "/DimensionBook/{dimensionBookID}/DimensionBooks/PageCount", hiw.DimensionBook.getByParentDimensionBookIDPageCount);
     hiw.Endpoint.addSingle(hiw.DimensionBook, 0 /* GET */, "/DimensionBook/{dimensionBookID}/ParentDimensionBook", hiw.DimensionBook.getParentDimensionBookForDimensionBook);
-    hiw.Endpoint.addArray(hiw.DimensionBook, 0 /* GET */, "/DimensionList/{dimensionListID}/DimensionBooks/{page}", hiw.DimensionBook.getByDimensionListID);
+    hiw.Endpoint.addArray(hiw.DimensionBook, 0 /* GET */, "/DimensionList/{dimensionListID}/DimensionBooks/{page}?PageSize={pageSize}", hiw.DimensionBook.getByDimensionListID);
     hiw.Endpoint.addSimple(hiw.DimensionBook, 0 /* GET */, "/DimensionList/{dimensionListID}/DimensionBooks/Count", hiw.DimensionBook.getByDimensionListIDCount);
     hiw.Endpoint.addSimple(hiw.DimensionBook, 0 /* GET */, "/DimensionList/{dimensionListID}/DimensionBooks/PageCount", hiw.DimensionBook.getByDimensionListIDPageCount);
     hiw.Endpoint.addSingle(hiw.DimensionList, 0 /* GET */, "/DimensionBook/{dimensionBookID}/DimensionList", hiw.DimensionBook.getDimensionListForDimensionBook);
     hiw.Endpoint.addSingle(hiw.DimensionBook, 0 /* GET */, "/DimensionBook?Key={key}", hiw.DimensionBook.getByKey);
-    hiw.Endpoint.addArray(hiw.DimensionBookRelation, 0 /* GET */, "/DimensionBookRelations/{page}", hiw.DimensionBookRelation.getAll);
+    hiw.Endpoint.addArray(hiw.DimensionBookRelation, 0 /* GET */, "/DimensionBookRelations/{page}?PageSize={pageSize}", hiw.DimensionBookRelation.getAll);
     hiw.Endpoint.addSimple(hiw.DimensionBookRelation, 0 /* GET */, "/DimensionBookRelations/Count", hiw.DimensionBookRelation.getAllCount);
     hiw.Endpoint.addSimple(hiw.DimensionBookRelation, 0 /* GET */, "/DimensionBookRelations/PageCount", hiw.DimensionBookRelation.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.DimensionBookRelation, 0 /* GET */, "/DimensionBookRelation/{id}", hiw.DimensionBookRelation.getByID);
     hiw.Endpoint.addArray(hiw.DimensionBookRelation, 1 /* POST */, "DimensionBookRelations/Filter", hiw.DimensionBookRelation.filter);
     hiw.Endpoint.addSimple(hiw.DimensionBookRelation, 1 /* POST */, "DimensionBookRelations/FilterCount", hiw.DimensionBookRelation.filterCount);
     hiw.Endpoint.addSimple(hiw.DimensionBookRelation, 1 /* POST */, "DimensionBookRelations/FilterPageCount", hiw.DimensionBookRelation.filterPageCount);
-    hiw.Endpoint.addArray(hiw.DimensionBookRelation, 0 /* GET */, "/DimensionBook/{dimensionBookID}/Ancestors/{page}", hiw.DimensionBookRelation.getByAncestorDimensionBookID);
+    hiw.Endpoint.addArray(hiw.DimensionBookRelation, 0 /* GET */, "/DimensionBook/{dimensionBookID}/Ancestors/{page}?PageSize={pageSize}", hiw.DimensionBookRelation.getByAncestorDimensionBookID);
     hiw.Endpoint.addSimple(hiw.DimensionBookRelation, 0 /* GET */, "/DimensionBook/{dimensionBookID}/Ancestors/Count", hiw.DimensionBookRelation.getByAncestorDimensionBookIDCount);
     hiw.Endpoint.addSimple(hiw.DimensionBookRelation, 0 /* GET */, "/DimensionBook/{dimensionBookID}/Ancestors/PageCount", hiw.DimensionBookRelation.getByAncestorDimensionBookIDPageCount);
     hiw.Endpoint.addSingle(hiw.DimensionBook, 0 /* GET */, "/DimensionBookRelation/{dimensionBookRelationID}/AncestorDimensionBook", hiw.DimensionBookRelation.getAncestorDimensionBookForDimensionBookRelation);
-    hiw.Endpoint.addArray(hiw.DimensionBookRelation, 0 /* GET */, "/DimensionBook/{dimensionBookID}/Descendants/{page}", hiw.DimensionBookRelation.getByDescendantDimensionBookID);
+    hiw.Endpoint.addArray(hiw.DimensionBookRelation, 0 /* GET */, "/DimensionBook/{dimensionBookID}/Descendants/{page}?PageSize={pageSize}", hiw.DimensionBookRelation.getByDescendantDimensionBookID);
     hiw.Endpoint.addSimple(hiw.DimensionBookRelation, 0 /* GET */, "/DimensionBook/{dimensionBookID}/Descendants/Count", hiw.DimensionBookRelation.getByDescendantDimensionBookIDCount);
     hiw.Endpoint.addSimple(hiw.DimensionBookRelation, 0 /* GET */, "/DimensionBook/{dimensionBookID}/Descendants/PageCount", hiw.DimensionBookRelation.getByDescendantDimensionBookIDPageCount);
     hiw.Endpoint.addSingle(hiw.DimensionBook, 0 /* GET */, "/DimensionBookRelation/{dimensionBookRelationID}/DescendantDimensionBook", hiw.DimensionBookRelation.getDescendantDimensionBookForDimensionBookRelation);
-    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/DimensionGraphs/{page}", hiw.DimensionGraph.getAll);
+    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/DimensionGraphs/{page}?PageSize={pageSize}", hiw.DimensionGraph.getAll);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/DimensionGraphs/Count", hiw.DimensionGraph.getAllCount);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/DimensionGraphs/PageCount", hiw.DimensionGraph.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.DimensionGraph, 0 /* GET */, "/DimensionGraph/{id}", hiw.DimensionGraph.getByID);
     hiw.Endpoint.addArray(hiw.DimensionGraph, 1 /* POST */, "DimensionGraphs/Filter", hiw.DimensionGraph.filter);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 1 /* POST */, "DimensionGraphs/FilterCount", hiw.DimensionGraph.filterCount);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 1 /* POST */, "DimensionGraphs/FilterPageCount", hiw.DimensionGraph.filterPageCount);
-    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/Total/{totalID}/DimensionGraphs/{page}", hiw.DimensionGraph.getByTotalID);
+    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/Total/{totalID}/DimensionGraphs/{page}?PageSize={pageSize}", hiw.DimensionGraph.getByTotalID);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/Total/{totalID}/DimensionGraphs/Count", hiw.DimensionGraph.getByTotalIDCount);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/Total/{totalID}/DimensionGraphs/PageCount", hiw.DimensionGraph.getByTotalIDPageCount);
     hiw.Endpoint.addSingle(hiw.Total, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/Total", hiw.DimensionGraph.getTotalForDimensionGraph);
-    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/Age/{ageID}/DimensionGraphs/{page}", hiw.DimensionGraph.getByAgeID);
+    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/Age/{ageID}/DimensionGraphs/{page}?PageSize={pageSize}", hiw.DimensionGraph.getByAgeID);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/Age/{ageID}/DimensionGraphs/Count", hiw.DimensionGraph.getByAgeIDCount);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/Age/{ageID}/DimensionGraphs/PageCount", hiw.DimensionGraph.getByAgeIDPageCount);
     hiw.Endpoint.addSingle(hiw.Age, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/Age", hiw.DimensionGraph.getAgeForDimensionGraph);
-    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/Sex/{sexID}/DimensionGraphs/{page}", hiw.DimensionGraph.getBySexID);
+    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/Sex/{sexID}/DimensionGraphs/{page}?PageSize={pageSize}", hiw.DimensionGraph.getBySexID);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/Sex/{sexID}/DimensionGraphs/Count", hiw.DimensionGraph.getBySexIDCount);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/Sex/{sexID}/DimensionGraphs/PageCount", hiw.DimensionGraph.getBySexIDPageCount);
     hiw.Endpoint.addSingle(hiw.Sex, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/Sex", hiw.DimensionGraph.getSexForDimensionGraph);
-    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/RaceEthnicity/{raceEthnicityID}/DimensionGraphs/{page}", hiw.DimensionGraph.getByRaceEthnicityID);
+    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/RaceEthnicity/{raceEthnicityID}/DimensionGraphs/{page}?PageSize={pageSize}", hiw.DimensionGraph.getByRaceEthnicityID);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/RaceEthnicity/{raceEthnicityID}/DimensionGraphs/Count", hiw.DimensionGraph.getByRaceEthnicityIDCount);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/RaceEthnicity/{raceEthnicityID}/DimensionGraphs/PageCount", hiw.DimensionGraph.getByRaceEthnicityIDPageCount);
     hiw.Endpoint.addSingle(hiw.RaceEthnicity, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/RaceEthnicity", hiw.DimensionGraph.getRaceEthnicityForDimensionGraph);
-    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/IncomeAndPovertyStatus/{incomeAndPovertyStatusID}/DimensionGraphs/{page}", hiw.DimensionGraph.getByIncomeAndPovertyStatusID);
+    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/IncomeAndPovertyStatus/{incomeAndPovertyStatusID}/DimensionGraphs/{page}?PageSize={pageSize}", hiw.DimensionGraph.getByIncomeAndPovertyStatusID);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/IncomeAndPovertyStatus/{incomeAndPovertyStatusID}/DimensionGraphs/Count", hiw.DimensionGraph.getByIncomeAndPovertyStatusIDCount);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/IncomeAndPovertyStatus/{incomeAndPovertyStatusID}/DimensionGraphs/PageCount", hiw.DimensionGraph.getByIncomeAndPovertyStatusIDPageCount);
     hiw.Endpoint.addSingle(hiw.IncomeAndPovertyStatus, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/IncomeAndPovertyStatus", hiw.DimensionGraph.getIncomeAndPovertyStatusForDimensionGraph);
-    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/EducationalAttainment/{educationalAttainmentID}/DimensionGraphs/{page}", hiw.DimensionGraph.getByEducationalAttainmentID);
+    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/EducationalAttainment/{educationalAttainmentID}/DimensionGraphs/{page}?PageSize={pageSize}", hiw.DimensionGraph.getByEducationalAttainmentID);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/EducationalAttainment/{educationalAttainmentID}/DimensionGraphs/Count", hiw.DimensionGraph.getByEducationalAttainmentIDCount);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/EducationalAttainment/{educationalAttainmentID}/DimensionGraphs/PageCount", hiw.DimensionGraph.getByEducationalAttainmentIDPageCount);
     hiw.Endpoint.addSingle(hiw.EducationalAttainment, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/EducationalAttainment", hiw.DimensionGraph.getEducationalAttainmentForDimensionGraph);
-    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/HealthInsuranceStatus/{healthInsuranceStatusID}/DimensionGraphs/{page}", hiw.DimensionGraph.getByHealthInsuranceStatusID);
+    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/HealthInsuranceStatus/{healthInsuranceStatusID}/DimensionGraphs/{page}?PageSize={pageSize}", hiw.DimensionGraph.getByHealthInsuranceStatusID);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/HealthInsuranceStatus/{healthInsuranceStatusID}/DimensionGraphs/Count", hiw.DimensionGraph.getByHealthInsuranceStatusIDCount);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/HealthInsuranceStatus/{healthInsuranceStatusID}/DimensionGraphs/PageCount", hiw.DimensionGraph.getByHealthInsuranceStatusIDPageCount);
     hiw.Endpoint.addSingle(hiw.HealthInsuranceStatus, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/HealthInsuranceStatus", hiw.DimensionGraph.getHealthInsuranceStatusForDimensionGraph);
-    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/SexualOrientation/{sexualOrientationID}/DimensionGraphs/{page}", hiw.DimensionGraph.getBySexualOrientationID);
+    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/SexualOrientation/{sexualOrientationID}/DimensionGraphs/{page}?PageSize={pageSize}", hiw.DimensionGraph.getBySexualOrientationID);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/SexualOrientation/{sexualOrientationID}/DimensionGraphs/Count", hiw.DimensionGraph.getBySexualOrientationIDCount);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/SexualOrientation/{sexualOrientationID}/DimensionGraphs/PageCount", hiw.DimensionGraph.getBySexualOrientationIDPageCount);
     hiw.Endpoint.addSingle(hiw.SexualOrientation, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/SexualOrientation", hiw.DimensionGraph.getSexualOrientationForDimensionGraph);
-    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/FamilyType/{familyTypeID}/DimensionGraphs/{page}", hiw.DimensionGraph.getByFamilyTypeID);
+    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/FamilyType/{familyTypeID}/DimensionGraphs/{page}?PageSize={pageSize}", hiw.DimensionGraph.getByFamilyTypeID);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/FamilyType/{familyTypeID}/DimensionGraphs/Count", hiw.DimensionGraph.getByFamilyTypeIDCount);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/FamilyType/{familyTypeID}/DimensionGraphs/PageCount", hiw.DimensionGraph.getByFamilyTypeIDPageCount);
     hiw.Endpoint.addSingle(hiw.FamilyType, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/FamilyType", hiw.DimensionGraph.getFamilyTypeForDimensionGraph);
-    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/MaritalStatus/{maritalStatusID}/DimensionGraphs/{page}", hiw.DimensionGraph.getByMaritalStatusID);
+    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/MaritalStatus/{maritalStatusID}/DimensionGraphs/{page}?PageSize={pageSize}", hiw.DimensionGraph.getByMaritalStatusID);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/MaritalStatus/{maritalStatusID}/DimensionGraphs/Count", hiw.DimensionGraph.getByMaritalStatusIDCount);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/MaritalStatus/{maritalStatusID}/DimensionGraphs/PageCount", hiw.DimensionGraph.getByMaritalStatusIDPageCount);
     hiw.Endpoint.addSingle(hiw.MaritalStatus, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/MaritalStatus", hiw.DimensionGraph.getMaritalStatusForDimensionGraph);
-    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/VeteranStatus/{veteranStatusID}/DimensionGraphs/{page}", hiw.DimensionGraph.getByVeteranStatusID);
+    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/VeteranStatus/{veteranStatusID}/DimensionGraphs/{page}?PageSize={pageSize}", hiw.DimensionGraph.getByVeteranStatusID);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/VeteranStatus/{veteranStatusID}/DimensionGraphs/Count", hiw.DimensionGraph.getByVeteranStatusIDCount);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/VeteranStatus/{veteranStatusID}/DimensionGraphs/PageCount", hiw.DimensionGraph.getByVeteranStatusIDPageCount);
     hiw.Endpoint.addSingle(hiw.VeteranStatus, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/VeteranStatus", hiw.DimensionGraph.getVeteranStatusForDimensionGraph);
-    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/CountryOfBirth/{countryOfBirthID}/DimensionGraphs/{page}", hiw.DimensionGraph.getByCountryOfBirthID);
+    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/CountryOfBirth/{countryOfBirthID}/DimensionGraphs/{page}?PageSize={pageSize}", hiw.DimensionGraph.getByCountryOfBirthID);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/CountryOfBirth/{countryOfBirthID}/DimensionGraphs/Count", hiw.DimensionGraph.getByCountryOfBirthIDCount);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/CountryOfBirth/{countryOfBirthID}/DimensionGraphs/PageCount", hiw.DimensionGraph.getByCountryOfBirthIDPageCount);
     hiw.Endpoint.addSingle(hiw.CountryOfBirth, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/CountryOfBirth", hiw.DimensionGraph.getCountryOfBirthForDimensionGraph);
-    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/DisabilityStatus/{disabilityStatusID}/DimensionGraphs/{page}", hiw.DimensionGraph.getByDisabilityStatusID);
+    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/DisabilityStatus/{disabilityStatusID}/DimensionGraphs/{page}?PageSize={pageSize}", hiw.DimensionGraph.getByDisabilityStatusID);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/DisabilityStatus/{disabilityStatusID}/DimensionGraphs/Count", hiw.DimensionGraph.getByDisabilityStatusIDCount);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/DisabilityStatus/{disabilityStatusID}/DimensionGraphs/PageCount", hiw.DimensionGraph.getByDisabilityStatusIDPageCount);
     hiw.Endpoint.addSingle(hiw.DisabilityStatus, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/DisabilityStatus", hiw.DimensionGraph.getDisabilityStatusForDimensionGraph);
-    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/ObesityStatus/{obesityStatusID}/DimensionGraphs/{page}", hiw.DimensionGraph.getByObesityStatusID);
+    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/ObesityStatus/{obesityStatusID}/DimensionGraphs/{page}?PageSize={pageSize}", hiw.DimensionGraph.getByObesityStatusID);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/ObesityStatus/{obesityStatusID}/DimensionGraphs/Count", hiw.DimensionGraph.getByObesityStatusIDCount);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/ObesityStatus/{obesityStatusID}/DimensionGraphs/PageCount", hiw.DimensionGraph.getByObesityStatusIDPageCount);
     hiw.Endpoint.addSingle(hiw.ObesityStatus, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/ObesityStatus", hiw.DimensionGraph.getObesityStatusForDimensionGraph);
-    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/CharacteristicOfSchoolOrStudent/{characteristicOfSchoolOrStudentID}/DimensionGraphs/{page}", hiw.DimensionGraph.getByCharacteristicOfSchoolOrStudentID);
+    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/CharacteristicOfSchoolOrStudent/{characteristicOfSchoolOrStudentID}/DimensionGraphs/{page}?PageSize={pageSize}", hiw.DimensionGraph.getByCharacteristicOfSchoolOrStudentID);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/CharacteristicOfSchoolOrStudent/{characteristicOfSchoolOrStudentID}/DimensionGraphs/Count", hiw.DimensionGraph.getByCharacteristicOfSchoolOrStudentIDCount);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/CharacteristicOfSchoolOrStudent/{characteristicOfSchoolOrStudentID}/DimensionGraphs/PageCount", hiw.DimensionGraph.getByCharacteristicOfSchoolOrStudentIDPageCount);
     hiw.Endpoint.addSingle(hiw.CharacteristicOfSchoolOrStudent, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/CharacteristicOfSchoolOrStudent", hiw.DimensionGraph.getCharacteristicOfSchoolOrStudentForDimensionGraph);
-    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/Other/{otherID}/DimensionGraphs/{page}", hiw.DimensionGraph.getByOtherID);
+    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/Other/{otherID}/DimensionGraphs/{page}?PageSize={pageSize}", hiw.DimensionGraph.getByOtherID);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/Other/{otherID}/DimensionGraphs/Count", hiw.DimensionGraph.getByOtherIDCount);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/Other/{otherID}/DimensionGraphs/PageCount", hiw.DimensionGraph.getByOtherIDPageCount);
     hiw.Endpoint.addSingle(hiw.Other, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/Other", hiw.DimensionGraph.getOtherForDimensionGraph);
-    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/Geography/{geographyID}/DimensionGraphs/{page}", hiw.DimensionGraph.getByGeographyID);
+    hiw.Endpoint.addArray(hiw.DimensionGraph, 0 /* GET */, "/Geography/{geographyID}/DimensionGraphs/{page}?PageSize={pageSize}", hiw.DimensionGraph.getByGeographyID);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/Geography/{geographyID}/DimensionGraphs/Count", hiw.DimensionGraph.getByGeographyIDCount);
     hiw.Endpoint.addSimple(hiw.DimensionGraph, 0 /* GET */, "/Geography/{geographyID}/DimensionGraphs/PageCount", hiw.DimensionGraph.getByGeographyIDPageCount);
     hiw.Endpoint.addSingle(hiw.Geography, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/Geography", hiw.DimensionGraph.getGeographyForDimensionGraph);
-    hiw.Endpoint.addArray(hiw.DimensionList, 0 /* GET */, "/DimensionLists/{page}", hiw.DimensionList.getAll);
+    hiw.Endpoint.addArray(hiw.DimensionList, 0 /* GET */, "/DimensionLists/{page}?PageSize={pageSize}", hiw.DimensionList.getAll);
     hiw.Endpoint.addSimple(hiw.DimensionList, 0 /* GET */, "/DimensionLists/Count", hiw.DimensionList.getAllCount);
     hiw.Endpoint.addSimple(hiw.DimensionList, 0 /* GET */, "/DimensionLists/PageCount", hiw.DimensionList.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.DimensionList, 0 /* GET */, "/DimensionList/{id}", hiw.DimensionList.getByID);
     hiw.Endpoint.addArray(hiw.DimensionList, 1 /* POST */, "DimensionLists/Filter", hiw.DimensionList.filter);
     hiw.Endpoint.addSimple(hiw.DimensionList, 1 /* POST */, "DimensionLists/FilterCount", hiw.DimensionList.filterCount);
     hiw.Endpoint.addSimple(hiw.DimensionList, 1 /* POST */, "DimensionLists/FilterPageCount", hiw.DimensionList.filterPageCount);
-    hiw.Endpoint.addArray(hiw.DisabilityStatus, 0 /* GET */, "/DisabilityStatuses/{page}", hiw.DisabilityStatus.getAll);
+    hiw.Endpoint.addArray(hiw.DisabilityStatus, 0 /* GET */, "/DisabilityStatuses/{page}?PageSize={pageSize}", hiw.DisabilityStatus.getAll);
     hiw.Endpoint.addSimple(hiw.DisabilityStatus, 0 /* GET */, "/DisabilityStatuses/Count", hiw.DisabilityStatus.getAllCount);
     hiw.Endpoint.addSimple(hiw.DisabilityStatus, 0 /* GET */, "/DisabilityStatuses/PageCount", hiw.DisabilityStatus.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.DisabilityStatus, 0 /* GET */, "/DisabilityStatus/{id}", hiw.DisabilityStatus.getByID);
     hiw.Endpoint.addArray(hiw.DisabilityStatus, 1 /* POST */, "DisabilityStatuses/Filter", hiw.DisabilityStatus.filter);
     hiw.Endpoint.addSimple(hiw.DisabilityStatus, 1 /* POST */, "DisabilityStatuses/FilterCount", hiw.DisabilityStatus.filterCount);
     hiw.Endpoint.addSimple(hiw.DisabilityStatus, 1 /* POST */, "DisabilityStatuses/FilterPageCount", hiw.DisabilityStatus.filterPageCount);
-    hiw.Endpoint.addArray(hiw.DisabilityStatus, 0 /* GET */, "/DisabilityStatus/{disabilityStatusID}/DisabilityStatuses/{page}", hiw.DisabilityStatus.getByParentDisabilityStatusID);
+    hiw.Endpoint.addArray(hiw.DisabilityStatus, 0 /* GET */, "/DisabilityStatus/{disabilityStatusID}/DisabilityStatuses/{page}?PageSize={pageSize}", hiw.DisabilityStatus.getByParentDisabilityStatusID);
     hiw.Endpoint.addSimple(hiw.DisabilityStatus, 0 /* GET */, "/DisabilityStatus/{disabilityStatusID}/DisabilityStatuses/Count", hiw.DisabilityStatus.getByParentDisabilityStatusIDCount);
     hiw.Endpoint.addSimple(hiw.DisabilityStatus, 0 /* GET */, "/DisabilityStatus/{disabilityStatusID}/DisabilityStatuses/PageCount", hiw.DisabilityStatus.getByParentDisabilityStatusIDPageCount);
     hiw.Endpoint.addSingle(hiw.DisabilityStatus, 0 /* GET */, "/DisabilityStatus/{disabilityStatusID}/ParentDisabilityStatus", hiw.DisabilityStatus.getParentDisabilityStatusForDisabilityStatus);
-    hiw.Endpoint.addArray(hiw.DisabilityStatusRelation, 0 /* GET */, "/DisabilityStatusRelations/{page}", hiw.DisabilityStatusRelation.getAll);
+    hiw.Endpoint.addArray(hiw.DisabilityStatusRelation, 0 /* GET */, "/DisabilityStatusRelations/{page}?PageSize={pageSize}", hiw.DisabilityStatusRelation.getAll);
     hiw.Endpoint.addSimple(hiw.DisabilityStatusRelation, 0 /* GET */, "/DisabilityStatusRelations/Count", hiw.DisabilityStatusRelation.getAllCount);
     hiw.Endpoint.addSimple(hiw.DisabilityStatusRelation, 0 /* GET */, "/DisabilityStatusRelations/PageCount", hiw.DisabilityStatusRelation.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.DisabilityStatusRelation, 0 /* GET */, "/DisabilityStatusRelation/{id}", hiw.DisabilityStatusRelation.getByID);
     hiw.Endpoint.addArray(hiw.DisabilityStatusRelation, 1 /* POST */, "DisabilityStatusRelations/Filter", hiw.DisabilityStatusRelation.filter);
     hiw.Endpoint.addSimple(hiw.DisabilityStatusRelation, 1 /* POST */, "DisabilityStatusRelations/FilterCount", hiw.DisabilityStatusRelation.filterCount);
     hiw.Endpoint.addSimple(hiw.DisabilityStatusRelation, 1 /* POST */, "DisabilityStatusRelations/FilterPageCount", hiw.DisabilityStatusRelation.filterPageCount);
-    hiw.Endpoint.addArray(hiw.DisabilityStatusRelation, 0 /* GET */, "/DisabilityStatus/{disabilityStatusID}/Ancestors/{page}", hiw.DisabilityStatusRelation.getByAncestorDisabilityStatusID);
+    hiw.Endpoint.addArray(hiw.DisabilityStatusRelation, 0 /* GET */, "/DisabilityStatus/{disabilityStatusID}/Ancestors/{page}?PageSize={pageSize}", hiw.DisabilityStatusRelation.getByAncestorDisabilityStatusID);
     hiw.Endpoint.addSimple(hiw.DisabilityStatusRelation, 0 /* GET */, "/DisabilityStatus/{disabilityStatusID}/Ancestors/Count", hiw.DisabilityStatusRelation.getByAncestorDisabilityStatusIDCount);
     hiw.Endpoint.addSimple(hiw.DisabilityStatusRelation, 0 /* GET */, "/DisabilityStatus/{disabilityStatusID}/Ancestors/PageCount", hiw.DisabilityStatusRelation.getByAncestorDisabilityStatusIDPageCount);
     hiw.Endpoint.addSingle(hiw.DisabilityStatus, 0 /* GET */, "/DisabilityStatusRelation/{disabilityStatusRelationID}/AncestorDisabilityStatus", hiw.DisabilityStatusRelation.getAncestorDisabilityStatusForDisabilityStatusRelation);
-    hiw.Endpoint.addArray(hiw.DisabilityStatusRelation, 0 /* GET */, "/DisabilityStatus/{disabilityStatusID}/Descendants/{page}", hiw.DisabilityStatusRelation.getByDescendantDisabilityStatusID);
+    hiw.Endpoint.addArray(hiw.DisabilityStatusRelation, 0 /* GET */, "/DisabilityStatus/{disabilityStatusID}/Descendants/{page}?PageSize={pageSize}", hiw.DisabilityStatusRelation.getByDescendantDisabilityStatusID);
     hiw.Endpoint.addSimple(hiw.DisabilityStatusRelation, 0 /* GET */, "/DisabilityStatus/{disabilityStatusID}/Descendants/Count", hiw.DisabilityStatusRelation.getByDescendantDisabilityStatusIDCount);
     hiw.Endpoint.addSimple(hiw.DisabilityStatusRelation, 0 /* GET */, "/DisabilityStatus/{disabilityStatusID}/Descendants/PageCount", hiw.DisabilityStatusRelation.getByDescendantDisabilityStatusIDPageCount);
     hiw.Endpoint.addSingle(hiw.DisabilityStatus, 0 /* GET */, "/DisabilityStatusRelation/{disabilityStatusRelationID}/DescendantDisabilityStatus", hiw.DisabilityStatusRelation.getDescendantDisabilityStatusForDisabilityStatusRelation);
-    hiw.Endpoint.addArray(hiw.EducationalAttainment, 0 /* GET */, "/EducationalAttainments/{page}", hiw.EducationalAttainment.getAll);
+    hiw.Endpoint.addArray(hiw.EducationalAttainment, 0 /* GET */, "/EducationalAttainments/{page}?PageSize={pageSize}", hiw.EducationalAttainment.getAll);
     hiw.Endpoint.addSimple(hiw.EducationalAttainment, 0 /* GET */, "/EducationalAttainments/Count", hiw.EducationalAttainment.getAllCount);
     hiw.Endpoint.addSimple(hiw.EducationalAttainment, 0 /* GET */, "/EducationalAttainments/PageCount", hiw.EducationalAttainment.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.EducationalAttainment, 0 /* GET */, "/EducationalAttainment/{id}", hiw.EducationalAttainment.getByID);
     hiw.Endpoint.addArray(hiw.EducationalAttainment, 1 /* POST */, "EducationalAttainments/Filter", hiw.EducationalAttainment.filter);
     hiw.Endpoint.addSimple(hiw.EducationalAttainment, 1 /* POST */, "EducationalAttainments/FilterCount", hiw.EducationalAttainment.filterCount);
     hiw.Endpoint.addSimple(hiw.EducationalAttainment, 1 /* POST */, "EducationalAttainments/FilterPageCount", hiw.EducationalAttainment.filterPageCount);
-    hiw.Endpoint.addArray(hiw.EducationalAttainment, 0 /* GET */, "/EducationalAttainment/{educationalAttainmentID}/EducationalAttainments/{page}", hiw.EducationalAttainment.getByParentEducationalAttainmentID);
+    hiw.Endpoint.addArray(hiw.EducationalAttainment, 0 /* GET */, "/EducationalAttainment/{educationalAttainmentID}/EducationalAttainments/{page}?PageSize={pageSize}", hiw.EducationalAttainment.getByParentEducationalAttainmentID);
     hiw.Endpoint.addSimple(hiw.EducationalAttainment, 0 /* GET */, "/EducationalAttainment/{educationalAttainmentID}/EducationalAttainments/Count", hiw.EducationalAttainment.getByParentEducationalAttainmentIDCount);
     hiw.Endpoint.addSimple(hiw.EducationalAttainment, 0 /* GET */, "/EducationalAttainment/{educationalAttainmentID}/EducationalAttainments/PageCount", hiw.EducationalAttainment.getByParentEducationalAttainmentIDPageCount);
     hiw.Endpoint.addSingle(hiw.EducationalAttainment, 0 /* GET */, "/EducationalAttainment/{educationalAttainmentID}/ParentEducationalAttainment", hiw.EducationalAttainment.getParentEducationalAttainmentForEducationalAttainment);
-    hiw.Endpoint.addArray(hiw.EducationalAttainmentRelation, 0 /* GET */, "/EducationalAttainmentRelations/{page}", hiw.EducationalAttainmentRelation.getAll);
+    hiw.Endpoint.addArray(hiw.EducationalAttainmentRelation, 0 /* GET */, "/EducationalAttainmentRelations/{page}?PageSize={pageSize}", hiw.EducationalAttainmentRelation.getAll);
     hiw.Endpoint.addSimple(hiw.EducationalAttainmentRelation, 0 /* GET */, "/EducationalAttainmentRelations/Count", hiw.EducationalAttainmentRelation.getAllCount);
     hiw.Endpoint.addSimple(hiw.EducationalAttainmentRelation, 0 /* GET */, "/EducationalAttainmentRelations/PageCount", hiw.EducationalAttainmentRelation.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.EducationalAttainmentRelation, 0 /* GET */, "/EducationalAttainmentRelation/{id}", hiw.EducationalAttainmentRelation.getByID);
     hiw.Endpoint.addArray(hiw.EducationalAttainmentRelation, 1 /* POST */, "EducationalAttainmentRelations/Filter", hiw.EducationalAttainmentRelation.filter);
     hiw.Endpoint.addSimple(hiw.EducationalAttainmentRelation, 1 /* POST */, "EducationalAttainmentRelations/FilterCount", hiw.EducationalAttainmentRelation.filterCount);
     hiw.Endpoint.addSimple(hiw.EducationalAttainmentRelation, 1 /* POST */, "EducationalAttainmentRelations/FilterPageCount", hiw.EducationalAttainmentRelation.filterPageCount);
-    hiw.Endpoint.addArray(hiw.EducationalAttainmentRelation, 0 /* GET */, "/EducationalAttainment/{educationalAttainmentID}/Ancestors/{page}", hiw.EducationalAttainmentRelation.getByAncestorEducationalAttainmentID);
+    hiw.Endpoint.addArray(hiw.EducationalAttainmentRelation, 0 /* GET */, "/EducationalAttainment/{educationalAttainmentID}/Ancestors/{page}?PageSize={pageSize}", hiw.EducationalAttainmentRelation.getByAncestorEducationalAttainmentID);
     hiw.Endpoint.addSimple(hiw.EducationalAttainmentRelation, 0 /* GET */, "/EducationalAttainment/{educationalAttainmentID}/Ancestors/Count", hiw.EducationalAttainmentRelation.getByAncestorEducationalAttainmentIDCount);
     hiw.Endpoint.addSimple(hiw.EducationalAttainmentRelation, 0 /* GET */, "/EducationalAttainment/{educationalAttainmentID}/Ancestors/PageCount", hiw.EducationalAttainmentRelation.getByAncestorEducationalAttainmentIDPageCount);
     hiw.Endpoint.addSingle(hiw.EducationalAttainment, 0 /* GET */, "/EducationalAttainmentRelation/{educationalAttainmentRelationID}/AncestorducationalAttainment", hiw.EducationalAttainmentRelation.getAncestorducationalAttainmentForEducationalAttainmentRelation);
-    hiw.Endpoint.addArray(hiw.EducationalAttainmentRelation, 0 /* GET */, "/EducationalAttainment/{educationalAttainmentID}/Descendants/{page}", hiw.EducationalAttainmentRelation.getByDescendantEducationalAttainmentID);
+    hiw.Endpoint.addArray(hiw.EducationalAttainmentRelation, 0 /* GET */, "/EducationalAttainment/{educationalAttainmentID}/Descendants/{page}?PageSize={pageSize}", hiw.EducationalAttainmentRelation.getByDescendantEducationalAttainmentID);
     hiw.Endpoint.addSimple(hiw.EducationalAttainmentRelation, 0 /* GET */, "/EducationalAttainment/{educationalAttainmentID}/Descendants/Count", hiw.EducationalAttainmentRelation.getByDescendantEducationalAttainmentIDCount);
     hiw.Endpoint.addSimple(hiw.EducationalAttainmentRelation, 0 /* GET */, "/EducationalAttainment/{educationalAttainmentID}/Descendants/PageCount", hiw.EducationalAttainmentRelation.getByDescendantEducationalAttainmentIDPageCount);
     hiw.Endpoint.addSingle(hiw.EducationalAttainment, 0 /* GET */, "/EducationalAttainmentRelation/{educationalAttainmentRelationID}/DescendantEducationalAttainment", hiw.EducationalAttainmentRelation.getDescendantEducationalAttainmentForEducationalAttainmentRelation);
-    hiw.Endpoint.addArray(hiw.FamilyType, 0 /* GET */, "/FamilyTypes/{page}", hiw.FamilyType.getAll);
+    hiw.Endpoint.addArray(hiw.FamilyType, 0 /* GET */, "/FamilyTypes/{page}?PageSize={pageSize}", hiw.FamilyType.getAll);
     hiw.Endpoint.addSimple(hiw.FamilyType, 0 /* GET */, "/FamilyTypes/Count", hiw.FamilyType.getAllCount);
     hiw.Endpoint.addSimple(hiw.FamilyType, 0 /* GET */, "/FamilyTypes/PageCount", hiw.FamilyType.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.FamilyType, 0 /* GET */, "/FamilyType/{id}", hiw.FamilyType.getByID);
     hiw.Endpoint.addArray(hiw.FamilyType, 1 /* POST */, "FamilyTypes/Filter", hiw.FamilyType.filter);
     hiw.Endpoint.addSimple(hiw.FamilyType, 1 /* POST */, "FamilyTypes/FilterCount", hiw.FamilyType.filterCount);
     hiw.Endpoint.addSimple(hiw.FamilyType, 1 /* POST */, "FamilyTypes/FilterPageCount", hiw.FamilyType.filterPageCount);
-    hiw.Endpoint.addArray(hiw.FamilyType, 0 /* GET */, "/FamilyType/{familyTypeID}/FamilyTypes/{page}", hiw.FamilyType.getByParentFamilyTypeID);
+    hiw.Endpoint.addArray(hiw.FamilyType, 0 /* GET */, "/FamilyType/{familyTypeID}/FamilyTypes/{page}?PageSize={pageSize}", hiw.FamilyType.getByParentFamilyTypeID);
     hiw.Endpoint.addSimple(hiw.FamilyType, 0 /* GET */, "/FamilyType/{familyTypeID}/FamilyTypes/Count", hiw.FamilyType.getByParentFamilyTypeIDCount);
     hiw.Endpoint.addSimple(hiw.FamilyType, 0 /* GET */, "/FamilyType/{familyTypeID}/FamilyTypes/PageCount", hiw.FamilyType.getByParentFamilyTypeIDPageCount);
     hiw.Endpoint.addSingle(hiw.FamilyType, 0 /* GET */, "/FamilyType/{familyTypeID}/ParentFamilyType", hiw.FamilyType.getParentFamilyTypeForFamilyType);
-    hiw.Endpoint.addArray(hiw.FamilyTypeRelation, 0 /* GET */, "/FamilyTypeRelations/{page}", hiw.FamilyTypeRelation.getAll);
+    hiw.Endpoint.addArray(hiw.FamilyTypeRelation, 0 /* GET */, "/FamilyTypeRelations/{page}?PageSize={pageSize}", hiw.FamilyTypeRelation.getAll);
     hiw.Endpoint.addSimple(hiw.FamilyTypeRelation, 0 /* GET */, "/FamilyTypeRelations/Count", hiw.FamilyTypeRelation.getAllCount);
     hiw.Endpoint.addSimple(hiw.FamilyTypeRelation, 0 /* GET */, "/FamilyTypeRelations/PageCount", hiw.FamilyTypeRelation.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.FamilyTypeRelation, 0 /* GET */, "/FamilyTypeRelation/{id}", hiw.FamilyTypeRelation.getByID);
     hiw.Endpoint.addArray(hiw.FamilyTypeRelation, 1 /* POST */, "FamilyTypeRelations/Filter", hiw.FamilyTypeRelation.filter);
     hiw.Endpoint.addSimple(hiw.FamilyTypeRelation, 1 /* POST */, "FamilyTypeRelations/FilterCount", hiw.FamilyTypeRelation.filterCount);
     hiw.Endpoint.addSimple(hiw.FamilyTypeRelation, 1 /* POST */, "FamilyTypeRelations/FilterPageCount", hiw.FamilyTypeRelation.filterPageCount);
-    hiw.Endpoint.addArray(hiw.FamilyTypeRelation, 0 /* GET */, "/FamilyType/{familyTypeID}/Ancestors/{page}", hiw.FamilyTypeRelation.getByAncestorFamilyTypeID);
+    hiw.Endpoint.addArray(hiw.FamilyTypeRelation, 0 /* GET */, "/FamilyType/{familyTypeID}/Ancestors/{page}?PageSize={pageSize}", hiw.FamilyTypeRelation.getByAncestorFamilyTypeID);
     hiw.Endpoint.addSimple(hiw.FamilyTypeRelation, 0 /* GET */, "/FamilyType/{familyTypeID}/Ancestors/Count", hiw.FamilyTypeRelation.getByAncestorFamilyTypeIDCount);
     hiw.Endpoint.addSimple(hiw.FamilyTypeRelation, 0 /* GET */, "/FamilyType/{familyTypeID}/Ancestors/PageCount", hiw.FamilyTypeRelation.getByAncestorFamilyTypeIDPageCount);
     hiw.Endpoint.addSingle(hiw.FamilyType, 0 /* GET */, "/FamilyTypeRelation/{familyTypeRelationID}/AncestorFamilyType", hiw.FamilyTypeRelation.getAncestorFamilyTypeForFamilyTypeRelation);
-    hiw.Endpoint.addArray(hiw.FamilyTypeRelation, 0 /* GET */, "/FamilyType/{familyTypeID}/Descendants/{page}", hiw.FamilyTypeRelation.getByDescendantFamilyTypeID);
+    hiw.Endpoint.addArray(hiw.FamilyTypeRelation, 0 /* GET */, "/FamilyType/{familyTypeID}/Descendants/{page}?PageSize={pageSize}", hiw.FamilyTypeRelation.getByDescendantFamilyTypeID);
     hiw.Endpoint.addSimple(hiw.FamilyTypeRelation, 0 /* GET */, "/FamilyType/{familyTypeID}/Descendants/Count", hiw.FamilyTypeRelation.getByDescendantFamilyTypeIDCount);
     hiw.Endpoint.addSimple(hiw.FamilyTypeRelation, 0 /* GET */, "/FamilyType/{familyTypeID}/Descendants/PageCount", hiw.FamilyTypeRelation.getByDescendantFamilyTypeIDPageCount);
     hiw.Endpoint.addSingle(hiw.FamilyType, 0 /* GET */, "/FamilyTypeRelation/{familyTypeRelationID}/DescendantFamilyType", hiw.FamilyTypeRelation.getDescendantFamilyTypeForFamilyTypeRelation);
-    hiw.Endpoint.addArray(hiw.Geography, 0 /* GET */, "/Geographies/{page}", hiw.Geography.getAll);
+    hiw.Endpoint.addArray(hiw.Geography, 0 /* GET */, "/Geographies/{page}?PageSize={pageSize}", hiw.Geography.getAll);
     hiw.Endpoint.addSimple(hiw.Geography, 0 /* GET */, "/Geographies/Count", hiw.Geography.getAllCount);
     hiw.Endpoint.addSimple(hiw.Geography, 0 /* GET */, "/Geographies/PageCount", hiw.Geography.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.Geography, 0 /* GET */, "/Geography/{id}", hiw.Geography.getByID);
     hiw.Endpoint.addArray(hiw.Geography, 1 /* POST */, "Geographies/Filter", hiw.Geography.filter);
     hiw.Endpoint.addSimple(hiw.Geography, 1 /* POST */, "Geographies/FilterCount", hiw.Geography.filterCount);
     hiw.Endpoint.addSimple(hiw.Geography, 1 /* POST */, "Geographies/FilterPageCount", hiw.Geography.filterPageCount);
-    hiw.Endpoint.addArray(hiw.Geography, 0 /* GET */, "/Geography/{geographyID}/Geographies/{page}", hiw.Geography.getByParentGeographyID);
+    hiw.Endpoint.addArray(hiw.Geography, 0 /* GET */, "/Geography/{geographyID}/Geographies/{page}?PageSize={pageSize}", hiw.Geography.getByParentGeographyID);
     hiw.Endpoint.addSimple(hiw.Geography, 0 /* GET */, "/Geography/{geographyID}/Geographies/Count", hiw.Geography.getByParentGeographyIDCount);
     hiw.Endpoint.addSimple(hiw.Geography, 0 /* GET */, "/Geography/{geographyID}/Geographies/PageCount", hiw.Geography.getByParentGeographyIDPageCount);
     hiw.Endpoint.addSingle(hiw.Geography, 0 /* GET */, "/Geography/{geographyID}/ParentGeography", hiw.Geography.getParentGeographyForGeography);
-    hiw.Endpoint.addArray(hiw.GeographyRelation, 0 /* GET */, "/GeographyRelations/{page}", hiw.GeographyRelation.getAll);
+    hiw.Endpoint.addArray(hiw.GeographyRelation, 0 /* GET */, "/GeographyRelations/{page}?PageSize={pageSize}", hiw.GeographyRelation.getAll);
     hiw.Endpoint.addSimple(hiw.GeographyRelation, 0 /* GET */, "/GeographyRelations/Count", hiw.GeographyRelation.getAllCount);
     hiw.Endpoint.addSimple(hiw.GeographyRelation, 0 /* GET */, "/GeographyRelations/PageCount", hiw.GeographyRelation.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.GeographyRelation, 0 /* GET */, "/GeographyRelation/{id}", hiw.GeographyRelation.getByID);
     hiw.Endpoint.addArray(hiw.GeographyRelation, 1 /* POST */, "GeographyRelations/Filter", hiw.GeographyRelation.filter);
     hiw.Endpoint.addSimple(hiw.GeographyRelation, 1 /* POST */, "GeographyRelations/FilterCount", hiw.GeographyRelation.filterCount);
     hiw.Endpoint.addSimple(hiw.GeographyRelation, 1 /* POST */, "GeographyRelations/FilterPageCount", hiw.GeographyRelation.filterPageCount);
-    hiw.Endpoint.addArray(hiw.GeographyRelation, 0 /* GET */, "/Geography/{geographyID}/Ancestors/{page}", hiw.GeographyRelation.getByAncestorGeographyID);
+    hiw.Endpoint.addArray(hiw.GeographyRelation, 0 /* GET */, "/Geography/{geographyID}/Ancestors/{page}?PageSize={pageSize}", hiw.GeographyRelation.getByAncestorGeographyID);
     hiw.Endpoint.addSimple(hiw.GeographyRelation, 0 /* GET */, "/Geography/{geographyID}/Ancestors/Count", hiw.GeographyRelation.getByAncestorGeographyIDCount);
     hiw.Endpoint.addSimple(hiw.GeographyRelation, 0 /* GET */, "/Geography/{geographyID}/Ancestors/PageCount", hiw.GeographyRelation.getByAncestorGeographyIDPageCount);
     hiw.Endpoint.addSingle(hiw.Geography, 0 /* GET */, "/GeographyRelation/{geographyRelationID}/AncestorGeography", hiw.GeographyRelation.getAncestorGeographyForGeographyRelation);
-    hiw.Endpoint.addArray(hiw.GeographyRelation, 0 /* GET */, "/Geography/{geographyID}/Descendants/{page}", hiw.GeographyRelation.getByDescendantGeographyID);
+    hiw.Endpoint.addArray(hiw.GeographyRelation, 0 /* GET */, "/Geography/{geographyID}/Descendants/{page}?PageSize={pageSize}", hiw.GeographyRelation.getByDescendantGeographyID);
     hiw.Endpoint.addSimple(hiw.GeographyRelation, 0 /* GET */, "/Geography/{geographyID}/Descendants/Count", hiw.GeographyRelation.getByDescendantGeographyIDCount);
     hiw.Endpoint.addSimple(hiw.GeographyRelation, 0 /* GET */, "/Geography/{geographyID}/Descendants/PageCount", hiw.GeographyRelation.getByDescendantGeographyIDPageCount);
     hiw.Endpoint.addSingle(hiw.Geography, 0 /* GET */, "/GeographyRelation/{geographyRelationID}/DescendantGeography", hiw.GeographyRelation.getDescendantGeographyForGeographyRelation);
-    hiw.Endpoint.addArray(hiw.GlossaryTerm, 0 /* GET */, "/GlossaryTerms/{page}", hiw.GlossaryTerm.getAll);
+    hiw.Endpoint.addArray(hiw.GlossaryTerm, 0 /* GET */, "/GlossaryTerms/{page}?PageSize={pageSize}", hiw.GlossaryTerm.getAll);
     hiw.Endpoint.addSimple(hiw.GlossaryTerm, 0 /* GET */, "/GlossaryTerms/Count", hiw.GlossaryTerm.getAllCount);
     hiw.Endpoint.addSimple(hiw.GlossaryTerm, 0 /* GET */, "/GlossaryTerms/PageCount", hiw.GlossaryTerm.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.GlossaryTerm, 0 /* GET */, "/GlossaryTerm/{id}", hiw.GlossaryTerm.getByID);
     hiw.Endpoint.addArray(hiw.GlossaryTerm, 1 /* POST */, "GlossaryTerms/Filter", hiw.GlossaryTerm.filter);
     hiw.Endpoint.addSimple(hiw.GlossaryTerm, 1 /* POST */, "GlossaryTerms/FilterCount", hiw.GlossaryTerm.filterCount);
     hiw.Endpoint.addSimple(hiw.GlossaryTerm, 1 /* POST */, "GlossaryTerms/FilterPageCount", hiw.GlossaryTerm.filterPageCount);
-    hiw.Endpoint.addArray(hiw.GlossaryTerm, 0 /* GET */, "/Url/{urlID}/SourceUrl1GlossaryTerms/{page}", hiw.GlossaryTerm.getBySourceUrl1ID);
+    hiw.Endpoint.addArray(hiw.GlossaryTerm, 0 /* GET */, "/Url/{urlID}/SourceUrl1GlossaryTerms/{page}?PageSize={pageSize}", hiw.GlossaryTerm.getBySourceUrl1ID);
     hiw.Endpoint.addSimple(hiw.GlossaryTerm, 0 /* GET */, "/Url/{urlID}/SourceUrl1GlossaryTerms/Count", hiw.GlossaryTerm.getBySourceUrl1IDCount);
     hiw.Endpoint.addSimple(hiw.GlossaryTerm, 0 /* GET */, "/Url/{urlID}/SourceUrl1GlossaryTerms/PageCount", hiw.GlossaryTerm.getBySourceUrl1IDPageCount);
     hiw.Endpoint.addSingle(hiw.Url, 0 /* GET */, "/GlossaryTerm/{glossaryTermID}/SourceUrl1", hiw.GlossaryTerm.getSourceUrl1ForGlossaryTerm);
-    hiw.Endpoint.addArray(hiw.GlossaryTerm, 0 /* GET */, "/Url/{urlID}/SourceUrl2GlossaryTerms/{page}", hiw.GlossaryTerm.getBySourceUrl2ID);
+    hiw.Endpoint.addArray(hiw.GlossaryTerm, 0 /* GET */, "/Url/{urlID}/SourceUrl2GlossaryTerms/{page}?PageSize={pageSize}", hiw.GlossaryTerm.getBySourceUrl2ID);
     hiw.Endpoint.addSimple(hiw.GlossaryTerm, 0 /* GET */, "/Url/{urlID}/SourceUrl2GlossaryTerms/Count", hiw.GlossaryTerm.getBySourceUrl2IDCount);
     hiw.Endpoint.addSimple(hiw.GlossaryTerm, 0 /* GET */, "/Url/{urlID}/SourceUrl2GlossaryTerms/PageCount", hiw.GlossaryTerm.getBySourceUrl2IDPageCount);
     hiw.Endpoint.addSingle(hiw.Url, 0 /* GET */, "/GlossaryTerm/{glossaryTermID}/SourceUrl2", hiw.GlossaryTerm.getSourceUrl2ForGlossaryTerm);
-    hiw.Endpoint.addArray(hiw.HealthInsuranceStatus, 0 /* GET */, "/HealthInsuranceStatuses/{page}", hiw.HealthInsuranceStatus.getAll);
+    hiw.Endpoint.addArray(hiw.HealthInsuranceStatus, 0 /* GET */, "/HealthInsuranceStatuses/{page}?PageSize={pageSize}", hiw.HealthInsuranceStatus.getAll);
     hiw.Endpoint.addSimple(hiw.HealthInsuranceStatus, 0 /* GET */, "/HealthInsuranceStatuses/Count", hiw.HealthInsuranceStatus.getAllCount);
     hiw.Endpoint.addSimple(hiw.HealthInsuranceStatus, 0 /* GET */, "/HealthInsuranceStatuses/PageCount", hiw.HealthInsuranceStatus.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.HealthInsuranceStatus, 0 /* GET */, "/HealthInsuranceStatus/{id}", hiw.HealthInsuranceStatus.getByID);
     hiw.Endpoint.addArray(hiw.HealthInsuranceStatus, 1 /* POST */, "HealthInsuranceStatuses/Filter", hiw.HealthInsuranceStatus.filter);
     hiw.Endpoint.addSimple(hiw.HealthInsuranceStatus, 1 /* POST */, "HealthInsuranceStatuses/FilterCount", hiw.HealthInsuranceStatus.filterCount);
     hiw.Endpoint.addSimple(hiw.HealthInsuranceStatus, 1 /* POST */, "HealthInsuranceStatuses/FilterPageCount", hiw.HealthInsuranceStatus.filterPageCount);
-    hiw.Endpoint.addArray(hiw.HealthInsuranceStatus, 0 /* GET */, "/HealthInsuranceStatus/{healthInsuranceStatusID}/HealthInsuranceStatuses/{page}", hiw.HealthInsuranceStatus.getByParentHealthInsuranceStatusID);
+    hiw.Endpoint.addArray(hiw.HealthInsuranceStatus, 0 /* GET */, "/HealthInsuranceStatus/{healthInsuranceStatusID}/HealthInsuranceStatuses/{page}?PageSize={pageSize}", hiw.HealthInsuranceStatus.getByParentHealthInsuranceStatusID);
     hiw.Endpoint.addSimple(hiw.HealthInsuranceStatus, 0 /* GET */, "/HealthInsuranceStatus/{healthInsuranceStatusID}/HealthInsuranceStatuses/Count", hiw.HealthInsuranceStatus.getByParentHealthInsuranceStatusIDCount);
     hiw.Endpoint.addSimple(hiw.HealthInsuranceStatus, 0 /* GET */, "/HealthInsuranceStatus/{healthInsuranceStatusID}/HealthInsuranceStatuses/PageCount", hiw.HealthInsuranceStatus.getByParentHealthInsuranceStatusIDPageCount);
     hiw.Endpoint.addSingle(hiw.HealthInsuranceStatus, 0 /* GET */, "/HealthInsuranceStatus/{healthInsuranceStatusID}/ParentHealthInsuranceStatus", hiw.HealthInsuranceStatus.getParentHealthInsuranceStatusForHealthInsuranceStatus);
-    hiw.Endpoint.addArray(hiw.HealthInsuranceStatusRelation, 0 /* GET */, "/HealthInsuranceStatusRelations/{page}", hiw.HealthInsuranceStatusRelation.getAll);
+    hiw.Endpoint.addArray(hiw.HealthInsuranceStatusRelation, 0 /* GET */, "/HealthInsuranceStatusRelations/{page}?PageSize={pageSize}", hiw.HealthInsuranceStatusRelation.getAll);
     hiw.Endpoint.addSimple(hiw.HealthInsuranceStatusRelation, 0 /* GET */, "/HealthInsuranceStatusRelations/Count", hiw.HealthInsuranceStatusRelation.getAllCount);
     hiw.Endpoint.addSimple(hiw.HealthInsuranceStatusRelation, 0 /* GET */, "/HealthInsuranceStatusRelations/PageCount", hiw.HealthInsuranceStatusRelation.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.HealthInsuranceStatusRelation, 0 /* GET */, "/HealthInsuranceStatusRelation/{id}", hiw.HealthInsuranceStatusRelation.getByID);
     hiw.Endpoint.addArray(hiw.HealthInsuranceStatusRelation, 1 /* POST */, "HealthInsuranceStatusRelations/Filter", hiw.HealthInsuranceStatusRelation.filter);
     hiw.Endpoint.addSimple(hiw.HealthInsuranceStatusRelation, 1 /* POST */, "HealthInsuranceStatusRelations/FilterCount", hiw.HealthInsuranceStatusRelation.filterCount);
     hiw.Endpoint.addSimple(hiw.HealthInsuranceStatusRelation, 1 /* POST */, "HealthInsuranceStatusRelations/FilterPageCount", hiw.HealthInsuranceStatusRelation.filterPageCount);
-    hiw.Endpoint.addArray(hiw.HealthInsuranceStatusRelation, 0 /* GET */, "/HealthInsuranceStatus/{healthInsuranceStatusID}/Ancestors/{page}", hiw.HealthInsuranceStatusRelation.getByAncestorHealthInsuranceStatusID);
+    hiw.Endpoint.addArray(hiw.HealthInsuranceStatusRelation, 0 /* GET */, "/HealthInsuranceStatus/{healthInsuranceStatusID}/Ancestors/{page}?PageSize={pageSize}", hiw.HealthInsuranceStatusRelation.getByAncestorHealthInsuranceStatusID);
     hiw.Endpoint.addSimple(hiw.HealthInsuranceStatusRelation, 0 /* GET */, "/HealthInsuranceStatus/{healthInsuranceStatusID}/Ancestors/Count", hiw.HealthInsuranceStatusRelation.getByAncestorHealthInsuranceStatusIDCount);
     hiw.Endpoint.addSimple(hiw.HealthInsuranceStatusRelation, 0 /* GET */, "/HealthInsuranceStatus/{healthInsuranceStatusID}/Ancestors/PageCount", hiw.HealthInsuranceStatusRelation.getByAncestorHealthInsuranceStatusIDPageCount);
     hiw.Endpoint.addSingle(hiw.HealthInsuranceStatus, 0 /* GET */, "/HealthInsuranceStatusRelation/{healthInsuranceStatusRelationID}/AncestorHealthInsuranceStatus", hiw.HealthInsuranceStatusRelation.getAncestorHealthInsuranceStatusForHealthInsuranceStatusRelation);
-    hiw.Endpoint.addArray(hiw.HealthInsuranceStatusRelation, 0 /* GET */, "/HealthInsuranceStatus/{healthInsuranceStatusID}/Descendants/{page}", hiw.HealthInsuranceStatusRelation.getByDescendantHealthInsuranceStatusID);
+    hiw.Endpoint.addArray(hiw.HealthInsuranceStatusRelation, 0 /* GET */, "/HealthInsuranceStatus/{healthInsuranceStatusID}/Descendants/{page}?PageSize={pageSize}", hiw.HealthInsuranceStatusRelation.getByDescendantHealthInsuranceStatusID);
     hiw.Endpoint.addSimple(hiw.HealthInsuranceStatusRelation, 0 /* GET */, "/HealthInsuranceStatus/{healthInsuranceStatusID}/Descendants/Count", hiw.HealthInsuranceStatusRelation.getByDescendantHealthInsuranceStatusIDCount);
     hiw.Endpoint.addSimple(hiw.HealthInsuranceStatusRelation, 0 /* GET */, "/HealthInsuranceStatus/{healthInsuranceStatusID}/Descendants/PageCount", hiw.HealthInsuranceStatusRelation.getByDescendantHealthInsuranceStatusIDPageCount);
     hiw.Endpoint.addSingle(hiw.HealthInsuranceStatus, 0 /* GET */, "/HealthInsuranceStatusRelation/{healthInsuranceStatusRelationID}/DescendantHealthInsuranceStatus", hiw.HealthInsuranceStatusRelation.getDescendantHealthInsuranceStatusForHealthInsuranceStatusRelation);
-    hiw.Endpoint.addArray(hiw.HP2020TSM, 0 /* GET */, "/HP2020TSMs/{page}", hiw.HP2020TSM.getAll);
+    hiw.Endpoint.addArray(hiw.HP2020TSM, 0 /* GET */, "/HP2020TSMs/{page}?PageSize={pageSize}", hiw.HP2020TSM.getAll);
     hiw.Endpoint.addSimple(hiw.HP2020TSM, 0 /* GET */, "/HP2020TSMs/Count", hiw.HP2020TSM.getAllCount);
     hiw.Endpoint.addSimple(hiw.HP2020TSM, 0 /* GET */, "/HP2020TSMs/PageCount", hiw.HP2020TSM.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.HP2020TSM, 0 /* GET */, "/HP2020TSM/{id}", hiw.HP2020TSM.getByID);
     hiw.Endpoint.addArray(hiw.HP2020TSM, 1 /* POST */, "HP2020TSMs/Filter", hiw.HP2020TSM.filter);
     hiw.Endpoint.addSimple(hiw.HP2020TSM, 1 /* POST */, "HP2020TSMs/FilterCount", hiw.HP2020TSM.filterCount);
     hiw.Endpoint.addSimple(hiw.HP2020TSM, 1 /* POST */, "HP2020TSMs/FilterPageCount", hiw.HP2020TSM.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IncomeAndPovertyStatus, 0 /* GET */, "/IncomeAndPovertyStatuses/{page}", hiw.IncomeAndPovertyStatus.getAll);
+    hiw.Endpoint.addArray(hiw.IncomeAndPovertyStatus, 0 /* GET */, "/IncomeAndPovertyStatuses/{page}?PageSize={pageSize}", hiw.IncomeAndPovertyStatus.getAll);
     hiw.Endpoint.addSimple(hiw.IncomeAndPovertyStatus, 0 /* GET */, "/IncomeAndPovertyStatuses/Count", hiw.IncomeAndPovertyStatus.getAllCount);
     hiw.Endpoint.addSimple(hiw.IncomeAndPovertyStatus, 0 /* GET */, "/IncomeAndPovertyStatuses/PageCount", hiw.IncomeAndPovertyStatus.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IncomeAndPovertyStatus, 0 /* GET */, "/IncomeAndPovertyStatus/{id}", hiw.IncomeAndPovertyStatus.getByID);
     hiw.Endpoint.addArray(hiw.IncomeAndPovertyStatus, 1 /* POST */, "IncomeAndPovertyStatuses/Filter", hiw.IncomeAndPovertyStatus.filter);
     hiw.Endpoint.addSimple(hiw.IncomeAndPovertyStatus, 1 /* POST */, "IncomeAndPovertyStatuses/FilterCount", hiw.IncomeAndPovertyStatus.filterCount);
     hiw.Endpoint.addSimple(hiw.IncomeAndPovertyStatus, 1 /* POST */, "IncomeAndPovertyStatuses/FilterPageCount", hiw.IncomeAndPovertyStatus.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IncomeAndPovertyStatus, 0 /* GET */, "/IncomeAndPovertyStatus/{incomeAndPovertyStatusID}/IncomeAndPovertyStatuses/{page}", hiw.IncomeAndPovertyStatus.getByParentIncomeAndPovertyStatusID);
+    hiw.Endpoint.addArray(hiw.IncomeAndPovertyStatus, 0 /* GET */, "/IncomeAndPovertyStatus/{incomeAndPovertyStatusID}/IncomeAndPovertyStatuses/{page}?PageSize={pageSize}", hiw.IncomeAndPovertyStatus.getByParentIncomeAndPovertyStatusID);
     hiw.Endpoint.addSimple(hiw.IncomeAndPovertyStatus, 0 /* GET */, "/IncomeAndPovertyStatus/{incomeAndPovertyStatusID}/IncomeAndPovertyStatuses/Count", hiw.IncomeAndPovertyStatus.getByParentIncomeAndPovertyStatusIDCount);
     hiw.Endpoint.addSimple(hiw.IncomeAndPovertyStatus, 0 /* GET */, "/IncomeAndPovertyStatus/{incomeAndPovertyStatusID}/IncomeAndPovertyStatuses/PageCount", hiw.IncomeAndPovertyStatus.getByParentIncomeAndPovertyStatusIDPageCount);
     hiw.Endpoint.addSingle(hiw.IncomeAndPovertyStatus, 0 /* GET */, "/IncomeAndPovertyStatus/{incomeAndPovertyStatusID}/ParentIncomeAndPovertyStatus", hiw.IncomeAndPovertyStatus.getParentIncomeAndPovertyStatusForIncomeAndPovertyStatus);
-    hiw.Endpoint.addArray(hiw.IncomeAndPovertyStatusRelation, 0 /* GET */, "/IncomeAndPovertyStatusRelations/{page}", hiw.IncomeAndPovertyStatusRelation.getAll);
+    hiw.Endpoint.addArray(hiw.IncomeAndPovertyStatusRelation, 0 /* GET */, "/IncomeAndPovertyStatusRelations/{page}?PageSize={pageSize}", hiw.IncomeAndPovertyStatusRelation.getAll);
     hiw.Endpoint.addSimple(hiw.IncomeAndPovertyStatusRelation, 0 /* GET */, "/IncomeAndPovertyStatusRelations/Count", hiw.IncomeAndPovertyStatusRelation.getAllCount);
     hiw.Endpoint.addSimple(hiw.IncomeAndPovertyStatusRelation, 0 /* GET */, "/IncomeAndPovertyStatusRelations/PageCount", hiw.IncomeAndPovertyStatusRelation.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IncomeAndPovertyStatusRelation, 0 /* GET */, "/IncomeAndPovertyStatusRelation/{id}", hiw.IncomeAndPovertyStatusRelation.getByID);
     hiw.Endpoint.addArray(hiw.IncomeAndPovertyStatusRelation, 1 /* POST */, "IncomeAndPovertyStatusRelations/Filter", hiw.IncomeAndPovertyStatusRelation.filter);
     hiw.Endpoint.addSimple(hiw.IncomeAndPovertyStatusRelation, 1 /* POST */, "IncomeAndPovertyStatusRelations/FilterCount", hiw.IncomeAndPovertyStatusRelation.filterCount);
     hiw.Endpoint.addSimple(hiw.IncomeAndPovertyStatusRelation, 1 /* POST */, "IncomeAndPovertyStatusRelations/FilterPageCount", hiw.IncomeAndPovertyStatusRelation.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IncomeAndPovertyStatusRelation, 0 /* GET */, "/IncomeAndPovertyStatus/{incomeAndPovertyStatusID}/Ancestors/{page}", hiw.IncomeAndPovertyStatusRelation.getByAncestorIncomeAndPovertyStatusID);
+    hiw.Endpoint.addArray(hiw.IncomeAndPovertyStatusRelation, 0 /* GET */, "/IncomeAndPovertyStatus/{incomeAndPovertyStatusID}/Ancestors/{page}?PageSize={pageSize}", hiw.IncomeAndPovertyStatusRelation.getByAncestorIncomeAndPovertyStatusID);
     hiw.Endpoint.addSimple(hiw.IncomeAndPovertyStatusRelation, 0 /* GET */, "/IncomeAndPovertyStatus/{incomeAndPovertyStatusID}/Ancestors/Count", hiw.IncomeAndPovertyStatusRelation.getByAncestorIncomeAndPovertyStatusIDCount);
     hiw.Endpoint.addSimple(hiw.IncomeAndPovertyStatusRelation, 0 /* GET */, "/IncomeAndPovertyStatus/{incomeAndPovertyStatusID}/Ancestors/PageCount", hiw.IncomeAndPovertyStatusRelation.getByAncestorIncomeAndPovertyStatusIDPageCount);
     hiw.Endpoint.addSingle(hiw.IncomeAndPovertyStatus, 0 /* GET */, "/IncomeAndPovertyStatusRelation/{incomeAndPovertyStatusRelationID}/AncestorIncomeAndPovertyStatus", hiw.IncomeAndPovertyStatusRelation.getAncestorIncomeAndPovertyStatusForIncomeAndPovertyStatusRelation);
-    hiw.Endpoint.addArray(hiw.IncomeAndPovertyStatusRelation, 0 /* GET */, "/IncomeAndPovertyStatus/{incomeAndPovertyStatusID}/Descendants/{page}", hiw.IncomeAndPovertyStatusRelation.getByDescendantIncomeAndPovertyStatusID);
+    hiw.Endpoint.addArray(hiw.IncomeAndPovertyStatusRelation, 0 /* GET */, "/IncomeAndPovertyStatus/{incomeAndPovertyStatusID}/Descendants/{page}?PageSize={pageSize}", hiw.IncomeAndPovertyStatusRelation.getByDescendantIncomeAndPovertyStatusID);
     hiw.Endpoint.addSimple(hiw.IncomeAndPovertyStatusRelation, 0 /* GET */, "/IncomeAndPovertyStatus/{incomeAndPovertyStatusID}/Descendants/Count", hiw.IncomeAndPovertyStatusRelation.getByDescendantIncomeAndPovertyStatusIDCount);
     hiw.Endpoint.addSimple(hiw.IncomeAndPovertyStatusRelation, 0 /* GET */, "/IncomeAndPovertyStatus/{incomeAndPovertyStatusID}/Descendants/PageCount", hiw.IncomeAndPovertyStatusRelation.getByDescendantIncomeAndPovertyStatusIDPageCount);
     hiw.Endpoint.addSingle(hiw.IncomeAndPovertyStatus, 0 /* GET */, "/IncomeAndPovertyStatusRelation/{incomeAndPovertyStatusRelationID}/DescendantIncomeAndPovertyStatus", hiw.IncomeAndPovertyStatusRelation.getDescendantIncomeAndPovertyStatusForIncomeAndPovertyStatusRelation);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDataCategory, 0 /* GET */, "/IndicatorDescriptionDataCategories/{page}", hiw.IndicatorDescriptionDataCategory.getAll);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDataCategory, 0 /* GET */, "/IndicatorDescriptionDataCategories/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionDataCategory.getAll);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDataCategory, 0 /* GET */, "/IndicatorDescriptionDataCategories/Count", hiw.IndicatorDescriptionDataCategory.getAllCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDataCategory, 0 /* GET */, "/IndicatorDescriptionDataCategories/PageCount", hiw.IndicatorDescriptionDataCategory.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescriptionDataCategory, 0 /* GET */, "/IndicatorDescriptionDataCategory/{id}", hiw.IndicatorDescriptionDataCategory.getByID);
     hiw.Endpoint.addArray(hiw.IndicatorDescriptionDataCategory, 1 /* POST */, "IndicatorDescriptionDataCategories/Filter", hiw.IndicatorDescriptionDataCategory.filter);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDataCategory, 1 /* POST */, "IndicatorDescriptionDataCategories/FilterCount", hiw.IndicatorDescriptionDataCategory.filterCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDataCategory, 1 /* POST */, "IndicatorDescriptionDataCategories/FilterPageCount", hiw.IndicatorDescriptionDataCategory.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDataCategory, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionDataCategories/{page}", hiw.IndicatorDescriptionDataCategory.getByIndicatorDescriptionID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDataCategory, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionDataCategories/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionDataCategory.getByIndicatorDescriptionID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDataCategory, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionDataCategories/Count", hiw.IndicatorDescriptionDataCategory.getByIndicatorDescriptionIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDataCategory, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionDataCategories/PageCount", hiw.IndicatorDescriptionDataCategory.getByIndicatorDescriptionIDPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescriptionDataCategory/{indicatorDescriptionDataCategoryID}/IndicatorDescription", hiw.IndicatorDescriptionDataCategory.getIndicatorDescriptionForIndicatorDescriptionDataCategory);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDataCategory, 0 /* GET */, "/DataCategory/{dataCategoryID}/IndicatorDescriptionDataCategories/{page}", hiw.IndicatorDescriptionDataCategory.getByDataCategoryID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDataCategory, 0 /* GET */, "/DataCategory/{dataCategoryID}/IndicatorDescriptionDataCategories/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionDataCategory.getByDataCategoryID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDataCategory, 0 /* GET */, "/DataCategory/{dataCategoryID}/IndicatorDescriptionDataCategories/Count", hiw.IndicatorDescriptionDataCategory.getByDataCategoryIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDataCategory, 0 /* GET */, "/DataCategory/{dataCategoryID}/IndicatorDescriptionDataCategories/PageCount", hiw.IndicatorDescriptionDataCategory.getByDataCategoryIDPageCount);
     hiw.Endpoint.addSingle(hiw.DataCategory, 0 /* GET */, "/IndicatorDescriptionDataCategory/{indicatorDescriptionDataCategoryID}/DataCategory", hiw.IndicatorDescriptionDataCategory.getDataCategoryForIndicatorDescriptionDataCategory);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDataSource, 0 /* GET */, "/IndicatorDescriptionDataSources/{page}", hiw.IndicatorDescriptionDataSource.getAll);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDataSource, 0 /* GET */, "/IndicatorDescriptionDataSources/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionDataSource.getAll);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDataSource, 0 /* GET */, "/IndicatorDescriptionDataSources/Count", hiw.IndicatorDescriptionDataSource.getAllCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDataSource, 0 /* GET */, "/IndicatorDescriptionDataSources/PageCount", hiw.IndicatorDescriptionDataSource.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescriptionDataSource, 0 /* GET */, "/IndicatorDescriptionDataSource/{id}", hiw.IndicatorDescriptionDataSource.getByID);
     hiw.Endpoint.addArray(hiw.IndicatorDescriptionDataSource, 1 /* POST */, "IndicatorDescriptionDataSources/Filter", hiw.IndicatorDescriptionDataSource.filter);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDataSource, 1 /* POST */, "IndicatorDescriptionDataSources/FilterCount", hiw.IndicatorDescriptionDataSource.filterCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDataSource, 1 /* POST */, "IndicatorDescriptionDataSources/FilterPageCount", hiw.IndicatorDescriptionDataSource.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDataSource, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionDataSources/{page}", hiw.IndicatorDescriptionDataSource.getByIndicatorDescriptionID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDataSource, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionDataSources/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionDataSource.getByIndicatorDescriptionID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDataSource, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionDataSources/Count", hiw.IndicatorDescriptionDataSource.getByIndicatorDescriptionIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDataSource, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionDataSources/PageCount", hiw.IndicatorDescriptionDataSource.getByIndicatorDescriptionIDPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescriptionDataSource/{indicatorDescriptionDataSourceID}/IndicatorDescription", hiw.IndicatorDescriptionDataSource.getIndicatorDescriptionForIndicatorDescriptionDataSource);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDataSource, 0 /* GET */, "/DataSource/{dataSourceID}/IndicatorDescriptionDataSources/{page}", hiw.IndicatorDescriptionDataSource.getByDataSourceID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDataSource, 0 /* GET */, "/DataSource/{dataSourceID}/IndicatorDescriptionDataSources/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionDataSource.getByDataSourceID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDataSource, 0 /* GET */, "/DataSource/{dataSourceID}/IndicatorDescriptionDataSources/Count", hiw.IndicatorDescriptionDataSource.getByDataSourceIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDataSource, 0 /* GET */, "/DataSource/{dataSourceID}/IndicatorDescriptionDataSources/PageCount", hiw.IndicatorDescriptionDataSource.getByDataSourceIDPageCount);
     hiw.Endpoint.addSingle(hiw.DataSource, 0 /* GET */, "/IndicatorDescriptionDataSource/{indicatorDescriptionDataSourceID}/DataSource", hiw.IndicatorDescriptionDataSource.getDataSourceForIndicatorDescriptionDataSource);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDefaultDimensionGraph, 0 /* GET */, "/IndicatorDescriptionDefaultDimensionGraphs/{page}", hiw.IndicatorDescriptionDefaultDimensionGraph.getAll);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDefaultDimensionGraph, 0 /* GET */, "/IndicatorDescriptionDefaultDimensionGraphs/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionDefaultDimensionGraph.getAll);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDefaultDimensionGraph, 0 /* GET */, "/IndicatorDescriptionDefaultDimensionGraphs/Count", hiw.IndicatorDescriptionDefaultDimensionGraph.getAllCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDefaultDimensionGraph, 0 /* GET */, "/IndicatorDescriptionDefaultDimensionGraphs/PageCount", hiw.IndicatorDescriptionDefaultDimensionGraph.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescriptionDefaultDimensionGraph, 0 /* GET */, "/IndicatorDescriptionDefaultDimensionGraph/{id}", hiw.IndicatorDescriptionDefaultDimensionGraph.getByID);
     hiw.Endpoint.addArray(hiw.IndicatorDescriptionDefaultDimensionGraph, 1 /* POST */, "IndicatorDescriptionDefaultDimensionGraphs/Filter", hiw.IndicatorDescriptionDefaultDimensionGraph.filter);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDefaultDimensionGraph, 1 /* POST */, "IndicatorDescriptionDefaultDimensionGraphs/FilterCount", hiw.IndicatorDescriptionDefaultDimensionGraph.filterCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDefaultDimensionGraph, 1 /* POST */, "IndicatorDescriptionDefaultDimensionGraphs/FilterPageCount", hiw.IndicatorDescriptionDefaultDimensionGraph.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDefaultDimensionGraph, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionDefaultDimensionGraphs/{page}", hiw.IndicatorDescriptionDefaultDimensionGraph.getByIndicatorDescriptionID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDefaultDimensionGraph, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionDefaultDimensionGraphs/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionDefaultDimensionGraph.getByIndicatorDescriptionID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDefaultDimensionGraph, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionDefaultDimensionGraphs/Count", hiw.IndicatorDescriptionDefaultDimensionGraph.getByIndicatorDescriptionIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDefaultDimensionGraph, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionDefaultDimensionGraphs/PageCount", hiw.IndicatorDescriptionDefaultDimensionGraph.getByIndicatorDescriptionIDPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescriptionDefaultDimensionGraph/{indicatorDescriptionDefaultDimensionGraphID}/IndicatorDescription", hiw.IndicatorDescriptionDefaultDimensionGraph.getIndicatorDescriptionForIndicatorDescriptionDefaultDimensionGraph);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDefaultDimensionGraph, 0 /* GET */, "/LocaleLevel/{localeLevelID}/IndicatorDescriptionDefaultDimensionGraphs/{page}", hiw.IndicatorDescriptionDefaultDimensionGraph.getByLocaleLevelID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDefaultDimensionGraph, 0 /* GET */, "/LocaleLevel/{localeLevelID}/IndicatorDescriptionDefaultDimensionGraphs/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionDefaultDimensionGraph.getByLocaleLevelID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDefaultDimensionGraph, 0 /* GET */, "/LocaleLevel/{localeLevelID}/IndicatorDescriptionDefaultDimensionGraphs/Count", hiw.IndicatorDescriptionDefaultDimensionGraph.getByLocaleLevelIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDefaultDimensionGraph, 0 /* GET */, "/LocaleLevel/{localeLevelID}/IndicatorDescriptionDefaultDimensionGraphs/PageCount", hiw.IndicatorDescriptionDefaultDimensionGraph.getByLocaleLevelIDPageCount);
     hiw.Endpoint.addSingle(hiw.LocaleLevel, 0 /* GET */, "/IndicatorDescriptionDefaultDimensionGraph/{indicatorDescriptionDefaultDimensionGraphID}/LocaleLevel", hiw.IndicatorDescriptionDefaultDimensionGraph.getLocaleLevelForIndicatorDescriptionDefaultDimensionGraph);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDefaultDimensionGraph, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/IndicatorDescriptionDefaultDimensionGraphs/{page}", hiw.IndicatorDescriptionDefaultDimensionGraph.getByDimensionGraphID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDefaultDimensionGraph, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/IndicatorDescriptionDefaultDimensionGraphs/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionDefaultDimensionGraph.getByDimensionGraphID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDefaultDimensionGraph, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/IndicatorDescriptionDefaultDimensionGraphs/Count", hiw.IndicatorDescriptionDefaultDimensionGraph.getByDimensionGraphIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDefaultDimensionGraph, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/IndicatorDescriptionDefaultDimensionGraphs/PageCount", hiw.IndicatorDescriptionDefaultDimensionGraph.getByDimensionGraphIDPageCount);
     hiw.Endpoint.addSingle(hiw.DimensionGraph, 0 /* GET */, "/IndicatorDescriptionDefaultDimensionGraph/{indicatorDescriptionDefaultDimensionGraphID}/DimensionGraph", hiw.IndicatorDescriptionDefaultDimensionGraph.getDimensionGraphForIndicatorDescriptionDefaultDimensionGraph);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDimension, 0 /* GET */, "/IndicatorDescriptionDimensions/{page}", hiw.IndicatorDescriptionDimension.getAll);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDimension, 0 /* GET */, "/IndicatorDescriptionDimensions/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionDimension.getAll);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimension, 0 /* GET */, "/IndicatorDescriptionDimensions/Count", hiw.IndicatorDescriptionDimension.getAllCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimension, 0 /* GET */, "/IndicatorDescriptionDimensions/PageCount", hiw.IndicatorDescriptionDimension.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescriptionDimension, 0 /* GET */, "/IndicatorDescriptionDimension/{id}", hiw.IndicatorDescriptionDimension.getByID);
     hiw.Endpoint.addArray(hiw.IndicatorDescriptionDimension, 1 /* POST */, "IndicatorDescriptionDimensions/Filter", hiw.IndicatorDescriptionDimension.filter);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimension, 1 /* POST */, "IndicatorDescriptionDimensions/FilterCount", hiw.IndicatorDescriptionDimension.filterCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimension, 1 /* POST */, "IndicatorDescriptionDimensions/FilterPageCount", hiw.IndicatorDescriptionDimension.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDimension, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionDimensions/{page}", hiw.IndicatorDescriptionDimension.getByIndicatorDescriptionID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDimension, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionDimensions/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionDimension.getByIndicatorDescriptionID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimension, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionDimensions/Count", hiw.IndicatorDescriptionDimension.getByIndicatorDescriptionIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimension, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionDimensions/PageCount", hiw.IndicatorDescriptionDimension.getByIndicatorDescriptionIDPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescriptionDimension/{indicatorDescriptionDimensionID}/IndicatorDescription", hiw.IndicatorDescriptionDimension.getIndicatorDescriptionForIndicatorDescriptionDimension);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDimension, 0 /* GET */, "/DimensionList/{dimensionListID}/IndicatorDescriptionDimensions/{page}", hiw.IndicatorDescriptionDimension.getByDimensionListID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDimension, 0 /* GET */, "/DimensionList/{dimensionListID}/IndicatorDescriptionDimensions/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionDimension.getByDimensionListID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimension, 0 /* GET */, "/DimensionList/{dimensionListID}/IndicatorDescriptionDimensions/Count", hiw.IndicatorDescriptionDimension.getByDimensionListIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimension, 0 /* GET */, "/DimensionList/{dimensionListID}/IndicatorDescriptionDimensions/PageCount", hiw.IndicatorDescriptionDimension.getByDimensionListIDPageCount);
     hiw.Endpoint.addSingle(hiw.DimensionList, 0 /* GET */, "/IndicatorDescriptionDimension/{indicatorDescriptionDimensionID}/DimensionList", hiw.IndicatorDescriptionDimension.getDimensionListForIndicatorDescriptionDimension);
     hiw.Endpoint.addSingle(hiw.IndicatorDescriptionDimension, 0 /* GET */, "/IndicatorDescriptionDimension?IndicatorDescriptionID={indicatorDescriptionID}&DimensionListID={dimensionListID}", hiw.IndicatorDescriptionDimension.getByIndicatorDescriptionIDAndDimensionListID);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDimensionGraph, 0 /* GET */, "/IndicatorDescriptionDimensionGraphs/{page}", hiw.IndicatorDescriptionDimensionGraph.getAll);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDimensionGraph, 0 /* GET */, "/IndicatorDescriptionDimensionGraphs/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionDimensionGraph.getAll);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimensionGraph, 0 /* GET */, "/IndicatorDescriptionDimensionGraphs/Count", hiw.IndicatorDescriptionDimensionGraph.getAllCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimensionGraph, 0 /* GET */, "/IndicatorDescriptionDimensionGraphs/PageCount", hiw.IndicatorDescriptionDimensionGraph.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescriptionDimensionGraph, 0 /* GET */, "/IndicatorDescriptionDimensionGraph/{id}", hiw.IndicatorDescriptionDimensionGraph.getByID);
     hiw.Endpoint.addArray(hiw.IndicatorDescriptionDimensionGraph, 1 /* POST */, "IndicatorDescriptionDimensionGraphs/Filter", hiw.IndicatorDescriptionDimensionGraph.filter);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimensionGraph, 1 /* POST */, "IndicatorDescriptionDimensionGraphs/FilterCount", hiw.IndicatorDescriptionDimensionGraph.filterCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimensionGraph, 1 /* POST */, "IndicatorDescriptionDimensionGraphs/FilterPageCount", hiw.IndicatorDescriptionDimensionGraph.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDimensionGraph, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionDimensionGraphs/{page}", hiw.IndicatorDescriptionDimensionGraph.getByIndicatorDescriptionID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDimensionGraph, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionDimensionGraphs/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionDimensionGraph.getByIndicatorDescriptionID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimensionGraph, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionDimensionGraphs/Count", hiw.IndicatorDescriptionDimensionGraph.getByIndicatorDescriptionIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimensionGraph, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionDimensionGraphs/PageCount", hiw.IndicatorDescriptionDimensionGraph.getByIndicatorDescriptionIDPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescriptionDimensionGraph/{indicatorDescriptionDimensionGraphID}/IndicatorDescription", hiw.IndicatorDescriptionDimensionGraph.getIndicatorDescriptionForIndicatorDescriptionDimensionGraph);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDimensionGraph, 0 /* GET */, "/LocaleLevel/{localeLevelID}/IndicatorDescriptionDimensionGraphs/{page}", hiw.IndicatorDescriptionDimensionGraph.getByLocaleLevelID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDimensionGraph, 0 /* GET */, "/LocaleLevel/{localeLevelID}/IndicatorDescriptionDimensionGraphs/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionDimensionGraph.getByLocaleLevelID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimensionGraph, 0 /* GET */, "/LocaleLevel/{localeLevelID}/IndicatorDescriptionDimensionGraphs/Count", hiw.IndicatorDescriptionDimensionGraph.getByLocaleLevelIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimensionGraph, 0 /* GET */, "/LocaleLevel/{localeLevelID}/IndicatorDescriptionDimensionGraphs/PageCount", hiw.IndicatorDescriptionDimensionGraph.getByLocaleLevelIDPageCount);
     hiw.Endpoint.addSingle(hiw.LocaleLevel, 0 /* GET */, "/IndicatorDescriptionDimensionGraph/{indicatorDescriptionDimensionGraphID}/LocaleLevel", hiw.IndicatorDescriptionDimensionGraph.getLocaleLevelForIndicatorDescriptionDimensionGraph);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDimensionGraph, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/IndicatorDescriptionDimensionGraphs/{page}", hiw.IndicatorDescriptionDimensionGraph.getByDimensionGraphID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDimensionGraph, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/IndicatorDescriptionDimensionGraphs/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionDimensionGraph.getByDimensionGraphID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimensionGraph, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/IndicatorDescriptionDimensionGraphs/Count", hiw.IndicatorDescriptionDimensionGraph.getByDimensionGraphIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimensionGraph, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/IndicatorDescriptionDimensionGraphs/PageCount", hiw.IndicatorDescriptionDimensionGraph.getByDimensionGraphIDPageCount);
     hiw.Endpoint.addSingle(hiw.DimensionGraph, 0 /* GET */, "/IndicatorDescriptionDimensionGraph/{indicatorDescriptionDimensionGraphID}/DimensionGraph", hiw.IndicatorDescriptionDimensionGraph.getDimensionGraphForIndicatorDescriptionDimensionGraph);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDimensionValue, 0 /* GET */, "/IndicatorDescriptionDimensionValues/{page}", hiw.IndicatorDescriptionDimensionValue.getAll);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDimensionValue, 0 /* GET */, "/IndicatorDescriptionDimensionValues/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionDimensionValue.getAll);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimensionValue, 0 /* GET */, "/IndicatorDescriptionDimensionValues/Count", hiw.IndicatorDescriptionDimensionValue.getAllCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimensionValue, 0 /* GET */, "/IndicatorDescriptionDimensionValues/PageCount", hiw.IndicatorDescriptionDimensionValue.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescriptionDimensionValue, 0 /* GET */, "/IndicatorDescriptionDimensionValue/{id}", hiw.IndicatorDescriptionDimensionValue.getByID);
     hiw.Endpoint.addArray(hiw.IndicatorDescriptionDimensionValue, 1 /* POST */, "IndicatorDescriptionDimensionValues/Filter", hiw.IndicatorDescriptionDimensionValue.filter);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimensionValue, 1 /* POST */, "IndicatorDescriptionDimensionValues/FilterCount", hiw.IndicatorDescriptionDimensionValue.filterCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimensionValue, 1 /* POST */, "IndicatorDescriptionDimensionValues/FilterPageCount", hiw.IndicatorDescriptionDimensionValue.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDimensionValue, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionDimensionValues/{page}", hiw.IndicatorDescriptionDimensionValue.getByIndicatorDescriptionID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDimensionValue, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionDimensionValues/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionDimensionValue.getByIndicatorDescriptionID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimensionValue, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionDimensionValues/Count", hiw.IndicatorDescriptionDimensionValue.getByIndicatorDescriptionIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimensionValue, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionDimensionValues/PageCount", hiw.IndicatorDescriptionDimensionValue.getByIndicatorDescriptionIDPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescriptionDimensionValue/{indicatorDescriptionDimensionValueID}/IndicatorDescription", hiw.IndicatorDescriptionDimensionValue.getIndicatorDescriptionForIndicatorDescriptionDimensionValue);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDimensionValue, 0 /* GET */, "/DimensionBook/{dimensionBookID}/IndicatorDescriptionDimensionValues/{page}", hiw.IndicatorDescriptionDimensionValue.getByDimensionBookID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionDimensionValue, 0 /* GET */, "/DimensionBook/{dimensionBookID}/IndicatorDescriptionDimensionValues/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionDimensionValue.getByDimensionBookID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimensionValue, 0 /* GET */, "/DimensionBook/{dimensionBookID}/IndicatorDescriptionDimensionValues/Count", hiw.IndicatorDescriptionDimensionValue.getByDimensionBookIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionDimensionValue, 0 /* GET */, "/DimensionBook/{dimensionBookID}/IndicatorDescriptionDimensionValues/PageCount", hiw.IndicatorDescriptionDimensionValue.getByDimensionBookIDPageCount);
     hiw.Endpoint.addSingle(hiw.DimensionBook, 0 /* GET */, "/IndicatorDescriptionDimensionValue/{indicatorDescriptionDimensionValueID}/DimensionBook", hiw.IndicatorDescriptionDimensionValue.getDimensionBookForIndicatorDescriptionDimensionValue);
     hiw.Endpoint.addSingle(hiw.IndicatorDescriptionDimensionValue, 0 /* GET */, "/IndicatorDescriptionDimensionValue?IndicatorDescriptionID={indicatorDescriptionID}&DimensionBookID={dimensionBookID}", hiw.IndicatorDescriptionDimensionValue.getByIndicatorDescriptionIDAndDimensionBookID);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionInitiative, 0 /* GET */, "/IndicatorDescriptionInitiatives/{page}", hiw.IndicatorDescriptionInitiative.getAll);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionInitiative, 0 /* GET */, "/IndicatorDescriptionInitiatives/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionInitiative.getAll);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionInitiative, 0 /* GET */, "/IndicatorDescriptionInitiatives/Count", hiw.IndicatorDescriptionInitiative.getAllCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionInitiative, 0 /* GET */, "/IndicatorDescriptionInitiatives/PageCount", hiw.IndicatorDescriptionInitiative.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescriptionInitiative, 0 /* GET */, "/IndicatorDescriptionInitiative/{id}", hiw.IndicatorDescriptionInitiative.getByID);
     hiw.Endpoint.addArray(hiw.IndicatorDescriptionInitiative, 1 /* POST */, "IndicatorDescriptionInitiatives/Filter", hiw.IndicatorDescriptionInitiative.filter);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionInitiative, 1 /* POST */, "IndicatorDescriptionInitiatives/FilterCount", hiw.IndicatorDescriptionInitiative.filterCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionInitiative, 1 /* POST */, "IndicatorDescriptionInitiatives/FilterPageCount", hiw.IndicatorDescriptionInitiative.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionInitiative, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionInitiatives/{page}", hiw.IndicatorDescriptionInitiative.getByIndicatorDescriptionID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionInitiative, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionInitiatives/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionInitiative.getByIndicatorDescriptionID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionInitiative, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionInitiatives/Count", hiw.IndicatorDescriptionInitiative.getByIndicatorDescriptionIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionInitiative, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionInitiatives/PageCount", hiw.IndicatorDescriptionInitiative.getByIndicatorDescriptionIDPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescriptionInitiative/{indicatorDescriptionInitiativeID}/IndicatorDescription", hiw.IndicatorDescriptionInitiative.getIndicatorDescriptionForIndicatorDescriptionInitiative);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionInitiative, 0 /* GET */, "/Initiative/{initiativeID}/IndicatorDescriptionInitiatives/{page}", hiw.IndicatorDescriptionInitiative.getByInitiativeID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionInitiative, 0 /* GET */, "/Initiative/{initiativeID}/IndicatorDescriptionInitiatives/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionInitiative.getByInitiativeID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionInitiative, 0 /* GET */, "/Initiative/{initiativeID}/IndicatorDescriptionInitiatives/Count", hiw.IndicatorDescriptionInitiative.getByInitiativeIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionInitiative, 0 /* GET */, "/Initiative/{initiativeID}/IndicatorDescriptionInitiatives/PageCount", hiw.IndicatorDescriptionInitiative.getByInitiativeIDPageCount);
     hiw.Endpoint.addSingle(hiw.Initiative, 0 /* GET */, "/IndicatorDescriptionInitiative/{indicatorDescriptionInitiativeID}/Initiative", hiw.IndicatorDescriptionInitiative.getInitiativeForIndicatorDescriptionInitiative);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionIntervention, 0 /* GET */, "/IndicatorDescriptionInterventions/{page}", hiw.IndicatorDescriptionIntervention.getAll);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionIntervention, 0 /* GET */, "/IndicatorDescriptionInterventions/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionIntervention.getAll);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionIntervention, 0 /* GET */, "/IndicatorDescriptionInterventions/Count", hiw.IndicatorDescriptionIntervention.getAllCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionIntervention, 0 /* GET */, "/IndicatorDescriptionInterventions/PageCount", hiw.IndicatorDescriptionIntervention.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescriptionIntervention, 0 /* GET */, "/IndicatorDescriptionIntervention/{id}", hiw.IndicatorDescriptionIntervention.getByID);
     hiw.Endpoint.addArray(hiw.IndicatorDescriptionIntervention, 1 /* POST */, "IndicatorDescriptionInterventions/Filter", hiw.IndicatorDescriptionIntervention.filter);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionIntervention, 1 /* POST */, "IndicatorDescriptionInterventions/FilterCount", hiw.IndicatorDescriptionIntervention.filterCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionIntervention, 1 /* POST */, "IndicatorDescriptionInterventions/FilterPageCount", hiw.IndicatorDescriptionIntervention.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionIntervention, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionInterventions/{page}", hiw.IndicatorDescriptionIntervention.getByIndicatorDescriptionID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionIntervention, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionInterventions/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionIntervention.getByIndicatorDescriptionID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionIntervention, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionInterventions/Count", hiw.IndicatorDescriptionIntervention.getByIndicatorDescriptionIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionIntervention, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionInterventions/PageCount", hiw.IndicatorDescriptionIntervention.getByIndicatorDescriptionIDPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescriptionIntervention/{indicatorDescriptionInterventionID}/IndicatorDescription", hiw.IndicatorDescriptionIntervention.getIndicatorDescriptionForIndicatorDescriptionIntervention);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionIntervention, 0 /* GET */, "/Intervention/{interventionID}/IndicatorDescriptionInterventions/{page}", hiw.IndicatorDescriptionIntervention.getByInterventionID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionIntervention, 0 /* GET */, "/Intervention/{interventionID}/IndicatorDescriptionInterventions/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionIntervention.getByInterventionID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionIntervention, 0 /* GET */, "/Intervention/{interventionID}/IndicatorDescriptionInterventions/Count", hiw.IndicatorDescriptionIntervention.getByInterventionIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionIntervention, 0 /* GET */, "/Intervention/{interventionID}/IndicatorDescriptionInterventions/PageCount", hiw.IndicatorDescriptionIntervention.getByInterventionIDPageCount);
     hiw.Endpoint.addSingle(hiw.Intervention, 0 /* GET */, "/IndicatorDescriptionIntervention/{indicatorDescriptionInterventionID}/Interventions", hiw.IndicatorDescriptionIntervention.getInterventionsForIndicatorDescriptionIntervention);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionKeyword, 0 /* GET */, "/IndicatorDescriptionKeywords/{page}", hiw.IndicatorDescriptionKeyword.getAll);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionKeyword, 0 /* GET */, "/IndicatorDescriptionKeywords/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionKeyword.getAll);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionKeyword, 0 /* GET */, "/IndicatorDescriptionKeywords/Count", hiw.IndicatorDescriptionKeyword.getAllCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionKeyword, 0 /* GET */, "/IndicatorDescriptionKeywords/PageCount", hiw.IndicatorDescriptionKeyword.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescriptionKeyword, 0 /* GET */, "/IndicatorDescriptionKeyword/{id}", hiw.IndicatorDescriptionKeyword.getByID);
     hiw.Endpoint.addArray(hiw.IndicatorDescriptionKeyword, 1 /* POST */, "IndicatorDescriptionKeywords/Filter", hiw.IndicatorDescriptionKeyword.filter);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionKeyword, 1 /* POST */, "IndicatorDescriptionKeywords/FilterCount", hiw.IndicatorDescriptionKeyword.filterCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionKeyword, 1 /* POST */, "IndicatorDescriptionKeywords/FilterPageCount", hiw.IndicatorDescriptionKeyword.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionKeyword, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionKeywords/{page}", hiw.IndicatorDescriptionKeyword.getByIndicatorDescriptionID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionKeyword, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionKeywords/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionKeyword.getByIndicatorDescriptionID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionKeyword, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionKeywords/Count", hiw.IndicatorDescriptionKeyword.getByIndicatorDescriptionIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionKeyword, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionKeywords/PageCount", hiw.IndicatorDescriptionKeyword.getByIndicatorDescriptionIDPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescriptionKeyword/{indicatorDescriptionKeywordID}/IndicatorDescription", hiw.IndicatorDescriptionKeyword.getIndicatorDescriptionForIndicatorDescriptionKeyword);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionKeyword, 0 /* GET */, "/Keyword/{keywordID}/IndicatorDescriptionKeywords/{page}", hiw.IndicatorDescriptionKeyword.getByKeywordID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionKeyword, 0 /* GET */, "/Keyword/{keywordID}/IndicatorDescriptionKeywords/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionKeyword.getByKeywordID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionKeyword, 0 /* GET */, "/Keyword/{keywordID}/IndicatorDescriptionKeywords/Count", hiw.IndicatorDescriptionKeyword.getByKeywordIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionKeyword, 0 /* GET */, "/Keyword/{keywordID}/IndicatorDescriptionKeywords/PageCount", hiw.IndicatorDescriptionKeyword.getByKeywordIDPageCount);
     hiw.Endpoint.addSingle(hiw.Keyword, 0 /* GET */, "/IndicatorDescriptionKeyword/{indicatorDescriptionKeywordID}/Keyword", hiw.IndicatorDescriptionKeyword.getKeywordForIndicatorDescriptionKeyword);
     hiw.Endpoint.addSingle(hiw.IndicatorDescriptionKeyword, 0 /* GET */, "/IndicatorDescriptionKeyword?IndicatorDescriptionID={indicatorDescriptionID}&KeywordID={keywordID}", hiw.IndicatorDescriptionKeyword.getByIndicatorDescriptionIDAndKeywordID);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleCounty, 0 /* GET */, "/IndicatorDescriptionLocaleCounties/{page}", hiw.IndicatorDescriptionLocaleCounty.getAll);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleCounty, 0 /* GET */, "/IndicatorDescriptionLocaleCounties/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionLocaleCounty.getAll);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleCounty, 0 /* GET */, "/IndicatorDescriptionLocaleCounties/Count", hiw.IndicatorDescriptionLocaleCounty.getAllCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleCounty, 0 /* GET */, "/IndicatorDescriptionLocaleCounties/PageCount", hiw.IndicatorDescriptionLocaleCounty.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescriptionLocaleCounty, 0 /* GET */, "/IndicatorDescriptionLocaleCounty/{id}", hiw.IndicatorDescriptionLocaleCounty.getByID);
     hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleCounty, 1 /* POST */, "IndicatorDescriptionLocaleCounties/Filter", hiw.IndicatorDescriptionLocaleCounty.filter);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleCounty, 1 /* POST */, "IndicatorDescriptionLocaleCounties/FilterCount", hiw.IndicatorDescriptionLocaleCounty.filterCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleCounty, 1 /* POST */, "IndicatorDescriptionLocaleCounties/FilterPageCount", hiw.IndicatorDescriptionLocaleCounty.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleCounty, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionLocaleCounties/{page}", hiw.IndicatorDescriptionLocaleCounty.getByIndicatorDescriptionID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleCounty, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionLocaleCounties/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionLocaleCounty.getByIndicatorDescriptionID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleCounty, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionLocaleCounties/Count", hiw.IndicatorDescriptionLocaleCounty.getByIndicatorDescriptionIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleCounty, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionLocaleCounties/PageCount", hiw.IndicatorDescriptionLocaleCounty.getByIndicatorDescriptionIDPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescriptionLocaleCounty/{indicatorDescriptionLocaleCountyID}/IndicatorDescription", hiw.IndicatorDescriptionLocaleCounty.getIndicatorDescriptionForIndicatorDescriptionLocaleCounty);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleCounty, 0 /* GET */, "/Locale/{localeID}/IndicatorDescriptionLocaleCounties/{page}", hiw.IndicatorDescriptionLocaleCounty.getByLocaleID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleCounty, 0 /* GET */, "/Locale/{localeID}/IndicatorDescriptionLocaleCounties/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionLocaleCounty.getByLocaleID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleCounty, 0 /* GET */, "/Locale/{localeID}/IndicatorDescriptionLocaleCounties/Count", hiw.IndicatorDescriptionLocaleCounty.getByLocaleIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleCounty, 0 /* GET */, "/Locale/{localeID}/IndicatorDescriptionLocaleCounties/PageCount", hiw.IndicatorDescriptionLocaleCounty.getByLocaleIDPageCount);
     hiw.Endpoint.addSingle(hiw.Locale, 0 /* GET */, "/IndicatorDescriptionLocaleCounty/{indicatorDescriptionLocaleCountyID}/Locale", hiw.IndicatorDescriptionLocaleCounty.getLocaleForIndicatorDescriptionLocaleCounty);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleHospitalReferralRegion, 0 /* GET */, "/IndicatorDescriptionLocaleHospitalReferralRegions/{page}", hiw.IndicatorDescriptionLocaleHospitalReferralRegion.getAll);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleHospitalReferralRegion, 0 /* GET */, "/IndicatorDescriptionLocaleHospitalReferralRegions/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionLocaleHospitalReferralRegion.getAll);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleHospitalReferralRegion, 0 /* GET */, "/IndicatorDescriptionLocaleHospitalReferralRegions/Count", hiw.IndicatorDescriptionLocaleHospitalReferralRegion.getAllCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleHospitalReferralRegion, 0 /* GET */, "/IndicatorDescriptionLocaleHospitalReferralRegions/PageCount", hiw.IndicatorDescriptionLocaleHospitalReferralRegion.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescriptionLocaleHospitalReferralRegion, 0 /* GET */, "/IndicatorDescriptionLocaleHospitalReferralRegion/{id}", hiw.IndicatorDescriptionLocaleHospitalReferralRegion.getByID);
     hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleHospitalReferralRegion, 1 /* POST */, "IndicatorDescriptionLocaleHospitalReferralRegions/Filter", hiw.IndicatorDescriptionLocaleHospitalReferralRegion.filter);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleHospitalReferralRegion, 1 /* POST */, "IndicatorDescriptionLocaleHospitalReferralRegions/FilterCount", hiw.IndicatorDescriptionLocaleHospitalReferralRegion.filterCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleHospitalReferralRegion, 1 /* POST */, "IndicatorDescriptionLocaleHospitalReferralRegions/FilterPageCount", hiw.IndicatorDescriptionLocaleHospitalReferralRegion.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleHospitalReferralRegion, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionLocaleHospitalReferralRegions/{page}", hiw.IndicatorDescriptionLocaleHospitalReferralRegion.getByIndicatorDescriptionID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleHospitalReferralRegion, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionLocaleHospitalReferralRegions/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionLocaleHospitalReferralRegion.getByIndicatorDescriptionID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleHospitalReferralRegion, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionLocaleHospitalReferralRegions/Count", hiw.IndicatorDescriptionLocaleHospitalReferralRegion.getByIndicatorDescriptionIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleHospitalReferralRegion, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionLocaleHospitalReferralRegions/PageCount", hiw.IndicatorDescriptionLocaleHospitalReferralRegion.getByIndicatorDescriptionIDPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescriptionLocaleHospitalReferralRegion/{indicatorDescriptionLocaleHospitalReferralRegionID}/IndicatorDescription", hiw.IndicatorDescriptionLocaleHospitalReferralRegion.getIndicatorDescriptionForIndicatorDescriptionLocaleHospitalReferralRegion);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleHospitalReferralRegion, 0 /* GET */, "/Locale/{localeID}/IndicatorDescriptionLocaleHospitalReferralRegions/{page}", hiw.IndicatorDescriptionLocaleHospitalReferralRegion.getByLocaleID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleHospitalReferralRegion, 0 /* GET */, "/Locale/{localeID}/IndicatorDescriptionLocaleHospitalReferralRegions/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionLocaleHospitalReferralRegion.getByLocaleID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleHospitalReferralRegion, 0 /* GET */, "/Locale/{localeID}/IndicatorDescriptionLocaleHospitalReferralRegions/Count", hiw.IndicatorDescriptionLocaleHospitalReferralRegion.getByLocaleIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleHospitalReferralRegion, 0 /* GET */, "/Locale/{localeID}/IndicatorDescriptionLocaleHospitalReferralRegions/PageCount", hiw.IndicatorDescriptionLocaleHospitalReferralRegion.getByLocaleIDPageCount);
     hiw.Endpoint.addSingle(hiw.Locale, 0 /* GET */, "/IndicatorDescriptionLocaleHospitalReferralRegion/{indicatorDescriptionLocaleHospitalReferralRegionID}/Locale", hiw.IndicatorDescriptionLocaleHospitalReferralRegion.getLocaleForIndicatorDescriptionLocaleHospitalReferralRegion);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleLevel, 0 /* GET */, "/IndicatorDescriptionLocaleLevels/{page}", hiw.IndicatorDescriptionLocaleLevel.getAll);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleLevel, 0 /* GET */, "/IndicatorDescriptionLocaleLevels/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionLocaleLevel.getAll);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleLevel, 0 /* GET */, "/IndicatorDescriptionLocaleLevels/Count", hiw.IndicatorDescriptionLocaleLevel.getAllCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleLevel, 0 /* GET */, "/IndicatorDescriptionLocaleLevels/PageCount", hiw.IndicatorDescriptionLocaleLevel.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescriptionLocaleLevel, 0 /* GET */, "/IndicatorDescriptionLocaleLevel/{id}", hiw.IndicatorDescriptionLocaleLevel.getByID);
     hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleLevel, 1 /* POST */, "IndicatorDescriptionLocaleLevels/Filter", hiw.IndicatorDescriptionLocaleLevel.filter);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleLevel, 1 /* POST */, "IndicatorDescriptionLocaleLevels/FilterCount", hiw.IndicatorDescriptionLocaleLevel.filterCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleLevel, 1 /* POST */, "IndicatorDescriptionLocaleLevels/FilterPageCount", hiw.IndicatorDescriptionLocaleLevel.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleLevel, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionLocaleLevels/{page}", hiw.IndicatorDescriptionLocaleLevel.getByIndicatorDescriptionID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleLevel, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionLocaleLevels/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionLocaleLevel.getByIndicatorDescriptionID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleLevel, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionLocaleLevels/Count", hiw.IndicatorDescriptionLocaleLevel.getByIndicatorDescriptionIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleLevel, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionLocaleLevels/PageCount", hiw.IndicatorDescriptionLocaleLevel.getByIndicatorDescriptionIDPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescriptionLocaleLevel/{indicatorDescriptionLocaleLevelID}/IndicatorDescription", hiw.IndicatorDescriptionLocaleLevel.getIndicatorDescriptionForIndicatorDescriptionLocaleLevel);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleLevel, 0 /* GET */, "/LocaleLevel/{localeLevelID}/IndicatorDescriptionLocaleLevels/{page}", hiw.IndicatorDescriptionLocaleLevel.getByLocaleLevelID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleLevel, 0 /* GET */, "/LocaleLevel/{localeLevelID}/IndicatorDescriptionLocaleLevels/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionLocaleLevel.getByLocaleLevelID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleLevel, 0 /* GET */, "/LocaleLevel/{localeLevelID}/IndicatorDescriptionLocaleLevels/Count", hiw.IndicatorDescriptionLocaleLevel.getByLocaleLevelIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleLevel, 0 /* GET */, "/LocaleLevel/{localeLevelID}/IndicatorDescriptionLocaleLevels/PageCount", hiw.IndicatorDescriptionLocaleLevel.getByLocaleLevelIDPageCount);
     hiw.Endpoint.addSingle(hiw.LocaleLevel, 0 /* GET */, "/IndicatorDescriptionLocaleLevel/{indicatorDescriptionLocaleLevelID}/LocaleLevel", hiw.IndicatorDescriptionLocaleLevel.getLocaleLevelForIndicatorDescriptionLocaleLevel);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocale, 0 /* GET */, "/IndicatorDescriptionLocales/{page}", hiw.IndicatorDescriptionLocale.getAll);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocale, 0 /* GET */, "/IndicatorDescriptionLocales/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionLocale.getAll);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocale, 0 /* GET */, "/IndicatorDescriptionLocales/Count", hiw.IndicatorDescriptionLocale.getAllCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocale, 0 /* GET */, "/IndicatorDescriptionLocales/PageCount", hiw.IndicatorDescriptionLocale.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescriptionLocale, 0 /* GET */, "/IndicatorDescriptionLocale/{id}", hiw.IndicatorDescriptionLocale.getByID);
     hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocale, 1 /* POST */, "IndicatorDescriptionLocales/Filter", hiw.IndicatorDescriptionLocale.filter);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocale, 1 /* POST */, "IndicatorDescriptionLocales/FilterCount", hiw.IndicatorDescriptionLocale.filterCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocale, 1 /* POST */, "IndicatorDescriptionLocales/FilterPageCount", hiw.IndicatorDescriptionLocale.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocale, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionLocales/{page}", hiw.IndicatorDescriptionLocale.getByIndicatorDescriptionID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocale, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionLocales/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionLocale.getByIndicatorDescriptionID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocale, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionLocales/Count", hiw.IndicatorDescriptionLocale.getByIndicatorDescriptionIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocale, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionLocales/PageCount", hiw.IndicatorDescriptionLocale.getByIndicatorDescriptionIDPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescriptionLocale/{indicatorDescriptionLocaleID}/IndicatorDescription", hiw.IndicatorDescriptionLocale.getIndicatorDescriptionForIndicatorDescriptionLocale);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocale, 0 /* GET */, "/Locale/{localeID}/IndicatorDescriptionLocales/{page}", hiw.IndicatorDescriptionLocale.getByLocaleID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocale, 0 /* GET */, "/Locale/{localeID}/IndicatorDescriptionLocales/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionLocale.getByLocaleID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocale, 0 /* GET */, "/Locale/{localeID}/IndicatorDescriptionLocales/Count", hiw.IndicatorDescriptionLocale.getByLocaleIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocale, 0 /* GET */, "/Locale/{localeID}/IndicatorDescriptionLocales/PageCount", hiw.IndicatorDescriptionLocale.getByLocaleIDPageCount);
     hiw.Endpoint.addSingle(hiw.Locale, 0 /* GET */, "/IndicatorDescriptionLocale/{indicatorDescriptionLocaleID}/Locale", hiw.IndicatorDescriptionLocale.getLocaleForIndicatorDescriptionLocale);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleState, 0 /* GET */, "/IndicatorDescriptionLocaleStates/{page}", hiw.IndicatorDescriptionLocaleState.getAll);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleState, 0 /* GET */, "/IndicatorDescriptionLocaleStates/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionLocaleState.getAll);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleState, 0 /* GET */, "/IndicatorDescriptionLocaleStates/Count", hiw.IndicatorDescriptionLocaleState.getAllCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleState, 0 /* GET */, "/IndicatorDescriptionLocaleStates/PageCount", hiw.IndicatorDescriptionLocaleState.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescriptionLocaleState, 0 /* GET */, "/IndicatorDescriptionLocaleState/{id}", hiw.IndicatorDescriptionLocaleState.getByID);
     hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleState, 1 /* POST */, "IndicatorDescriptionLocaleStates/Filter", hiw.IndicatorDescriptionLocaleState.filter);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleState, 1 /* POST */, "IndicatorDescriptionLocaleStates/FilterCount", hiw.IndicatorDescriptionLocaleState.filterCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleState, 1 /* POST */, "IndicatorDescriptionLocaleStates/FilterPageCount", hiw.IndicatorDescriptionLocaleState.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleState, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionLocaleStates/{page}", hiw.IndicatorDescriptionLocaleState.getByIndicatorDescriptionID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleState, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionLocaleStates/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionLocaleState.getByIndicatorDescriptionID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleState, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionLocaleStates/Count", hiw.IndicatorDescriptionLocaleState.getByIndicatorDescriptionIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleState, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionLocaleStates/PageCount", hiw.IndicatorDescriptionLocaleState.getByIndicatorDescriptionIDPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescriptionLocaleState/{indicatorDescriptionLocaleStateID}/IndicatorDescription", hiw.IndicatorDescriptionLocaleState.getIndicatorDescriptionForIndicatorDescriptionLocaleState);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleState, 0 /* GET */, "/Locale/{localeID}/IndicatorDescriptionLocaleStates/{page}", hiw.IndicatorDescriptionLocaleState.getByLocaleID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionLocaleState, 0 /* GET */, "/Locale/{localeID}/IndicatorDescriptionLocaleStates/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionLocaleState.getByLocaleID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleState, 0 /* GET */, "/Locale/{localeID}/IndicatorDescriptionLocaleStates/Count", hiw.IndicatorDescriptionLocaleState.getByLocaleIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionLocaleState, 0 /* GET */, "/Locale/{localeID}/IndicatorDescriptionLocaleStates/PageCount", hiw.IndicatorDescriptionLocaleState.getByLocaleIDPageCount);
     hiw.Endpoint.addSingle(hiw.Locale, 0 /* GET */, "/IndicatorDescriptionLocaleState/{indicatorDescriptionLocaleStateID}/Locale", hiw.IndicatorDescriptionLocaleState.getLocaleForIndicatorDescriptionLocaleState);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionMethodologyNote, 0 /* GET */, "/IndicatorDescriptionMethodologyNotes/{page}", hiw.IndicatorDescriptionMethodologyNote.getAll);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionMethodologyNote, 0 /* GET */, "/IndicatorDescriptionMethodologyNotes/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionMethodologyNote.getAll);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionMethodologyNote, 0 /* GET */, "/IndicatorDescriptionMethodologyNotes/Count", hiw.IndicatorDescriptionMethodologyNote.getAllCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionMethodologyNote, 0 /* GET */, "/IndicatorDescriptionMethodologyNotes/PageCount", hiw.IndicatorDescriptionMethodologyNote.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescriptionMethodologyNote, 0 /* GET */, "/IndicatorDescriptionMethodologyNote/{id}", hiw.IndicatorDescriptionMethodologyNote.getByID);
     hiw.Endpoint.addArray(hiw.IndicatorDescriptionMethodologyNote, 1 /* POST */, "IndicatorDescriptionMethodologyNotes/Filter", hiw.IndicatorDescriptionMethodologyNote.filter);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionMethodologyNote, 1 /* POST */, "IndicatorDescriptionMethodologyNotes/FilterCount", hiw.IndicatorDescriptionMethodologyNote.filterCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionMethodologyNote, 1 /* POST */, "IndicatorDescriptionMethodologyNotes/FilterPageCount", hiw.IndicatorDescriptionMethodologyNote.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionMethodologyNote, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionMethodologyNotes/{page}", hiw.IndicatorDescriptionMethodologyNote.getByIndicatorDescriptionID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionMethodologyNote, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionMethodologyNotes/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionMethodologyNote.getByIndicatorDescriptionID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionMethodologyNote, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionMethodologyNotes/Count", hiw.IndicatorDescriptionMethodologyNote.getByIndicatorDescriptionIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionMethodologyNote, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionMethodologyNotes/PageCount", hiw.IndicatorDescriptionMethodologyNote.getByIndicatorDescriptionIDPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescriptionMethodologyNote/{indicatorDescriptionMethodologyNoteID}/IndicatorDescription", hiw.IndicatorDescriptionMethodologyNote.getIndicatorDescriptionForIndicatorDescriptionMethodologyNote);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionMoreInfo, 0 /* GET */, "/IndicatorDescriptionMoreInfos/{page}", hiw.IndicatorDescriptionMoreInfo.getAll);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionMoreInfo, 0 /* GET */, "/IndicatorDescriptionMoreInfos/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionMoreInfo.getAll);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionMoreInfo, 0 /* GET */, "/IndicatorDescriptionMoreInfos/Count", hiw.IndicatorDescriptionMoreInfo.getAllCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionMoreInfo, 0 /* GET */, "/IndicatorDescriptionMoreInfos/PageCount", hiw.IndicatorDescriptionMoreInfo.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescriptionMoreInfo, 0 /* GET */, "/IndicatorDescriptionMoreInfo/{id}", hiw.IndicatorDescriptionMoreInfo.getByID);
     hiw.Endpoint.addArray(hiw.IndicatorDescriptionMoreInfo, 1 /* POST */, "IndicatorDescriptionMoreInfos/Filter", hiw.IndicatorDescriptionMoreInfo.filter);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionMoreInfo, 1 /* POST */, "IndicatorDescriptionMoreInfos/FilterCount", hiw.IndicatorDescriptionMoreInfo.filterCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionMoreInfo, 1 /* POST */, "IndicatorDescriptionMoreInfos/FilterPageCount", hiw.IndicatorDescriptionMoreInfo.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionMoreInfo, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionMoreInfos/{page}", hiw.IndicatorDescriptionMoreInfo.getByIndicatorDescriptionID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionMoreInfo, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionMoreInfos/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionMoreInfo.getByIndicatorDescriptionID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionMoreInfo, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionMoreInfos/Count", hiw.IndicatorDescriptionMoreInfo.getByIndicatorDescriptionIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionMoreInfo, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionMoreInfos/PageCount", hiw.IndicatorDescriptionMoreInfo.getByIndicatorDescriptionIDPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescriptionMoreInfo/{indicatorDescriptionMoreInfoID}/IndicatorDescription", hiw.IndicatorDescriptionMoreInfo.getIndicatorDescriptionForIndicatorDescriptionMoreInfo);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionMoreInfo, 0 /* GET */, "/Url/{urlID}/IndicatorDescriptionMoreInfoes/{page}", hiw.IndicatorDescriptionMoreInfo.getByUrlID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionMoreInfo, 0 /* GET */, "/Url/{urlID}/IndicatorDescriptionMoreInfoes/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionMoreInfo.getByUrlID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionMoreInfo, 0 /* GET */, "/Url/{urlID}/IndicatorDescriptionMoreInfoes/Count", hiw.IndicatorDescriptionMoreInfo.getByUrlIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionMoreInfo, 0 /* GET */, "/Url/{urlID}/IndicatorDescriptionMoreInfoes/PageCount", hiw.IndicatorDescriptionMoreInfo.getByUrlIDPageCount);
     hiw.Endpoint.addSingle(hiw.Url, 0 /* GET */, "/IndicatorDescriptionMoreInfo/{indicatorDescriptionMoreInfoID}/Url", hiw.IndicatorDescriptionMoreInfo.getUrlForIndicatorDescriptionMoreInfo);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionReference, 0 /* GET */, "/IndicatorDescriptionReferences/{page}", hiw.IndicatorDescriptionReference.getAll);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionReference, 0 /* GET */, "/IndicatorDescriptionReferences/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionReference.getAll);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionReference, 0 /* GET */, "/IndicatorDescriptionReferences/Count", hiw.IndicatorDescriptionReference.getAllCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionReference, 0 /* GET */, "/IndicatorDescriptionReferences/PageCount", hiw.IndicatorDescriptionReference.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescriptionReference, 0 /* GET */, "/IndicatorDescriptionReference/{id}", hiw.IndicatorDescriptionReference.getByID);
     hiw.Endpoint.addArray(hiw.IndicatorDescriptionReference, 1 /* POST */, "IndicatorDescriptionReferences/Filter", hiw.IndicatorDescriptionReference.filter);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionReference, 1 /* POST */, "IndicatorDescriptionReferences/FilterCount", hiw.IndicatorDescriptionReference.filterCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionReference, 1 /* POST */, "IndicatorDescriptionReferences/FilterPageCount", hiw.IndicatorDescriptionReference.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionReference, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionReferences/{page}", hiw.IndicatorDescriptionReference.getByIndicatorDescriptionID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionReference, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionReferences/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionReference.getByIndicatorDescriptionID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionReference, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionReferences/Count", hiw.IndicatorDescriptionReference.getByIndicatorDescriptionIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionReference, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionReferences/PageCount", hiw.IndicatorDescriptionReference.getByIndicatorDescriptionIDPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescriptionReference/{indicatorDescriptionReferenceID}/IndicatorDescription", hiw.IndicatorDescriptionReference.getIndicatorDescriptionForIndicatorDescriptionReference);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionReference, 0 /* GET */, "/Url/{urlID}/IndicatorDescriptionReferences/{page}", hiw.IndicatorDescriptionReference.getByUrlID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionReference, 0 /* GET */, "/Url/{urlID}/IndicatorDescriptionReferences/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionReference.getByUrlID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionReference, 0 /* GET */, "/Url/{urlID}/IndicatorDescriptionReferences/Count", hiw.IndicatorDescriptionReference.getByUrlIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionReference, 0 /* GET */, "/Url/{urlID}/IndicatorDescriptionReferences/PageCount", hiw.IndicatorDescriptionReference.getByUrlIDPageCount);
     hiw.Endpoint.addSingle(hiw.Url, 0 /* GET */, "/IndicatorDescriptionReference/{indicatorDescriptionReferenceID}/Url", hiw.IndicatorDescriptionReference.getUrlForIndicatorDescriptionReference);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionResource, 0 /* GET */, "/IndicatorDescriptionResources/{page}", hiw.IndicatorDescriptionResource.getAll);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionResource, 0 /* GET */, "/IndicatorDescriptionResources/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionResource.getAll);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionResource, 0 /* GET */, "/IndicatorDescriptionResources/Count", hiw.IndicatorDescriptionResource.getAllCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionResource, 0 /* GET */, "/IndicatorDescriptionResources/PageCount", hiw.IndicatorDescriptionResource.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescriptionResource, 0 /* GET */, "/IndicatorDescriptionResource/{id}", hiw.IndicatorDescriptionResource.getByID);
     hiw.Endpoint.addArray(hiw.IndicatorDescriptionResource, 1 /* POST */, "IndicatorDescriptionResources/Filter", hiw.IndicatorDescriptionResource.filter);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionResource, 1 /* POST */, "IndicatorDescriptionResources/FilterCount", hiw.IndicatorDescriptionResource.filterCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionResource, 1 /* POST */, "IndicatorDescriptionResources/FilterPageCount", hiw.IndicatorDescriptionResource.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionResource, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionResources/{page}", hiw.IndicatorDescriptionResource.getByIndicatorDescriptionID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionResource, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionResources/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionResource.getByIndicatorDescriptionID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionResource, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionResources/Count", hiw.IndicatorDescriptionResource.getByIndicatorDescriptionIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionResource, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionResources/PageCount", hiw.IndicatorDescriptionResource.getByIndicatorDescriptionIDPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescriptionResource/{indicatorDescriptionResourceID}/IndicatorDescription", hiw.IndicatorDescriptionResource.getIndicatorDescriptionForIndicatorDescriptionResource);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionResource, 0 /* GET */, "/Url/{urlID}/IndicatorDescriptionResources/{page}", hiw.IndicatorDescriptionResource.getByUrlID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionResource, 0 /* GET */, "/Url/{urlID}/IndicatorDescriptionResources/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionResource.getByUrlID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionResource, 0 /* GET */, "/Url/{urlID}/IndicatorDescriptionResources/Count", hiw.IndicatorDescriptionResource.getByUrlIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionResource, 0 /* GET */, "/Url/{urlID}/IndicatorDescriptionResources/PageCount", hiw.IndicatorDescriptionResource.getByUrlIDPageCount);
     hiw.Endpoint.addSingle(hiw.Url, 0 /* GET */, "/IndicatorDescriptionResource/{indicatorDescriptionResourceID}/Url", hiw.IndicatorDescriptionResource.getUrlForIndicatorDescriptionResource);
-    hiw.Endpoint.addArray(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescriptions/{page}", hiw.IndicatorDescription.getAll);
+    hiw.Endpoint.addArray(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescriptions/{page}?PageSize={pageSize}", hiw.IndicatorDescription.getAll);
     hiw.Endpoint.addSimple(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescriptions/Count", hiw.IndicatorDescription.getAllCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescriptions/PageCount", hiw.IndicatorDescription.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescription/{id}", hiw.IndicatorDescription.getByID);
     hiw.Endpoint.addArray(hiw.IndicatorDescription, 1 /* POST */, "IndicatorDescriptions/Filter", hiw.IndicatorDescription.filter);
     hiw.Endpoint.addSimple(hiw.IndicatorDescription, 1 /* POST */, "IndicatorDescriptions/FilterCount", hiw.IndicatorDescription.filterCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescription, 1 /* POST */, "IndicatorDescriptions/FilterPageCount", hiw.IndicatorDescription.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IndicatorDescription, 0 /* GET */, "/ValueLabel/{valueLabelID}/IndicatorDescriptions/{page}", hiw.IndicatorDescription.getByValueLabelID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescription, 0 /* GET */, "/ValueLabel/{valueLabelID}/IndicatorDescriptions/{page}?PageSize={pageSize}", hiw.IndicatorDescription.getByValueLabelID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescription, 0 /* GET */, "/ValueLabel/{valueLabelID}/IndicatorDescriptions/Count", hiw.IndicatorDescription.getByValueLabelIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescription, 0 /* GET */, "/ValueLabel/{valueLabelID}/IndicatorDescriptions/PageCount", hiw.IndicatorDescription.getByValueLabelIDPageCount);
     hiw.Endpoint.addSingle(hiw.ValueLabel, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/ValueLabel", hiw.IndicatorDescription.getValueLabelForIndicatorDescription);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionHP2020, 0 /* GET */, "/IndicatorDescriptionHP2020s/{page}", hiw.IndicatorDescriptionHP2020.getAll);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionHP2020, 0 /* GET */, "/IndicatorDescriptionHP2020s/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionHP2020.getAll);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionHP2020, 0 /* GET */, "/IndicatorDescriptionHP2020s/Count", hiw.IndicatorDescriptionHP2020.getAllCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionHP2020, 0 /* GET */, "/IndicatorDescriptionHP2020s/PageCount", hiw.IndicatorDescriptionHP2020.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescriptionHP2020, 0 /* GET */, "/IndicatorDescriptionHP2020/{id}", hiw.IndicatorDescriptionHP2020.getByID);
     hiw.Endpoint.addArray(hiw.IndicatorDescriptionHP2020, 1 /* POST */, "IndicatorDescriptionHP2020s/Filter", hiw.IndicatorDescriptionHP2020.filter);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionHP2020, 1 /* POST */, "IndicatorDescriptionHP2020s/FilterCount", hiw.IndicatorDescriptionHP2020.filterCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionHP2020, 1 /* POST */, "IndicatorDescriptionHP2020s/FilterPageCount", hiw.IndicatorDescriptionHP2020.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionHP2020, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionsHP2020s/{page}", hiw.IndicatorDescriptionHP2020.getByIndicatorDescriptionID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionHP2020, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionsHP2020s/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionHP2020.getByIndicatorDescriptionID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionHP2020, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionsHP2020s/Count", hiw.IndicatorDescriptionHP2020.getByIndicatorDescriptionIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionHP2020, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionsHP2020s/PageCount", hiw.IndicatorDescriptionHP2020.getByIndicatorDescriptionIDPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescriptionHP2020/{indicatorDescriptionHP2020ID}/IndicatorDescription", hiw.IndicatorDescriptionHP2020.getIndicatorDescriptionForIndicatorDescriptionHP2020);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionHP2020, 0 /* GET */, "/HP2020TSM/{hP2020TSMID}/IndicatorDescriptionsHP2020s/{page}", hiw.IndicatorDescriptionHP2020.getByHP2020TSMID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionHP2020, 0 /* GET */, "/HP2020TSM/{hP2020TSMID}/IndicatorDescriptionsHP2020s/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionHP2020.getByHP2020TSMID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionHP2020, 0 /* GET */, "/HP2020TSM/{hP2020TSMID}/IndicatorDescriptionsHP2020s/Count", hiw.IndicatorDescriptionHP2020.getByHP2020TSMIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionHP2020, 0 /* GET */, "/HP2020TSM/{hP2020TSMID}/IndicatorDescriptionsHP2020s/PageCount", hiw.IndicatorDescriptionHP2020.getByHP2020TSMIDPageCount);
     hiw.Endpoint.addSingle(hiw.HP2020TSM, 0 /* GET */, "/IndicatorDescriptionHP2020/{indicatorDescriptionHP2020ID}/HP2020TSM", hiw.IndicatorDescriptionHP2020.getHP2020TSMForIndicatorDescriptionHP2020);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionTimeFrame, 0 /* GET */, "/IndicatorDescriptionTimeFrames/{page}", hiw.IndicatorDescriptionTimeFrame.getAll);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionTimeFrame, 0 /* GET */, "/IndicatorDescriptionTimeFrames/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionTimeFrame.getAll);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionTimeFrame, 0 /* GET */, "/IndicatorDescriptionTimeFrames/Count", hiw.IndicatorDescriptionTimeFrame.getAllCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionTimeFrame, 0 /* GET */, "/IndicatorDescriptionTimeFrames/PageCount", hiw.IndicatorDescriptionTimeFrame.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescriptionTimeFrame, 0 /* GET */, "/IndicatorDescriptionTimeFrame/{id}", hiw.IndicatorDescriptionTimeFrame.getByID);
     hiw.Endpoint.addArray(hiw.IndicatorDescriptionTimeFrame, 1 /* POST */, "IndicatorDescriptionTimeFrames/Filter", hiw.IndicatorDescriptionTimeFrame.filter);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionTimeFrame, 1 /* POST */, "IndicatorDescriptionTimeFrames/FilterCount", hiw.IndicatorDescriptionTimeFrame.filterCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionTimeFrame, 1 /* POST */, "IndicatorDescriptionTimeFrames/FilterPageCount", hiw.IndicatorDescriptionTimeFrame.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionTimeFrame, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionTimeFrames/{page}", hiw.IndicatorDescriptionTimeFrame.getByIndicatorDescriptionID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionTimeFrame, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionTimeFrames/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionTimeFrame.getByIndicatorDescriptionID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionTimeFrame, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionTimeFrames/Count", hiw.IndicatorDescriptionTimeFrame.getByIndicatorDescriptionIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionTimeFrame, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionTimeFrames/PageCount", hiw.IndicatorDescriptionTimeFrame.getByIndicatorDescriptionIDPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescriptionTimeFrame/{indicatorDescriptionTimeFrameID}/IndicatorDescription", hiw.IndicatorDescriptionTimeFrame.getIndicatorDescriptionForIndicatorDescriptionTimeFrame);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionTimeFrame, 0 /* GET */, "/Timeframe/{timeframeID}/IndicatorDescriptionTimeFrames/{page}", hiw.IndicatorDescriptionTimeFrame.getByTimeframeID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionTimeFrame, 0 /* GET */, "/Timeframe/{timeframeID}/IndicatorDescriptionTimeFrames/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionTimeFrame.getByTimeframeID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionTimeFrame, 0 /* GET */, "/Timeframe/{timeframeID}/IndicatorDescriptionTimeFrames/Count", hiw.IndicatorDescriptionTimeFrame.getByTimeframeIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionTimeFrame, 0 /* GET */, "/Timeframe/{timeframeID}/IndicatorDescriptionTimeFrames/PageCount", hiw.IndicatorDescriptionTimeFrame.getByTimeframeIDPageCount);
     hiw.Endpoint.addSingle(hiw.Timeframe, 0 /* GET */, "/IndicatorDescriptionTimeFrame/{indicatorDescriptionTimeFrameID}/Timeframe", hiw.IndicatorDescriptionTimeFrame.getTimeframeForIndicatorDescriptionTimeFrame);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionYear, 0 /* GET */, "/IndicatorDescriptionYears/{page}", hiw.IndicatorDescriptionYear.getAll);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionYear, 0 /* GET */, "/IndicatorDescriptionYears/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionYear.getAll);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionYear, 0 /* GET */, "/IndicatorDescriptionYears/Count", hiw.IndicatorDescriptionYear.getAllCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionYear, 0 /* GET */, "/IndicatorDescriptionYears/PageCount", hiw.IndicatorDescriptionYear.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescriptionYear, 0 /* GET */, "/IndicatorDescriptionYear/{id}", hiw.IndicatorDescriptionYear.getByID);
     hiw.Endpoint.addArray(hiw.IndicatorDescriptionYear, 1 /* POST */, "IndicatorDescriptionYears/Filter", hiw.IndicatorDescriptionYear.filter);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionYear, 1 /* POST */, "IndicatorDescriptionYears/FilterCount", hiw.IndicatorDescriptionYear.filterCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionYear, 1 /* POST */, "IndicatorDescriptionYears/FilterPageCount", hiw.IndicatorDescriptionYear.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionYear, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionYears/{page}", hiw.IndicatorDescriptionYear.getByIndicatorDescriptionID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionYear, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionYears/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionYear.getByIndicatorDescriptionID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionYear, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionYears/Count", hiw.IndicatorDescriptionYear.getByIndicatorDescriptionIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionYear, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDescriptionYears/PageCount", hiw.IndicatorDescriptionYear.getByIndicatorDescriptionIDPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDescriptionYear/{indicatorDescriptionYearID}/IndicatorDescription", hiw.IndicatorDescriptionYear.getIndicatorDescriptionForIndicatorDescriptionYear);
-    hiw.Endpoint.addArray(hiw.IndicatorDescriptionYear, 0 /* GET */, "/Year/{yearID}/IndicatorDescriptionYears/{page}", hiw.IndicatorDescriptionYear.getByYearID);
+    hiw.Endpoint.addArray(hiw.IndicatorDescriptionYear, 0 /* GET */, "/Year/{yearID}/IndicatorDescriptionYears/{page}?PageSize={pageSize}", hiw.IndicatorDescriptionYear.getByYearID);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionYear, 0 /* GET */, "/Year/{yearID}/IndicatorDescriptionYears/Count", hiw.IndicatorDescriptionYear.getByYearIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDescriptionYear, 0 /* GET */, "/Year/{yearID}/IndicatorDescriptionYears/PageCount", hiw.IndicatorDescriptionYear.getByYearIDPageCount);
     hiw.Endpoint.addSingle(hiw.Year, 0 /* GET */, "/IndicatorDescriptionYear/{indicatorDescriptionYearID}/Year", hiw.IndicatorDescriptionYear.getYearForIndicatorDescriptionYear);
     hiw.Endpoint.addSingle(hiw.IndicatorDescriptionYear, 0 /* GET */, "/IndicatorDescriptionYear?IndicatorDescriptionID={indicatorDescriptionID}&YearID={yearID}", hiw.IndicatorDescriptionYear.getByIndicatorDescriptionIDAndYearID);
-    hiw.Endpoint.addArray(hiw.IndicatorDimensionGraph, 0 /* GET */, "/IndicatorDimensionGraphs/{page}", hiw.IndicatorDimensionGraph.getAll);
+    hiw.Endpoint.addArray(hiw.IndicatorDimensionGraph, 0 /* GET */, "/IndicatorDimensionGraphs/{page}?PageSize={pageSize}", hiw.IndicatorDimensionGraph.getAll);
     hiw.Endpoint.addSimple(hiw.IndicatorDimensionGraph, 0 /* GET */, "/IndicatorDimensionGraphs/Count", hiw.IndicatorDimensionGraph.getAllCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDimensionGraph, 0 /* GET */, "/IndicatorDimensionGraphs/PageCount", hiw.IndicatorDimensionGraph.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDimensionGraph, 0 /* GET */, "/IndicatorDimensionGraph/{id}", hiw.IndicatorDimensionGraph.getByID);
     hiw.Endpoint.addArray(hiw.IndicatorDimensionGraph, 1 /* POST */, "IndicatorDimensionGraphs/Filter", hiw.IndicatorDimensionGraph.filter);
     hiw.Endpoint.addSimple(hiw.IndicatorDimensionGraph, 1 /* POST */, "IndicatorDimensionGraphs/FilterCount", hiw.IndicatorDimensionGraph.filterCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDimensionGraph, 1 /* POST */, "IndicatorDimensionGraphs/FilterPageCount", hiw.IndicatorDimensionGraph.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IndicatorDimensionGraph, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDimensionGraphs/{page}", hiw.IndicatorDimensionGraph.getByIndicatorDescriptionID);
+    hiw.Endpoint.addArray(hiw.IndicatorDimensionGraph, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDimensionGraphs/{page}?PageSize={pageSize}", hiw.IndicatorDimensionGraph.getByIndicatorDescriptionID);
     hiw.Endpoint.addSimple(hiw.IndicatorDimensionGraph, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDimensionGraphs/Count", hiw.IndicatorDimensionGraph.getByIndicatorDescriptionIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDimensionGraph, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/IndicatorDimensionGraphs/PageCount", hiw.IndicatorDimensionGraph.getByIndicatorDescriptionIDPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescription, 0 /* GET */, "/IndicatorDimensionGraph/{indicatorDimensionGraphID}/IndicatorDescription", hiw.IndicatorDimensionGraph.getIndicatorDescriptionForIndicatorDimensionGraph);
-    hiw.Endpoint.addArray(hiw.IndicatorDimensionGraph, 0 /* GET */, "/LocaleLevel/{localeLevelID}/IndicatorDimensionGraphs/{page}", hiw.IndicatorDimensionGraph.getByLocaleLevelID);
+    hiw.Endpoint.addArray(hiw.IndicatorDimensionGraph, 0 /* GET */, "/LocaleLevel/{localeLevelID}/IndicatorDimensionGraphs/{page}?PageSize={pageSize}", hiw.IndicatorDimensionGraph.getByLocaleLevelID);
     hiw.Endpoint.addSimple(hiw.IndicatorDimensionGraph, 0 /* GET */, "/LocaleLevel/{localeLevelID}/IndicatorDimensionGraphs/Count", hiw.IndicatorDimensionGraph.getByLocaleLevelIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDimensionGraph, 0 /* GET */, "/LocaleLevel/{localeLevelID}/IndicatorDimensionGraphs/PageCount", hiw.IndicatorDimensionGraph.getByLocaleLevelIDPageCount);
     hiw.Endpoint.addSingle(hiw.LocaleLevel, 0 /* GET */, "/IndicatorDimensionGraph/{indicatorDimensionGraphID}/LocaleLevel", hiw.IndicatorDimensionGraph.getLocaleLevelForIndicatorDimensionGraph);
-    hiw.Endpoint.addArray(hiw.IndicatorDimensionGraph, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/IndicatorDimensionGraphs/{page}", hiw.IndicatorDimensionGraph.getByDimensionGraphID);
+    hiw.Endpoint.addArray(hiw.IndicatorDimensionGraph, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/IndicatorDimensionGraphs/{page}?PageSize={pageSize}", hiw.IndicatorDimensionGraph.getByDimensionGraphID);
     hiw.Endpoint.addSimple(hiw.IndicatorDimensionGraph, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/IndicatorDimensionGraphs/Count", hiw.IndicatorDimensionGraph.getByDimensionGraphIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDimensionGraph, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/IndicatorDimensionGraphs/PageCount", hiw.IndicatorDimensionGraph.getByDimensionGraphIDPageCount);
     hiw.Endpoint.addSingle(hiw.DimensionGraph, 0 /* GET */, "/IndicatorDimensionGraph/{indicatorDimensionGraphID}/DimensionGraph", hiw.IndicatorDimensionGraph.getDimensionGraphForIndicatorDimensionGraph);
-    hiw.Endpoint.addArray(hiw.IndicatorDimension, 0 /* GET */, "/IndicatorDimensions/{page}", hiw.IndicatorDimension.getAll);
+    hiw.Endpoint.addArray(hiw.IndicatorDimension, 0 /* GET */, "/IndicatorDimensions/{page}?PageSize={pageSize}", hiw.IndicatorDimension.getAll);
     hiw.Endpoint.addSimple(hiw.IndicatorDimension, 0 /* GET */, "/IndicatorDimensions/Count", hiw.IndicatorDimension.getAllCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDimension, 0 /* GET */, "/IndicatorDimensions/PageCount", hiw.IndicatorDimension.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDimension, 0 /* GET */, "/IndicatorDimension/{id}", hiw.IndicatorDimension.getByID);
     hiw.Endpoint.addArray(hiw.IndicatorDimension, 1 /* POST */, "IndicatorDimensions/Filter", hiw.IndicatorDimension.filter);
     hiw.Endpoint.addSimple(hiw.IndicatorDimension, 1 /* POST */, "IndicatorDimensions/FilterCount", hiw.IndicatorDimension.filterCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDimension, 1 /* POST */, "IndicatorDimensions/FilterPageCount", hiw.IndicatorDimension.filterPageCount);
-    hiw.Endpoint.addArray(hiw.IndicatorDimension, 0 /* GET */, "/Indicator/{indicatorID}/IndicatorDimensions/{page}", hiw.IndicatorDimension.getByIndicatorID);
+    hiw.Endpoint.addArray(hiw.IndicatorDimension, 0 /* GET */, "/Indicator/{indicatorID}/IndicatorDimensions/{page}?PageSize={pageSize}", hiw.IndicatorDimension.getByIndicatorID);
     hiw.Endpoint.addSimple(hiw.IndicatorDimension, 0 /* GET */, "/Indicator/{indicatorID}/IndicatorDimensions/Count", hiw.IndicatorDimension.getByIndicatorIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDimension, 0 /* GET */, "/Indicator/{indicatorID}/IndicatorDimensions/PageCount", hiw.IndicatorDimension.getByIndicatorIDPageCount);
     hiw.Endpoint.addSingle(hiw.Indicator, 0 /* GET */, "/IndicatorDimension/{indicatorDimensionID}/Indicator", hiw.IndicatorDimension.getIndicatorForIndicatorDimension);
-    hiw.Endpoint.addArray(hiw.IndicatorDimension, 0 /* GET */, "/DimensionBook/{dimensionBookID}/IndicatorDimensions/{page}", hiw.IndicatorDimension.getByDimensionBookID);
+    hiw.Endpoint.addArray(hiw.IndicatorDimension, 0 /* GET */, "/DimensionBook/{dimensionBookID}/IndicatorDimensions/{page}?PageSize={pageSize}", hiw.IndicatorDimension.getByDimensionBookID);
     hiw.Endpoint.addSimple(hiw.IndicatorDimension, 0 /* GET */, "/DimensionBook/{dimensionBookID}/IndicatorDimensions/Count", hiw.IndicatorDimension.getByDimensionBookIDCount);
     hiw.Endpoint.addSimple(hiw.IndicatorDimension, 0 /* GET */, "/DimensionBook/{dimensionBookID}/IndicatorDimensions/PageCount", hiw.IndicatorDimension.getByDimensionBookIDPageCount);
     hiw.Endpoint.addSingle(hiw.DimensionBook, 0 /* GET */, "/IndicatorDimension/{indicatorDimensionID}/DimensionBook", hiw.IndicatorDimension.getDimensionBookForIndicatorDimension);
     hiw.Endpoint.addSingle(hiw.IndicatorDimension, 0 /* GET */, "/IndicatorDimension?DimensionBookID={dimensionBookID}&IndicatorID={indicatorID}", hiw.IndicatorDimension.getByDimensionBookIDAndIndicatorID);
-    hiw.Endpoint.addArray(hiw.Indicator, 0 /* GET */, "/Indicators/{page}", hiw.Indicator.getAll);
+    hiw.Endpoint.addArray(hiw.Indicator, 0 /* GET */, "/Indicators/{page}?PageSize={pageSize}", hiw.Indicator.getAll);
     hiw.Endpoint.addSimple(hiw.Indicator, 0 /* GET */, "/Indicators/Count", hiw.Indicator.getAllCount);
     hiw.Endpoint.addSimple(hiw.Indicator, 0 /* GET */, "/Indicators/PageCount", hiw.Indicator.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.Indicator, 0 /* GET */, "/Indicator/{id}", hiw.Indicator.getByID);
     hiw.Endpoint.addArray(hiw.Indicator, 1 /* POST */, "Indicators/Filter", hiw.Indicator.filter);
     hiw.Endpoint.addSimple(hiw.Indicator, 1 /* POST */, "Indicators/FilterCount", hiw.Indicator.filterCount);
     hiw.Endpoint.addSimple(hiw.Indicator, 1 /* POST */, "Indicators/FilterPageCount", hiw.Indicator.filterPageCount);
-    hiw.Endpoint.addArray(hiw.Indicator, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/Indicators/{page}", hiw.Indicator.getByIndicatorDescriptionID);
+    hiw.Endpoint.addArray(hiw.Indicator, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/Indicators/{page}?PageSize={pageSize}", hiw.Indicator.getByIndicatorDescriptionID);
     hiw.Endpoint.addSimple(hiw.Indicator, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/Indicators/Count", hiw.Indicator.getByIndicatorDescriptionIDCount);
     hiw.Endpoint.addSimple(hiw.Indicator, 0 /* GET */, "/IndicatorDescription/{indicatorDescriptionID}/Indicators/PageCount", hiw.Indicator.getByIndicatorDescriptionIDPageCount);
     hiw.Endpoint.addSingle(hiw.IndicatorDescription, 0 /* GET */, "/Indicator/{indicatorID}/IndicatorDescription", hiw.Indicator.getIndicatorDescriptionForIndicator);
-    hiw.Endpoint.addArray(hiw.Indicator, 0 /* GET */, "/Timeframe/{timeframeID}/Indicators/{page}", hiw.Indicator.getByTimeframeID);
+    hiw.Endpoint.addArray(hiw.Indicator, 0 /* GET */, "/Timeframe/{timeframeID}/Indicators/{page}?PageSize={pageSize}", hiw.Indicator.getByTimeframeID);
     hiw.Endpoint.addSimple(hiw.Indicator, 0 /* GET */, "/Timeframe/{timeframeID}/Indicators/Count", hiw.Indicator.getByTimeframeIDCount);
     hiw.Endpoint.addSimple(hiw.Indicator, 0 /* GET */, "/Timeframe/{timeframeID}/Indicators/PageCount", hiw.Indicator.getByTimeframeIDPageCount);
     hiw.Endpoint.addSingle(hiw.Timeframe, 0 /* GET */, "/Indicator/{indicatorID}/Timeframe", hiw.Indicator.getTimeframeForIndicator);
-    hiw.Endpoint.addArray(hiw.Indicator, 0 /* GET */, "/Locale/{localeID}/Indicators/{page}", hiw.Indicator.getByLocaleID);
+    hiw.Endpoint.addArray(hiw.Indicator, 0 /* GET */, "/Locale/{localeID}/Indicators/{page}?PageSize={pageSize}", hiw.Indicator.getByLocaleID);
     hiw.Endpoint.addSimple(hiw.Indicator, 0 /* GET */, "/Locale/{localeID}/Indicators/Count", hiw.Indicator.getByLocaleIDCount);
     hiw.Endpoint.addSimple(hiw.Indicator, 0 /* GET */, "/Locale/{localeID}/Indicators/PageCount", hiw.Indicator.getByLocaleIDPageCount);
     hiw.Endpoint.addSingle(hiw.Locale, 0 /* GET */, "/Indicator/{indicatorID}/Locale", hiw.Indicator.getLocaleForIndicator);
-    hiw.Endpoint.addArray(hiw.Indicator, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/Indicators/{page}", hiw.Indicator.getByDimensionGraphID);
+    hiw.Endpoint.addArray(hiw.Indicator, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/Indicators/{page}?PageSize={pageSize}", hiw.Indicator.getByDimensionGraphID);
     hiw.Endpoint.addSimple(hiw.Indicator, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/Indicators/Count", hiw.Indicator.getByDimensionGraphIDCount);
     hiw.Endpoint.addSimple(hiw.Indicator, 0 /* GET */, "/DimensionGraph/{dimensionGraphID}/Indicators/PageCount", hiw.Indicator.getByDimensionGraphIDPageCount);
     hiw.Endpoint.addSingle(hiw.DimensionGraph, 0 /* GET */, "/Indicator/{indicatorID}/DimensionGraph", hiw.Indicator.getDimensionGraphForIndicator);
-    hiw.Endpoint.addArray(hiw.Indicator, 0 /* GET */, "/ModifierGraph/{modifierGraphID}/Indicators/{page}", hiw.Indicator.getByModifierGraphID);
+    hiw.Endpoint.addArray(hiw.Indicator, 0 /* GET */, "/ModifierGraph/{modifierGraphID}/Indicators/{page}?PageSize={pageSize}", hiw.Indicator.getByModifierGraphID);
     hiw.Endpoint.addSimple(hiw.Indicator, 0 /* GET */, "/ModifierGraph/{modifierGraphID}/Indicators/Count", hiw.Indicator.getByModifierGraphIDCount);
     hiw.Endpoint.addSimple(hiw.Indicator, 0 /* GET */, "/ModifierGraph/{modifierGraphID}/Indicators/PageCount", hiw.Indicator.getByModifierGraphIDPageCount);
     hiw.Endpoint.addSingle(hiw.ModifierGraph, 0 /* GET */, "/Indicator/{indicatorID}/ModifierGraph", hiw.Indicator.getModifierGraphForIndicator);
-    hiw.Endpoint.addArray(hiw.Initiative, 0 /* GET */, "/Initiatives/{page}", hiw.Initiative.getAll);
+    hiw.Endpoint.addArray(hiw.Initiative, 0 /* GET */, "/Initiatives/{page}?PageSize={pageSize}", hiw.Initiative.getAll);
     hiw.Endpoint.addSimple(hiw.Initiative, 0 /* GET */, "/Initiatives/Count", hiw.Initiative.getAllCount);
     hiw.Endpoint.addSimple(hiw.Initiative, 0 /* GET */, "/Initiatives/PageCount", hiw.Initiative.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.Initiative, 0 /* GET */, "/Initiative/{id}", hiw.Initiative.getByID);
     hiw.Endpoint.addArray(hiw.Initiative, 1 /* POST */, "Initiatives/Filter", hiw.Initiative.filter);
     hiw.Endpoint.addSimple(hiw.Initiative, 1 /* POST */, "Initiatives/FilterCount", hiw.Initiative.filterCount);
     hiw.Endpoint.addSimple(hiw.Initiative, 1 /* POST */, "Initiatives/FilterPageCount", hiw.Initiative.filterPageCount);
-    hiw.Endpoint.addArray(hiw.Intervention, 0 /* GET */, "/Interventions/{page}", hiw.Intervention.getAll);
+    hiw.Endpoint.addArray(hiw.Intervention, 0 /* GET */, "/Interventions/{page}?PageSize={pageSize}", hiw.Intervention.getAll);
     hiw.Endpoint.addSimple(hiw.Intervention, 0 /* GET */, "/Interventions/Count", hiw.Intervention.getAllCount);
     hiw.Endpoint.addSimple(hiw.Intervention, 0 /* GET */, "/Interventions/PageCount", hiw.Intervention.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.Intervention, 0 /* GET */, "/Intervention/{id}", hiw.Intervention.getByID);
     hiw.Endpoint.addArray(hiw.Intervention, 1 /* POST */, "Interventions/Filter", hiw.Intervention.filter);
     hiw.Endpoint.addSimple(hiw.Intervention, 1 /* POST */, "Interventions/FilterCount", hiw.Intervention.filterCount);
     hiw.Endpoint.addSimple(hiw.Intervention, 1 /* POST */, "Interventions/FilterPageCount", hiw.Intervention.filterPageCount);
-    hiw.Endpoint.addArray(hiw.Intervention, 0 /* GET */, "/Url/{urlID}/Interventions/{page}", hiw.Intervention.getByUrlID);
+    hiw.Endpoint.addArray(hiw.Intervention, 0 /* GET */, "/Url/{urlID}/Interventions/{page}?PageSize={pageSize}", hiw.Intervention.getByUrlID);
     hiw.Endpoint.addSimple(hiw.Intervention, 0 /* GET */, "/Url/{urlID}/Interventions/Count", hiw.Intervention.getByUrlIDCount);
     hiw.Endpoint.addSimple(hiw.Intervention, 0 /* GET */, "/Url/{urlID}/Interventions/PageCount", hiw.Intervention.getByUrlIDPageCount);
     hiw.Endpoint.addSingle(hiw.Url, 0 /* GET */, "/Intervention/{interventionID}/Url", hiw.Intervention.getUrlForIntervention);
-    hiw.Endpoint.addArray(hiw.Keyword, 0 /* GET */, "/Keywords/{page}", hiw.Keyword.getAll);
+    hiw.Endpoint.addArray(hiw.Keyword, 0 /* GET */, "/Keywords/{page}?PageSize={pageSize}", hiw.Keyword.getAll);
     hiw.Endpoint.addSimple(hiw.Keyword, 0 /* GET */, "/Keywords/Count", hiw.Keyword.getAllCount);
     hiw.Endpoint.addSimple(hiw.Keyword, 0 /* GET */, "/Keywords/PageCount", hiw.Keyword.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.Keyword, 0 /* GET */, "/Keyword/{id}", hiw.Keyword.getByID);
     hiw.Endpoint.addArray(hiw.Keyword, 1 /* POST */, "Keywords/Filter", hiw.Keyword.filter);
     hiw.Endpoint.addSimple(hiw.Keyword, 1 /* POST */, "Keywords/FilterCount", hiw.Keyword.filterCount);
     hiw.Endpoint.addSimple(hiw.Keyword, 1 /* POST */, "Keywords/FilterPageCount", hiw.Keyword.filterPageCount);
-    hiw.Endpoint.addArray(hiw.LocaleLevel, 0 /* GET */, "/LocaleLevels/{page}", hiw.LocaleLevel.getAll);
+    hiw.Endpoint.addArray(hiw.LocaleLevel, 0 /* GET */, "/LocaleLevels/{page}?PageSize={pageSize}", hiw.LocaleLevel.getAll);
     hiw.Endpoint.addSimple(hiw.LocaleLevel, 0 /* GET */, "/LocaleLevels/Count", hiw.LocaleLevel.getAllCount);
     hiw.Endpoint.addSimple(hiw.LocaleLevel, 0 /* GET */, "/LocaleLevels/PageCount", hiw.LocaleLevel.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.LocaleLevel, 0 /* GET */, "/LocaleLevel/{id}", hiw.LocaleLevel.getByID);
     hiw.Endpoint.addArray(hiw.LocaleLevel, 1 /* POST */, "LocaleLevels/Filter", hiw.LocaleLevel.filter);
     hiw.Endpoint.addSimple(hiw.LocaleLevel, 1 /* POST */, "LocaleLevels/FilterCount", hiw.LocaleLevel.filterCount);
     hiw.Endpoint.addSimple(hiw.LocaleLevel, 1 /* POST */, "LocaleLevels/FilterPageCount", hiw.LocaleLevel.filterPageCount);
-    hiw.Endpoint.addArray(hiw.LocaleRelation, 0 /* GET */, "/LocaleRelations/{page}", hiw.LocaleRelation.getAll);
+    hiw.Endpoint.addArray(hiw.LocaleRelation, 0 /* GET */, "/LocaleRelations/{page}?PageSize={pageSize}", hiw.LocaleRelation.getAll);
     hiw.Endpoint.addSimple(hiw.LocaleRelation, 0 /* GET */, "/LocaleRelations/Count", hiw.LocaleRelation.getAllCount);
     hiw.Endpoint.addSimple(hiw.LocaleRelation, 0 /* GET */, "/LocaleRelations/PageCount", hiw.LocaleRelation.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.LocaleRelation, 0 /* GET */, "/LocaleRelation/{id}", hiw.LocaleRelation.getByID);
     hiw.Endpoint.addArray(hiw.LocaleRelation, 1 /* POST */, "LocaleRelations/Filter", hiw.LocaleRelation.filter);
     hiw.Endpoint.addSimple(hiw.LocaleRelation, 1 /* POST */, "LocaleRelations/FilterCount", hiw.LocaleRelation.filterCount);
     hiw.Endpoint.addSimple(hiw.LocaleRelation, 1 /* POST */, "LocaleRelations/FilterPageCount", hiw.LocaleRelation.filterPageCount);
-    hiw.Endpoint.addArray(hiw.LocaleRelation, 0 /* GET */, "/Locale/{localeID}/Ancestors/{page}", hiw.LocaleRelation.getByAncestorLocaleID);
+    hiw.Endpoint.addArray(hiw.LocaleRelation, 0 /* GET */, "/Locale/{localeID}/Ancestors/{page}?PageSize={pageSize}", hiw.LocaleRelation.getByAncestorLocaleID);
     hiw.Endpoint.addSimple(hiw.LocaleRelation, 0 /* GET */, "/Locale/{localeID}/Ancestors/Count", hiw.LocaleRelation.getByAncestorLocaleIDCount);
     hiw.Endpoint.addSimple(hiw.LocaleRelation, 0 /* GET */, "/Locale/{localeID}/Ancestors/PageCount", hiw.LocaleRelation.getByAncestorLocaleIDPageCount);
     hiw.Endpoint.addSingle(hiw.Locale, 0 /* GET */, "/LocaleRelation/{localeRelationID}/AncestorLocale", hiw.LocaleRelation.getAncestorLocaleForLocaleRelation);
-    hiw.Endpoint.addArray(hiw.LocaleRelation, 0 /* GET */, "/Locale/{localeID}/Descendants/{page}", hiw.LocaleRelation.getByDescendantLocaleID);
+    hiw.Endpoint.addArray(hiw.LocaleRelation, 0 /* GET */, "/Locale/{localeID}/Descendants/{page}?PageSize={pageSize}", hiw.LocaleRelation.getByDescendantLocaleID);
     hiw.Endpoint.addSimple(hiw.LocaleRelation, 0 /* GET */, "/Locale/{localeID}/Descendants/Count", hiw.LocaleRelation.getByDescendantLocaleIDCount);
     hiw.Endpoint.addSimple(hiw.LocaleRelation, 0 /* GET */, "/Locale/{localeID}/Descendants/PageCount", hiw.LocaleRelation.getByDescendantLocaleIDPageCount);
     hiw.Endpoint.addSingle(hiw.Locale, 0 /* GET */, "/LocaleRelation/{localeRelationID}/DescendantLocale", hiw.LocaleRelation.getDescendantLocaleForLocaleRelation);
     hiw.Endpoint.addSingle(hiw.LocaleRelation, 0 /* GET */, "/LocaleRelation?AncestorLocaleID={ancestorLocaleID}&DescendantLocaleID={descendantLocaleID}", hiw.LocaleRelation.getByAncestorLocaleIDAndDescendantLocaleID);
-    hiw.Endpoint.addArray(hiw.Locale, 0 /* GET */, "/Locales/{page}", hiw.Locale.getAll);
+    hiw.Endpoint.addArray(hiw.Locale, 0 /* GET */, "/Locales/{page}?PageSize={pageSize}", hiw.Locale.getAll);
     hiw.Endpoint.addSimple(hiw.Locale, 0 /* GET */, "/Locales/Count", hiw.Locale.getAllCount);
     hiw.Endpoint.addSimple(hiw.Locale, 0 /* GET */, "/Locales/PageCount", hiw.Locale.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.Locale, 0 /* GET */, "/Locale/{id}", hiw.Locale.getByID);
     hiw.Endpoint.addArray(hiw.Locale, 1 /* POST */, "Locales/Filter", hiw.Locale.filter);
     hiw.Endpoint.addSimple(hiw.Locale, 1 /* POST */, "Locales/FilterCount", hiw.Locale.filterCount);
     hiw.Endpoint.addSimple(hiw.Locale, 1 /* POST */, "Locales/FilterPageCount", hiw.Locale.filterPageCount);
-    hiw.Endpoint.addArray(hiw.Locale, 0 /* GET */, "/Locale/{localeID}/Locales/{page}", hiw.Locale.getByParentLocaleID);
+    hiw.Endpoint.addArray(hiw.Locale, 0 /* GET */, "/Locale/{localeID}/Locales/{page}?PageSize={pageSize}", hiw.Locale.getByParentLocaleID);
     hiw.Endpoint.addSimple(hiw.Locale, 0 /* GET */, "/Locale/{localeID}/Locales/Count", hiw.Locale.getByParentLocaleIDCount);
     hiw.Endpoint.addSimple(hiw.Locale, 0 /* GET */, "/Locale/{localeID}/Locales/PageCount", hiw.Locale.getByParentLocaleIDPageCount);
     hiw.Endpoint.addSingle(hiw.Locale, 0 /* GET */, "/Locale/{localeID}/ParentLocale", hiw.Locale.getParentLocaleForLocale);
-    hiw.Endpoint.addArray(hiw.Locale, 0 /* GET */, "/LocaleLevel/{localeLevelID}/Locales/{page}", hiw.Locale.getByLocaleLevelID);
+    hiw.Endpoint.addArray(hiw.Locale, 0 /* GET */, "/LocaleLevel/{localeLevelID}/Locales/{page}?PageSize={pageSize}", hiw.Locale.getByLocaleLevelID);
     hiw.Endpoint.addSimple(hiw.Locale, 0 /* GET */, "/LocaleLevel/{localeLevelID}/Locales/Count", hiw.Locale.getByLocaleLevelIDCount);
     hiw.Endpoint.addSimple(hiw.Locale, 0 /* GET */, "/LocaleLevel/{localeLevelID}/Locales/PageCount", hiw.Locale.getByLocaleLevelIDPageCount);
     hiw.Endpoint.addSingle(hiw.LocaleLevel, 0 /* GET */, "/Locale/{localeID}/LocaleLevel", hiw.Locale.getLocaleLevelForLocale);
-    hiw.Endpoint.addArray(hiw.MaritalStatus, 0 /* GET */, "/MaritalStatuses/{page}", hiw.MaritalStatus.getAll);
+    hiw.Endpoint.addArray(hiw.MaritalStatus, 0 /* GET */, "/MaritalStatuses/{page}?PageSize={pageSize}", hiw.MaritalStatus.getAll);
     hiw.Endpoint.addSimple(hiw.MaritalStatus, 0 /* GET */, "/MaritalStatuses/Count", hiw.MaritalStatus.getAllCount);
     hiw.Endpoint.addSimple(hiw.MaritalStatus, 0 /* GET */, "/MaritalStatuses/PageCount", hiw.MaritalStatus.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.MaritalStatus, 0 /* GET */, "/MaritalStatus/{id}", hiw.MaritalStatus.getByID);
     hiw.Endpoint.addArray(hiw.MaritalStatus, 1 /* POST */, "MaritalStatuses/Filter", hiw.MaritalStatus.filter);
     hiw.Endpoint.addSimple(hiw.MaritalStatus, 1 /* POST */, "MaritalStatuses/FilterCount", hiw.MaritalStatus.filterCount);
     hiw.Endpoint.addSimple(hiw.MaritalStatus, 1 /* POST */, "MaritalStatuses/FilterPageCount", hiw.MaritalStatus.filterPageCount);
-    hiw.Endpoint.addArray(hiw.MaritalStatus, 0 /* GET */, "/MaritalStatus/{maritalStatusID}/MaritalStatuses/{page}", hiw.MaritalStatus.getByParentMaritalStatusID);
+    hiw.Endpoint.addArray(hiw.MaritalStatus, 0 /* GET */, "/MaritalStatus/{maritalStatusID}/MaritalStatuses/{page}?PageSize={pageSize}", hiw.MaritalStatus.getByParentMaritalStatusID);
     hiw.Endpoint.addSimple(hiw.MaritalStatus, 0 /* GET */, "/MaritalStatus/{maritalStatusID}/MaritalStatuses/Count", hiw.MaritalStatus.getByParentMaritalStatusIDCount);
     hiw.Endpoint.addSimple(hiw.MaritalStatus, 0 /* GET */, "/MaritalStatus/{maritalStatusID}/MaritalStatuses/PageCount", hiw.MaritalStatus.getByParentMaritalStatusIDPageCount);
     hiw.Endpoint.addSingle(hiw.MaritalStatus, 0 /* GET */, "/MaritalStatus/{maritalStatusID}/ParentMaritalStatus", hiw.MaritalStatus.getParentMaritalStatusForMaritalStatus);
-    hiw.Endpoint.addArray(hiw.MaritalStatusRelation, 0 /* GET */, "/MaritalStatusRelations/{page}", hiw.MaritalStatusRelation.getAll);
+    hiw.Endpoint.addArray(hiw.MaritalStatusRelation, 0 /* GET */, "/MaritalStatusRelations/{page}?PageSize={pageSize}", hiw.MaritalStatusRelation.getAll);
     hiw.Endpoint.addSimple(hiw.MaritalStatusRelation, 0 /* GET */, "/MaritalStatusRelations/Count", hiw.MaritalStatusRelation.getAllCount);
     hiw.Endpoint.addSimple(hiw.MaritalStatusRelation, 0 /* GET */, "/MaritalStatusRelations/PageCount", hiw.MaritalStatusRelation.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.MaritalStatusRelation, 0 /* GET */, "/MaritalStatusRelation/{id}", hiw.MaritalStatusRelation.getByID);
     hiw.Endpoint.addArray(hiw.MaritalStatusRelation, 1 /* POST */, "MaritalStatusRelations/Filter", hiw.MaritalStatusRelation.filter);
     hiw.Endpoint.addSimple(hiw.MaritalStatusRelation, 1 /* POST */, "MaritalStatusRelations/FilterCount", hiw.MaritalStatusRelation.filterCount);
     hiw.Endpoint.addSimple(hiw.MaritalStatusRelation, 1 /* POST */, "MaritalStatusRelations/FilterPageCount", hiw.MaritalStatusRelation.filterPageCount);
-    hiw.Endpoint.addArray(hiw.MaritalStatusRelation, 0 /* GET */, "/MaritalStatus/{maritalStatusID}/Ancestors/{page}", hiw.MaritalStatusRelation.getByAncestorMaritalStatusID);
+    hiw.Endpoint.addArray(hiw.MaritalStatusRelation, 0 /* GET */, "/MaritalStatus/{maritalStatusID}/Ancestors/{page}?PageSize={pageSize}", hiw.MaritalStatusRelation.getByAncestorMaritalStatusID);
     hiw.Endpoint.addSimple(hiw.MaritalStatusRelation, 0 /* GET */, "/MaritalStatus/{maritalStatusID}/Ancestors/Count", hiw.MaritalStatusRelation.getByAncestorMaritalStatusIDCount);
     hiw.Endpoint.addSimple(hiw.MaritalStatusRelation, 0 /* GET */, "/MaritalStatus/{maritalStatusID}/Ancestors/PageCount", hiw.MaritalStatusRelation.getByAncestorMaritalStatusIDPageCount);
     hiw.Endpoint.addSingle(hiw.MaritalStatus, 0 /* GET */, "/MaritalStatusRelation/{maritalStatusRelationID}/AncestorMaritalStatus", hiw.MaritalStatusRelation.getAncestorMaritalStatusForMaritalStatusRelation);
-    hiw.Endpoint.addArray(hiw.MaritalStatusRelation, 0 /* GET */, "/MaritalStatus/{maritalStatusID}/Descendants/{page}", hiw.MaritalStatusRelation.getByDescendantMaritalStatusID);
+    hiw.Endpoint.addArray(hiw.MaritalStatusRelation, 0 /* GET */, "/MaritalStatus/{maritalStatusID}/Descendants/{page}?PageSize={pageSize}", hiw.MaritalStatusRelation.getByDescendantMaritalStatusID);
     hiw.Endpoint.addSimple(hiw.MaritalStatusRelation, 0 /* GET */, "/MaritalStatus/{maritalStatusID}/Descendants/Count", hiw.MaritalStatusRelation.getByDescendantMaritalStatusIDCount);
     hiw.Endpoint.addSimple(hiw.MaritalStatusRelation, 0 /* GET */, "/MaritalStatus/{maritalStatusID}/Descendants/PageCount", hiw.MaritalStatusRelation.getByDescendantMaritalStatusIDPageCount);
     hiw.Endpoint.addSingle(hiw.MaritalStatus, 0 /* GET */, "/MaritalStatusRelation/{maritalStatusRelationID}/DescendantMaritalStatus", hiw.MaritalStatusRelation.getDescendantMaritalStatusForMaritalStatusRelation);
-    hiw.Endpoint.addArray(hiw.Modifier, 0 /* GET */, "/Modifiers/{page}", hiw.Modifier.getAll);
+    hiw.Endpoint.addArray(hiw.Modifier, 0 /* GET */, "/Modifiers/{page}?PageSize={pageSize}", hiw.Modifier.getAll);
     hiw.Endpoint.addSimple(hiw.Modifier, 0 /* GET */, "/Modifiers/Count", hiw.Modifier.getAllCount);
     hiw.Endpoint.addSimple(hiw.Modifier, 0 /* GET */, "/Modifiers/PageCount", hiw.Modifier.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.Modifier, 0 /* GET */, "/Modifier/{id}", hiw.Modifier.getByID);
     hiw.Endpoint.addArray(hiw.Modifier, 1 /* POST */, "Modifiers/Filter", hiw.Modifier.filter);
     hiw.Endpoint.addSimple(hiw.Modifier, 1 /* POST */, "Modifiers/FilterCount", hiw.Modifier.filterCount);
     hiw.Endpoint.addSimple(hiw.Modifier, 1 /* POST */, "Modifiers/FilterPageCount", hiw.Modifier.filterPageCount);
-    hiw.Endpoint.addArray(hiw.Modifier, 0 /* GET */, "/Modifier/{modifierID}/Modifiers/{page}", hiw.Modifier.getByParentModifierID);
+    hiw.Endpoint.addArray(hiw.Modifier, 0 /* GET */, "/Modifier/{modifierID}/Modifiers/{page}?PageSize={pageSize}", hiw.Modifier.getByParentModifierID);
     hiw.Endpoint.addSimple(hiw.Modifier, 0 /* GET */, "/Modifier/{modifierID}/Modifiers/Count", hiw.Modifier.getByParentModifierIDCount);
     hiw.Endpoint.addSimple(hiw.Modifier, 0 /* GET */, "/Modifier/{modifierID}/Modifiers/PageCount", hiw.Modifier.getByParentModifierIDPageCount);
     hiw.Endpoint.addSingle(hiw.Modifier, 0 /* GET */, "/Modifier/{modifierID}/ParentModifier", hiw.Modifier.getParentModifierForModifier);
-    hiw.Endpoint.addArray(hiw.ModifierGraph, 0 /* GET */, "/ModifierGraphs/{page}", hiw.ModifierGraph.getAll);
+    hiw.Endpoint.addArray(hiw.ModifierGraph, 0 /* GET */, "/ModifierGraphs/{page}?PageSize={pageSize}", hiw.ModifierGraph.getAll);
     hiw.Endpoint.addSimple(hiw.ModifierGraph, 0 /* GET */, "/ModifierGraphs/Count", hiw.ModifierGraph.getAllCount);
     hiw.Endpoint.addSimple(hiw.ModifierGraph, 0 /* GET */, "/ModifierGraphs/PageCount", hiw.ModifierGraph.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.ModifierGraph, 0 /* GET */, "/ModifierGraph/{id}", hiw.ModifierGraph.getByID);
     hiw.Endpoint.addArray(hiw.ModifierGraph, 1 /* POST */, "ModifierGraphs/Filter", hiw.ModifierGraph.filter);
     hiw.Endpoint.addSimple(hiw.ModifierGraph, 1 /* POST */, "ModifierGraphs/FilterCount", hiw.ModifierGraph.filterCount);
     hiw.Endpoint.addSimple(hiw.ModifierGraph, 1 /* POST */, "ModifierGraphs/FilterPageCount", hiw.ModifierGraph.filterPageCount);
-    hiw.Endpoint.addArray(hiw.ModifierGraph, 0 /* GET */, "/Modifier/{modifierID}/ModifierGraphs1/{page}", hiw.ModifierGraph.getByModifier1ID);
+    hiw.Endpoint.addArray(hiw.ModifierGraph, 0 /* GET */, "/Modifier/{modifierID}/ModifierGraphs1/{page}?PageSize={pageSize}", hiw.ModifierGraph.getByModifier1ID);
     hiw.Endpoint.addSimple(hiw.ModifierGraph, 0 /* GET */, "/Modifier/{modifierID}/ModifierGraphs1/Count", hiw.ModifierGraph.getByModifier1IDCount);
     hiw.Endpoint.addSimple(hiw.ModifierGraph, 0 /* GET */, "/Modifier/{modifierID}/ModifierGraphs1/PageCount", hiw.ModifierGraph.getByModifier1IDPageCount);
     hiw.Endpoint.addSingle(hiw.Modifier, 0 /* GET */, "/ModifierGraph/{modifierGraphID}/Modifier1", hiw.ModifierGraph.getModifier1ForModifierGraph);
-    hiw.Endpoint.addArray(hiw.ModifierGraph, 0 /* GET */, "/Modifier/{modifierID}/ModifierGraphs2/{page}", hiw.ModifierGraph.getByModifier2ID);
+    hiw.Endpoint.addArray(hiw.ModifierGraph, 0 /* GET */, "/Modifier/{modifierID}/ModifierGraphs2/{page}?PageSize={pageSize}", hiw.ModifierGraph.getByModifier2ID);
     hiw.Endpoint.addSimple(hiw.ModifierGraph, 0 /* GET */, "/Modifier/{modifierID}/ModifierGraphs2/Count", hiw.ModifierGraph.getByModifier2IDCount);
     hiw.Endpoint.addSimple(hiw.ModifierGraph, 0 /* GET */, "/Modifier/{modifierID}/ModifierGraphs2/PageCount", hiw.ModifierGraph.getByModifier2IDPageCount);
     hiw.Endpoint.addSingle(hiw.Modifier, 0 /* GET */, "/ModifierGraph/{modifierGraphID}/Modifier2", hiw.ModifierGraph.getModifier2ForModifierGraph);
-    hiw.Endpoint.addArray(hiw.ModifierGraph, 0 /* GET */, "/Modifier/{modifierID}/ModifierGraphs3/{page}", hiw.ModifierGraph.getByModifier3ID);
+    hiw.Endpoint.addArray(hiw.ModifierGraph, 0 /* GET */, "/Modifier/{modifierID}/ModifierGraphs3/{page}?PageSize={pageSize}", hiw.ModifierGraph.getByModifier3ID);
     hiw.Endpoint.addSimple(hiw.ModifierGraph, 0 /* GET */, "/Modifier/{modifierID}/ModifierGraphs3/Count", hiw.ModifierGraph.getByModifier3IDCount);
     hiw.Endpoint.addSimple(hiw.ModifierGraph, 0 /* GET */, "/Modifier/{modifierID}/ModifierGraphs3/PageCount", hiw.ModifierGraph.getByModifier3IDPageCount);
     hiw.Endpoint.addSingle(hiw.Modifier, 0 /* GET */, "/ModifierGraph/{modifierGraphID}/Modifier3", hiw.ModifierGraph.getModifier3ForModifierGraph);
-    hiw.Endpoint.addArray(hiw.ModifierGraph, 0 /* GET */, "/Modifier/{modifierID}/ModifierGraphs4/{page}", hiw.ModifierGraph.getByModifier4ID);
+    hiw.Endpoint.addArray(hiw.ModifierGraph, 0 /* GET */, "/Modifier/{modifierID}/ModifierGraphs4/{page}?PageSize={pageSize}", hiw.ModifierGraph.getByModifier4ID);
     hiw.Endpoint.addSimple(hiw.ModifierGraph, 0 /* GET */, "/Modifier/{modifierID}/ModifierGraphs4/Count", hiw.ModifierGraph.getByModifier4IDCount);
     hiw.Endpoint.addSimple(hiw.ModifierGraph, 0 /* GET */, "/Modifier/{modifierID}/ModifierGraphs4/PageCount", hiw.ModifierGraph.getByModifier4IDPageCount);
     hiw.Endpoint.addSingle(hiw.Modifier, 0 /* GET */, "/ModifierGraph/{modifierGraphID}/Modifier4", hiw.ModifierGraph.getModifier4ForModifierGraph);
-    hiw.Endpoint.addArray(hiw.ModifierGraph, 0 /* GET */, "/Modifier/{modifierID}/ModifierGraphs5/{page}", hiw.ModifierGraph.getByModifier5ID);
+    hiw.Endpoint.addArray(hiw.ModifierGraph, 0 /* GET */, "/Modifier/{modifierID}/ModifierGraphs5/{page}?PageSize={pageSize}", hiw.ModifierGraph.getByModifier5ID);
     hiw.Endpoint.addSimple(hiw.ModifierGraph, 0 /* GET */, "/Modifier/{modifierID}/ModifierGraphs5/Count", hiw.ModifierGraph.getByModifier5IDCount);
     hiw.Endpoint.addSimple(hiw.ModifierGraph, 0 /* GET */, "/Modifier/{modifierID}/ModifierGraphs5/PageCount", hiw.ModifierGraph.getByModifier5IDPageCount);
     hiw.Endpoint.addSingle(hiw.Modifier, 0 /* GET */, "/ModifierGraph/{modifierGraphID}/Modifier5", hiw.ModifierGraph.getModifier5ForModifierGraph);
-    hiw.Endpoint.addArray(hiw.ObesityStatus, 0 /* GET */, "/ObesityStatuses/{page}", hiw.ObesityStatus.getAll);
+    hiw.Endpoint.addArray(hiw.ObesityStatus, 0 /* GET */, "/ObesityStatuses/{page}?PageSize={pageSize}", hiw.ObesityStatus.getAll);
     hiw.Endpoint.addSimple(hiw.ObesityStatus, 0 /* GET */, "/ObesityStatuses/Count", hiw.ObesityStatus.getAllCount);
     hiw.Endpoint.addSimple(hiw.ObesityStatus, 0 /* GET */, "/ObesityStatuses/PageCount", hiw.ObesityStatus.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.ObesityStatus, 0 /* GET */, "/ObesityStatus/{id}", hiw.ObesityStatus.getByID);
     hiw.Endpoint.addArray(hiw.ObesityStatus, 1 /* POST */, "ObesityStatuses/Filter", hiw.ObesityStatus.filter);
     hiw.Endpoint.addSimple(hiw.ObesityStatus, 1 /* POST */, "ObesityStatuses/FilterCount", hiw.ObesityStatus.filterCount);
     hiw.Endpoint.addSimple(hiw.ObesityStatus, 1 /* POST */, "ObesityStatuses/FilterPageCount", hiw.ObesityStatus.filterPageCount);
-    hiw.Endpoint.addArray(hiw.ObesityStatus, 0 /* GET */, "/ObesityStatus/{obesityStatusID}/ObesityStatuses/{page}", hiw.ObesityStatus.getByParentObesityStatusID);
+    hiw.Endpoint.addArray(hiw.ObesityStatus, 0 /* GET */, "/ObesityStatus/{obesityStatusID}/ObesityStatuses/{page}?PageSize={pageSize}", hiw.ObesityStatus.getByParentObesityStatusID);
     hiw.Endpoint.addSimple(hiw.ObesityStatus, 0 /* GET */, "/ObesityStatus/{obesityStatusID}/ObesityStatuses/Count", hiw.ObesityStatus.getByParentObesityStatusIDCount);
     hiw.Endpoint.addSimple(hiw.ObesityStatus, 0 /* GET */, "/ObesityStatus/{obesityStatusID}/ObesityStatuses/PageCount", hiw.ObesityStatus.getByParentObesityStatusIDPageCount);
     hiw.Endpoint.addSingle(hiw.ObesityStatus, 0 /* GET */, "/ObesityStatus/{obesityStatusID}/ParentObesityStatus", hiw.ObesityStatus.getParentObesityStatusForObesityStatus);
-    hiw.Endpoint.addArray(hiw.ObesityStatusRelation, 0 /* GET */, "/ObesityStatusRelations/{page}", hiw.ObesityStatusRelation.getAll);
+    hiw.Endpoint.addArray(hiw.ObesityStatusRelation, 0 /* GET */, "/ObesityStatusRelations/{page}?PageSize={pageSize}", hiw.ObesityStatusRelation.getAll);
     hiw.Endpoint.addSimple(hiw.ObesityStatusRelation, 0 /* GET */, "/ObesityStatusRelations/Count", hiw.ObesityStatusRelation.getAllCount);
     hiw.Endpoint.addSimple(hiw.ObesityStatusRelation, 0 /* GET */, "/ObesityStatusRelations/PageCount", hiw.ObesityStatusRelation.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.ObesityStatusRelation, 0 /* GET */, "/ObesityStatusRelation/{id}", hiw.ObesityStatusRelation.getByID);
     hiw.Endpoint.addArray(hiw.ObesityStatusRelation, 1 /* POST */, "ObesityStatusRelations/Filter", hiw.ObesityStatusRelation.filter);
     hiw.Endpoint.addSimple(hiw.ObesityStatusRelation, 1 /* POST */, "ObesityStatusRelations/FilterCount", hiw.ObesityStatusRelation.filterCount);
     hiw.Endpoint.addSimple(hiw.ObesityStatusRelation, 1 /* POST */, "ObesityStatusRelations/FilterPageCount", hiw.ObesityStatusRelation.filterPageCount);
-    hiw.Endpoint.addArray(hiw.ObesityStatusRelation, 0 /* GET */, "/ObesityStatus/{obesityStatusID}/Ancestors/{page}", hiw.ObesityStatusRelation.getByAncestorObesityStatusID);
+    hiw.Endpoint.addArray(hiw.ObesityStatusRelation, 0 /* GET */, "/ObesityStatus/{obesityStatusID}/Ancestors/{page}?PageSize={pageSize}", hiw.ObesityStatusRelation.getByAncestorObesityStatusID);
     hiw.Endpoint.addSimple(hiw.ObesityStatusRelation, 0 /* GET */, "/ObesityStatus/{obesityStatusID}/Ancestors/Count", hiw.ObesityStatusRelation.getByAncestorObesityStatusIDCount);
     hiw.Endpoint.addSimple(hiw.ObesityStatusRelation, 0 /* GET */, "/ObesityStatus/{obesityStatusID}/Ancestors/PageCount", hiw.ObesityStatusRelation.getByAncestorObesityStatusIDPageCount);
     hiw.Endpoint.addSingle(hiw.ObesityStatus, 0 /* GET */, "/ObesityStatusRelation/{obesityStatusRelationID}/AncestorObesityStatus", hiw.ObesityStatusRelation.getAncestorObesityStatusForObesityStatusRelation);
-    hiw.Endpoint.addArray(hiw.ObesityStatusRelation, 0 /* GET */, "/ObesityStatus/{obesityStatusID}/Descendants/{page}", hiw.ObesityStatusRelation.getByDescendantObesityStatusID);
+    hiw.Endpoint.addArray(hiw.ObesityStatusRelation, 0 /* GET */, "/ObesityStatus/{obesityStatusID}/Descendants/{page}?PageSize={pageSize}", hiw.ObesityStatusRelation.getByDescendantObesityStatusID);
     hiw.Endpoint.addSimple(hiw.ObesityStatusRelation, 0 /* GET */, "/ObesityStatus/{obesityStatusID}/Descendants/Count", hiw.ObesityStatusRelation.getByDescendantObesityStatusIDCount);
     hiw.Endpoint.addSimple(hiw.ObesityStatusRelation, 0 /* GET */, "/ObesityStatus/{obesityStatusID}/Descendants/PageCount", hiw.ObesityStatusRelation.getByDescendantObesityStatusIDPageCount);
     hiw.Endpoint.addSingle(hiw.ObesityStatus, 0 /* GET */, "/ObesityStatusRelation/{obesityStatusRelationID}/DescendantObesityStatus", hiw.ObesityStatusRelation.getDescendantObesityStatusForObesityStatusRelation);
-    hiw.Endpoint.addArray(hiw.Other, 0 /* GET */, "/Others/{page}", hiw.Other.getAll);
+    hiw.Endpoint.addArray(hiw.Other, 0 /* GET */, "/Others/{page}?PageSize={pageSize}", hiw.Other.getAll);
     hiw.Endpoint.addSimple(hiw.Other, 0 /* GET */, "/Others/Count", hiw.Other.getAllCount);
     hiw.Endpoint.addSimple(hiw.Other, 0 /* GET */, "/Others/PageCount", hiw.Other.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.Other, 0 /* GET */, "/Other/{id}", hiw.Other.getByID);
     hiw.Endpoint.addArray(hiw.Other, 1 /* POST */, "Others/Filter", hiw.Other.filter);
     hiw.Endpoint.addSimple(hiw.Other, 1 /* POST */, "Others/FilterCount", hiw.Other.filterCount);
     hiw.Endpoint.addSimple(hiw.Other, 1 /* POST */, "Others/FilterPageCount", hiw.Other.filterPageCount);
-    hiw.Endpoint.addArray(hiw.Other, 0 /* GET */, "/Other/{otherID}/Others/{page}", hiw.Other.getByParentOtherID);
+    hiw.Endpoint.addArray(hiw.Other, 0 /* GET */, "/Other/{otherID}/Others/{page}?PageSize={pageSize}", hiw.Other.getByParentOtherID);
     hiw.Endpoint.addSimple(hiw.Other, 0 /* GET */, "/Other/{otherID}/Others/Count", hiw.Other.getByParentOtherIDCount);
     hiw.Endpoint.addSimple(hiw.Other, 0 /* GET */, "/Other/{otherID}/Others/PageCount", hiw.Other.getByParentOtherIDPageCount);
     hiw.Endpoint.addSingle(hiw.Other, 0 /* GET */, "/Other/{otherID}/ParentOther", hiw.Other.getParentOtherForOther);
-    hiw.Endpoint.addArray(hiw.OtherRelation, 0 /* GET */, "/OtherRelations/{page}", hiw.OtherRelation.getAll);
+    hiw.Endpoint.addArray(hiw.OtherRelation, 0 /* GET */, "/OtherRelations/{page}?PageSize={pageSize}", hiw.OtherRelation.getAll);
     hiw.Endpoint.addSimple(hiw.OtherRelation, 0 /* GET */, "/OtherRelations/Count", hiw.OtherRelation.getAllCount);
     hiw.Endpoint.addSimple(hiw.OtherRelation, 0 /* GET */, "/OtherRelations/PageCount", hiw.OtherRelation.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.OtherRelation, 0 /* GET */, "/OtherRelation/{id}", hiw.OtherRelation.getByID);
     hiw.Endpoint.addArray(hiw.OtherRelation, 1 /* POST */, "OtherRelations/Filter", hiw.OtherRelation.filter);
     hiw.Endpoint.addSimple(hiw.OtherRelation, 1 /* POST */, "OtherRelations/FilterCount", hiw.OtherRelation.filterCount);
     hiw.Endpoint.addSimple(hiw.OtherRelation, 1 /* POST */, "OtherRelations/FilterPageCount", hiw.OtherRelation.filterPageCount);
-    hiw.Endpoint.addArray(hiw.OtherRelation, 0 /* GET */, "/Other/{otherID}/Ancestors/{page}", hiw.OtherRelation.getByAncestorOtherID);
+    hiw.Endpoint.addArray(hiw.OtherRelation, 0 /* GET */, "/Other/{otherID}/Ancestors/{page}?PageSize={pageSize}", hiw.OtherRelation.getByAncestorOtherID);
     hiw.Endpoint.addSimple(hiw.OtherRelation, 0 /* GET */, "/Other/{otherID}/Ancestors/Count", hiw.OtherRelation.getByAncestorOtherIDCount);
     hiw.Endpoint.addSimple(hiw.OtherRelation, 0 /* GET */, "/Other/{otherID}/Ancestors/PageCount", hiw.OtherRelation.getByAncestorOtherIDPageCount);
     hiw.Endpoint.addSingle(hiw.Other, 0 /* GET */, "/OtherRelation/{otherRelationID}/AncestorOther", hiw.OtherRelation.getAncestorOtherForOtherRelation);
-    hiw.Endpoint.addArray(hiw.OtherRelation, 0 /* GET */, "/Other/{otherID}/Descendants/{page}", hiw.OtherRelation.getByDescendantOtherID);
+    hiw.Endpoint.addArray(hiw.OtherRelation, 0 /* GET */, "/Other/{otherID}/Descendants/{page}?PageSize={pageSize}", hiw.OtherRelation.getByDescendantOtherID);
     hiw.Endpoint.addSimple(hiw.OtherRelation, 0 /* GET */, "/Other/{otherID}/Descendants/Count", hiw.OtherRelation.getByDescendantOtherIDCount);
     hiw.Endpoint.addSimple(hiw.OtherRelation, 0 /* GET */, "/Other/{otherID}/Descendants/PageCount", hiw.OtherRelation.getByDescendantOtherIDPageCount);
     hiw.Endpoint.addSingle(hiw.Other, 0 /* GET */, "/OtherRelation/{otherRelationID}/DescendantOther", hiw.OtherRelation.getDescendantOtherForOtherRelation);
-    hiw.Endpoint.addArray(hiw.RaceEthnicity, 0 /* GET */, "/RaceEthnicities/{page}", hiw.RaceEthnicity.getAll);
+    hiw.Endpoint.addArray(hiw.RaceEthnicity, 0 /* GET */, "/RaceEthnicities/{page}?PageSize={pageSize}", hiw.RaceEthnicity.getAll);
     hiw.Endpoint.addSimple(hiw.RaceEthnicity, 0 /* GET */, "/RaceEthnicities/Count", hiw.RaceEthnicity.getAllCount);
     hiw.Endpoint.addSimple(hiw.RaceEthnicity, 0 /* GET */, "/RaceEthnicities/PageCount", hiw.RaceEthnicity.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.RaceEthnicity, 0 /* GET */, "/RaceEthnicity/{id}", hiw.RaceEthnicity.getByID);
     hiw.Endpoint.addArray(hiw.RaceEthnicity, 1 /* POST */, "RaceEthnicities/Filter", hiw.RaceEthnicity.filter);
     hiw.Endpoint.addSimple(hiw.RaceEthnicity, 1 /* POST */, "RaceEthnicities/FilterCount", hiw.RaceEthnicity.filterCount);
     hiw.Endpoint.addSimple(hiw.RaceEthnicity, 1 /* POST */, "RaceEthnicities/FilterPageCount", hiw.RaceEthnicity.filterPageCount);
-    hiw.Endpoint.addArray(hiw.RaceEthnicity, 0 /* GET */, "/RaceEthnicity/{raceEthnicityID}/RaceEthnicities/{page}", hiw.RaceEthnicity.getByParentRaceEthnicityID);
+    hiw.Endpoint.addArray(hiw.RaceEthnicity, 0 /* GET */, "/RaceEthnicity/{raceEthnicityID}/RaceEthnicities/{page}?PageSize={pageSize}", hiw.RaceEthnicity.getByParentRaceEthnicityID);
     hiw.Endpoint.addSimple(hiw.RaceEthnicity, 0 /* GET */, "/RaceEthnicity/{raceEthnicityID}/RaceEthnicities/Count", hiw.RaceEthnicity.getByParentRaceEthnicityIDCount);
     hiw.Endpoint.addSimple(hiw.RaceEthnicity, 0 /* GET */, "/RaceEthnicity/{raceEthnicityID}/RaceEthnicities/PageCount", hiw.RaceEthnicity.getByParentRaceEthnicityIDPageCount);
     hiw.Endpoint.addSingle(hiw.RaceEthnicity, 0 /* GET */, "/RaceEthnicity/{raceEthnicityID}/ParentRaceEthnicity", hiw.RaceEthnicity.getParentRaceEthnicityForRaceEthnicity);
-    hiw.Endpoint.addArray(hiw.RaceEthnicityRelation, 0 /* GET */, "/RaceEthnicityRelations/{page}", hiw.RaceEthnicityRelation.getAll);
+    hiw.Endpoint.addArray(hiw.RaceEthnicityRelation, 0 /* GET */, "/RaceEthnicityRelations/{page}?PageSize={pageSize}", hiw.RaceEthnicityRelation.getAll);
     hiw.Endpoint.addSimple(hiw.RaceEthnicityRelation, 0 /* GET */, "/RaceEthnicityRelations/Count", hiw.RaceEthnicityRelation.getAllCount);
     hiw.Endpoint.addSimple(hiw.RaceEthnicityRelation, 0 /* GET */, "/RaceEthnicityRelations/PageCount", hiw.RaceEthnicityRelation.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.RaceEthnicityRelation, 0 /* GET */, "/RaceEthnicityRelation/{id}", hiw.RaceEthnicityRelation.getByID);
     hiw.Endpoint.addArray(hiw.RaceEthnicityRelation, 1 /* POST */, "RaceEthnicityRelations/Filter", hiw.RaceEthnicityRelation.filter);
     hiw.Endpoint.addSimple(hiw.RaceEthnicityRelation, 1 /* POST */, "RaceEthnicityRelations/FilterCount", hiw.RaceEthnicityRelation.filterCount);
     hiw.Endpoint.addSimple(hiw.RaceEthnicityRelation, 1 /* POST */, "RaceEthnicityRelations/FilterPageCount", hiw.RaceEthnicityRelation.filterPageCount);
-    hiw.Endpoint.addArray(hiw.RaceEthnicityRelation, 0 /* GET */, "/RaceEthnicity/{raceEthnicityID}/Ancestors/{page}", hiw.RaceEthnicityRelation.getByAncestorRaceEthnicityID);
+    hiw.Endpoint.addArray(hiw.RaceEthnicityRelation, 0 /* GET */, "/RaceEthnicity/{raceEthnicityID}/Ancestors/{page}?PageSize={pageSize}", hiw.RaceEthnicityRelation.getByAncestorRaceEthnicityID);
     hiw.Endpoint.addSimple(hiw.RaceEthnicityRelation, 0 /* GET */, "/RaceEthnicity/{raceEthnicityID}/Ancestors/Count", hiw.RaceEthnicityRelation.getByAncestorRaceEthnicityIDCount);
     hiw.Endpoint.addSimple(hiw.RaceEthnicityRelation, 0 /* GET */, "/RaceEthnicity/{raceEthnicityID}/Ancestors/PageCount", hiw.RaceEthnicityRelation.getByAncestorRaceEthnicityIDPageCount);
     hiw.Endpoint.addSingle(hiw.RaceEthnicity, 0 /* GET */, "/RaceEthnicityRelation/{raceEthnicityRelationID}/AncestorRaceEthnicity", hiw.RaceEthnicityRelation.getAncestorRaceEthnicityForRaceEthnicityRelation);
-    hiw.Endpoint.addArray(hiw.RaceEthnicityRelation, 0 /* GET */, "/RaceEthnicity/{raceEthnicityID}/Descendants/{page}", hiw.RaceEthnicityRelation.getByDescendantRaceEthnicityID);
+    hiw.Endpoint.addArray(hiw.RaceEthnicityRelation, 0 /* GET */, "/RaceEthnicity/{raceEthnicityID}/Descendants/{page}?PageSize={pageSize}", hiw.RaceEthnicityRelation.getByDescendantRaceEthnicityID);
     hiw.Endpoint.addSimple(hiw.RaceEthnicityRelation, 0 /* GET */, "/RaceEthnicity/{raceEthnicityID}/Descendants/Count", hiw.RaceEthnicityRelation.getByDescendantRaceEthnicityIDCount);
     hiw.Endpoint.addSimple(hiw.RaceEthnicityRelation, 0 /* GET */, "/RaceEthnicity/{raceEthnicityID}/Descendants/PageCount", hiw.RaceEthnicityRelation.getByDescendantRaceEthnicityIDPageCount);
     hiw.Endpoint.addSingle(hiw.RaceEthnicity, 0 /* GET */, "/RaceEthnicityRelation/{raceEthnicityRelationID}/DescendantRaceEthnicity", hiw.RaceEthnicityRelation.getDescendantRaceEthnicityForRaceEthnicityRelation);
-    hiw.Endpoint.addArray(hiw.Sex, 0 /* GET */, "/Sexes/{page}", hiw.Sex.getAll);
+    hiw.Endpoint.addArray(hiw.Sex, 0 /* GET */, "/Sexes/{page}?PageSize={pageSize}", hiw.Sex.getAll);
     hiw.Endpoint.addSimple(hiw.Sex, 0 /* GET */, "/Sexes/Count", hiw.Sex.getAllCount);
     hiw.Endpoint.addSimple(hiw.Sex, 0 /* GET */, "/Sexes/PageCount", hiw.Sex.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.Sex, 0 /* GET */, "/Sex/{id}", hiw.Sex.getByID);
     hiw.Endpoint.addArray(hiw.Sex, 1 /* POST */, "Sexes/Filter", hiw.Sex.filter);
     hiw.Endpoint.addSimple(hiw.Sex, 1 /* POST */, "Sexes/FilterCount", hiw.Sex.filterCount);
     hiw.Endpoint.addSimple(hiw.Sex, 1 /* POST */, "Sexes/FilterPageCount", hiw.Sex.filterPageCount);
-    hiw.Endpoint.addArray(hiw.Sex, 0 /* GET */, "/Sex/{sexID}/Sexes/{page}", hiw.Sex.getByParentSexID);
+    hiw.Endpoint.addArray(hiw.Sex, 0 /* GET */, "/Sex/{sexID}/Sexes/{page}?PageSize={pageSize}", hiw.Sex.getByParentSexID);
     hiw.Endpoint.addSimple(hiw.Sex, 0 /* GET */, "/Sex/{sexID}/Sexes/Count", hiw.Sex.getByParentSexIDCount);
     hiw.Endpoint.addSimple(hiw.Sex, 0 /* GET */, "/Sex/{sexID}/Sexes/PageCount", hiw.Sex.getByParentSexIDPageCount);
     hiw.Endpoint.addSingle(hiw.Sex, 0 /* GET */, "/Sex/{sexID}/ParentSex", hiw.Sex.getParentSexForSex);
-    hiw.Endpoint.addArray(hiw.SexRelation, 0 /* GET */, "/SexRelations/{page}", hiw.SexRelation.getAll);
+    hiw.Endpoint.addArray(hiw.SexRelation, 0 /* GET */, "/SexRelations/{page}?PageSize={pageSize}", hiw.SexRelation.getAll);
     hiw.Endpoint.addSimple(hiw.SexRelation, 0 /* GET */, "/SexRelations/Count", hiw.SexRelation.getAllCount);
     hiw.Endpoint.addSimple(hiw.SexRelation, 0 /* GET */, "/SexRelations/PageCount", hiw.SexRelation.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.SexRelation, 0 /* GET */, "/SexRelation/{id}", hiw.SexRelation.getByID);
     hiw.Endpoint.addArray(hiw.SexRelation, 1 /* POST */, "SexRelations/Filter", hiw.SexRelation.filter);
     hiw.Endpoint.addSimple(hiw.SexRelation, 1 /* POST */, "SexRelations/FilterCount", hiw.SexRelation.filterCount);
     hiw.Endpoint.addSimple(hiw.SexRelation, 1 /* POST */, "SexRelations/FilterPageCount", hiw.SexRelation.filterPageCount);
-    hiw.Endpoint.addArray(hiw.SexRelation, 0 /* GET */, "/Sex/{sexID}/Ancestors/{page}", hiw.SexRelation.getByAncestorSexID);
+    hiw.Endpoint.addArray(hiw.SexRelation, 0 /* GET */, "/Sex/{sexID}/Ancestors/{page}?PageSize={pageSize}", hiw.SexRelation.getByAncestorSexID);
     hiw.Endpoint.addSimple(hiw.SexRelation, 0 /* GET */, "/Sex/{sexID}/Ancestors/Count", hiw.SexRelation.getByAncestorSexIDCount);
     hiw.Endpoint.addSimple(hiw.SexRelation, 0 /* GET */, "/Sex/{sexID}/Ancestors/PageCount", hiw.SexRelation.getByAncestorSexIDPageCount);
     hiw.Endpoint.addSingle(hiw.Sex, 0 /* GET */, "/SexRelation/{sexRelationID}/AncestorSex", hiw.SexRelation.getAncestorSexForSexRelation);
-    hiw.Endpoint.addArray(hiw.SexRelation, 0 /* GET */, "/Sex/{sexID}/Descendants/{page}", hiw.SexRelation.getByDescendantSexID);
+    hiw.Endpoint.addArray(hiw.SexRelation, 0 /* GET */, "/Sex/{sexID}/Descendants/{page}?PageSize={pageSize}", hiw.SexRelation.getByDescendantSexID);
     hiw.Endpoint.addSimple(hiw.SexRelation, 0 /* GET */, "/Sex/{sexID}/Descendants/Count", hiw.SexRelation.getByDescendantSexIDCount);
     hiw.Endpoint.addSimple(hiw.SexRelation, 0 /* GET */, "/Sex/{sexID}/Descendants/PageCount", hiw.SexRelation.getByDescendantSexIDPageCount);
     hiw.Endpoint.addSingle(hiw.Sex, 0 /* GET */, "/SexRelation/{sexRelationID}/DescendantSex", hiw.SexRelation.getDescendantSexForSexRelation);
-    hiw.Endpoint.addArray(hiw.SexualOrientation, 0 /* GET */, "/SexualOrientations/{page}", hiw.SexualOrientation.getAll);
+    hiw.Endpoint.addArray(hiw.SexualOrientation, 0 /* GET */, "/SexualOrientations/{page}?PageSize={pageSize}", hiw.SexualOrientation.getAll);
     hiw.Endpoint.addSimple(hiw.SexualOrientation, 0 /* GET */, "/SexualOrientations/Count", hiw.SexualOrientation.getAllCount);
     hiw.Endpoint.addSimple(hiw.SexualOrientation, 0 /* GET */, "/SexualOrientations/PageCount", hiw.SexualOrientation.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.SexualOrientation, 0 /* GET */, "/SexualOrientation/{id}", hiw.SexualOrientation.getByID);
     hiw.Endpoint.addArray(hiw.SexualOrientation, 1 /* POST */, "SexualOrientations/Filter", hiw.SexualOrientation.filter);
     hiw.Endpoint.addSimple(hiw.SexualOrientation, 1 /* POST */, "SexualOrientations/FilterCount", hiw.SexualOrientation.filterCount);
     hiw.Endpoint.addSimple(hiw.SexualOrientation, 1 /* POST */, "SexualOrientations/FilterPageCount", hiw.SexualOrientation.filterPageCount);
-    hiw.Endpoint.addArray(hiw.SexualOrientation, 0 /* GET */, "/SexualOrientation/{sexualOrientationID}/SexualOrientations/{page}", hiw.SexualOrientation.getByParentSexualOrientationID);
+    hiw.Endpoint.addArray(hiw.SexualOrientation, 0 /* GET */, "/SexualOrientation/{sexualOrientationID}/SexualOrientations/{page}?PageSize={pageSize}", hiw.SexualOrientation.getByParentSexualOrientationID);
     hiw.Endpoint.addSimple(hiw.SexualOrientation, 0 /* GET */, "/SexualOrientation/{sexualOrientationID}/SexualOrientations/Count", hiw.SexualOrientation.getByParentSexualOrientationIDCount);
     hiw.Endpoint.addSimple(hiw.SexualOrientation, 0 /* GET */, "/SexualOrientation/{sexualOrientationID}/SexualOrientations/PageCount", hiw.SexualOrientation.getByParentSexualOrientationIDPageCount);
     hiw.Endpoint.addSingle(hiw.SexualOrientation, 0 /* GET */, "/SexualOrientation/{sexualOrientationID}/ParentSexualOrientation", hiw.SexualOrientation.getParentSexualOrientationForSexualOrientation);
-    hiw.Endpoint.addArray(hiw.SexualOrientationRelation, 0 /* GET */, "/SexualOrientationRelations/{page}", hiw.SexualOrientationRelation.getAll);
+    hiw.Endpoint.addArray(hiw.SexualOrientationRelation, 0 /* GET */, "/SexualOrientationRelations/{page}?PageSize={pageSize}", hiw.SexualOrientationRelation.getAll);
     hiw.Endpoint.addSimple(hiw.SexualOrientationRelation, 0 /* GET */, "/SexualOrientationRelations/Count", hiw.SexualOrientationRelation.getAllCount);
     hiw.Endpoint.addSimple(hiw.SexualOrientationRelation, 0 /* GET */, "/SexualOrientationRelations/PageCount", hiw.SexualOrientationRelation.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.SexualOrientationRelation, 0 /* GET */, "/SexualOrientationRelation/{id}", hiw.SexualOrientationRelation.getByID);
     hiw.Endpoint.addArray(hiw.SexualOrientationRelation, 1 /* POST */, "SexualOrientationRelations/Filter", hiw.SexualOrientationRelation.filter);
     hiw.Endpoint.addSimple(hiw.SexualOrientationRelation, 1 /* POST */, "SexualOrientationRelations/FilterCount", hiw.SexualOrientationRelation.filterCount);
     hiw.Endpoint.addSimple(hiw.SexualOrientationRelation, 1 /* POST */, "SexualOrientationRelations/FilterPageCount", hiw.SexualOrientationRelation.filterPageCount);
-    hiw.Endpoint.addArray(hiw.SexualOrientationRelation, 0 /* GET */, "/SexualOrientation/{sexualOrientationID}/Ancestors/{page}", hiw.SexualOrientationRelation.getByAncestorSexualOrientationID);
+    hiw.Endpoint.addArray(hiw.SexualOrientationRelation, 0 /* GET */, "/SexualOrientation/{sexualOrientationID}/Ancestors/{page}?PageSize={pageSize}", hiw.SexualOrientationRelation.getByAncestorSexualOrientationID);
     hiw.Endpoint.addSimple(hiw.SexualOrientationRelation, 0 /* GET */, "/SexualOrientation/{sexualOrientationID}/Ancestors/Count", hiw.SexualOrientationRelation.getByAncestorSexualOrientationIDCount);
     hiw.Endpoint.addSimple(hiw.SexualOrientationRelation, 0 /* GET */, "/SexualOrientation/{sexualOrientationID}/Ancestors/PageCount", hiw.SexualOrientationRelation.getByAncestorSexualOrientationIDPageCount);
     hiw.Endpoint.addSingle(hiw.SexualOrientation, 0 /* GET */, "/SexualOrientationRelation/{sexualOrientationRelationID}/AncestorSexualOrientation", hiw.SexualOrientationRelation.getAncestorSexualOrientationForSexualOrientationRelation);
-    hiw.Endpoint.addArray(hiw.SexualOrientationRelation, 0 /* GET */, "/SexualOrientation/{sexualOrientationID}/Descendants/{page}", hiw.SexualOrientationRelation.getByDescendantSexualOrientationID);
+    hiw.Endpoint.addArray(hiw.SexualOrientationRelation, 0 /* GET */, "/SexualOrientation/{sexualOrientationID}/Descendants/{page}?PageSize={pageSize}", hiw.SexualOrientationRelation.getByDescendantSexualOrientationID);
     hiw.Endpoint.addSimple(hiw.SexualOrientationRelation, 0 /* GET */, "/SexualOrientation/{sexualOrientationID}/Descendants/Count", hiw.SexualOrientationRelation.getByDescendantSexualOrientationIDCount);
     hiw.Endpoint.addSimple(hiw.SexualOrientationRelation, 0 /* GET */, "/SexualOrientation/{sexualOrientationID}/Descendants/PageCount", hiw.SexualOrientationRelation.getByDescendantSexualOrientationIDPageCount);
     hiw.Endpoint.addSingle(hiw.SexualOrientation, 0 /* GET */, "/SexualOrientationRelation/{sexualOrientationRelationID}/DescendantSexualOrientation", hiw.SexualOrientationRelation.getDescendantSexualOrientationForSexualOrientationRelation);
-    hiw.Endpoint.addArray(hiw.Timeframe, 0 /* GET */, "/Timeframes/{page}", hiw.Timeframe.getAll);
+    hiw.Endpoint.addArray(hiw.Timeframe, 0 /* GET */, "/Timeframes/{page}?PageSize={pageSize}", hiw.Timeframe.getAll);
     hiw.Endpoint.addSimple(hiw.Timeframe, 0 /* GET */, "/Timeframes/Count", hiw.Timeframe.getAllCount);
     hiw.Endpoint.addSimple(hiw.Timeframe, 0 /* GET */, "/Timeframes/PageCount", hiw.Timeframe.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.Timeframe, 0 /* GET */, "/Timeframe/{id}", hiw.Timeframe.getByID);
     hiw.Endpoint.addArray(hiw.Timeframe, 1 /* POST */, "Timeframes/Filter", hiw.Timeframe.filter);
     hiw.Endpoint.addSimple(hiw.Timeframe, 1 /* POST */, "Timeframes/FilterCount", hiw.Timeframe.filterCount);
     hiw.Endpoint.addSimple(hiw.Timeframe, 1 /* POST */, "Timeframes/FilterPageCount", hiw.Timeframe.filterPageCount);
-    hiw.Endpoint.addArray(hiw.Total, 0 /* GET */, "/Totals/{page}", hiw.Total.getAll);
+    hiw.Endpoint.addArray(hiw.Total, 0 /* GET */, "/Totals/{page}?PageSize={pageSize}", hiw.Total.getAll);
     hiw.Endpoint.addSimple(hiw.Total, 0 /* GET */, "/Totals/Count", hiw.Total.getAllCount);
     hiw.Endpoint.addSimple(hiw.Total, 0 /* GET */, "/Totals/PageCount", hiw.Total.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.Total, 0 /* GET */, "/Total/{id}", hiw.Total.getByID);
     hiw.Endpoint.addArray(hiw.Total, 1 /* POST */, "Totals/Filter", hiw.Total.filter);
     hiw.Endpoint.addSimple(hiw.Total, 1 /* POST */, "Totals/FilterCount", hiw.Total.filterCount);
     hiw.Endpoint.addSimple(hiw.Total, 1 /* POST */, "Totals/FilterPageCount", hiw.Total.filterPageCount);
-    hiw.Endpoint.addArray(hiw.Total, 0 /* GET */, "/Total/{totalID}/Totals/{page}", hiw.Total.getByParentTotalID);
+    hiw.Endpoint.addArray(hiw.Total, 0 /* GET */, "/Total/{totalID}/Totals/{page}?PageSize={pageSize}", hiw.Total.getByParentTotalID);
     hiw.Endpoint.addSimple(hiw.Total, 0 /* GET */, "/Total/{totalID}/Totals/Count", hiw.Total.getByParentTotalIDCount);
     hiw.Endpoint.addSimple(hiw.Total, 0 /* GET */, "/Total/{totalID}/Totals/PageCount", hiw.Total.getByParentTotalIDPageCount);
     hiw.Endpoint.addSingle(hiw.Total, 0 /* GET */, "/Total/{totalID}/ParentTotal", hiw.Total.getParentTotalForTotal);
-    hiw.Endpoint.addArray(hiw.TotalRelation, 0 /* GET */, "/TotalRelations/{page}", hiw.TotalRelation.getAll);
+    hiw.Endpoint.addArray(hiw.TotalRelation, 0 /* GET */, "/TotalRelations/{page}?PageSize={pageSize}", hiw.TotalRelation.getAll);
     hiw.Endpoint.addSimple(hiw.TotalRelation, 0 /* GET */, "/TotalRelations/Count", hiw.TotalRelation.getAllCount);
     hiw.Endpoint.addSimple(hiw.TotalRelation, 0 /* GET */, "/TotalRelations/PageCount", hiw.TotalRelation.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.TotalRelation, 0 /* GET */, "/TotalRelation/{id}", hiw.TotalRelation.getByID);
     hiw.Endpoint.addArray(hiw.TotalRelation, 1 /* POST */, "TotalRelations/Filter", hiw.TotalRelation.filter);
     hiw.Endpoint.addSimple(hiw.TotalRelation, 1 /* POST */, "TotalRelations/FilterCount", hiw.TotalRelation.filterCount);
     hiw.Endpoint.addSimple(hiw.TotalRelation, 1 /* POST */, "TotalRelations/FilterPageCount", hiw.TotalRelation.filterPageCount);
-    hiw.Endpoint.addArray(hiw.TotalRelation, 0 /* GET */, "/Total/{totalID}/Ancestors/{page}", hiw.TotalRelation.getByAncestorTotalID);
+    hiw.Endpoint.addArray(hiw.TotalRelation, 0 /* GET */, "/Total/{totalID}/Ancestors/{page}?PageSize={pageSize}", hiw.TotalRelation.getByAncestorTotalID);
     hiw.Endpoint.addSimple(hiw.TotalRelation, 0 /* GET */, "/Total/{totalID}/Ancestors/Count", hiw.TotalRelation.getByAncestorTotalIDCount);
     hiw.Endpoint.addSimple(hiw.TotalRelation, 0 /* GET */, "/Total/{totalID}/Ancestors/PageCount", hiw.TotalRelation.getByAncestorTotalIDPageCount);
     hiw.Endpoint.addSingle(hiw.Total, 0 /* GET */, "/TotalRelation/{totalRelationID}/AncestorTotal", hiw.TotalRelation.getAncestorTotalForTotalRelation);
-    hiw.Endpoint.addArray(hiw.TotalRelation, 0 /* GET */, "/Total/{totalID}/Descendants/{page}", hiw.TotalRelation.getByDescendantTotalID);
+    hiw.Endpoint.addArray(hiw.TotalRelation, 0 /* GET */, "/Total/{totalID}/Descendants/{page}?PageSize={pageSize}", hiw.TotalRelation.getByDescendantTotalID);
     hiw.Endpoint.addSimple(hiw.TotalRelation, 0 /* GET */, "/Total/{totalID}/Descendants/Count", hiw.TotalRelation.getByDescendantTotalIDCount);
     hiw.Endpoint.addSimple(hiw.TotalRelation, 0 /* GET */, "/Total/{totalID}/Descendants/PageCount", hiw.TotalRelation.getByDescendantTotalIDPageCount);
     hiw.Endpoint.addSingle(hiw.Total, 0 /* GET */, "/TotalRelation/{totalRelationID}/DescendantTotal", hiw.TotalRelation.getDescendantTotalForTotalRelation);
-    hiw.Endpoint.addArray(hiw.Url, 0 /* GET */, "/Urls/{page}", hiw.Url.getAll);
+    hiw.Endpoint.addArray(hiw.Url, 0 /* GET */, "/Urls/{page}?PageSize={pageSize}", hiw.Url.getAll);
     hiw.Endpoint.addSimple(hiw.Url, 0 /* GET */, "/Urls/Count", hiw.Url.getAllCount);
     hiw.Endpoint.addSimple(hiw.Url, 0 /* GET */, "/Urls/PageCount", hiw.Url.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.Url, 0 /* GET */, "/Url/{id}", hiw.Url.getByID);
     hiw.Endpoint.addArray(hiw.Url, 1 /* POST */, "Urls/Filter", hiw.Url.filter);
     hiw.Endpoint.addSimple(hiw.Url, 1 /* POST */, "Urls/FilterCount", hiw.Url.filterCount);
     hiw.Endpoint.addSimple(hiw.Url, 1 /* POST */, "Urls/FilterPageCount", hiw.Url.filterPageCount);
-    hiw.Endpoint.addArray(hiw.ValueLabel, 0 /* GET */, "/ValueLabels/{page}", hiw.ValueLabel.getAll);
+    hiw.Endpoint.addArray(hiw.ValueLabel, 0 /* GET */, "/ValueLabels/{page}?PageSize={pageSize}", hiw.ValueLabel.getAll);
     hiw.Endpoint.addSimple(hiw.ValueLabel, 0 /* GET */, "/ValueLabels/Count", hiw.ValueLabel.getAllCount);
     hiw.Endpoint.addSimple(hiw.ValueLabel, 0 /* GET */, "/ValueLabels/PageCount", hiw.ValueLabel.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.ValueLabel, 0 /* GET */, "/ValueLabel/{id}", hiw.ValueLabel.getByID);
     hiw.Endpoint.addArray(hiw.ValueLabel, 1 /* POST */, "ValueLabels/Filter", hiw.ValueLabel.filter);
     hiw.Endpoint.addSimple(hiw.ValueLabel, 1 /* POST */, "ValueLabels/FilterCount", hiw.ValueLabel.filterCount);
     hiw.Endpoint.addSimple(hiw.ValueLabel, 1 /* POST */, "ValueLabels/FilterPageCount", hiw.ValueLabel.filterPageCount);
-    hiw.Endpoint.addArray(hiw.VeteranStatus, 0 /* GET */, "/VeteranStatuses/{page}", hiw.VeteranStatus.getAll);
+    hiw.Endpoint.addArray(hiw.VeteranStatus, 0 /* GET */, "/VeteranStatuses/{page}?PageSize={pageSize}", hiw.VeteranStatus.getAll);
     hiw.Endpoint.addSimple(hiw.VeteranStatus, 0 /* GET */, "/VeteranStatuses/Count", hiw.VeteranStatus.getAllCount);
     hiw.Endpoint.addSimple(hiw.VeteranStatus, 0 /* GET */, "/VeteranStatuses/PageCount", hiw.VeteranStatus.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.VeteranStatus, 0 /* GET */, "/VeteranStatus/{id}", hiw.VeteranStatus.getByID);
     hiw.Endpoint.addArray(hiw.VeteranStatus, 1 /* POST */, "VeteranStatuses/Filter", hiw.VeteranStatus.filter);
     hiw.Endpoint.addSimple(hiw.VeteranStatus, 1 /* POST */, "VeteranStatuses/FilterCount", hiw.VeteranStatus.filterCount);
     hiw.Endpoint.addSimple(hiw.VeteranStatus, 1 /* POST */, "VeteranStatuses/FilterPageCount", hiw.VeteranStatus.filterPageCount);
-    hiw.Endpoint.addArray(hiw.VeteranStatus, 0 /* GET */, "/VeteranStatus/{veteranStatusID}/VeteranStatuses/{page}", hiw.VeteranStatus.getByParentVeteranStatusID);
+    hiw.Endpoint.addArray(hiw.VeteranStatus, 0 /* GET */, "/VeteranStatus/{veteranStatusID}/VeteranStatuses/{page}?PageSize={pageSize}", hiw.VeteranStatus.getByParentVeteranStatusID);
     hiw.Endpoint.addSimple(hiw.VeteranStatus, 0 /* GET */, "/VeteranStatus/{veteranStatusID}/VeteranStatuses/Count", hiw.VeteranStatus.getByParentVeteranStatusIDCount);
     hiw.Endpoint.addSimple(hiw.VeteranStatus, 0 /* GET */, "/VeteranStatus/{veteranStatusID}/VeteranStatuses/PageCount", hiw.VeteranStatus.getByParentVeteranStatusIDPageCount);
     hiw.Endpoint.addSingle(hiw.VeteranStatus, 0 /* GET */, "/VeteranStatus/{veteranStatusID}/ParentVeteranStatus", hiw.VeteranStatus.getParentVeteranStatusForVeteranStatus);
-    hiw.Endpoint.addArray(hiw.VeteranStatusRelation, 0 /* GET */, "/VeteranStatusRelations/{page}", hiw.VeteranStatusRelation.getAll);
+    hiw.Endpoint.addArray(hiw.VeteranStatusRelation, 0 /* GET */, "/VeteranStatusRelations/{page}?PageSize={pageSize}", hiw.VeteranStatusRelation.getAll);
     hiw.Endpoint.addSimple(hiw.VeteranStatusRelation, 0 /* GET */, "/VeteranStatusRelations/Count", hiw.VeteranStatusRelation.getAllCount);
     hiw.Endpoint.addSimple(hiw.VeteranStatusRelation, 0 /* GET */, "/VeteranStatusRelations/PageCount", hiw.VeteranStatusRelation.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.VeteranStatusRelation, 0 /* GET */, "/VeteranStatusRelation/{id}", hiw.VeteranStatusRelation.getByID);
     hiw.Endpoint.addArray(hiw.VeteranStatusRelation, 1 /* POST */, "VeteranStatusRelations/Filter", hiw.VeteranStatusRelation.filter);
     hiw.Endpoint.addSimple(hiw.VeteranStatusRelation, 1 /* POST */, "VeteranStatusRelations/FilterCount", hiw.VeteranStatusRelation.filterCount);
     hiw.Endpoint.addSimple(hiw.VeteranStatusRelation, 1 /* POST */, "VeteranStatusRelations/FilterPageCount", hiw.VeteranStatusRelation.filterPageCount);
-    hiw.Endpoint.addArray(hiw.VeteranStatusRelation, 0 /* GET */, "/VeteranStatus/{veteranStatusID}/Ancestors/{page}", hiw.VeteranStatusRelation.getByAncestorVeteranStatusID);
+    hiw.Endpoint.addArray(hiw.VeteranStatusRelation, 0 /* GET */, "/VeteranStatus/{veteranStatusID}/Ancestors/{page}?PageSize={pageSize}", hiw.VeteranStatusRelation.getByAncestorVeteranStatusID);
     hiw.Endpoint.addSimple(hiw.VeteranStatusRelation, 0 /* GET */, "/VeteranStatus/{veteranStatusID}/Ancestors/Count", hiw.VeteranStatusRelation.getByAncestorVeteranStatusIDCount);
     hiw.Endpoint.addSimple(hiw.VeteranStatusRelation, 0 /* GET */, "/VeteranStatus/{veteranStatusID}/Ancestors/PageCount", hiw.VeteranStatusRelation.getByAncestorVeteranStatusIDPageCount);
     hiw.Endpoint.addSingle(hiw.VeteranStatus, 0 /* GET */, "/VeteranStatusRelation/{veteranStatusRelationID}/AncestorVeteranStatus", hiw.VeteranStatusRelation.getAncestorVeteranStatusForVeteranStatusRelation);
-    hiw.Endpoint.addArray(hiw.VeteranStatusRelation, 0 /* GET */, "/VeteranStatus/{veteranStatusID}/Descendants/{page}", hiw.VeteranStatusRelation.getByDescendantVeteranStatusID);
+    hiw.Endpoint.addArray(hiw.VeteranStatusRelation, 0 /* GET */, "/VeteranStatus/{veteranStatusID}/Descendants/{page}?PageSize={pageSize}", hiw.VeteranStatusRelation.getByDescendantVeteranStatusID);
     hiw.Endpoint.addSimple(hiw.VeteranStatusRelation, 0 /* GET */, "/VeteranStatus/{veteranStatusID}/Descendants/Count", hiw.VeteranStatusRelation.getByDescendantVeteranStatusIDCount);
     hiw.Endpoint.addSimple(hiw.VeteranStatusRelation, 0 /* GET */, "/VeteranStatus/{veteranStatusID}/Descendants/PageCount", hiw.VeteranStatusRelation.getByDescendantVeteranStatusIDPageCount);
     hiw.Endpoint.addSingle(hiw.VeteranStatus, 0 /* GET */, "/VeteranStatusRelation/{veteranStatusRelationID}/DescendantVeteranStatus", hiw.VeteranStatusRelation.getDescendantVeteranStatusForVeteranStatusRelation);
-    hiw.Endpoint.addArray(hiw.Year, 0 /* GET */, "/Years/{page}", hiw.Year.getAll);
+    hiw.Endpoint.addArray(hiw.Year, 0 /* GET */, "/Years/{page}?PageSize={pageSize}", hiw.Year.getAll);
     hiw.Endpoint.addSimple(hiw.Year, 0 /* GET */, "/Years/Count", hiw.Year.getAllCount);
     hiw.Endpoint.addSimple(hiw.Year, 0 /* GET */, "/Years/PageCount", hiw.Year.getAllPageCount);
     hiw.Endpoint.addSingle(hiw.Year, 0 /* GET */, "/Year/{id}", hiw.Year.getByID);

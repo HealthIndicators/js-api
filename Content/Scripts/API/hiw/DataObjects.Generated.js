@@ -26,8 +26,8 @@ var hiw;
         /** Gets a list of all of the Ages in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Ages */
-        BaseAge.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseAge.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Ages exist. */
         BaseAge.getAllCount = function (api, callback) {
@@ -46,8 +46,8 @@ var hiw;
         /** Returns a filtered collection of Ages based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Ages which match the provided filter. */
-        BaseAge.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseAge.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Ages exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -63,14 +63,14 @@ var hiw;
         };
         /** Gets Ages by ParentAgeID.
          *  @return An Array of Ages. */
-        BaseAge.prototype.getAges = function (api, callback, page) {
-            return Age.getByParentAgeID(this.id, api, callback, page);
+        BaseAge.prototype.getAges = function (api, callback, page, pageSize) {
+            return Age.getByParentAgeID(this.id, api, callback, page, pageSize);
         };
         /** Gets Ages by ParentAgeID.
          *  @param ageID The ID of the Age for which to retrieve the child Ages.
          *  @return An Array of Ages. */
-        BaseAge.getByParentAgeID = function (ageID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { ageID: ageID }, null, page);
+        BaseAge.getByParentAgeID = function (ageID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { ageID: ageID }, null, page, pageSize);
         };
         /** Gets how many Ages by ParentAgeID exist.
          *  @return An Array of Ages. */
@@ -142,8 +142,8 @@ var hiw;
         /** Gets a list of all of the AgeRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of AgeRelations */
-        BaseAgeRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseAgeRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many AgeRelations exist. */
         BaseAgeRelation.getAllCount = function (api, callback) {
@@ -162,8 +162,8 @@ var hiw;
         /** Returns a filtered collection of AgeRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All AgeRelations which match the provided filter. */
-        BaseAgeRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseAgeRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many AgeRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -180,8 +180,8 @@ var hiw;
         /** Gets AgeRelations by AncestorAgeID.
          *  @param ageID The ID of the Age for which to retrieve the child AgeRelations.
          *  @return An Array of AgeRelations. */
-        BaseAgeRelation.getByAncestorAgeID = function (ageID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { ageID: ageID }, null, page);
+        BaseAgeRelation.getByAncestorAgeID = function (ageID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { ageID: ageID }, null, page, pageSize);
         };
         /** Gets how many AgeRelations by AncestorAgeID exist.
          *  @param ageID The ID of the Age for which to retrieve the child AgeRelations.
@@ -209,8 +209,8 @@ var hiw;
         /** Gets AgeRelations by DescendantAgeID.
          *  @param ageID The ID of the Age for which to retrieve the child AgeRelations.
          *  @return An Array of AgeRelations. */
-        BaseAgeRelation.getByDescendantAgeID = function (ageID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { ageID: ageID }, null, page);
+        BaseAgeRelation.getByDescendantAgeID = function (ageID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { ageID: ageID }, null, page, pageSize);
         };
         /** Gets how many AgeRelations by DescendantAgeID exist.
          *  @param ageID The ID of the Age for which to retrieve the child AgeRelations.
@@ -272,8 +272,8 @@ var hiw;
         /** Gets a list of all of the CharacteristicOfSchoolOrStudents in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of CharacteristicOfSchoolOrStudents */
-        BaseCharacteristicOfSchoolOrStudent.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseCharacteristicOfSchoolOrStudent.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many CharacteristicOfSchoolOrStudents exist. */
         BaseCharacteristicOfSchoolOrStudent.getAllCount = function (api, callback) {
@@ -292,8 +292,8 @@ var hiw;
         /** Returns a filtered collection of CharacteristicOfSchoolOrStudents based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All CharacteristicOfSchoolOrStudents which match the provided filter. */
-        BaseCharacteristicOfSchoolOrStudent.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseCharacteristicOfSchoolOrStudent.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many CharacteristicOfSchoolOrStudents exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -309,14 +309,14 @@ var hiw;
         };
         /** Gets CharacteristicOfSchoolOrStudents by ParentCharacteristicOfSchoolOrStudentID.
          *  @return An Array of CharacteristicOfSchoolOrStudents. */
-        BaseCharacteristicOfSchoolOrStudent.prototype.getCharacteristicOfSchoolOrStudents = function (api, callback, page) {
-            return CharacteristicOfSchoolOrStudent.getByParentCharacteristicOfSchoolOrStudentID(this.id, api, callback, page);
+        BaseCharacteristicOfSchoolOrStudent.prototype.getCharacteristicOfSchoolOrStudents = function (api, callback, page, pageSize) {
+            return CharacteristicOfSchoolOrStudent.getByParentCharacteristicOfSchoolOrStudentID(this.id, api, callback, page, pageSize);
         };
         /** Gets CharacteristicOfSchoolOrStudents by ParentCharacteristicOfSchoolOrStudentID.
          *  @param characteristicOfSchoolOrStudentID The ID of the CharacteristicOfSchoolOrStudent for which to retrieve the child CharacteristicOfSchoolOrStudents.
          *  @return An Array of CharacteristicOfSchoolOrStudents. */
-        BaseCharacteristicOfSchoolOrStudent.getByParentCharacteristicOfSchoolOrStudentID = function (characteristicOfSchoolOrStudentID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { characteristicOfSchoolOrStudentID: characteristicOfSchoolOrStudentID }, null, page);
+        BaseCharacteristicOfSchoolOrStudent.getByParentCharacteristicOfSchoolOrStudentID = function (characteristicOfSchoolOrStudentID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { characteristicOfSchoolOrStudentID: characteristicOfSchoolOrStudentID }, null, page, pageSize);
         };
         /** Gets how many CharacteristicOfSchoolOrStudents by ParentCharacteristicOfSchoolOrStudentID exist.
          *  @return An Array of CharacteristicOfSchoolOrStudents. */
@@ -388,8 +388,8 @@ var hiw;
         /** Gets a list of all of the CharacteristicOfSchoolOrStudentRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of CharacteristicOfSchoolOrStudentRelations */
-        BaseCharacteristicOfSchoolOrStudentRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseCharacteristicOfSchoolOrStudentRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many CharacteristicOfSchoolOrStudentRelations exist. */
         BaseCharacteristicOfSchoolOrStudentRelation.getAllCount = function (api, callback) {
@@ -408,8 +408,8 @@ var hiw;
         /** Returns a filtered collection of CharacteristicOfSchoolOrStudentRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All CharacteristicOfSchoolOrStudentRelations which match the provided filter. */
-        BaseCharacteristicOfSchoolOrStudentRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseCharacteristicOfSchoolOrStudentRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many CharacteristicOfSchoolOrStudentRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -426,8 +426,8 @@ var hiw;
         /** Gets CharacteristicOfSchoolOrStudentRelations by AncestorCharacteristicOfSchoolOrStudentID.
          *  @param characteristicOfSchoolOrStudentID The ID of the CharacteristicOfSchoolOrStudent for which to retrieve the child CharacteristicOfSchoolOrStudentRelations.
          *  @return An Array of CharacteristicOfSchoolOrStudentRelations. */
-        BaseCharacteristicOfSchoolOrStudentRelation.getByAncestorCharacteristicOfSchoolOrStudentID = function (characteristicOfSchoolOrStudentID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { characteristicOfSchoolOrStudentID: characteristicOfSchoolOrStudentID }, null, page);
+        BaseCharacteristicOfSchoolOrStudentRelation.getByAncestorCharacteristicOfSchoolOrStudentID = function (characteristicOfSchoolOrStudentID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { characteristicOfSchoolOrStudentID: characteristicOfSchoolOrStudentID }, null, page, pageSize);
         };
         /** Gets how many CharacteristicOfSchoolOrStudentRelations by AncestorCharacteristicOfSchoolOrStudentID exist.
          *  @param characteristicOfSchoolOrStudentID The ID of the CharacteristicOfSchoolOrStudent for which to retrieve the child CharacteristicOfSchoolOrStudentRelations.
@@ -455,8 +455,8 @@ var hiw;
         /** Gets CharacteristicOfSchoolOrStudentRelations by DescendantCharacteristicOfSchoolOrStudentID.
          *  @param characteristicOfSchoolOrStudentID The ID of the CharacteristicOfSchoolOrStudent for which to retrieve the child CharacteristicOfSchoolOrStudentRelations.
          *  @return An Array of CharacteristicOfSchoolOrStudentRelations. */
-        BaseCharacteristicOfSchoolOrStudentRelation.getByDescendantCharacteristicOfSchoolOrStudentID = function (characteristicOfSchoolOrStudentID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { characteristicOfSchoolOrStudentID: characteristicOfSchoolOrStudentID }, null, page);
+        BaseCharacteristicOfSchoolOrStudentRelation.getByDescendantCharacteristicOfSchoolOrStudentID = function (characteristicOfSchoolOrStudentID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { characteristicOfSchoolOrStudentID: characteristicOfSchoolOrStudentID }, null, page, pageSize);
         };
         /** Gets how many CharacteristicOfSchoolOrStudentRelations by DescendantCharacteristicOfSchoolOrStudentID exist.
          *  @param characteristicOfSchoolOrStudentID The ID of the CharacteristicOfSchoolOrStudent for which to retrieve the child CharacteristicOfSchoolOrStudentRelations.
@@ -518,8 +518,8 @@ var hiw;
         /** Gets a list of all of the CountryOfBirths in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of CountryOfBirths */
-        BaseCountryOfBirth.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseCountryOfBirth.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many CountryOfBirths exist. */
         BaseCountryOfBirth.getAllCount = function (api, callback) {
@@ -538,8 +538,8 @@ var hiw;
         /** Returns a filtered collection of CountryOfBirths based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All CountryOfBirths which match the provided filter. */
-        BaseCountryOfBirth.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseCountryOfBirth.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many CountryOfBirths exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -555,14 +555,14 @@ var hiw;
         };
         /** Gets CountryOfBirths by ParentCountryOfBirthID.
          *  @return An Array of CountryOfBirths. */
-        BaseCountryOfBirth.prototype.getCountryOfBirths = function (api, callback, page) {
-            return CountryOfBirth.getByParentCountryOfBirthID(this.id, api, callback, page);
+        BaseCountryOfBirth.prototype.getCountryOfBirths = function (api, callback, page, pageSize) {
+            return CountryOfBirth.getByParentCountryOfBirthID(this.id, api, callback, page, pageSize);
         };
         /** Gets CountryOfBirths by ParentCountryOfBirthID.
          *  @param countryOfBirthID The ID of the CountryOfBirth for which to retrieve the child CountryOfBirths.
          *  @return An Array of CountryOfBirths. */
-        BaseCountryOfBirth.getByParentCountryOfBirthID = function (countryOfBirthID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { countryOfBirthID: countryOfBirthID }, null, page);
+        BaseCountryOfBirth.getByParentCountryOfBirthID = function (countryOfBirthID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { countryOfBirthID: countryOfBirthID }, null, page, pageSize);
         };
         /** Gets how many CountryOfBirths by ParentCountryOfBirthID exist.
          *  @return An Array of CountryOfBirths. */
@@ -634,8 +634,8 @@ var hiw;
         /** Gets a list of all of the CountryOfBirthRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of CountryOfBirthRelations */
-        BaseCountryOfBirthRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseCountryOfBirthRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many CountryOfBirthRelations exist. */
         BaseCountryOfBirthRelation.getAllCount = function (api, callback) {
@@ -654,8 +654,8 @@ var hiw;
         /** Returns a filtered collection of CountryOfBirthRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All CountryOfBirthRelations which match the provided filter. */
-        BaseCountryOfBirthRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseCountryOfBirthRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many CountryOfBirthRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -672,8 +672,8 @@ var hiw;
         /** Gets CountryOfBirthRelations by AncestorCountryOfBirthID.
          *  @param countryOfBirthID The ID of the CountryOfBirth for which to retrieve the child CountryOfBirthRelations.
          *  @return An Array of CountryOfBirthRelations. */
-        BaseCountryOfBirthRelation.getByAncestorCountryOfBirthID = function (countryOfBirthID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { countryOfBirthID: countryOfBirthID }, null, page);
+        BaseCountryOfBirthRelation.getByAncestorCountryOfBirthID = function (countryOfBirthID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { countryOfBirthID: countryOfBirthID }, null, page, pageSize);
         };
         /** Gets how many CountryOfBirthRelations by AncestorCountryOfBirthID exist.
          *  @param countryOfBirthID The ID of the CountryOfBirth for which to retrieve the child CountryOfBirthRelations.
@@ -701,8 +701,8 @@ var hiw;
         /** Gets CountryOfBirthRelations by DescendantCountryOfBirthID.
          *  @param countryOfBirthID The ID of the CountryOfBirth for which to retrieve the child CountryOfBirthRelations.
          *  @return An Array of CountryOfBirthRelations. */
-        BaseCountryOfBirthRelation.getByDescendantCountryOfBirthID = function (countryOfBirthID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { countryOfBirthID: countryOfBirthID }, null, page);
+        BaseCountryOfBirthRelation.getByDescendantCountryOfBirthID = function (countryOfBirthID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { countryOfBirthID: countryOfBirthID }, null, page, pageSize);
         };
         /** Gets how many CountryOfBirthRelations by DescendantCountryOfBirthID exist.
          *  @param countryOfBirthID The ID of the CountryOfBirth for which to retrieve the child CountryOfBirthRelations.
@@ -770,8 +770,8 @@ var hiw;
         /** Gets a list of all of the DataCategories in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataCategories */
-        BaseDataCategory.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseDataCategory.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many DataCategories exist. */
         BaseDataCategory.getAllCount = function (api, callback) {
@@ -790,8 +790,8 @@ var hiw;
         /** Returns a filtered collection of DataCategories based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DataCategories which match the provided filter. */
-        BaseDataCategory.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseDataCategory.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many DataCategories exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -807,14 +807,14 @@ var hiw;
         };
         /** Gets DataCategories by ParentDataCategoryID.
          *  @return An Array of DataCategories. */
-        BaseDataCategory.prototype.getParentDataCategories = function (api, callback, page) {
-            return DataCategory.getByParentDataCategoryID(this.id, api, callback, page);
+        BaseDataCategory.prototype.getParentDataCategories = function (api, callback, page, pageSize) {
+            return DataCategory.getByParentDataCategoryID(this.id, api, callback, page, pageSize);
         };
         /** Gets DataCategories by ParentDataCategoryID.
          *  @param dataCategoryID The ID of the DataCategory for which to retrieve the child DataCategories.
          *  @return An Array of DataCategories. */
-        BaseDataCategory.getByParentDataCategoryID = function (dataCategoryID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataCategoryID: dataCategoryID }, null, page);
+        BaseDataCategory.getByParentDataCategoryID = function (dataCategoryID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataCategoryID: dataCategoryID }, null, page, pageSize);
         };
         /** Gets how many DataCategories by ParentDataCategoryID exist.
          *  @return An Array of DataCategories. */
@@ -852,8 +852,8 @@ var hiw;
         /** Gets DataCategories by InitiativeID.
          *  @param initiativeID The ID of the Initiative for which to retrieve the child DataCategories.
          *  @return An Array of DataCategories. */
-        BaseDataCategory.getByInitiativeID = function (initiativeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { initiativeID: initiativeID }, null, page);
+        BaseDataCategory.getByInitiativeID = function (initiativeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { initiativeID: initiativeID }, null, page, pageSize);
         };
         /** Gets how many DataCategories by InitiativeID exist.
          *  @param initiativeID The ID of the Initiative for which to retrieve the child DataCategories.
@@ -921,8 +921,8 @@ var hiw;
         /** Gets a list of all of the DataCategoryRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataCategoryRelations */
-        BaseDataCategoryRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseDataCategoryRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many DataCategoryRelations exist. */
         BaseDataCategoryRelation.getAllCount = function (api, callback) {
@@ -941,8 +941,8 @@ var hiw;
         /** Returns a filtered collection of DataCategoryRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DataCategoryRelations which match the provided filter. */
-        BaseDataCategoryRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseDataCategoryRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many DataCategoryRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -959,8 +959,8 @@ var hiw;
         /** Gets DataCategoryRelations by AncestorDataCategoryID.
          *  @param dataCategoryID The ID of the DataCategory for which to retrieve the child DataCategoryRelations.
          *  @return An Array of DataCategoryRelations. */
-        BaseDataCategoryRelation.getByAncestorDataCategoryID = function (dataCategoryID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataCategoryID: dataCategoryID }, null, page);
+        BaseDataCategoryRelation.getByAncestorDataCategoryID = function (dataCategoryID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataCategoryID: dataCategoryID }, null, page, pageSize);
         };
         /** Gets how many DataCategoryRelations by AncestorDataCategoryID exist.
          *  @param dataCategoryID The ID of the DataCategory for which to retrieve the child DataCategoryRelations.
@@ -988,8 +988,8 @@ var hiw;
         /** Gets DataCategoryRelations by DescendantDataCategoryID.
          *  @param dataCategoryID The ID of the DataCategory for which to retrieve the child DataCategoryRelations.
          *  @return An Array of DataCategoryRelations. */
-        BaseDataCategoryRelation.getByDescendantDataCategoryID = function (dataCategoryID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataCategoryID: dataCategoryID }, null, page);
+        BaseDataCategoryRelation.getByDescendantDataCategoryID = function (dataCategoryID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataCategoryID: dataCategoryID }, null, page, pageSize);
         };
         /** Gets how many DataCategoryRelations by DescendantDataCategoryID exist.
          *  @param dataCategoryID The ID of the DataCategory for which to retrieve the child DataCategoryRelations.
@@ -1047,8 +1047,8 @@ var hiw;
         /** Gets a list of all of the DataSourceDataSuppliers in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataSourceDataSuppliers */
-        BaseDataSourceDataSupplier.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseDataSourceDataSupplier.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many DataSourceDataSuppliers exist. */
         BaseDataSourceDataSupplier.getAllCount = function (api, callback) {
@@ -1067,8 +1067,8 @@ var hiw;
         /** Returns a filtered collection of DataSourceDataSuppliers based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DataSourceDataSuppliers which match the provided filter. */
-        BaseDataSourceDataSupplier.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseDataSourceDataSupplier.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many DataSourceDataSuppliers exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -1085,8 +1085,8 @@ var hiw;
         /** Gets DataSourceDataSuppliers by DataSourceID.
          *  @param dataSourceID The ID of the DataSource for which to retrieve the child DataSourceDataSuppliers.
          *  @return An Array of DataSourceDataSuppliers. */
-        BaseDataSourceDataSupplier.getByDataSourceID = function (dataSourceID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataSourceID: dataSourceID }, null, page);
+        BaseDataSourceDataSupplier.getByDataSourceID = function (dataSourceID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataSourceID: dataSourceID }, null, page, pageSize);
         };
         /** Gets how many DataSourceDataSuppliers by DataSourceID exist.
          *  @param dataSourceID The ID of the DataSource for which to retrieve the child DataSourceDataSuppliers.
@@ -1114,8 +1114,8 @@ var hiw;
         /** Gets DataSourceDataSuppliers by DataSupplierID.
          *  @param dataSupplierID The ID of the DataSupplier for which to retrieve the child DataSourceDataSuppliers.
          *  @return An Array of DataSourceDataSuppliers. */
-        BaseDataSourceDataSupplier.getByDataSupplierID = function (dataSupplierID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataSupplierID: dataSupplierID }, null, page);
+        BaseDataSourceDataSupplier.getByDataSupplierID = function (dataSupplierID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataSupplierID: dataSupplierID }, null, page, pageSize);
         };
         /** Gets how many DataSourceDataSuppliers by DataSupplierID exist.
          *  @param dataSupplierID The ID of the DataSupplier for which to retrieve the child DataSourceDataSuppliers.
@@ -1191,8 +1191,8 @@ var hiw;
         /** Gets a list of all of the DataSources in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataSources */
-        BaseDataSource.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseDataSource.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many DataSources exist. */
         BaseDataSource.getAllCount = function (api, callback) {
@@ -1211,8 +1211,8 @@ var hiw;
         /** Returns a filtered collection of DataSources based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DataSources which match the provided filter. */
-        BaseDataSource.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseDataSource.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many DataSources exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -1277,8 +1277,8 @@ var hiw;
         /** Gets a list of all of the DataSourceURLs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataSourceURLs */
-        BaseDataSourceURL.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseDataSourceURL.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many DataSourceURLs exist. */
         BaseDataSourceURL.getAllCount = function (api, callback) {
@@ -1297,8 +1297,8 @@ var hiw;
         /** Returns a filtered collection of DataSourceURLs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DataSourceURLs which match the provided filter. */
-        BaseDataSourceURL.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseDataSourceURL.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many DataSourceURLs exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -1315,8 +1315,8 @@ var hiw;
         /** Gets DataSourceURLs by DataSourceID.
          *  @param dataSourceID The ID of the DataSource for which to retrieve the child DataSourceURLs.
          *  @return An Array of DataSourceURLs. */
-        BaseDataSourceURL.getByDataSourceID = function (dataSourceID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataSourceID: dataSourceID }, null, page);
+        BaseDataSourceURL.getByDataSourceID = function (dataSourceID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataSourceID: dataSourceID }, null, page, pageSize);
         };
         /** Gets how many DataSourceURLs by DataSourceID exist.
          *  @param dataSourceID The ID of the DataSource for which to retrieve the child DataSourceURLs.
@@ -1344,8 +1344,8 @@ var hiw;
         /** Gets DataSourceURLs by UrlID.
          *  @param urlID The ID of the Url for which to retrieve the child DataSourceURLs.
          *  @return An Array of DataSourceURLs. */
-        BaseDataSourceURL.getByUrlID = function (urlID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page);
+        BaseDataSourceURL.getByUrlID = function (urlID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page, pageSize);
         };
         /** Gets how many DataSourceURLs by UrlID exist.
          *  @param urlID The ID of the Url for which to retrieve the child DataSourceURLs.
@@ -1409,8 +1409,8 @@ var hiw;
         /** Gets a list of all of the DataSuppliers in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataSuppliers */
-        BaseDataSupplier.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseDataSupplier.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many DataSuppliers exist. */
         BaseDataSupplier.getAllCount = function (api, callback) {
@@ -1429,8 +1429,8 @@ var hiw;
         /** Returns a filtered collection of DataSuppliers based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DataSuppliers which match the provided filter. */
-        BaseDataSupplier.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseDataSupplier.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many DataSuppliers exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -1447,8 +1447,8 @@ var hiw;
         /** Gets DataSuppliers by UrlID.
          *  @param urlID The ID of the Url for which to retrieve the child DataSuppliers.
          *  @return An Array of DataSuppliers. */
-        BaseDataSupplier.getByUrlID = function (urlID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page);
+        BaseDataSupplier.getByUrlID = function (urlID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page, pageSize);
         };
         /** Gets how many DataSuppliers by UrlID exist.
          *  @param urlID The ID of the Url for which to retrieve the child DataSuppliers.
@@ -1522,8 +1522,8 @@ var hiw;
         /** Gets a list of all of the DimensionBooks in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DimensionBooks */
-        BaseDimensionBook.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseDimensionBook.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many DimensionBooks exist. */
         BaseDimensionBook.getAllCount = function (api, callback) {
@@ -1542,8 +1542,8 @@ var hiw;
         /** Returns a filtered collection of DimensionBooks based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DimensionBooks which match the provided filter. */
-        BaseDimensionBook.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseDimensionBook.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many DimensionBooks exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -1559,14 +1559,14 @@ var hiw;
         };
         /** Gets DimensionBooks by ParentDimensionBookID.
          *  @return An Array of DimensionBooks. */
-        BaseDimensionBook.prototype.getDimensionBooks = function (api, callback, page) {
-            return DimensionBook.getByParentDimensionBookID(this.id, api, callback, page);
+        BaseDimensionBook.prototype.getDimensionBooks = function (api, callback, page, pageSize) {
+            return DimensionBook.getByParentDimensionBookID(this.id, api, callback, page, pageSize);
         };
         /** Gets DimensionBooks by ParentDimensionBookID.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child DimensionBooks.
          *  @return An Array of DimensionBooks. */
-        BaseDimensionBook.getByParentDimensionBookID = function (dimensionBookID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionBookID: dimensionBookID }, null, page);
+        BaseDimensionBook.getByParentDimensionBookID = function (dimensionBookID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionBookID: dimensionBookID }, null, page, pageSize);
         };
         /** Gets how many DimensionBooks by ParentDimensionBookID exist.
          *  @return An Array of DimensionBooks. */
@@ -1604,8 +1604,8 @@ var hiw;
         /** Gets DimensionBooks by DimensionListID.
          *  @param dimensionListID The ID of the DimensionList for which to retrieve the child DimensionBooks.
          *  @return An Array of DimensionBooks. */
-        BaseDimensionBook.getByDimensionListID = function (dimensionListID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionListID: dimensionListID }, null, page);
+        BaseDimensionBook.getByDimensionListID = function (dimensionListID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionListID: dimensionListID }, null, page, pageSize);
         };
         /** Gets how many DimensionBooks by DimensionListID exist.
          *  @param dimensionListID The ID of the DimensionList for which to retrieve the child DimensionBooks.
@@ -1678,8 +1678,8 @@ var hiw;
         /** Gets a list of all of the DimensionBookRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DimensionBookRelations */
-        BaseDimensionBookRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseDimensionBookRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many DimensionBookRelations exist. */
         BaseDimensionBookRelation.getAllCount = function (api, callback) {
@@ -1698,8 +1698,8 @@ var hiw;
         /** Returns a filtered collection of DimensionBookRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DimensionBookRelations which match the provided filter. */
-        BaseDimensionBookRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseDimensionBookRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many DimensionBookRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -1716,8 +1716,8 @@ var hiw;
         /** Gets DimensionBookRelations by AncestorDimensionBookID.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child DimensionBookRelations.
          *  @return An Array of DimensionBookRelations. */
-        BaseDimensionBookRelation.getByAncestorDimensionBookID = function (dimensionBookID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionBookID: dimensionBookID }, null, page);
+        BaseDimensionBookRelation.getByAncestorDimensionBookID = function (dimensionBookID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionBookID: dimensionBookID }, null, page, pageSize);
         };
         /** Gets how many DimensionBookRelations by AncestorDimensionBookID exist.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child DimensionBookRelations.
@@ -1745,8 +1745,8 @@ var hiw;
         /** Gets DimensionBookRelations by DescendantDimensionBookID.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child DimensionBookRelations.
          *  @return An Array of DimensionBookRelations. */
-        BaseDimensionBookRelation.getByDescendantDimensionBookID = function (dimensionBookID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionBookID: dimensionBookID }, null, page);
+        BaseDimensionBookRelation.getByDescendantDimensionBookID = function (dimensionBookID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionBookID: dimensionBookID }, null, page, pageSize);
         };
         /** Gets how many DimensionBookRelations by DescendantDimensionBookID exist.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child DimensionBookRelations.
@@ -1879,8 +1879,8 @@ var hiw;
         /** Gets a list of all of the DimensionGraphs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DimensionGraphs */
-        BaseDimensionGraph.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseDimensionGraph.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs exist. */
         BaseDimensionGraph.getAllCount = function (api, callback) {
@@ -1899,8 +1899,8 @@ var hiw;
         /** Returns a filtered collection of DimensionGraphs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DimensionGraphs which match the provided filter. */
-        BaseDimensionGraph.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseDimensionGraph.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many DimensionGraphs exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -1917,8 +1917,8 @@ var hiw;
         /** Gets DimensionGraphs by TotalID.
          *  @param totalID The ID of the Total for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByTotalID = function (totalID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { totalID: totalID }, null, page);
+        BaseDimensionGraph.getByTotalID = function (totalID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { totalID: totalID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by TotalID exist.
          *  @param totalID The ID of the Total for which to retrieve the child DimensionGraphs.
@@ -1946,8 +1946,8 @@ var hiw;
         /** Gets DimensionGraphs by AgeID.
          *  @param ageID The ID of the Age for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByAgeID = function (ageID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { ageID: ageID }, null, page);
+        BaseDimensionGraph.getByAgeID = function (ageID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { ageID: ageID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by AgeID exist.
          *  @param ageID The ID of the Age for which to retrieve the child DimensionGraphs.
@@ -1975,8 +1975,8 @@ var hiw;
         /** Gets DimensionGraphs by SexID.
          *  @param sexID The ID of the Sex for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getBySexID = function (sexID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexID: sexID }, null, page);
+        BaseDimensionGraph.getBySexID = function (sexID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexID: sexID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by SexID exist.
          *  @param sexID The ID of the Sex for which to retrieve the child DimensionGraphs.
@@ -2004,8 +2004,8 @@ var hiw;
         /** Gets DimensionGraphs by RaceEthnicityID.
          *  @param raceEthnicityID The ID of the RaceEthnicity for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByRaceEthnicityID = function (raceEthnicityID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { raceEthnicityID: raceEthnicityID }, null, page);
+        BaseDimensionGraph.getByRaceEthnicityID = function (raceEthnicityID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { raceEthnicityID: raceEthnicityID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by RaceEthnicityID exist.
          *  @param raceEthnicityID The ID of the RaceEthnicity for which to retrieve the child DimensionGraphs.
@@ -2033,8 +2033,8 @@ var hiw;
         /** Gets DimensionGraphs by IncomeAndPovertyStatusID.
          *  @param incomeAndPovertyStatusID The ID of the IncomeAndPovertyStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByIncomeAndPovertyStatusID = function (incomeAndPovertyStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { incomeAndPovertyStatusID: incomeAndPovertyStatusID }, null, page);
+        BaseDimensionGraph.getByIncomeAndPovertyStatusID = function (incomeAndPovertyStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { incomeAndPovertyStatusID: incomeAndPovertyStatusID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by IncomeAndPovertyStatusID exist.
          *  @param incomeAndPovertyStatusID The ID of the IncomeAndPovertyStatus for which to retrieve the child DimensionGraphs.
@@ -2062,8 +2062,8 @@ var hiw;
         /** Gets DimensionGraphs by EducationalAttainmentID.
          *  @param educationalAttainmentID The ID of the EducationalAttainment for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByEducationalAttainmentID = function (educationalAttainmentID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { educationalAttainmentID: educationalAttainmentID }, null, page);
+        BaseDimensionGraph.getByEducationalAttainmentID = function (educationalAttainmentID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { educationalAttainmentID: educationalAttainmentID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by EducationalAttainmentID exist.
          *  @param educationalAttainmentID The ID of the EducationalAttainment for which to retrieve the child DimensionGraphs.
@@ -2091,8 +2091,8 @@ var hiw;
         /** Gets DimensionGraphs by HealthInsuranceStatusID.
          *  @param healthInsuranceStatusID The ID of the HealthInsuranceStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByHealthInsuranceStatusID = function (healthInsuranceStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { healthInsuranceStatusID: healthInsuranceStatusID }, null, page);
+        BaseDimensionGraph.getByHealthInsuranceStatusID = function (healthInsuranceStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { healthInsuranceStatusID: healthInsuranceStatusID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by HealthInsuranceStatusID exist.
          *  @param healthInsuranceStatusID The ID of the HealthInsuranceStatus for which to retrieve the child DimensionGraphs.
@@ -2120,8 +2120,8 @@ var hiw;
         /** Gets DimensionGraphs by SexualOrientationID.
          *  @param sexualOrientationID The ID of the SexualOrientation for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getBySexualOrientationID = function (sexualOrientationID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexualOrientationID: sexualOrientationID }, null, page);
+        BaseDimensionGraph.getBySexualOrientationID = function (sexualOrientationID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexualOrientationID: sexualOrientationID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by SexualOrientationID exist.
          *  @param sexualOrientationID The ID of the SexualOrientation for which to retrieve the child DimensionGraphs.
@@ -2149,8 +2149,8 @@ var hiw;
         /** Gets DimensionGraphs by FamilyTypeID.
          *  @param familyTypeID The ID of the FamilyType for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByFamilyTypeID = function (familyTypeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { familyTypeID: familyTypeID }, null, page);
+        BaseDimensionGraph.getByFamilyTypeID = function (familyTypeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { familyTypeID: familyTypeID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by FamilyTypeID exist.
          *  @param familyTypeID The ID of the FamilyType for which to retrieve the child DimensionGraphs.
@@ -2178,8 +2178,8 @@ var hiw;
         /** Gets DimensionGraphs by MaritalStatusID.
          *  @param maritalStatusID The ID of the MaritalStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByMaritalStatusID = function (maritalStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { maritalStatusID: maritalStatusID }, null, page);
+        BaseDimensionGraph.getByMaritalStatusID = function (maritalStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { maritalStatusID: maritalStatusID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by MaritalStatusID exist.
          *  @param maritalStatusID The ID of the MaritalStatus for which to retrieve the child DimensionGraphs.
@@ -2207,8 +2207,8 @@ var hiw;
         /** Gets DimensionGraphs by VeteranStatusID.
          *  @param veteranStatusID The ID of the VeteranStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByVeteranStatusID = function (veteranStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { veteranStatusID: veteranStatusID }, null, page);
+        BaseDimensionGraph.getByVeteranStatusID = function (veteranStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { veteranStatusID: veteranStatusID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by VeteranStatusID exist.
          *  @param veteranStatusID The ID of the VeteranStatus for which to retrieve the child DimensionGraphs.
@@ -2236,8 +2236,8 @@ var hiw;
         /** Gets DimensionGraphs by CountryOfBirthID.
          *  @param countryOfBirthID The ID of the CountryOfBirth for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByCountryOfBirthID = function (countryOfBirthID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { countryOfBirthID: countryOfBirthID }, null, page);
+        BaseDimensionGraph.getByCountryOfBirthID = function (countryOfBirthID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { countryOfBirthID: countryOfBirthID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by CountryOfBirthID exist.
          *  @param countryOfBirthID The ID of the CountryOfBirth for which to retrieve the child DimensionGraphs.
@@ -2265,8 +2265,8 @@ var hiw;
         /** Gets DimensionGraphs by DisabilityStatusID.
          *  @param disabilityStatusID The ID of the DisabilityStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByDisabilityStatusID = function (disabilityStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { disabilityStatusID: disabilityStatusID }, null, page);
+        BaseDimensionGraph.getByDisabilityStatusID = function (disabilityStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { disabilityStatusID: disabilityStatusID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by DisabilityStatusID exist.
          *  @param disabilityStatusID The ID of the DisabilityStatus for which to retrieve the child DimensionGraphs.
@@ -2294,8 +2294,8 @@ var hiw;
         /** Gets DimensionGraphs by ObesityStatusID.
          *  @param obesityStatusID The ID of the ObesityStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByObesityStatusID = function (obesityStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { obesityStatusID: obesityStatusID }, null, page);
+        BaseDimensionGraph.getByObesityStatusID = function (obesityStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { obesityStatusID: obesityStatusID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by ObesityStatusID exist.
          *  @param obesityStatusID The ID of the ObesityStatus for which to retrieve the child DimensionGraphs.
@@ -2323,8 +2323,8 @@ var hiw;
         /** Gets DimensionGraphs by CharacteristicOfSchoolOrStudentID.
          *  @param characteristicOfSchoolOrStudentID The ID of the CharacteristicOfSchoolOrStudent for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByCharacteristicOfSchoolOrStudentID = function (characteristicOfSchoolOrStudentID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { characteristicOfSchoolOrStudentID: characteristicOfSchoolOrStudentID }, null, page);
+        BaseDimensionGraph.getByCharacteristicOfSchoolOrStudentID = function (characteristicOfSchoolOrStudentID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { characteristicOfSchoolOrStudentID: characteristicOfSchoolOrStudentID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by CharacteristicOfSchoolOrStudentID exist.
          *  @param characteristicOfSchoolOrStudentID The ID of the CharacteristicOfSchoolOrStudent for which to retrieve the child DimensionGraphs.
@@ -2352,8 +2352,8 @@ var hiw;
         /** Gets DimensionGraphs by OtherID.
          *  @param otherID The ID of the Other for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByOtherID = function (otherID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { otherID: otherID }, null, page);
+        BaseDimensionGraph.getByOtherID = function (otherID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { otherID: otherID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by OtherID exist.
          *  @param otherID The ID of the Other for which to retrieve the child DimensionGraphs.
@@ -2381,8 +2381,8 @@ var hiw;
         /** Gets DimensionGraphs by GeographyID.
          *  @param geographyID The ID of the Geography for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        BaseDimensionGraph.getByGeographyID = function (geographyID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { geographyID: geographyID }, null, page);
+        BaseDimensionGraph.getByGeographyID = function (geographyID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { geographyID: geographyID }, null, page, pageSize);
         };
         /** Gets how many DimensionGraphs by GeographyID exist.
          *  @param geographyID The ID of the Geography for which to retrieve the child DimensionGraphs.
@@ -2516,8 +2516,8 @@ var hiw;
         /** Gets a list of all of the DimensionLists in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DimensionLists */
-        BaseDimensionList.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseDimensionList.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many DimensionLists exist. */
         BaseDimensionList.getAllCount = function (api, callback) {
@@ -2536,8 +2536,8 @@ var hiw;
         /** Returns a filtered collection of DimensionLists based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DimensionLists which match the provided filter. */
-        BaseDimensionList.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseDimensionList.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many DimensionLists exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -2589,8 +2589,8 @@ var hiw;
         /** Gets a list of all of the DisabilityStatuses in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DisabilityStatuses */
-        BaseDisabilityStatus.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseDisabilityStatus.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many DisabilityStatuses exist. */
         BaseDisabilityStatus.getAllCount = function (api, callback) {
@@ -2609,8 +2609,8 @@ var hiw;
         /** Returns a filtered collection of DisabilityStatuses based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DisabilityStatuses which match the provided filter. */
-        BaseDisabilityStatus.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseDisabilityStatus.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many DisabilityStatuses exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -2626,14 +2626,14 @@ var hiw;
         };
         /** Gets DisabilityStatuses by ParentDisabilityStatusID.
          *  @return An Array of DisabilityStatuses. */
-        BaseDisabilityStatus.prototype.getDisabilityStatuses = function (api, callback, page) {
-            return DisabilityStatus.getByParentDisabilityStatusID(this.id, api, callback, page);
+        BaseDisabilityStatus.prototype.getDisabilityStatuses = function (api, callback, page, pageSize) {
+            return DisabilityStatus.getByParentDisabilityStatusID(this.id, api, callback, page, pageSize);
         };
         /** Gets DisabilityStatuses by ParentDisabilityStatusID.
          *  @param disabilityStatusID The ID of the DisabilityStatus for which to retrieve the child DisabilityStatuses.
          *  @return An Array of DisabilityStatuses. */
-        BaseDisabilityStatus.getByParentDisabilityStatusID = function (disabilityStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { disabilityStatusID: disabilityStatusID }, null, page);
+        BaseDisabilityStatus.getByParentDisabilityStatusID = function (disabilityStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { disabilityStatusID: disabilityStatusID }, null, page, pageSize);
         };
         /** Gets how many DisabilityStatuses by ParentDisabilityStatusID exist.
          *  @return An Array of DisabilityStatuses. */
@@ -2705,8 +2705,8 @@ var hiw;
         /** Gets a list of all of the DisabilityStatusRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DisabilityStatusRelations */
-        BaseDisabilityStatusRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseDisabilityStatusRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many DisabilityStatusRelations exist. */
         BaseDisabilityStatusRelation.getAllCount = function (api, callback) {
@@ -2725,8 +2725,8 @@ var hiw;
         /** Returns a filtered collection of DisabilityStatusRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DisabilityStatusRelations which match the provided filter. */
-        BaseDisabilityStatusRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseDisabilityStatusRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many DisabilityStatusRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -2743,8 +2743,8 @@ var hiw;
         /** Gets DisabilityStatusRelations by AncestorDisabilityStatusID.
          *  @param disabilityStatusID The ID of the DisabilityStatus for which to retrieve the child DisabilityStatusRelations.
          *  @return An Array of DisabilityStatusRelations. */
-        BaseDisabilityStatusRelation.getByAncestorDisabilityStatusID = function (disabilityStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { disabilityStatusID: disabilityStatusID }, null, page);
+        BaseDisabilityStatusRelation.getByAncestorDisabilityStatusID = function (disabilityStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { disabilityStatusID: disabilityStatusID }, null, page, pageSize);
         };
         /** Gets how many DisabilityStatusRelations by AncestorDisabilityStatusID exist.
          *  @param disabilityStatusID The ID of the DisabilityStatus for which to retrieve the child DisabilityStatusRelations.
@@ -2772,8 +2772,8 @@ var hiw;
         /** Gets DisabilityStatusRelations by DescendantDisabilityStatusID.
          *  @param disabilityStatusID The ID of the DisabilityStatus for which to retrieve the child DisabilityStatusRelations.
          *  @return An Array of DisabilityStatusRelations. */
-        BaseDisabilityStatusRelation.getByDescendantDisabilityStatusID = function (disabilityStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { disabilityStatusID: disabilityStatusID }, null, page);
+        BaseDisabilityStatusRelation.getByDescendantDisabilityStatusID = function (disabilityStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { disabilityStatusID: disabilityStatusID }, null, page, pageSize);
         };
         /** Gets how many DisabilityStatusRelations by DescendantDisabilityStatusID exist.
          *  @param disabilityStatusID The ID of the DisabilityStatus for which to retrieve the child DisabilityStatusRelations.
@@ -2835,8 +2835,8 @@ var hiw;
         /** Gets a list of all of the EducationalAttainments in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of EducationalAttainments */
-        BaseEducationalAttainment.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseEducationalAttainment.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many EducationalAttainments exist. */
         BaseEducationalAttainment.getAllCount = function (api, callback) {
@@ -2855,8 +2855,8 @@ var hiw;
         /** Returns a filtered collection of EducationalAttainments based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All EducationalAttainments which match the provided filter. */
-        BaseEducationalAttainment.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseEducationalAttainment.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many EducationalAttainments exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -2872,14 +2872,14 @@ var hiw;
         };
         /** Gets EducationalAttainments by ParentEducationalAttainmentID.
          *  @return An Array of EducationalAttainments. */
-        BaseEducationalAttainment.prototype.getEducationalAttainments = function (api, callback, page) {
-            return EducationalAttainment.getByParentEducationalAttainmentID(this.id, api, callback, page);
+        BaseEducationalAttainment.prototype.getEducationalAttainments = function (api, callback, page, pageSize) {
+            return EducationalAttainment.getByParentEducationalAttainmentID(this.id, api, callback, page, pageSize);
         };
         /** Gets EducationalAttainments by ParentEducationalAttainmentID.
          *  @param educationalAttainmentID The ID of the EducationalAttainment for which to retrieve the child EducationalAttainments.
          *  @return An Array of EducationalAttainments. */
-        BaseEducationalAttainment.getByParentEducationalAttainmentID = function (educationalAttainmentID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { educationalAttainmentID: educationalAttainmentID }, null, page);
+        BaseEducationalAttainment.getByParentEducationalAttainmentID = function (educationalAttainmentID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { educationalAttainmentID: educationalAttainmentID }, null, page, pageSize);
         };
         /** Gets how many EducationalAttainments by ParentEducationalAttainmentID exist.
          *  @return An Array of EducationalAttainments. */
@@ -2951,8 +2951,8 @@ var hiw;
         /** Gets a list of all of the EducationalAttainmentRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of EducationalAttainmentRelations */
-        BaseEducationalAttainmentRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseEducationalAttainmentRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many EducationalAttainmentRelations exist. */
         BaseEducationalAttainmentRelation.getAllCount = function (api, callback) {
@@ -2971,8 +2971,8 @@ var hiw;
         /** Returns a filtered collection of EducationalAttainmentRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All EducationalAttainmentRelations which match the provided filter. */
-        BaseEducationalAttainmentRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseEducationalAttainmentRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many EducationalAttainmentRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -2989,8 +2989,8 @@ var hiw;
         /** Gets EducationalAttainmentRelations by AncestorEducationalAttainmentID.
          *  @param educationalAttainmentID The ID of the EducationalAttainment for which to retrieve the child EducationalAttainmentRelations.
          *  @return An Array of EducationalAttainmentRelations. */
-        BaseEducationalAttainmentRelation.getByAncestorEducationalAttainmentID = function (educationalAttainmentID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { educationalAttainmentID: educationalAttainmentID }, null, page);
+        BaseEducationalAttainmentRelation.getByAncestorEducationalAttainmentID = function (educationalAttainmentID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { educationalAttainmentID: educationalAttainmentID }, null, page, pageSize);
         };
         /** Gets how many EducationalAttainmentRelations by AncestorEducationalAttainmentID exist.
          *  @param educationalAttainmentID The ID of the EducationalAttainment for which to retrieve the child EducationalAttainmentRelations.
@@ -3018,8 +3018,8 @@ var hiw;
         /** Gets EducationalAttainmentRelations by DescendantEducationalAttainmentID.
          *  @param educationalAttainmentID The ID of the EducationalAttainment for which to retrieve the child EducationalAttainmentRelations.
          *  @return An Array of EducationalAttainmentRelations. */
-        BaseEducationalAttainmentRelation.getByDescendantEducationalAttainmentID = function (educationalAttainmentID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { educationalAttainmentID: educationalAttainmentID }, null, page);
+        BaseEducationalAttainmentRelation.getByDescendantEducationalAttainmentID = function (educationalAttainmentID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { educationalAttainmentID: educationalAttainmentID }, null, page, pageSize);
         };
         /** Gets how many EducationalAttainmentRelations by DescendantEducationalAttainmentID exist.
          *  @param educationalAttainmentID The ID of the EducationalAttainment for which to retrieve the child EducationalAttainmentRelations.
@@ -3081,8 +3081,8 @@ var hiw;
         /** Gets a list of all of the FamilyTypes in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of FamilyTypes */
-        BaseFamilyType.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseFamilyType.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many FamilyTypes exist. */
         BaseFamilyType.getAllCount = function (api, callback) {
@@ -3101,8 +3101,8 @@ var hiw;
         /** Returns a filtered collection of FamilyTypes based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All FamilyTypes which match the provided filter. */
-        BaseFamilyType.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseFamilyType.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many FamilyTypes exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -3118,14 +3118,14 @@ var hiw;
         };
         /** Gets FamilyTypes by ParentFamilyTypeID.
          *  @return An Array of FamilyTypes. */
-        BaseFamilyType.prototype.getFamilyTypes = function (api, callback, page) {
-            return FamilyType.getByParentFamilyTypeID(this.id, api, callback, page);
+        BaseFamilyType.prototype.getFamilyTypes = function (api, callback, page, pageSize) {
+            return FamilyType.getByParentFamilyTypeID(this.id, api, callback, page, pageSize);
         };
         /** Gets FamilyTypes by ParentFamilyTypeID.
          *  @param familyTypeID The ID of the FamilyType for which to retrieve the child FamilyTypes.
          *  @return An Array of FamilyTypes. */
-        BaseFamilyType.getByParentFamilyTypeID = function (familyTypeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { familyTypeID: familyTypeID }, null, page);
+        BaseFamilyType.getByParentFamilyTypeID = function (familyTypeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { familyTypeID: familyTypeID }, null, page, pageSize);
         };
         /** Gets how many FamilyTypes by ParentFamilyTypeID exist.
          *  @return An Array of FamilyTypes. */
@@ -3197,8 +3197,8 @@ var hiw;
         /** Gets a list of all of the FamilyTypeRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of FamilyTypeRelations */
-        BaseFamilyTypeRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseFamilyTypeRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many FamilyTypeRelations exist. */
         BaseFamilyTypeRelation.getAllCount = function (api, callback) {
@@ -3217,8 +3217,8 @@ var hiw;
         /** Returns a filtered collection of FamilyTypeRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All FamilyTypeRelations which match the provided filter. */
-        BaseFamilyTypeRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseFamilyTypeRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many FamilyTypeRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -3235,8 +3235,8 @@ var hiw;
         /** Gets FamilyTypeRelations by AncestorFamilyTypeID.
          *  @param familyTypeID The ID of the FamilyType for which to retrieve the child FamilyTypeRelations.
          *  @return An Array of FamilyTypeRelations. */
-        BaseFamilyTypeRelation.getByAncestorFamilyTypeID = function (familyTypeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { familyTypeID: familyTypeID }, null, page);
+        BaseFamilyTypeRelation.getByAncestorFamilyTypeID = function (familyTypeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { familyTypeID: familyTypeID }, null, page, pageSize);
         };
         /** Gets how many FamilyTypeRelations by AncestorFamilyTypeID exist.
          *  @param familyTypeID The ID of the FamilyType for which to retrieve the child FamilyTypeRelations.
@@ -3264,8 +3264,8 @@ var hiw;
         /** Gets FamilyTypeRelations by DescendantFamilyTypeID.
          *  @param familyTypeID The ID of the FamilyType for which to retrieve the child FamilyTypeRelations.
          *  @return An Array of FamilyTypeRelations. */
-        BaseFamilyTypeRelation.getByDescendantFamilyTypeID = function (familyTypeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { familyTypeID: familyTypeID }, null, page);
+        BaseFamilyTypeRelation.getByDescendantFamilyTypeID = function (familyTypeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { familyTypeID: familyTypeID }, null, page, pageSize);
         };
         /** Gets how many FamilyTypeRelations by DescendantFamilyTypeID exist.
          *  @param familyTypeID The ID of the FamilyType for which to retrieve the child FamilyTypeRelations.
@@ -3327,8 +3327,8 @@ var hiw;
         /** Gets a list of all of the Geographies in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Geographies */
-        BaseGeography.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseGeography.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Geographies exist. */
         BaseGeography.getAllCount = function (api, callback) {
@@ -3347,8 +3347,8 @@ var hiw;
         /** Returns a filtered collection of Geographies based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Geographies which match the provided filter. */
-        BaseGeography.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseGeography.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Geographies exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -3364,14 +3364,14 @@ var hiw;
         };
         /** Gets Geographies by ParentGeographyID.
          *  @return An Array of Geographies. */
-        BaseGeography.prototype.getGeographies = function (api, callback, page) {
-            return Geography.getByParentGeographyID(this.id, api, callback, page);
+        BaseGeography.prototype.getGeographies = function (api, callback, page, pageSize) {
+            return Geography.getByParentGeographyID(this.id, api, callback, page, pageSize);
         };
         /** Gets Geographies by ParentGeographyID.
          *  @param geographyID The ID of the Geography for which to retrieve the child Geographies.
          *  @return An Array of Geographies. */
-        BaseGeography.getByParentGeographyID = function (geographyID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { geographyID: geographyID }, null, page);
+        BaseGeography.getByParentGeographyID = function (geographyID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { geographyID: geographyID }, null, page, pageSize);
         };
         /** Gets how many Geographies by ParentGeographyID exist.
          *  @return An Array of Geographies. */
@@ -3443,8 +3443,8 @@ var hiw;
         /** Gets a list of all of the GeographyRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of GeographyRelations */
-        BaseGeographyRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseGeographyRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many GeographyRelations exist. */
         BaseGeographyRelation.getAllCount = function (api, callback) {
@@ -3463,8 +3463,8 @@ var hiw;
         /** Returns a filtered collection of GeographyRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All GeographyRelations which match the provided filter. */
-        BaseGeographyRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseGeographyRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many GeographyRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -3481,8 +3481,8 @@ var hiw;
         /** Gets GeographyRelations by AncestorGeographyID.
          *  @param geographyID The ID of the Geography for which to retrieve the child GeographyRelations.
          *  @return An Array of GeographyRelations. */
-        BaseGeographyRelation.getByAncestorGeographyID = function (geographyID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { geographyID: geographyID }, null, page);
+        BaseGeographyRelation.getByAncestorGeographyID = function (geographyID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { geographyID: geographyID }, null, page, pageSize);
         };
         /** Gets how many GeographyRelations by AncestorGeographyID exist.
          *  @param geographyID The ID of the Geography for which to retrieve the child GeographyRelations.
@@ -3510,8 +3510,8 @@ var hiw;
         /** Gets GeographyRelations by DescendantGeographyID.
          *  @param geographyID The ID of the Geography for which to retrieve the child GeographyRelations.
          *  @return An Array of GeographyRelations. */
-        BaseGeographyRelation.getByDescendantGeographyID = function (geographyID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { geographyID: geographyID }, null, page);
+        BaseGeographyRelation.getByDescendantGeographyID = function (geographyID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { geographyID: geographyID }, null, page, pageSize);
         };
         /** Gets how many GeographyRelations by DescendantGeographyID exist.
          *  @param geographyID The ID of the Geography for which to retrieve the child GeographyRelations.
@@ -3572,8 +3572,8 @@ var hiw;
         /** Gets a list of all of the GlossaryTerms in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of GlossaryTerms */
-        BaseGlossaryTerm.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseGlossaryTerm.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many GlossaryTerms exist. */
         BaseGlossaryTerm.getAllCount = function (api, callback) {
@@ -3592,8 +3592,8 @@ var hiw;
         /** Returns a filtered collection of GlossaryTerms based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All GlossaryTerms which match the provided filter. */
-        BaseGlossaryTerm.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseGlossaryTerm.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many GlossaryTerms exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -3610,8 +3610,8 @@ var hiw;
         /** Gets GlossaryTerms by SourceUrl1ID.
          *  @param urlID The ID of the Url for which to retrieve the child GlossaryTerms.
          *  @return An Array of GlossaryTerms. */
-        BaseGlossaryTerm.getBySourceUrl1ID = function (urlID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page);
+        BaseGlossaryTerm.getBySourceUrl1ID = function (urlID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page, pageSize);
         };
         /** Gets how many GlossaryTerms by SourceUrl1ID exist.
          *  @param urlID The ID of the Url for which to retrieve the child GlossaryTerms.
@@ -3639,8 +3639,8 @@ var hiw;
         /** Gets GlossaryTerms by SourceUrl2ID.
          *  @param urlID The ID of the Url for which to retrieve the child GlossaryTerms.
          *  @return An Array of GlossaryTerms. */
-        BaseGlossaryTerm.getBySourceUrl2ID = function (urlID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page);
+        BaseGlossaryTerm.getBySourceUrl2ID = function (urlID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page, pageSize);
         };
         /** Gets how many GlossaryTerms by SourceUrl2ID exist.
          *  @param urlID The ID of the Url for which to retrieve the child GlossaryTerms.
@@ -3705,8 +3705,8 @@ var hiw;
         /** Gets a list of all of the HealthInsuranceStatuses in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of HealthInsuranceStatuses */
-        BaseHealthInsuranceStatus.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseHealthInsuranceStatus.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many HealthInsuranceStatuses exist. */
         BaseHealthInsuranceStatus.getAllCount = function (api, callback) {
@@ -3725,8 +3725,8 @@ var hiw;
         /** Returns a filtered collection of HealthInsuranceStatuses based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All HealthInsuranceStatuses which match the provided filter. */
-        BaseHealthInsuranceStatus.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseHealthInsuranceStatus.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many HealthInsuranceStatuses exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -3742,14 +3742,14 @@ var hiw;
         };
         /** Gets HealthInsuranceStatuses by ParentHealthInsuranceStatusID.
          *  @return An Array of HealthInsuranceStatuses. */
-        BaseHealthInsuranceStatus.prototype.getHealthInsuranceStatuses = function (api, callback, page) {
-            return HealthInsuranceStatus.getByParentHealthInsuranceStatusID(this.id, api, callback, page);
+        BaseHealthInsuranceStatus.prototype.getHealthInsuranceStatuses = function (api, callback, page, pageSize) {
+            return HealthInsuranceStatus.getByParentHealthInsuranceStatusID(this.id, api, callback, page, pageSize);
         };
         /** Gets HealthInsuranceStatuses by ParentHealthInsuranceStatusID.
          *  @param healthInsuranceStatusID The ID of the HealthInsuranceStatus for which to retrieve the child HealthInsuranceStatuses.
          *  @return An Array of HealthInsuranceStatuses. */
-        BaseHealthInsuranceStatus.getByParentHealthInsuranceStatusID = function (healthInsuranceStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { healthInsuranceStatusID: healthInsuranceStatusID }, null, page);
+        BaseHealthInsuranceStatus.getByParentHealthInsuranceStatusID = function (healthInsuranceStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { healthInsuranceStatusID: healthInsuranceStatusID }, null, page, pageSize);
         };
         /** Gets how many HealthInsuranceStatuses by ParentHealthInsuranceStatusID exist.
          *  @return An Array of HealthInsuranceStatuses. */
@@ -3821,8 +3821,8 @@ var hiw;
         /** Gets a list of all of the HealthInsuranceStatusRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of HealthInsuranceStatusRelations */
-        BaseHealthInsuranceStatusRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseHealthInsuranceStatusRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many HealthInsuranceStatusRelations exist. */
         BaseHealthInsuranceStatusRelation.getAllCount = function (api, callback) {
@@ -3841,8 +3841,8 @@ var hiw;
         /** Returns a filtered collection of HealthInsuranceStatusRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All HealthInsuranceStatusRelations which match the provided filter. */
-        BaseHealthInsuranceStatusRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseHealthInsuranceStatusRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many HealthInsuranceStatusRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -3859,8 +3859,8 @@ var hiw;
         /** Gets HealthInsuranceStatusRelations by AncestorHealthInsuranceStatusID.
          *  @param healthInsuranceStatusID The ID of the HealthInsuranceStatus for which to retrieve the child HealthInsuranceStatusRelations.
          *  @return An Array of HealthInsuranceStatusRelations. */
-        BaseHealthInsuranceStatusRelation.getByAncestorHealthInsuranceStatusID = function (healthInsuranceStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { healthInsuranceStatusID: healthInsuranceStatusID }, null, page);
+        BaseHealthInsuranceStatusRelation.getByAncestorHealthInsuranceStatusID = function (healthInsuranceStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { healthInsuranceStatusID: healthInsuranceStatusID }, null, page, pageSize);
         };
         /** Gets how many HealthInsuranceStatusRelations by AncestorHealthInsuranceStatusID exist.
          *  @param healthInsuranceStatusID The ID of the HealthInsuranceStatus for which to retrieve the child HealthInsuranceStatusRelations.
@@ -3888,8 +3888,8 @@ var hiw;
         /** Gets HealthInsuranceStatusRelations by DescendantHealthInsuranceStatusID.
          *  @param healthInsuranceStatusID The ID of the HealthInsuranceStatus for which to retrieve the child HealthInsuranceStatusRelations.
          *  @return An Array of HealthInsuranceStatusRelations. */
-        BaseHealthInsuranceStatusRelation.getByDescendantHealthInsuranceStatusID = function (healthInsuranceStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { healthInsuranceStatusID: healthInsuranceStatusID }, null, page);
+        BaseHealthInsuranceStatusRelation.getByDescendantHealthInsuranceStatusID = function (healthInsuranceStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { healthInsuranceStatusID: healthInsuranceStatusID }, null, page, pageSize);
         };
         /** Gets how many HealthInsuranceStatusRelations by DescendantHealthInsuranceStatusID exist.
          *  @param healthInsuranceStatusID The ID of the HealthInsuranceStatus for which to retrieve the child HealthInsuranceStatusRelations.
@@ -3946,8 +3946,8 @@ var hiw;
         /** Gets a list of all of the HP2020TSMs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of HP2020TSMs */
-        BaseHP2020TSM.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseHP2020TSM.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many HP2020TSMs exist. */
         BaseHP2020TSM.getAllCount = function (api, callback) {
@@ -3966,8 +3966,8 @@ var hiw;
         /** Returns a filtered collection of HP2020TSMs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All HP2020TSMs which match the provided filter. */
-        BaseHP2020TSM.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseHP2020TSM.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many HP2020TSMs exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -4017,8 +4017,8 @@ var hiw;
         /** Gets a list of all of the IncomeAndPovertyStatuses in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IncomeAndPovertyStatuses */
-        BaseIncomeAndPovertyStatus.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIncomeAndPovertyStatus.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IncomeAndPovertyStatuses exist. */
         BaseIncomeAndPovertyStatus.getAllCount = function (api, callback) {
@@ -4037,8 +4037,8 @@ var hiw;
         /** Returns a filtered collection of IncomeAndPovertyStatuses based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IncomeAndPovertyStatuses which match the provided filter. */
-        BaseIncomeAndPovertyStatus.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIncomeAndPovertyStatus.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IncomeAndPovertyStatuses exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -4054,14 +4054,14 @@ var hiw;
         };
         /** Gets IncomeAndPovertyStatuses by ParentIncomeAndPovertyStatusID.
          *  @return An Array of IncomeAndPovertyStatuses. */
-        BaseIncomeAndPovertyStatus.prototype.getIncomeAndPovertyStatuses = function (api, callback, page) {
-            return IncomeAndPovertyStatus.getByParentIncomeAndPovertyStatusID(this.id, api, callback, page);
+        BaseIncomeAndPovertyStatus.prototype.getIncomeAndPovertyStatuses = function (api, callback, page, pageSize) {
+            return IncomeAndPovertyStatus.getByParentIncomeAndPovertyStatusID(this.id, api, callback, page, pageSize);
         };
         /** Gets IncomeAndPovertyStatuses by ParentIncomeAndPovertyStatusID.
          *  @param incomeAndPovertyStatusID The ID of the IncomeAndPovertyStatus for which to retrieve the child IncomeAndPovertyStatuses.
          *  @return An Array of IncomeAndPovertyStatuses. */
-        BaseIncomeAndPovertyStatus.getByParentIncomeAndPovertyStatusID = function (incomeAndPovertyStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { incomeAndPovertyStatusID: incomeAndPovertyStatusID }, null, page);
+        BaseIncomeAndPovertyStatus.getByParentIncomeAndPovertyStatusID = function (incomeAndPovertyStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { incomeAndPovertyStatusID: incomeAndPovertyStatusID }, null, page, pageSize);
         };
         /** Gets how many IncomeAndPovertyStatuses by ParentIncomeAndPovertyStatusID exist.
          *  @return An Array of IncomeAndPovertyStatuses. */
@@ -4133,8 +4133,8 @@ var hiw;
         /** Gets a list of all of the IncomeAndPovertyStatusRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IncomeAndPovertyStatusRelations */
-        BaseIncomeAndPovertyStatusRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIncomeAndPovertyStatusRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IncomeAndPovertyStatusRelations exist. */
         BaseIncomeAndPovertyStatusRelation.getAllCount = function (api, callback) {
@@ -4153,8 +4153,8 @@ var hiw;
         /** Returns a filtered collection of IncomeAndPovertyStatusRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IncomeAndPovertyStatusRelations which match the provided filter. */
-        BaseIncomeAndPovertyStatusRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIncomeAndPovertyStatusRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IncomeAndPovertyStatusRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -4171,8 +4171,8 @@ var hiw;
         /** Gets IncomeAndPovertyStatusRelations by AncestorIncomeAndPovertyStatusID.
          *  @param incomeAndPovertyStatusID The ID of the IncomeAndPovertyStatus for which to retrieve the child IncomeAndPovertyStatusRelations.
          *  @return An Array of IncomeAndPovertyStatusRelations. */
-        BaseIncomeAndPovertyStatusRelation.getByAncestorIncomeAndPovertyStatusID = function (incomeAndPovertyStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { incomeAndPovertyStatusID: incomeAndPovertyStatusID }, null, page);
+        BaseIncomeAndPovertyStatusRelation.getByAncestorIncomeAndPovertyStatusID = function (incomeAndPovertyStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { incomeAndPovertyStatusID: incomeAndPovertyStatusID }, null, page, pageSize);
         };
         /** Gets how many IncomeAndPovertyStatusRelations by AncestorIncomeAndPovertyStatusID exist.
          *  @param incomeAndPovertyStatusID The ID of the IncomeAndPovertyStatus for which to retrieve the child IncomeAndPovertyStatusRelations.
@@ -4200,8 +4200,8 @@ var hiw;
         /** Gets IncomeAndPovertyStatusRelations by DescendantIncomeAndPovertyStatusID.
          *  @param incomeAndPovertyStatusID The ID of the IncomeAndPovertyStatus for which to retrieve the child IncomeAndPovertyStatusRelations.
          *  @return An Array of IncomeAndPovertyStatusRelations. */
-        BaseIncomeAndPovertyStatusRelation.getByDescendantIncomeAndPovertyStatusID = function (incomeAndPovertyStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { incomeAndPovertyStatusID: incomeAndPovertyStatusID }, null, page);
+        BaseIncomeAndPovertyStatusRelation.getByDescendantIncomeAndPovertyStatusID = function (incomeAndPovertyStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { incomeAndPovertyStatusID: incomeAndPovertyStatusID }, null, page, pageSize);
         };
         /** Gets how many IncomeAndPovertyStatusRelations by DescendantIncomeAndPovertyStatusID exist.
          *  @param incomeAndPovertyStatusID The ID of the IncomeAndPovertyStatus for which to retrieve the child IncomeAndPovertyStatusRelations.
@@ -4258,8 +4258,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionDataCategories in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionDataCategories */
-        BaseIndicatorDescriptionDataCategory.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionDataCategory.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDataCategories exist. */
         BaseIndicatorDescriptionDataCategory.getAllCount = function (api, callback) {
@@ -4278,8 +4278,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionDataCategories based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionDataCategories which match the provided filter. */
-        BaseIndicatorDescriptionDataCategory.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionDataCategory.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionDataCategories exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -4296,8 +4296,8 @@ var hiw;
         /** Gets IndicatorDescriptionDataCategories by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDataCategories.
          *  @return An Array of IndicatorDescriptionDataCategories. */
-        BaseIndicatorDescriptionDataCategory.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionDataCategory.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDataCategories by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDataCategories.
@@ -4325,8 +4325,8 @@ var hiw;
         /** Gets IndicatorDescriptionDataCategories by DataCategoryID.
          *  @param dataCategoryID The ID of the DataCategory for which to retrieve the child IndicatorDescriptionDataCategories.
          *  @return An Array of IndicatorDescriptionDataCategories. */
-        BaseIndicatorDescriptionDataCategory.getByDataCategoryID = function (dataCategoryID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataCategoryID: dataCategoryID }, null, page);
+        BaseIndicatorDescriptionDataCategory.getByDataCategoryID = function (dataCategoryID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataCategoryID: dataCategoryID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDataCategories by DataCategoryID exist.
          *  @param dataCategoryID The ID of the DataCategory for which to retrieve the child IndicatorDescriptionDataCategories.
@@ -4384,8 +4384,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionDataSources in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionDataSources */
-        BaseIndicatorDescriptionDataSource.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionDataSource.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDataSources exist. */
         BaseIndicatorDescriptionDataSource.getAllCount = function (api, callback) {
@@ -4404,8 +4404,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionDataSources based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionDataSources which match the provided filter. */
-        BaseIndicatorDescriptionDataSource.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionDataSource.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionDataSources exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -4422,8 +4422,8 @@ var hiw;
         /** Gets IndicatorDescriptionDataSources by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDataSources.
          *  @return An Array of IndicatorDescriptionDataSources. */
-        BaseIndicatorDescriptionDataSource.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionDataSource.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDataSources by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDataSources.
@@ -4451,8 +4451,8 @@ var hiw;
         /** Gets IndicatorDescriptionDataSources by DataSourceID.
          *  @param dataSourceID The ID of the DataSource for which to retrieve the child IndicatorDescriptionDataSources.
          *  @return An Array of IndicatorDescriptionDataSources. */
-        BaseIndicatorDescriptionDataSource.getByDataSourceID = function (dataSourceID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataSourceID: dataSourceID }, null, page);
+        BaseIndicatorDescriptionDataSource.getByDataSourceID = function (dataSourceID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dataSourceID: dataSourceID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDataSources by DataSourceID exist.
          *  @param dataSourceID The ID of the DataSource for which to retrieve the child IndicatorDescriptionDataSources.
@@ -4511,8 +4511,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionDefaultDimensionGraphs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionDefaultDimensionGraphs */
-        BaseIndicatorDescriptionDefaultDimensionGraph.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionDefaultDimensionGraph.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDefaultDimensionGraphs exist. */
         BaseIndicatorDescriptionDefaultDimensionGraph.getAllCount = function (api, callback) {
@@ -4531,8 +4531,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionDefaultDimensionGraphs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionDefaultDimensionGraphs which match the provided filter. */
-        BaseIndicatorDescriptionDefaultDimensionGraph.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionDefaultDimensionGraph.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionDefaultDimensionGraphs exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -4549,8 +4549,8 @@ var hiw;
         /** Gets IndicatorDescriptionDefaultDimensionGraphs by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDefaultDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDefaultDimensionGraphs. */
-        BaseIndicatorDescriptionDefaultDimensionGraph.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionDefaultDimensionGraph.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDefaultDimensionGraphs by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDefaultDimensionGraphs.
@@ -4578,8 +4578,8 @@ var hiw;
         /** Gets IndicatorDescriptionDefaultDimensionGraphs by LocaleLevelID.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDescriptionDefaultDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDefaultDimensionGraphs. */
-        BaseIndicatorDescriptionDefaultDimensionGraph.getByLocaleLevelID = function (localeLevelID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeLevelID: localeLevelID }, null, page);
+        BaseIndicatorDescriptionDefaultDimensionGraph.getByLocaleLevelID = function (localeLevelID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeLevelID: localeLevelID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDefaultDimensionGraphs by LocaleLevelID exist.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDescriptionDefaultDimensionGraphs.
@@ -4607,8 +4607,8 @@ var hiw;
         /** Gets IndicatorDescriptionDefaultDimensionGraphs by DimensionGraphID.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child IndicatorDescriptionDefaultDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDefaultDimensionGraphs. */
-        BaseIndicatorDescriptionDefaultDimensionGraph.getByDimensionGraphID = function (dimensionGraphID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionGraphID: dimensionGraphID }, null, page);
+        BaseIndicatorDescriptionDefaultDimensionGraph.getByDimensionGraphID = function (dimensionGraphID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionGraphID: dimensionGraphID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDefaultDimensionGraphs by DimensionGraphID exist.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child IndicatorDescriptionDefaultDimensionGraphs.
@@ -4665,8 +4665,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionDimensions in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionDimensions */
-        BaseIndicatorDescriptionDimension.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionDimension.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDimensions exist. */
         BaseIndicatorDescriptionDimension.getAllCount = function (api, callback) {
@@ -4685,8 +4685,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionDimensions based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionDimensions which match the provided filter. */
-        BaseIndicatorDescriptionDimension.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionDimension.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionDimensions exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -4703,8 +4703,8 @@ var hiw;
         /** Gets IndicatorDescriptionDimensions by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDimensions.
          *  @return An Array of IndicatorDescriptionDimensions. */
-        BaseIndicatorDescriptionDimension.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionDimension.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDimensions by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDimensions.
@@ -4732,8 +4732,8 @@ var hiw;
         /** Gets IndicatorDescriptionDimensions by DimensionListID.
          *  @param dimensionListID The ID of the DimensionList for which to retrieve the child IndicatorDescriptionDimensions.
          *  @return An Array of IndicatorDescriptionDimensions. */
-        BaseIndicatorDescriptionDimension.getByDimensionListID = function (dimensionListID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionListID: dimensionListID }, null, page);
+        BaseIndicatorDescriptionDimension.getByDimensionListID = function (dimensionListID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionListID: dimensionListID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDimensions by DimensionListID exist.
          *  @param dimensionListID The ID of the DimensionList for which to retrieve the child IndicatorDescriptionDimensions.
@@ -4795,8 +4795,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionDimensionGraphs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionDimensionGraphs */
-        BaseIndicatorDescriptionDimensionGraph.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionDimensionGraph.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDimensionGraphs exist. */
         BaseIndicatorDescriptionDimensionGraph.getAllCount = function (api, callback) {
@@ -4815,8 +4815,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionDimensionGraphs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionDimensionGraphs which match the provided filter. */
-        BaseIndicatorDescriptionDimensionGraph.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionDimensionGraph.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionDimensionGraphs exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -4833,8 +4833,8 @@ var hiw;
         /** Gets IndicatorDescriptionDimensionGraphs by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDimensionGraphs. */
-        BaseIndicatorDescriptionDimensionGraph.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionDimensionGraph.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDimensionGraphs by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDimensionGraphs.
@@ -4862,8 +4862,8 @@ var hiw;
         /** Gets IndicatorDescriptionDimensionGraphs by LocaleLevelID.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDescriptionDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDimensionGraphs. */
-        BaseIndicatorDescriptionDimensionGraph.getByLocaleLevelID = function (localeLevelID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeLevelID: localeLevelID }, null, page);
+        BaseIndicatorDescriptionDimensionGraph.getByLocaleLevelID = function (localeLevelID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeLevelID: localeLevelID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDimensionGraphs by LocaleLevelID exist.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDescriptionDimensionGraphs.
@@ -4891,8 +4891,8 @@ var hiw;
         /** Gets IndicatorDescriptionDimensionGraphs by DimensionGraphID.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child IndicatorDescriptionDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDimensionGraphs. */
-        BaseIndicatorDescriptionDimensionGraph.getByDimensionGraphID = function (dimensionGraphID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionGraphID: dimensionGraphID }, null, page);
+        BaseIndicatorDescriptionDimensionGraph.getByDimensionGraphID = function (dimensionGraphID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionGraphID: dimensionGraphID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDimensionGraphs by DimensionGraphID exist.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child IndicatorDescriptionDimensionGraphs.
@@ -4949,8 +4949,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionDimensionValues in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionDimensionValues */
-        BaseIndicatorDescriptionDimensionValue.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionDimensionValue.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDimensionValues exist. */
         BaseIndicatorDescriptionDimensionValue.getAllCount = function (api, callback) {
@@ -4969,8 +4969,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionDimensionValues based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionDimensionValues which match the provided filter. */
-        BaseIndicatorDescriptionDimensionValue.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionDimensionValue.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionDimensionValues exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -4987,8 +4987,8 @@ var hiw;
         /** Gets IndicatorDescriptionDimensionValues by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDimensionValues.
          *  @return An Array of IndicatorDescriptionDimensionValues. */
-        BaseIndicatorDescriptionDimensionValue.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionDimensionValue.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDimensionValues by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDimensionValues.
@@ -5016,8 +5016,8 @@ var hiw;
         /** Gets IndicatorDescriptionDimensionValues by DimensionBookID.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child IndicatorDescriptionDimensionValues.
          *  @return An Array of IndicatorDescriptionDimensionValues. */
-        BaseIndicatorDescriptionDimensionValue.getByDimensionBookID = function (dimensionBookID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionBookID: dimensionBookID }, null, page);
+        BaseIndicatorDescriptionDimensionValue.getByDimensionBookID = function (dimensionBookID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionBookID: dimensionBookID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionDimensionValues by DimensionBookID exist.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child IndicatorDescriptionDimensionValues.
@@ -5078,8 +5078,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionInitiatives in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionInitiatives */
-        BaseIndicatorDescriptionInitiative.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionInitiative.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionInitiatives exist. */
         BaseIndicatorDescriptionInitiative.getAllCount = function (api, callback) {
@@ -5098,8 +5098,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionInitiatives based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionInitiatives which match the provided filter. */
-        BaseIndicatorDescriptionInitiative.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionInitiative.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionInitiatives exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -5116,8 +5116,8 @@ var hiw;
         /** Gets IndicatorDescriptionInitiatives by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionInitiatives.
          *  @return An Array of IndicatorDescriptionInitiatives. */
-        BaseIndicatorDescriptionInitiative.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionInitiative.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionInitiatives by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionInitiatives.
@@ -5145,8 +5145,8 @@ var hiw;
         /** Gets IndicatorDescriptionInitiatives by InitiativeID.
          *  @param initiativeID The ID of the Initiative for which to retrieve the child IndicatorDescriptionInitiatives.
          *  @return An Array of IndicatorDescriptionInitiatives. */
-        BaseIndicatorDescriptionInitiative.getByInitiativeID = function (initiativeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { initiativeID: initiativeID }, null, page);
+        BaseIndicatorDescriptionInitiative.getByInitiativeID = function (initiativeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { initiativeID: initiativeID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionInitiatives by InitiativeID exist.
          *  @param initiativeID The ID of the Initiative for which to retrieve the child IndicatorDescriptionInitiatives.
@@ -5203,8 +5203,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionInterventions in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionInterventions */
-        BaseIndicatorDescriptionIntervention.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionIntervention.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionInterventions exist. */
         BaseIndicatorDescriptionIntervention.getAllCount = function (api, callback) {
@@ -5223,8 +5223,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionInterventions based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionInterventions which match the provided filter. */
-        BaseIndicatorDescriptionIntervention.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionIntervention.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionInterventions exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -5241,8 +5241,8 @@ var hiw;
         /** Gets IndicatorDescriptionInterventions by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionInterventions.
          *  @return An Array of IndicatorDescriptionInterventions. */
-        BaseIndicatorDescriptionIntervention.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionIntervention.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionInterventions by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionInterventions.
@@ -5270,8 +5270,8 @@ var hiw;
         /** Gets IndicatorDescriptionInterventions by InterventionID.
          *  @param interventionID The ID of the Intervention for which to retrieve the child IndicatorDescriptionInterventions.
          *  @return An Array of IndicatorDescriptionInterventions. */
-        BaseIndicatorDescriptionIntervention.getByInterventionID = function (interventionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { interventionID: interventionID }, null, page);
+        BaseIndicatorDescriptionIntervention.getByInterventionID = function (interventionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { interventionID: interventionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionInterventions by InterventionID exist.
          *  @param interventionID The ID of the Intervention for which to retrieve the child IndicatorDescriptionInterventions.
@@ -5328,8 +5328,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionKeywords in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionKeywords */
-        BaseIndicatorDescriptionKeyword.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionKeyword.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionKeywords exist. */
         BaseIndicatorDescriptionKeyword.getAllCount = function (api, callback) {
@@ -5348,8 +5348,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionKeywords based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionKeywords which match the provided filter. */
-        BaseIndicatorDescriptionKeyword.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionKeyword.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionKeywords exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -5366,8 +5366,8 @@ var hiw;
         /** Gets IndicatorDescriptionKeywords by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionKeywords.
          *  @return An Array of IndicatorDescriptionKeywords. */
-        BaseIndicatorDescriptionKeyword.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionKeyword.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionKeywords by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionKeywords.
@@ -5395,8 +5395,8 @@ var hiw;
         /** Gets IndicatorDescriptionKeywords by KeywordID.
          *  @param keywordID The ID of the Keyword for which to retrieve the child IndicatorDescriptionKeywords.
          *  @return An Array of IndicatorDescriptionKeywords. */
-        BaseIndicatorDescriptionKeyword.getByKeywordID = function (keywordID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { keywordID: keywordID }, null, page);
+        BaseIndicatorDescriptionKeyword.getByKeywordID = function (keywordID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { keywordID: keywordID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionKeywords by KeywordID exist.
          *  @param keywordID The ID of the Keyword for which to retrieve the child IndicatorDescriptionKeywords.
@@ -5457,8 +5457,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionLocaleCounties in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionLocaleCounties */
-        BaseIndicatorDescriptionLocaleCounty.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionLocaleCounty.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocaleCounties exist. */
         BaseIndicatorDescriptionLocaleCounty.getAllCount = function (api, callback) {
@@ -5477,8 +5477,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionLocaleCounties based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionLocaleCounties which match the provided filter. */
-        BaseIndicatorDescriptionLocaleCounty.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionLocaleCounty.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionLocaleCounties exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -5495,8 +5495,8 @@ var hiw;
         /** Gets IndicatorDescriptionLocaleCounties by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleCounties.
          *  @return An Array of IndicatorDescriptionLocaleCounties. */
-        BaseIndicatorDescriptionLocaleCounty.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionLocaleCounty.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocaleCounties by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleCounties.
@@ -5524,8 +5524,8 @@ var hiw;
         /** Gets IndicatorDescriptionLocaleCounties by LocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocaleCounties.
          *  @return An Array of IndicatorDescriptionLocaleCounties. */
-        BaseIndicatorDescriptionLocaleCounty.getByLocaleID = function (localeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page);
+        BaseIndicatorDescriptionLocaleCounty.getByLocaleID = function (localeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocaleCounties by LocaleID exist.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocaleCounties.
@@ -5581,8 +5581,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionLocaleHospitalReferralRegions in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionLocaleHospitalReferralRegions */
-        BaseIndicatorDescriptionLocaleHospitalReferralRegion.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionLocaleHospitalReferralRegion.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocaleHospitalReferralRegions exist. */
         BaseIndicatorDescriptionLocaleHospitalReferralRegion.getAllCount = function (api, callback) {
@@ -5601,8 +5601,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionLocaleHospitalReferralRegions based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionLocaleHospitalReferralRegions which match the provided filter. */
-        BaseIndicatorDescriptionLocaleHospitalReferralRegion.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionLocaleHospitalReferralRegion.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionLocaleHospitalReferralRegions exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -5619,8 +5619,8 @@ var hiw;
         /** Gets IndicatorDescriptionLocaleHospitalReferralRegions by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleHospitalReferralRegions.
          *  @return An Array of IndicatorDescriptionLocaleHospitalReferralRegions. */
-        BaseIndicatorDescriptionLocaleHospitalReferralRegion.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionLocaleHospitalReferralRegion.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocaleHospitalReferralRegions by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleHospitalReferralRegions.
@@ -5648,8 +5648,8 @@ var hiw;
         /** Gets IndicatorDescriptionLocaleHospitalReferralRegions by LocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocaleHospitalReferralRegions.
          *  @return An Array of IndicatorDescriptionLocaleHospitalReferralRegions. */
-        BaseIndicatorDescriptionLocaleHospitalReferralRegion.getByLocaleID = function (localeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page);
+        BaseIndicatorDescriptionLocaleHospitalReferralRegion.getByLocaleID = function (localeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocaleHospitalReferralRegions by LocaleID exist.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocaleHospitalReferralRegions.
@@ -5705,8 +5705,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionLocaleLevels in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionLocaleLevels */
-        BaseIndicatorDescriptionLocaleLevel.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionLocaleLevel.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocaleLevels exist. */
         BaseIndicatorDescriptionLocaleLevel.getAllCount = function (api, callback) {
@@ -5725,8 +5725,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionLocaleLevels based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionLocaleLevels which match the provided filter. */
-        BaseIndicatorDescriptionLocaleLevel.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionLocaleLevel.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionLocaleLevels exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -5743,8 +5743,8 @@ var hiw;
         /** Gets IndicatorDescriptionLocaleLevels by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleLevels.
          *  @return An Array of IndicatorDescriptionLocaleLevels. */
-        BaseIndicatorDescriptionLocaleLevel.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionLocaleLevel.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocaleLevels by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleLevels.
@@ -5772,8 +5772,8 @@ var hiw;
         /** Gets IndicatorDescriptionLocaleLevels by LocaleLevelID.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDescriptionLocaleLevels.
          *  @return An Array of IndicatorDescriptionLocaleLevels. */
-        BaseIndicatorDescriptionLocaleLevel.getByLocaleLevelID = function (localeLevelID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeLevelID: localeLevelID }, null, page);
+        BaseIndicatorDescriptionLocaleLevel.getByLocaleLevelID = function (localeLevelID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeLevelID: localeLevelID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocaleLevels by LocaleLevelID exist.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDescriptionLocaleLevels.
@@ -5829,8 +5829,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionLocales in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionLocales */
-        BaseIndicatorDescriptionLocale.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionLocale.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocales exist. */
         BaseIndicatorDescriptionLocale.getAllCount = function (api, callback) {
@@ -5849,8 +5849,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionLocales based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionLocales which match the provided filter. */
-        BaseIndicatorDescriptionLocale.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionLocale.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionLocales exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -5867,8 +5867,8 @@ var hiw;
         /** Gets IndicatorDescriptionLocales by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocales.
          *  @return An Array of IndicatorDescriptionLocales. */
-        BaseIndicatorDescriptionLocale.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionLocale.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocales by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocales.
@@ -5896,8 +5896,8 @@ var hiw;
         /** Gets IndicatorDescriptionLocales by LocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocales.
          *  @return An Array of IndicatorDescriptionLocales. */
-        BaseIndicatorDescriptionLocale.getByLocaleID = function (localeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page);
+        BaseIndicatorDescriptionLocale.getByLocaleID = function (localeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocales by LocaleID exist.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocales.
@@ -5953,8 +5953,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionLocaleStates in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionLocaleStates */
-        BaseIndicatorDescriptionLocaleState.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionLocaleState.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocaleStates exist. */
         BaseIndicatorDescriptionLocaleState.getAllCount = function (api, callback) {
@@ -5973,8 +5973,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionLocaleStates based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionLocaleStates which match the provided filter. */
-        BaseIndicatorDescriptionLocaleState.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionLocaleState.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionLocaleStates exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -5991,8 +5991,8 @@ var hiw;
         /** Gets IndicatorDescriptionLocaleStates by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleStates.
          *  @return An Array of IndicatorDescriptionLocaleStates. */
-        BaseIndicatorDescriptionLocaleState.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionLocaleState.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocaleStates by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleStates.
@@ -6020,8 +6020,8 @@ var hiw;
         /** Gets IndicatorDescriptionLocaleStates by LocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocaleStates.
          *  @return An Array of IndicatorDescriptionLocaleStates. */
-        BaseIndicatorDescriptionLocaleState.getByLocaleID = function (localeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page);
+        BaseIndicatorDescriptionLocaleState.getByLocaleID = function (localeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionLocaleStates by LocaleID exist.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocaleStates.
@@ -6082,8 +6082,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionMethodologyNotes in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionMethodologyNotes */
-        BaseIndicatorDescriptionMethodologyNote.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionMethodologyNote.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionMethodologyNotes exist. */
         BaseIndicatorDescriptionMethodologyNote.getAllCount = function (api, callback) {
@@ -6102,8 +6102,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionMethodologyNotes based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionMethodologyNotes which match the provided filter. */
-        BaseIndicatorDescriptionMethodologyNote.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionMethodologyNote.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionMethodologyNotes exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -6120,8 +6120,8 @@ var hiw;
         /** Gets IndicatorDescriptionMethodologyNotes by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionMethodologyNotes.
          *  @return An Array of IndicatorDescriptionMethodologyNotes. */
-        BaseIndicatorDescriptionMethodologyNote.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionMethodologyNote.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionMethodologyNotes by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionMethodologyNotes.
@@ -6184,8 +6184,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionMoreInfos in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionMoreInfos */
-        BaseIndicatorDescriptionMoreInfo.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionMoreInfo.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionMoreInfos exist. */
         BaseIndicatorDescriptionMoreInfo.getAllCount = function (api, callback) {
@@ -6204,8 +6204,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionMoreInfos based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionMoreInfos which match the provided filter. */
-        BaseIndicatorDescriptionMoreInfo.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionMoreInfo.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionMoreInfos exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -6222,8 +6222,8 @@ var hiw;
         /** Gets IndicatorDescriptionMoreInfos by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionMoreInfos.
          *  @return An Array of IndicatorDescriptionMoreInfos. */
-        BaseIndicatorDescriptionMoreInfo.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionMoreInfo.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionMoreInfos by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionMoreInfos.
@@ -6251,8 +6251,8 @@ var hiw;
         /** Gets IndicatorDescriptionMoreInfos by UrlID.
          *  @param urlID The ID of the Url for which to retrieve the child IndicatorDescriptionMoreInfos.
          *  @return An Array of IndicatorDescriptionMoreInfos. */
-        BaseIndicatorDescriptionMoreInfo.getByUrlID = function (urlID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page);
+        BaseIndicatorDescriptionMoreInfo.getByUrlID = function (urlID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionMoreInfos by UrlID exist.
          *  @param urlID The ID of the Url for which to retrieve the child IndicatorDescriptionMoreInfos.
@@ -6312,8 +6312,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionReferences in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionReferences */
-        BaseIndicatorDescriptionReference.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionReference.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionReferences exist. */
         BaseIndicatorDescriptionReference.getAllCount = function (api, callback) {
@@ -6332,8 +6332,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionReferences based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionReferences which match the provided filter. */
-        BaseIndicatorDescriptionReference.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionReference.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionReferences exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -6350,8 +6350,8 @@ var hiw;
         /** Gets IndicatorDescriptionReferences by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionReferences.
          *  @return An Array of IndicatorDescriptionReferences. */
-        BaseIndicatorDescriptionReference.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionReference.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionReferences by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionReferences.
@@ -6379,8 +6379,8 @@ var hiw;
         /** Gets IndicatorDescriptionReferences by UrlID.
          *  @param urlID The ID of the Url for which to retrieve the child IndicatorDescriptionReferences.
          *  @return An Array of IndicatorDescriptionReferences. */
-        BaseIndicatorDescriptionReference.getByUrlID = function (urlID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page);
+        BaseIndicatorDescriptionReference.getByUrlID = function (urlID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionReferences by UrlID exist.
          *  @param urlID The ID of the Url for which to retrieve the child IndicatorDescriptionReferences.
@@ -6440,8 +6440,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionResources in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionResources */
-        BaseIndicatorDescriptionResource.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionResource.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionResources exist. */
         BaseIndicatorDescriptionResource.getAllCount = function (api, callback) {
@@ -6460,8 +6460,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionResources based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionResources which match the provided filter. */
-        BaseIndicatorDescriptionResource.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionResource.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionResources exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -6478,8 +6478,8 @@ var hiw;
         /** Gets IndicatorDescriptionResources by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionResources.
          *  @return An Array of IndicatorDescriptionResources. */
-        BaseIndicatorDescriptionResource.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionResource.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionResources by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionResources.
@@ -6507,8 +6507,8 @@ var hiw;
         /** Gets IndicatorDescriptionResources by UrlID.
          *  @param urlID The ID of the Url for which to retrieve the child IndicatorDescriptionResources.
          *  @return An Array of IndicatorDescriptionResources. */
-        BaseIndicatorDescriptionResource.getByUrlID = function (urlID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page);
+        BaseIndicatorDescriptionResource.getByUrlID = function (urlID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionResources by UrlID exist.
          *  @param urlID The ID of the Url for which to retrieve the child IndicatorDescriptionResources.
@@ -6584,8 +6584,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptions in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptions */
-        BaseIndicatorDescription.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescription.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptions exist. */
         BaseIndicatorDescription.getAllCount = function (api, callback) {
@@ -6604,8 +6604,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptions based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptions which match the provided filter. */
-        BaseIndicatorDescription.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescription.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptions exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -6622,8 +6622,8 @@ var hiw;
         /** Gets IndicatorDescriptions by ValueLabelID.
          *  @param valueLabelID The ID of the ValueLabel for which to retrieve the child IndicatorDescriptions.
          *  @return An Array of IndicatorDescriptions. */
-        BaseIndicatorDescription.getByValueLabelID = function (valueLabelID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { valueLabelID: valueLabelID }, null, page);
+        BaseIndicatorDescription.getByValueLabelID = function (valueLabelID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { valueLabelID: valueLabelID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptions by ValueLabelID exist.
          *  @param valueLabelID The ID of the ValueLabel for which to retrieve the child IndicatorDescriptions.
@@ -6695,8 +6695,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionHP2020s in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionHP2020s */
-        BaseIndicatorDescriptionHP2020.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionHP2020.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionHP2020s exist. */
         BaseIndicatorDescriptionHP2020.getAllCount = function (api, callback) {
@@ -6715,8 +6715,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionHP2020s based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionHP2020s which match the provided filter. */
-        BaseIndicatorDescriptionHP2020.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionHP2020.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionHP2020s exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -6733,8 +6733,8 @@ var hiw;
         /** Gets IndicatorDescriptionHP2020s by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionHP2020s.
          *  @return An Array of IndicatorDescriptionHP2020s. */
-        BaseIndicatorDescriptionHP2020.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionHP2020.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionHP2020s by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionHP2020s.
@@ -6762,8 +6762,8 @@ var hiw;
         /** Gets IndicatorDescriptionHP2020s by HP2020TSMID.
          *  @param hP2020TSMID The ID of the HP2020TSM for which to retrieve the child IndicatorDescriptionHP2020s.
          *  @return An Array of IndicatorDescriptionHP2020s. */
-        BaseIndicatorDescriptionHP2020.getByHP2020TSMID = function (hP2020TSMID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { hP2020TSMID: hP2020TSMID }, null, page);
+        BaseIndicatorDescriptionHP2020.getByHP2020TSMID = function (hP2020TSMID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { hP2020TSMID: hP2020TSMID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionHP2020s by HP2020TSMID exist.
          *  @param hP2020TSMID The ID of the HP2020TSM for which to retrieve the child IndicatorDescriptionHP2020s.
@@ -6825,8 +6825,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionTimeFrames in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionTimeFrames */
-        BaseIndicatorDescriptionTimeFrame.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionTimeFrame.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionTimeFrames exist. */
         BaseIndicatorDescriptionTimeFrame.getAllCount = function (api, callback) {
@@ -6845,8 +6845,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionTimeFrames based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionTimeFrames which match the provided filter. */
-        BaseIndicatorDescriptionTimeFrame.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionTimeFrame.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionTimeFrames exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -6863,8 +6863,8 @@ var hiw;
         /** Gets IndicatorDescriptionTimeFrames by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionTimeFrames.
          *  @return An Array of IndicatorDescriptionTimeFrames. */
-        BaseIndicatorDescriptionTimeFrame.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionTimeFrame.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionTimeFrames by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionTimeFrames.
@@ -6892,8 +6892,8 @@ var hiw;
         /** Gets IndicatorDescriptionTimeFrames by TimeframeID.
          *  @param timeframeID The ID of the Timeframe for which to retrieve the child IndicatorDescriptionTimeFrames.
          *  @return An Array of IndicatorDescriptionTimeFrames. */
-        BaseIndicatorDescriptionTimeFrame.getByTimeframeID = function (timeframeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { timeframeID: timeframeID }, null, page);
+        BaseIndicatorDescriptionTimeFrame.getByTimeframeID = function (timeframeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { timeframeID: timeframeID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionTimeFrames by TimeframeID exist.
          *  @param timeframeID The ID of the Timeframe for which to retrieve the child IndicatorDescriptionTimeFrames.
@@ -6949,8 +6949,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDescriptionYears in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionYears */
-        BaseIndicatorDescriptionYear.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDescriptionYear.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionYears exist. */
         BaseIndicatorDescriptionYear.getAllCount = function (api, callback) {
@@ -6969,8 +6969,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDescriptionYears based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionYears which match the provided filter. */
-        BaseIndicatorDescriptionYear.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDescriptionYear.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDescriptionYears exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -6987,8 +6987,8 @@ var hiw;
         /** Gets IndicatorDescriptionYears by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionYears.
          *  @return An Array of IndicatorDescriptionYears. */
-        BaseIndicatorDescriptionYear.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDescriptionYear.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionYears by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionYears.
@@ -7016,8 +7016,8 @@ var hiw;
         /** Gets IndicatorDescriptionYears by YearID.
          *  @param yearID The ID of the Year for which to retrieve the child IndicatorDescriptionYears.
          *  @return An Array of IndicatorDescriptionYears. */
-        BaseIndicatorDescriptionYear.getByYearID = function (yearID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { yearID: yearID }, null, page);
+        BaseIndicatorDescriptionYear.getByYearID = function (yearID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { yearID: yearID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDescriptionYears by YearID exist.
          *  @param yearID The ID of the Year for which to retrieve the child IndicatorDescriptionYears.
@@ -7079,8 +7079,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDimensionGraphs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDimensionGraphs */
-        BaseIndicatorDimensionGraph.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDimensionGraph.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDimensionGraphs exist. */
         BaseIndicatorDimensionGraph.getAllCount = function (api, callback) {
@@ -7099,8 +7099,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDimensionGraphs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDimensionGraphs which match the provided filter. */
-        BaseIndicatorDimensionGraph.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDimensionGraph.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDimensionGraphs exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -7117,8 +7117,8 @@ var hiw;
         /** Gets IndicatorDimensionGraphs by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDimensionGraphs.
          *  @return An Array of IndicatorDimensionGraphs. */
-        BaseIndicatorDimensionGraph.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicatorDimensionGraph.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDimensionGraphs by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDimensionGraphs.
@@ -7146,8 +7146,8 @@ var hiw;
         /** Gets IndicatorDimensionGraphs by LocaleLevelID.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDimensionGraphs.
          *  @return An Array of IndicatorDimensionGraphs. */
-        BaseIndicatorDimensionGraph.getByLocaleLevelID = function (localeLevelID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeLevelID: localeLevelID }, null, page);
+        BaseIndicatorDimensionGraph.getByLocaleLevelID = function (localeLevelID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeLevelID: localeLevelID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDimensionGraphs by LocaleLevelID exist.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDimensionGraphs.
@@ -7175,8 +7175,8 @@ var hiw;
         /** Gets IndicatorDimensionGraphs by DimensionGraphID.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child IndicatorDimensionGraphs.
          *  @return An Array of IndicatorDimensionGraphs. */
-        BaseIndicatorDimensionGraph.getByDimensionGraphID = function (dimensionGraphID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionGraphID: dimensionGraphID }, null, page);
+        BaseIndicatorDimensionGraph.getByDimensionGraphID = function (dimensionGraphID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionGraphID: dimensionGraphID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDimensionGraphs by DimensionGraphID exist.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child IndicatorDimensionGraphs.
@@ -7233,8 +7233,8 @@ var hiw;
         /** Gets a list of all of the IndicatorDimensions in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDimensions */
-        BaseIndicatorDimension.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicatorDimension.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many IndicatorDimensions exist. */
         BaseIndicatorDimension.getAllCount = function (api, callback) {
@@ -7253,8 +7253,8 @@ var hiw;
         /** Returns a filtered collection of IndicatorDimensions based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDimensions which match the provided filter. */
-        BaseIndicatorDimension.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicatorDimension.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many IndicatorDimensions exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -7271,8 +7271,8 @@ var hiw;
         /** Gets IndicatorDimensions by IndicatorID.
          *  @param indicatorID The ID of the Indicator for which to retrieve the child IndicatorDimensions.
          *  @return An Array of IndicatorDimensions. */
-        BaseIndicatorDimension.getByIndicatorID = function (indicatorID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorID: indicatorID }, null, page);
+        BaseIndicatorDimension.getByIndicatorID = function (indicatorID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorID: indicatorID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDimensions by IndicatorID exist.
          *  @param indicatorID The ID of the Indicator for which to retrieve the child IndicatorDimensions.
@@ -7300,8 +7300,8 @@ var hiw;
         /** Gets IndicatorDimensions by DimensionBookID.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child IndicatorDimensions.
          *  @return An Array of IndicatorDimensions. */
-        BaseIndicatorDimension.getByDimensionBookID = function (dimensionBookID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionBookID: dimensionBookID }, null, page);
+        BaseIndicatorDimension.getByDimensionBookID = function (dimensionBookID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionBookID: dimensionBookID }, null, page, pageSize);
         };
         /** Gets how many IndicatorDimensions by DimensionBookID exist.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child IndicatorDimensions.
@@ -7390,8 +7390,8 @@ var hiw;
         /** Gets a list of all of the Indicators in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Indicators */
-        BaseIndicator.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIndicator.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Indicators exist. */
         BaseIndicator.getAllCount = function (api, callback) {
@@ -7410,8 +7410,8 @@ var hiw;
         /** Returns a filtered collection of Indicators based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Indicators which match the provided filter. */
-        BaseIndicator.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIndicator.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Indicators exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -7428,8 +7428,8 @@ var hiw;
         /** Gets Indicators by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child Indicators.
          *  @return An Array of Indicators. */
-        BaseIndicator.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page);
+        BaseIndicator.getByIndicatorDescriptionID = function (indicatorDescriptionID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { indicatorDescriptionID: indicatorDescriptionID }, null, page, pageSize);
         };
         /** Gets how many Indicators by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child Indicators.
@@ -7457,8 +7457,8 @@ var hiw;
         /** Gets Indicators by TimeframeID.
          *  @param timeframeID The ID of the Timeframe for which to retrieve the child Indicators.
          *  @return An Array of Indicators. */
-        BaseIndicator.getByTimeframeID = function (timeframeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { timeframeID: timeframeID }, null, page);
+        BaseIndicator.getByTimeframeID = function (timeframeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { timeframeID: timeframeID }, null, page, pageSize);
         };
         /** Gets how many Indicators by TimeframeID exist.
          *  @param timeframeID The ID of the Timeframe for which to retrieve the child Indicators.
@@ -7486,8 +7486,8 @@ var hiw;
         /** Gets Indicators by LocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child Indicators.
          *  @return An Array of Indicators. */
-        BaseIndicator.getByLocaleID = function (localeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page);
+        BaseIndicator.getByLocaleID = function (localeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page, pageSize);
         };
         /** Gets how many Indicators by LocaleID exist.
          *  @param localeID The ID of the Locale for which to retrieve the child Indicators.
@@ -7515,8 +7515,8 @@ var hiw;
         /** Gets Indicators by DimensionGraphID.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child Indicators.
          *  @return An Array of Indicators. */
-        BaseIndicator.getByDimensionGraphID = function (dimensionGraphID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionGraphID: dimensionGraphID }, null, page);
+        BaseIndicator.getByDimensionGraphID = function (dimensionGraphID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { dimensionGraphID: dimensionGraphID }, null, page, pageSize);
         };
         /** Gets how many Indicators by DimensionGraphID exist.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child Indicators.
@@ -7544,8 +7544,8 @@ var hiw;
         /** Gets Indicators by ModifierGraphID.
          *  @param modifierGraphID The ID of the ModifierGraph for which to retrieve the child Indicators.
          *  @return An Array of Indicators. */
-        BaseIndicator.getByModifierGraphID = function (modifierGraphID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierGraphID: modifierGraphID }, null, page);
+        BaseIndicator.getByModifierGraphID = function (modifierGraphID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierGraphID: modifierGraphID }, null, page, pageSize);
         };
         /** Gets how many Indicators by ModifierGraphID exist.
          *  @param modifierGraphID The ID of the ModifierGraph for which to retrieve the child Indicators.
@@ -7637,8 +7637,8 @@ var hiw;
         /** Gets a list of all of the Initiatives in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Initiatives */
-        BaseInitiative.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseInitiative.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Initiatives exist. */
         BaseInitiative.getAllCount = function (api, callback) {
@@ -7657,8 +7657,8 @@ var hiw;
         /** Returns a filtered collection of Initiatives based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Initiatives which match the provided filter. */
-        BaseInitiative.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseInitiative.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Initiatives exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -7716,8 +7716,8 @@ var hiw;
         /** Gets a list of all of the Interventions in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Interventions */
-        BaseIntervention.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseIntervention.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Interventions exist. */
         BaseIntervention.getAllCount = function (api, callback) {
@@ -7736,8 +7736,8 @@ var hiw;
         /** Returns a filtered collection of Interventions based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Interventions which match the provided filter. */
-        BaseIntervention.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseIntervention.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Interventions exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -7754,8 +7754,8 @@ var hiw;
         /** Gets Interventions by UrlID.
          *  @param urlID The ID of the Url for which to retrieve the child Interventions.
          *  @return An Array of Interventions. */
-        BaseIntervention.getByUrlID = function (urlID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page);
+        BaseIntervention.getByUrlID = function (urlID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { urlID: urlID }, null, page, pageSize);
         };
         /** Gets how many Interventions by UrlID exist.
          *  @param urlID The ID of the Url for which to retrieve the child Interventions.
@@ -7820,8 +7820,8 @@ var hiw;
         /** Gets a list of all of the Keywords in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Keywords */
-        BaseKeyword.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseKeyword.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Keywords exist. */
         BaseKeyword.getAllCount = function (api, callback) {
@@ -7840,8 +7840,8 @@ var hiw;
         /** Returns a filtered collection of Keywords based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Keywords which match the provided filter. */
-        BaseKeyword.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseKeyword.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Keywords exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -7890,8 +7890,8 @@ var hiw;
         /** Gets a list of all of the LocaleLevels in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of LocaleLevels */
-        BaseLocaleLevel.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseLocaleLevel.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many LocaleLevels exist. */
         BaseLocaleLevel.getAllCount = function (api, callback) {
@@ -7910,8 +7910,8 @@ var hiw;
         /** Returns a filtered collection of LocaleLevels based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All LocaleLevels which match the provided filter. */
-        BaseLocaleLevel.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseLocaleLevel.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many LocaleLevels exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -7957,8 +7957,8 @@ var hiw;
         /** Gets a list of all of the LocaleRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of LocaleRelations */
-        BaseLocaleRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseLocaleRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many LocaleRelations exist. */
         BaseLocaleRelation.getAllCount = function (api, callback) {
@@ -7977,8 +7977,8 @@ var hiw;
         /** Returns a filtered collection of LocaleRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All LocaleRelations which match the provided filter. */
-        BaseLocaleRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseLocaleRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many LocaleRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -7995,8 +7995,8 @@ var hiw;
         /** Gets LocaleRelations by AncestorLocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child LocaleRelations.
          *  @return An Array of LocaleRelations. */
-        BaseLocaleRelation.getByAncestorLocaleID = function (localeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page);
+        BaseLocaleRelation.getByAncestorLocaleID = function (localeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page, pageSize);
         };
         /** Gets how many LocaleRelations by AncestorLocaleID exist.
          *  @param localeID The ID of the Locale for which to retrieve the child LocaleRelations.
@@ -8024,8 +8024,8 @@ var hiw;
         /** Gets LocaleRelations by DescendantLocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child LocaleRelations.
          *  @return An Array of LocaleRelations. */
-        BaseLocaleRelation.getByDescendantLocaleID = function (localeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page);
+        BaseLocaleRelation.getByDescendantLocaleID = function (localeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page, pageSize);
         };
         /** Gets how many LocaleRelations by DescendantLocaleID exist.
          *  @param localeID The ID of the Locale for which to retrieve the child LocaleRelations.
@@ -8096,8 +8096,8 @@ var hiw;
         /** Gets a list of all of the Locales in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Locales */
-        BaseLocale.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseLocale.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Locales exist. */
         BaseLocale.getAllCount = function (api, callback) {
@@ -8116,8 +8116,8 @@ var hiw;
         /** Returns a filtered collection of Locales based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Locales which match the provided filter. */
-        BaseLocale.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseLocale.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Locales exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -8133,14 +8133,14 @@ var hiw;
         };
         /** Gets Locales by ParentLocaleID.
          *  @return An Array of Locales. */
-        BaseLocale.prototype.getLocales = function (api, callback, page) {
-            return Locale.getByParentLocaleID(this.id, api, callback, page);
+        BaseLocale.prototype.getLocales = function (api, callback, page, pageSize) {
+            return Locale.getByParentLocaleID(this.id, api, callback, page, pageSize);
         };
         /** Gets Locales by ParentLocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child Locales.
          *  @return An Array of Locales. */
-        BaseLocale.getByParentLocaleID = function (localeID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page);
+        BaseLocale.getByParentLocaleID = function (localeID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeID: localeID }, null, page, pageSize);
         };
         /** Gets how many Locales by ParentLocaleID exist.
          *  @return An Array of Locales. */
@@ -8178,8 +8178,8 @@ var hiw;
         /** Gets Locales by LocaleLevelID.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child Locales.
          *  @return An Array of Locales. */
-        BaseLocale.getByLocaleLevelID = function (localeLevelID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeLevelID: localeLevelID }, null, page);
+        BaseLocale.getByLocaleLevelID = function (localeLevelID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { localeLevelID: localeLevelID }, null, page, pageSize);
         };
         /** Gets how many Locales by LocaleLevelID exist.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child Locales.
@@ -8249,8 +8249,8 @@ var hiw;
         /** Gets a list of all of the MaritalStatuses in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of MaritalStatuses */
-        BaseMaritalStatus.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseMaritalStatus.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many MaritalStatuses exist. */
         BaseMaritalStatus.getAllCount = function (api, callback) {
@@ -8269,8 +8269,8 @@ var hiw;
         /** Returns a filtered collection of MaritalStatuses based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All MaritalStatuses which match the provided filter. */
-        BaseMaritalStatus.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseMaritalStatus.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many MaritalStatuses exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -8286,14 +8286,14 @@ var hiw;
         };
         /** Gets MaritalStatuses by ParentMaritalStatusID.
          *  @return An Array of MaritalStatuses. */
-        BaseMaritalStatus.prototype.getMaritalStatuses = function (api, callback, page) {
-            return MaritalStatus.getByParentMaritalStatusID(this.id, api, callback, page);
+        BaseMaritalStatus.prototype.getMaritalStatuses = function (api, callback, page, pageSize) {
+            return MaritalStatus.getByParentMaritalStatusID(this.id, api, callback, page, pageSize);
         };
         /** Gets MaritalStatuses by ParentMaritalStatusID.
          *  @param maritalStatusID The ID of the MaritalStatus for which to retrieve the child MaritalStatuses.
          *  @return An Array of MaritalStatuses. */
-        BaseMaritalStatus.getByParentMaritalStatusID = function (maritalStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { maritalStatusID: maritalStatusID }, null, page);
+        BaseMaritalStatus.getByParentMaritalStatusID = function (maritalStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { maritalStatusID: maritalStatusID }, null, page, pageSize);
         };
         /** Gets how many MaritalStatuses by ParentMaritalStatusID exist.
          *  @return An Array of MaritalStatuses. */
@@ -8365,8 +8365,8 @@ var hiw;
         /** Gets a list of all of the MaritalStatusRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of MaritalStatusRelations */
-        BaseMaritalStatusRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseMaritalStatusRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many MaritalStatusRelations exist. */
         BaseMaritalStatusRelation.getAllCount = function (api, callback) {
@@ -8385,8 +8385,8 @@ var hiw;
         /** Returns a filtered collection of MaritalStatusRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All MaritalStatusRelations which match the provided filter. */
-        BaseMaritalStatusRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseMaritalStatusRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many MaritalStatusRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -8403,8 +8403,8 @@ var hiw;
         /** Gets MaritalStatusRelations by AncestorMaritalStatusID.
          *  @param maritalStatusID The ID of the MaritalStatus for which to retrieve the child MaritalStatusRelations.
          *  @return An Array of MaritalStatusRelations. */
-        BaseMaritalStatusRelation.getByAncestorMaritalStatusID = function (maritalStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { maritalStatusID: maritalStatusID }, null, page);
+        BaseMaritalStatusRelation.getByAncestorMaritalStatusID = function (maritalStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { maritalStatusID: maritalStatusID }, null, page, pageSize);
         };
         /** Gets how many MaritalStatusRelations by AncestorMaritalStatusID exist.
          *  @param maritalStatusID The ID of the MaritalStatus for which to retrieve the child MaritalStatusRelations.
@@ -8432,8 +8432,8 @@ var hiw;
         /** Gets MaritalStatusRelations by DescendantMaritalStatusID.
          *  @param maritalStatusID The ID of the MaritalStatus for which to retrieve the child MaritalStatusRelations.
          *  @return An Array of MaritalStatusRelations. */
-        BaseMaritalStatusRelation.getByDescendantMaritalStatusID = function (maritalStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { maritalStatusID: maritalStatusID }, null, page);
+        BaseMaritalStatusRelation.getByDescendantMaritalStatusID = function (maritalStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { maritalStatusID: maritalStatusID }, null, page, pageSize);
         };
         /** Gets how many MaritalStatusRelations by DescendantMaritalStatusID exist.
          *  @param maritalStatusID The ID of the MaritalStatus for which to retrieve the child MaritalStatusRelations.
@@ -8502,8 +8502,8 @@ var hiw;
         /** Gets a list of all of the Modifiers in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Modifiers */
-        BaseModifier.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseModifier.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Modifiers exist. */
         BaseModifier.getAllCount = function (api, callback) {
@@ -8522,8 +8522,8 @@ var hiw;
         /** Returns a filtered collection of Modifiers based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Modifiers which match the provided filter. */
-        BaseModifier.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseModifier.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Modifiers exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -8539,14 +8539,14 @@ var hiw;
         };
         /** Gets Modifiers by ParentModifierID.
          *  @return An Array of Modifiers. */
-        BaseModifier.prototype.getModifiers = function (api, callback, page) {
-            return Modifier.getByParentModifierID(this.id, api, callback, page);
+        BaseModifier.prototype.getModifiers = function (api, callback, page, pageSize) {
+            return Modifier.getByParentModifierID(this.id, api, callback, page, pageSize);
         };
         /** Gets Modifiers by ParentModifierID.
          *  @param modifierID The ID of the Modifier for which to retrieve the child Modifiers.
          *  @return An Array of Modifiers. */
-        BaseModifier.getByParentModifierID = function (modifierID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierID: modifierID }, null, page);
+        BaseModifier.getByParentModifierID = function (modifierID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierID: modifierID }, null, page, pageSize);
         };
         /** Gets how many Modifiers by ParentModifierID exist.
          *  @return An Array of Modifiers. */
@@ -8649,8 +8649,8 @@ var hiw;
         /** Gets a list of all of the ModifierGraphs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of ModifierGraphs */
-        BaseModifierGraph.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseModifierGraph.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many ModifierGraphs exist. */
         BaseModifierGraph.getAllCount = function (api, callback) {
@@ -8669,8 +8669,8 @@ var hiw;
         /** Returns a filtered collection of ModifierGraphs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All ModifierGraphs which match the provided filter. */
-        BaseModifierGraph.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseModifierGraph.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many ModifierGraphs exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -8687,8 +8687,8 @@ var hiw;
         /** Gets ModifierGraphs by Modifier1ID.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
          *  @return An Array of ModifierGraphs. */
-        BaseModifierGraph.getByModifier1ID = function (modifierID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierID: modifierID }, null, page);
+        BaseModifierGraph.getByModifier1ID = function (modifierID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierID: modifierID }, null, page, pageSize);
         };
         /** Gets how many ModifierGraphs by Modifier1ID exist.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
@@ -8716,8 +8716,8 @@ var hiw;
         /** Gets ModifierGraphs by Modifier2ID.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
          *  @return An Array of ModifierGraphs. */
-        BaseModifierGraph.getByModifier2ID = function (modifierID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierID: modifierID }, null, page);
+        BaseModifierGraph.getByModifier2ID = function (modifierID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierID: modifierID }, null, page, pageSize);
         };
         /** Gets how many ModifierGraphs by Modifier2ID exist.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
@@ -8745,8 +8745,8 @@ var hiw;
         /** Gets ModifierGraphs by Modifier3ID.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
          *  @return An Array of ModifierGraphs. */
-        BaseModifierGraph.getByModifier3ID = function (modifierID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierID: modifierID }, null, page);
+        BaseModifierGraph.getByModifier3ID = function (modifierID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierID: modifierID }, null, page, pageSize);
         };
         /** Gets how many ModifierGraphs by Modifier3ID exist.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
@@ -8774,8 +8774,8 @@ var hiw;
         /** Gets ModifierGraphs by Modifier4ID.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
          *  @return An Array of ModifierGraphs. */
-        BaseModifierGraph.getByModifier4ID = function (modifierID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierID: modifierID }, null, page);
+        BaseModifierGraph.getByModifier4ID = function (modifierID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierID: modifierID }, null, page, pageSize);
         };
         /** Gets how many ModifierGraphs by Modifier4ID exist.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
@@ -8803,8 +8803,8 @@ var hiw;
         /** Gets ModifierGraphs by Modifier5ID.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
          *  @return An Array of ModifierGraphs. */
-        BaseModifierGraph.getByModifier5ID = function (modifierID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierID: modifierID }, null, page);
+        BaseModifierGraph.getByModifier5ID = function (modifierID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { modifierID: modifierID }, null, page, pageSize);
         };
         /** Gets how many ModifierGraphs by Modifier5ID exist.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
@@ -8890,8 +8890,8 @@ var hiw;
         /** Gets a list of all of the ObesityStatuses in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of ObesityStatuses */
-        BaseObesityStatus.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseObesityStatus.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many ObesityStatuses exist. */
         BaseObesityStatus.getAllCount = function (api, callback) {
@@ -8910,8 +8910,8 @@ var hiw;
         /** Returns a filtered collection of ObesityStatuses based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All ObesityStatuses which match the provided filter. */
-        BaseObesityStatus.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseObesityStatus.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many ObesityStatuses exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -8927,14 +8927,14 @@ var hiw;
         };
         /** Gets ObesityStatuses by ParentObesityStatusID.
          *  @return An Array of ObesityStatuses. */
-        BaseObesityStatus.prototype.getObesityStatuses = function (api, callback, page) {
-            return ObesityStatus.getByParentObesityStatusID(this.id, api, callback, page);
+        BaseObesityStatus.prototype.getObesityStatuses = function (api, callback, page, pageSize) {
+            return ObesityStatus.getByParentObesityStatusID(this.id, api, callback, page, pageSize);
         };
         /** Gets ObesityStatuses by ParentObesityStatusID.
          *  @param obesityStatusID The ID of the ObesityStatus for which to retrieve the child ObesityStatuses.
          *  @return An Array of ObesityStatuses. */
-        BaseObesityStatus.getByParentObesityStatusID = function (obesityStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { obesityStatusID: obesityStatusID }, null, page);
+        BaseObesityStatus.getByParentObesityStatusID = function (obesityStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { obesityStatusID: obesityStatusID }, null, page, pageSize);
         };
         /** Gets how many ObesityStatuses by ParentObesityStatusID exist.
          *  @return An Array of ObesityStatuses. */
@@ -9006,8 +9006,8 @@ var hiw;
         /** Gets a list of all of the ObesityStatusRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of ObesityStatusRelations */
-        BaseObesityStatusRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseObesityStatusRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many ObesityStatusRelations exist. */
         BaseObesityStatusRelation.getAllCount = function (api, callback) {
@@ -9026,8 +9026,8 @@ var hiw;
         /** Returns a filtered collection of ObesityStatusRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All ObesityStatusRelations which match the provided filter. */
-        BaseObesityStatusRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseObesityStatusRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many ObesityStatusRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -9044,8 +9044,8 @@ var hiw;
         /** Gets ObesityStatusRelations by AncestorObesityStatusID.
          *  @param obesityStatusID The ID of the ObesityStatus for which to retrieve the child ObesityStatusRelations.
          *  @return An Array of ObesityStatusRelations. */
-        BaseObesityStatusRelation.getByAncestorObesityStatusID = function (obesityStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { obesityStatusID: obesityStatusID }, null, page);
+        BaseObesityStatusRelation.getByAncestorObesityStatusID = function (obesityStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { obesityStatusID: obesityStatusID }, null, page, pageSize);
         };
         /** Gets how many ObesityStatusRelations by AncestorObesityStatusID exist.
          *  @param obesityStatusID The ID of the ObesityStatus for which to retrieve the child ObesityStatusRelations.
@@ -9073,8 +9073,8 @@ var hiw;
         /** Gets ObesityStatusRelations by DescendantObesityStatusID.
          *  @param obesityStatusID The ID of the ObesityStatus for which to retrieve the child ObesityStatusRelations.
          *  @return An Array of ObesityStatusRelations. */
-        BaseObesityStatusRelation.getByDescendantObesityStatusID = function (obesityStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { obesityStatusID: obesityStatusID }, null, page);
+        BaseObesityStatusRelation.getByDescendantObesityStatusID = function (obesityStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { obesityStatusID: obesityStatusID }, null, page, pageSize);
         };
         /** Gets how many ObesityStatusRelations by DescendantObesityStatusID exist.
          *  @param obesityStatusID The ID of the ObesityStatus for which to retrieve the child ObesityStatusRelations.
@@ -9136,8 +9136,8 @@ var hiw;
         /** Gets a list of all of the Others in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Others */
-        BaseOther.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseOther.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Others exist. */
         BaseOther.getAllCount = function (api, callback) {
@@ -9156,8 +9156,8 @@ var hiw;
         /** Returns a filtered collection of Others based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Others which match the provided filter. */
-        BaseOther.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseOther.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Others exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -9173,14 +9173,14 @@ var hiw;
         };
         /** Gets Others by ParentOtherID.
          *  @return An Array of Others. */
-        BaseOther.prototype.getOthers = function (api, callback, page) {
-            return Other.getByParentOtherID(this.id, api, callback, page);
+        BaseOther.prototype.getOthers = function (api, callback, page, pageSize) {
+            return Other.getByParentOtherID(this.id, api, callback, page, pageSize);
         };
         /** Gets Others by ParentOtherID.
          *  @param otherID The ID of the Other for which to retrieve the child Others.
          *  @return An Array of Others. */
-        BaseOther.getByParentOtherID = function (otherID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { otherID: otherID }, null, page);
+        BaseOther.getByParentOtherID = function (otherID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { otherID: otherID }, null, page, pageSize);
         };
         /** Gets how many Others by ParentOtherID exist.
          *  @return An Array of Others. */
@@ -9252,8 +9252,8 @@ var hiw;
         /** Gets a list of all of the OtherRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of OtherRelations */
-        BaseOtherRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseOtherRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many OtherRelations exist. */
         BaseOtherRelation.getAllCount = function (api, callback) {
@@ -9272,8 +9272,8 @@ var hiw;
         /** Returns a filtered collection of OtherRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All OtherRelations which match the provided filter. */
-        BaseOtherRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseOtherRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many OtherRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -9290,8 +9290,8 @@ var hiw;
         /** Gets OtherRelations by AncestorOtherID.
          *  @param otherID The ID of the Other for which to retrieve the child OtherRelations.
          *  @return An Array of OtherRelations. */
-        BaseOtherRelation.getByAncestorOtherID = function (otherID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { otherID: otherID }, null, page);
+        BaseOtherRelation.getByAncestorOtherID = function (otherID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { otherID: otherID }, null, page, pageSize);
         };
         /** Gets how many OtherRelations by AncestorOtherID exist.
          *  @param otherID The ID of the Other for which to retrieve the child OtherRelations.
@@ -9319,8 +9319,8 @@ var hiw;
         /** Gets OtherRelations by DescendantOtherID.
          *  @param otherID The ID of the Other for which to retrieve the child OtherRelations.
          *  @return An Array of OtherRelations. */
-        BaseOtherRelation.getByDescendantOtherID = function (otherID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { otherID: otherID }, null, page);
+        BaseOtherRelation.getByDescendantOtherID = function (otherID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { otherID: otherID }, null, page, pageSize);
         };
         /** Gets how many OtherRelations by DescendantOtherID exist.
          *  @param otherID The ID of the Other for which to retrieve the child OtherRelations.
@@ -9382,8 +9382,8 @@ var hiw;
         /** Gets a list of all of the RaceEthnicities in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of RaceEthnicities */
-        BaseRaceEthnicity.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseRaceEthnicity.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many RaceEthnicities exist. */
         BaseRaceEthnicity.getAllCount = function (api, callback) {
@@ -9402,8 +9402,8 @@ var hiw;
         /** Returns a filtered collection of RaceEthnicities based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All RaceEthnicities which match the provided filter. */
-        BaseRaceEthnicity.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseRaceEthnicity.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many RaceEthnicities exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -9419,14 +9419,14 @@ var hiw;
         };
         /** Gets RaceEthnicities by ParentRaceEthnicityID.
          *  @return An Array of RaceEthnicities. */
-        BaseRaceEthnicity.prototype.getRaceEthnicities = function (api, callback, page) {
-            return RaceEthnicity.getByParentRaceEthnicityID(this.id, api, callback, page);
+        BaseRaceEthnicity.prototype.getRaceEthnicities = function (api, callback, page, pageSize) {
+            return RaceEthnicity.getByParentRaceEthnicityID(this.id, api, callback, page, pageSize);
         };
         /** Gets RaceEthnicities by ParentRaceEthnicityID.
          *  @param raceEthnicityID The ID of the RaceEthnicity for which to retrieve the child RaceEthnicities.
          *  @return An Array of RaceEthnicities. */
-        BaseRaceEthnicity.getByParentRaceEthnicityID = function (raceEthnicityID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { raceEthnicityID: raceEthnicityID }, null, page);
+        BaseRaceEthnicity.getByParentRaceEthnicityID = function (raceEthnicityID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { raceEthnicityID: raceEthnicityID }, null, page, pageSize);
         };
         /** Gets how many RaceEthnicities by ParentRaceEthnicityID exist.
          *  @return An Array of RaceEthnicities. */
@@ -9498,8 +9498,8 @@ var hiw;
         /** Gets a list of all of the RaceEthnicityRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of RaceEthnicityRelations */
-        BaseRaceEthnicityRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseRaceEthnicityRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many RaceEthnicityRelations exist. */
         BaseRaceEthnicityRelation.getAllCount = function (api, callback) {
@@ -9518,8 +9518,8 @@ var hiw;
         /** Returns a filtered collection of RaceEthnicityRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All RaceEthnicityRelations which match the provided filter. */
-        BaseRaceEthnicityRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseRaceEthnicityRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many RaceEthnicityRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -9536,8 +9536,8 @@ var hiw;
         /** Gets RaceEthnicityRelations by AncestorRaceEthnicityID.
          *  @param raceEthnicityID The ID of the RaceEthnicity for which to retrieve the child RaceEthnicityRelations.
          *  @return An Array of RaceEthnicityRelations. */
-        BaseRaceEthnicityRelation.getByAncestorRaceEthnicityID = function (raceEthnicityID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { raceEthnicityID: raceEthnicityID }, null, page);
+        BaseRaceEthnicityRelation.getByAncestorRaceEthnicityID = function (raceEthnicityID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { raceEthnicityID: raceEthnicityID }, null, page, pageSize);
         };
         /** Gets how many RaceEthnicityRelations by AncestorRaceEthnicityID exist.
          *  @param raceEthnicityID The ID of the RaceEthnicity for which to retrieve the child RaceEthnicityRelations.
@@ -9565,8 +9565,8 @@ var hiw;
         /** Gets RaceEthnicityRelations by DescendantRaceEthnicityID.
          *  @param raceEthnicityID The ID of the RaceEthnicity for which to retrieve the child RaceEthnicityRelations.
          *  @return An Array of RaceEthnicityRelations. */
-        BaseRaceEthnicityRelation.getByDescendantRaceEthnicityID = function (raceEthnicityID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { raceEthnicityID: raceEthnicityID }, null, page);
+        BaseRaceEthnicityRelation.getByDescendantRaceEthnicityID = function (raceEthnicityID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { raceEthnicityID: raceEthnicityID }, null, page, pageSize);
         };
         /** Gets how many RaceEthnicityRelations by DescendantRaceEthnicityID exist.
          *  @param raceEthnicityID The ID of the RaceEthnicity for which to retrieve the child RaceEthnicityRelations.
@@ -9628,8 +9628,8 @@ var hiw;
         /** Gets a list of all of the Sexes in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Sexes */
-        BaseSex.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseSex.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Sexes exist. */
         BaseSex.getAllCount = function (api, callback) {
@@ -9648,8 +9648,8 @@ var hiw;
         /** Returns a filtered collection of Sexes based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Sexes which match the provided filter. */
-        BaseSex.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseSex.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Sexes exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -9665,14 +9665,14 @@ var hiw;
         };
         /** Gets Sexes by ParentSexID.
          *  @return An Array of Sexes. */
-        BaseSex.prototype.getSexes = function (api, callback, page) {
-            return Sex.getByParentSexID(this.id, api, callback, page);
+        BaseSex.prototype.getSexes = function (api, callback, page, pageSize) {
+            return Sex.getByParentSexID(this.id, api, callback, page, pageSize);
         };
         /** Gets Sexes by ParentSexID.
          *  @param sexID The ID of the Sex for which to retrieve the child Sexes.
          *  @return An Array of Sexes. */
-        BaseSex.getByParentSexID = function (sexID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexID: sexID }, null, page);
+        BaseSex.getByParentSexID = function (sexID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexID: sexID }, null, page, pageSize);
         };
         /** Gets how many Sexes by ParentSexID exist.
          *  @return An Array of Sexes. */
@@ -9744,8 +9744,8 @@ var hiw;
         /** Gets a list of all of the SexRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of SexRelations */
-        BaseSexRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseSexRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many SexRelations exist. */
         BaseSexRelation.getAllCount = function (api, callback) {
@@ -9764,8 +9764,8 @@ var hiw;
         /** Returns a filtered collection of SexRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All SexRelations which match the provided filter. */
-        BaseSexRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseSexRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many SexRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -9782,8 +9782,8 @@ var hiw;
         /** Gets SexRelations by AncestorSexID.
          *  @param sexID The ID of the Sex for which to retrieve the child SexRelations.
          *  @return An Array of SexRelations. */
-        BaseSexRelation.getByAncestorSexID = function (sexID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexID: sexID }, null, page);
+        BaseSexRelation.getByAncestorSexID = function (sexID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexID: sexID }, null, page, pageSize);
         };
         /** Gets how many SexRelations by AncestorSexID exist.
          *  @param sexID The ID of the Sex for which to retrieve the child SexRelations.
@@ -9811,8 +9811,8 @@ var hiw;
         /** Gets SexRelations by DescendantSexID.
          *  @param sexID The ID of the Sex for which to retrieve the child SexRelations.
          *  @return An Array of SexRelations. */
-        BaseSexRelation.getByDescendantSexID = function (sexID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexID: sexID }, null, page);
+        BaseSexRelation.getByDescendantSexID = function (sexID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexID: sexID }, null, page, pageSize);
         };
         /** Gets how many SexRelations by DescendantSexID exist.
          *  @param sexID The ID of the Sex for which to retrieve the child SexRelations.
@@ -9874,8 +9874,8 @@ var hiw;
         /** Gets a list of all of the SexualOrientations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of SexualOrientations */
-        BaseSexualOrientation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseSexualOrientation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many SexualOrientations exist. */
         BaseSexualOrientation.getAllCount = function (api, callback) {
@@ -9894,8 +9894,8 @@ var hiw;
         /** Returns a filtered collection of SexualOrientations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All SexualOrientations which match the provided filter. */
-        BaseSexualOrientation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseSexualOrientation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many SexualOrientations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -9911,14 +9911,14 @@ var hiw;
         };
         /** Gets SexualOrientations by ParentSexualOrientationID.
          *  @return An Array of SexualOrientations. */
-        BaseSexualOrientation.prototype.getSexualOrientations = function (api, callback, page) {
-            return SexualOrientation.getByParentSexualOrientationID(this.id, api, callback, page);
+        BaseSexualOrientation.prototype.getSexualOrientations = function (api, callback, page, pageSize) {
+            return SexualOrientation.getByParentSexualOrientationID(this.id, api, callback, page, pageSize);
         };
         /** Gets SexualOrientations by ParentSexualOrientationID.
          *  @param sexualOrientationID The ID of the SexualOrientation for which to retrieve the child SexualOrientations.
          *  @return An Array of SexualOrientations. */
-        BaseSexualOrientation.getByParentSexualOrientationID = function (sexualOrientationID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexualOrientationID: sexualOrientationID }, null, page);
+        BaseSexualOrientation.getByParentSexualOrientationID = function (sexualOrientationID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexualOrientationID: sexualOrientationID }, null, page, pageSize);
         };
         /** Gets how many SexualOrientations by ParentSexualOrientationID exist.
          *  @return An Array of SexualOrientations. */
@@ -9990,8 +9990,8 @@ var hiw;
         /** Gets a list of all of the SexualOrientationRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of SexualOrientationRelations */
-        BaseSexualOrientationRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseSexualOrientationRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many SexualOrientationRelations exist. */
         BaseSexualOrientationRelation.getAllCount = function (api, callback) {
@@ -10010,8 +10010,8 @@ var hiw;
         /** Returns a filtered collection of SexualOrientationRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All SexualOrientationRelations which match the provided filter. */
-        BaseSexualOrientationRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseSexualOrientationRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many SexualOrientationRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -10028,8 +10028,8 @@ var hiw;
         /** Gets SexualOrientationRelations by AncestorSexualOrientationID.
          *  @param sexualOrientationID The ID of the SexualOrientation for which to retrieve the child SexualOrientationRelations.
          *  @return An Array of SexualOrientationRelations. */
-        BaseSexualOrientationRelation.getByAncestorSexualOrientationID = function (sexualOrientationID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexualOrientationID: sexualOrientationID }, null, page);
+        BaseSexualOrientationRelation.getByAncestorSexualOrientationID = function (sexualOrientationID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexualOrientationID: sexualOrientationID }, null, page, pageSize);
         };
         /** Gets how many SexualOrientationRelations by AncestorSexualOrientationID exist.
          *  @param sexualOrientationID The ID of the SexualOrientation for which to retrieve the child SexualOrientationRelations.
@@ -10057,8 +10057,8 @@ var hiw;
         /** Gets SexualOrientationRelations by DescendantSexualOrientationID.
          *  @param sexualOrientationID The ID of the SexualOrientation for which to retrieve the child SexualOrientationRelations.
          *  @return An Array of SexualOrientationRelations. */
-        BaseSexualOrientationRelation.getByDescendantSexualOrientationID = function (sexualOrientationID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexualOrientationID: sexualOrientationID }, null, page);
+        BaseSexualOrientationRelation.getByDescendantSexualOrientationID = function (sexualOrientationID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { sexualOrientationID: sexualOrientationID }, null, page, pageSize);
         };
         /** Gets how many SexualOrientationRelations by DescendantSexualOrientationID exist.
          *  @param sexualOrientationID The ID of the SexualOrientation for which to retrieve the child SexualOrientationRelations.
@@ -10119,8 +10119,8 @@ var hiw;
         /** Gets a list of all of the Timeframes in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Timeframes */
-        BaseTimeframe.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseTimeframe.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Timeframes exist. */
         BaseTimeframe.getAllCount = function (api, callback) {
@@ -10139,8 +10139,8 @@ var hiw;
         /** Returns a filtered collection of Timeframes based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Timeframes which match the provided filter. */
-        BaseTimeframe.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseTimeframe.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Timeframes exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -10194,8 +10194,8 @@ var hiw;
         /** Gets a list of all of the Totals in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Totals */
-        BaseTotal.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseTotal.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Totals exist. */
         BaseTotal.getAllCount = function (api, callback) {
@@ -10214,8 +10214,8 @@ var hiw;
         /** Returns a filtered collection of Totals based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Totals which match the provided filter. */
-        BaseTotal.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseTotal.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Totals exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -10231,14 +10231,14 @@ var hiw;
         };
         /** Gets Totals by ParentTotalID.
          *  @return An Array of Totals. */
-        BaseTotal.prototype.getTotals = function (api, callback, page) {
-            return Total.getByParentTotalID(this.id, api, callback, page);
+        BaseTotal.prototype.getTotals = function (api, callback, page, pageSize) {
+            return Total.getByParentTotalID(this.id, api, callback, page, pageSize);
         };
         /** Gets Totals by ParentTotalID.
          *  @param totalID The ID of the Total for which to retrieve the child Totals.
          *  @return An Array of Totals. */
-        BaseTotal.getByParentTotalID = function (totalID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { totalID: totalID }, null, page);
+        BaseTotal.getByParentTotalID = function (totalID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { totalID: totalID }, null, page, pageSize);
         };
         /** Gets how many Totals by ParentTotalID exist.
          *  @return An Array of Totals. */
@@ -10310,8 +10310,8 @@ var hiw;
         /** Gets a list of all of the TotalRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of TotalRelations */
-        BaseTotalRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseTotalRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many TotalRelations exist. */
         BaseTotalRelation.getAllCount = function (api, callback) {
@@ -10330,8 +10330,8 @@ var hiw;
         /** Returns a filtered collection of TotalRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All TotalRelations which match the provided filter. */
-        BaseTotalRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseTotalRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many TotalRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -10348,8 +10348,8 @@ var hiw;
         /** Gets TotalRelations by AncestorTotalID.
          *  @param totalID The ID of the Total for which to retrieve the child TotalRelations.
          *  @return An Array of TotalRelations. */
-        BaseTotalRelation.getByAncestorTotalID = function (totalID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { totalID: totalID }, null, page);
+        BaseTotalRelation.getByAncestorTotalID = function (totalID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { totalID: totalID }, null, page, pageSize);
         };
         /** Gets how many TotalRelations by AncestorTotalID exist.
          *  @param totalID The ID of the Total for which to retrieve the child TotalRelations.
@@ -10377,8 +10377,8 @@ var hiw;
         /** Gets TotalRelations by DescendantTotalID.
          *  @param totalID The ID of the Total for which to retrieve the child TotalRelations.
          *  @return An Array of TotalRelations. */
-        BaseTotalRelation.getByDescendantTotalID = function (totalID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { totalID: totalID }, null, page);
+        BaseTotalRelation.getByDescendantTotalID = function (totalID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { totalID: totalID }, null, page, pageSize);
         };
         /** Gets how many TotalRelations by DescendantTotalID exist.
          *  @param totalID The ID of the Total for which to retrieve the child TotalRelations.
@@ -10441,8 +10441,8 @@ var hiw;
         /** Gets a list of all of the Urls in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Urls */
-        BaseUrl.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseUrl.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Urls exist. */
         BaseUrl.getAllCount = function (api, callback) {
@@ -10461,8 +10461,8 @@ var hiw;
         /** Returns a filtered collection of Urls based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Urls which match the provided filter. */
-        BaseUrl.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseUrl.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Urls exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -10512,8 +10512,8 @@ var hiw;
         /** Gets a list of all of the ValueLabels in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of ValueLabels */
-        BaseValueLabel.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseValueLabel.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many ValueLabels exist. */
         BaseValueLabel.getAllCount = function (api, callback) {
@@ -10532,8 +10532,8 @@ var hiw;
         /** Returns a filtered collection of ValueLabels based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All ValueLabels which match the provided filter. */
-        BaseValueLabel.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseValueLabel.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many ValueLabels exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -10582,8 +10582,8 @@ var hiw;
         /** Gets a list of all of the VeteranStatuses in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of VeteranStatuses */
-        BaseVeteranStatus.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseVeteranStatus.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many VeteranStatuses exist. */
         BaseVeteranStatus.getAllCount = function (api, callback) {
@@ -10602,8 +10602,8 @@ var hiw;
         /** Returns a filtered collection of VeteranStatuses based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All VeteranStatuses which match the provided filter. */
-        BaseVeteranStatus.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseVeteranStatus.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many VeteranStatuses exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -10619,14 +10619,14 @@ var hiw;
         };
         /** Gets VeteranStatuses by ParentVeteranStatusID.
          *  @return An Array of VeteranStatuses. */
-        BaseVeteranStatus.prototype.getVeteranStatuses = function (api, callback, page) {
-            return VeteranStatus.getByParentVeteranStatusID(this.id, api, callback, page);
+        BaseVeteranStatus.prototype.getVeteranStatuses = function (api, callback, page, pageSize) {
+            return VeteranStatus.getByParentVeteranStatusID(this.id, api, callback, page, pageSize);
         };
         /** Gets VeteranStatuses by ParentVeteranStatusID.
          *  @param veteranStatusID The ID of the VeteranStatus for which to retrieve the child VeteranStatuses.
          *  @return An Array of VeteranStatuses. */
-        BaseVeteranStatus.getByParentVeteranStatusID = function (veteranStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { veteranStatusID: veteranStatusID }, null, page);
+        BaseVeteranStatus.getByParentVeteranStatusID = function (veteranStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { veteranStatusID: veteranStatusID }, null, page, pageSize);
         };
         /** Gets how many VeteranStatuses by ParentVeteranStatusID exist.
          *  @return An Array of VeteranStatuses. */
@@ -10698,8 +10698,8 @@ var hiw;
         /** Gets a list of all of the VeteranStatusRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of VeteranStatusRelations */
-        BaseVeteranStatusRelation.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseVeteranStatusRelation.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many VeteranStatusRelations exist. */
         BaseVeteranStatusRelation.getAllCount = function (api, callback) {
@@ -10718,8 +10718,8 @@ var hiw;
         /** Returns a filtered collection of VeteranStatusRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All VeteranStatusRelations which match the provided filter. */
-        BaseVeteranStatusRelation.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseVeteranStatusRelation.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many VeteranStatusRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
@@ -10736,8 +10736,8 @@ var hiw;
         /** Gets VeteranStatusRelations by AncestorVeteranStatusID.
          *  @param veteranStatusID The ID of the VeteranStatus for which to retrieve the child VeteranStatusRelations.
          *  @return An Array of VeteranStatusRelations. */
-        BaseVeteranStatusRelation.getByAncestorVeteranStatusID = function (veteranStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { veteranStatusID: veteranStatusID }, null, page);
+        BaseVeteranStatusRelation.getByAncestorVeteranStatusID = function (veteranStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { veteranStatusID: veteranStatusID }, null, page, pageSize);
         };
         /** Gets how many VeteranStatusRelations by AncestorVeteranStatusID exist.
          *  @param veteranStatusID The ID of the VeteranStatus for which to retrieve the child VeteranStatusRelations.
@@ -10765,8 +10765,8 @@ var hiw;
         /** Gets VeteranStatusRelations by DescendantVeteranStatusID.
          *  @param veteranStatusID The ID of the VeteranStatus for which to retrieve the child VeteranStatusRelations.
          *  @return An Array of VeteranStatusRelations. */
-        BaseVeteranStatusRelation.getByDescendantVeteranStatusID = function (veteranStatusID, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { veteranStatusID: veteranStatusID }, null, page);
+        BaseVeteranStatusRelation.getByDescendantVeteranStatusID = function (veteranStatusID, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, { veteranStatusID: veteranStatusID }, null, page, pageSize);
         };
         /** Gets how many VeteranStatusRelations by DescendantVeteranStatusID exist.
          *  @param veteranStatusID The ID of the VeteranStatus for which to retrieve the child VeteranStatusRelations.
@@ -10824,8 +10824,8 @@ var hiw;
         /** Gets a list of all of the Years in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Years */
-        BaseYear.getAll = function (api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page);
+        BaseYear.getAll = function (api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
         /** Gets how many Years exist. */
         BaseYear.getAllCount = function (api, callback) {
@@ -10844,8 +10844,8 @@ var hiw;
         /** Returns a filtered collection of Years based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Years which match the provided filter. */
-        BaseYear.filter = function (filter, api, callback, page) {
-            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page));
+        BaseYear.filter = function (filter, api, callback, page, pageSize) {
+            return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, filter.toJSON(page, pageSize));
         };
         /** Returns a count of how many Years exist based on the provided filter.
          *  @param filter The Filter to apply.

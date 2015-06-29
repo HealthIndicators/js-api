@@ -2,7 +2,10 @@
     /** Represents the outermost portion of a filter. */
     export class Filter extends Group {
         /** The page of data to return (default is 1, the first page). */
-        public page: Number;
+        public page: Number = 1;
+
+        /** The amount of data to return, per page. */
+        public pageSize: Number = API.DefaultPageSize;
 
         /** Creates a new, default, Filter instance. */
         constructor();
@@ -14,10 +17,14 @@
         constructor(page: number, type: FilterType);
             
         /** Creates a new Filter instance for the specified page, type, and criteria. */
-        constructor(page: number = 1, type: FilterType = FilterType.And) {
+        constructor(page: number, type: FilterType)
+            
+        /** Creates a new Filter instance for the specified page, type, and criteria. */
+        constructor(page: number = 1, pageSize: number = API.DefaultPageSize, type: FilterType = FilterType.And) {
             super(type);
 
             this.page = page;
+            this.pageSize = pageSize;
         }
 
         /** Adds the specified filter part to the criteria. */
@@ -41,11 +48,14 @@
         }
 
         /** Converts this instance to JSON in the format the HIW API expects. */
-        public toJSON(page: number = 1): Object {
+        public toJSON(page?: number, pageSize?: number): Object {
             var json = super.toJSON();
 
             delete json["__type"];
-            json["Page"] = page;
+            json["Page"] = (page || this.page);
+
+            if (pageSize || this.pageSize)
+                json["PageSize"] = (pageSize || this.pageSize);
 
             return json;
         }

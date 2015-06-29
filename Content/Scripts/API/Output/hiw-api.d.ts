@@ -119,11 +119,15 @@ declare module hiw {
     class Filter extends Group {
         /** The page of data to return (default is 1, the first page). */
         page: Number;
+        /** The amount of data to return, per page. */
+        pageSize: Number;
         /** Creates a new, default, Filter instance. */
         constructor();
         /** Creates a new Filter for the specified page. */
         constructor(page: number);
         /** Creates a new Filter instance of the specified page and type. */
+        constructor(page: number, type: FilterType);
+        /** Creates a new Filter instance for the specified page, type, and criteria. */
         constructor(page: number, type: FilterType);
         /** Adds the specified filter part to the criteria. */
         addPart(part: IFilterPart): Filter;
@@ -132,7 +136,7 @@ declare module hiw {
         /** Creates a new criterion and adds it to the criteria. */
         add(field: PropertyMap | string, operator?: Operator, value?: Object): Filter;
         /** Converts this instance to JSON in the format the HIW API expects. */
-        toJSON(page?: number): Object;
+        toJSON(page?: number, pageSize?: number): Object;
     }
 }
 declare module hiw {
@@ -425,6 +429,7 @@ declare module hiw {
     /** Provides core functionality to interact with the HIW API. */
     class API {
         static DefaultBaseURL: string;
+        static DefaultPageSize: number;
         static Endpoints: Endpoint<any>[];
         /** The base URL of the HIW API. */
         baseURL: string;
@@ -434,7 +439,7 @@ declare module hiw {
         constructor(apiKey?: string, baseURL?: string);
         private initialize();
         static parameterizePath(path: string, params?: any): string;
-        executeEndpoint<T>(endpoint: Endpoint<T>, callback: IAPICallback<T>, params?: any, postData?: any, page?: number): Async;
+        executeEndpoint<T>(endpoint: Endpoint<T>, callback: IAPICallback<T>, params?: any, postData?: any, page?: number, pageSize?: number): Async;
         executeUrl(method: HttpMethod, url: string, postData: any, callback: (json: Object, error: string) => void): Async;
         static verifyApiKey(api: API, callback: IAPICallback<boolean>): void;
     }
@@ -464,7 +469,7 @@ declare module hiw {
         /** Gets a list of all of the Ages in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Ages */
-        static getAll(api: API, callback: IAPICallback<Array<Age>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<Age>>, page?: number, pageSize?: number): Async;
         /** Gets how many Ages exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the Ages method. */
@@ -476,7 +481,7 @@ declare module hiw {
         /** Returns a filtered collection of Ages based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Ages which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Age>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Age>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many Ages exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of Ages which match the provided filter. */
@@ -487,11 +492,11 @@ declare module hiw {
         static filterPageCount(filter: Filter, api: API, callback: IAPICallback<number>): Async;
         /** Gets Ages by ParentAgeID.
          *  @return An Array of Ages. */
-        getAges(api: API, callback: IAPICallback<Array<Age>>, page?: number): Async;
+        getAges(api: API, callback: IAPICallback<Array<Age>>, page?: number, pageSize?: number): Async;
         /** Gets Ages by ParentAgeID.
          *  @param ageID The ID of the Age for which to retrieve the child Ages.
          *  @return An Array of Ages. */
-        static getByParentAgeID(ageID: number, api: API, callback: IAPICallback<Array<Age>>, page?: number): Async;
+        static getByParentAgeID(ageID: number, api: API, callback: IAPICallback<Array<Age>>, page?: number, pageSize?: number): Async;
         /** Gets how many Ages by ParentAgeID exist.
          *  @return An Array of Ages. */
         getAgesCount(api: API, callback: IAPICallback<number>): Async;
@@ -532,7 +537,7 @@ declare module hiw {
         /** Gets a list of all of the AgeRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of AgeRelations */
-        static getAll(api: API, callback: IAPICallback<Array<AgeRelation>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<AgeRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many AgeRelations exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the AgeRelations method. */
@@ -544,7 +549,7 @@ declare module hiw {
         /** Returns a filtered collection of AgeRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All AgeRelations which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<AgeRelation>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<AgeRelation>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many AgeRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of AgeRelations which match the provided filter. */
@@ -556,7 +561,7 @@ declare module hiw {
         /** Gets AgeRelations by AncestorAgeID.
          *  @param ageID The ID of the Age for which to retrieve the child AgeRelations.
          *  @return An Array of AgeRelations. */
-        static getByAncestorAgeID(ageID: number, api: API, callback: IAPICallback<Array<AgeRelation>>, page?: number): Async;
+        static getByAncestorAgeID(ageID: number, api: API, callback: IAPICallback<Array<AgeRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many AgeRelations by AncestorAgeID exist.
          *  @param ageID The ID of the Age for which to retrieve the child AgeRelations.
          *  @return An Array of AgeRelations. */
@@ -575,7 +580,7 @@ declare module hiw {
         /** Gets AgeRelations by DescendantAgeID.
          *  @param ageID The ID of the Age for which to retrieve the child AgeRelations.
          *  @return An Array of AgeRelations. */
-        static getByDescendantAgeID(ageID: number, api: API, callback: IAPICallback<Array<AgeRelation>>, page?: number): Async;
+        static getByDescendantAgeID(ageID: number, api: API, callback: IAPICallback<Array<AgeRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many AgeRelations by DescendantAgeID exist.
          *  @param ageID The ID of the Age for which to retrieve the child AgeRelations.
          *  @return An Array of AgeRelations. */
@@ -618,7 +623,7 @@ declare module hiw {
         /** Gets a list of all of the CharacteristicOfSchoolOrStudents in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of CharacteristicOfSchoolOrStudents */
-        static getAll(api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudent>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudent>>, page?: number, pageSize?: number): Async;
         /** Gets how many CharacteristicOfSchoolOrStudents exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the CharacteristicOfSchoolOrStudents method. */
@@ -630,7 +635,7 @@ declare module hiw {
         /** Returns a filtered collection of CharacteristicOfSchoolOrStudents based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All CharacteristicOfSchoolOrStudents which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudent>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudent>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many CharacteristicOfSchoolOrStudents exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of CharacteristicOfSchoolOrStudents which match the provided filter. */
@@ -641,11 +646,11 @@ declare module hiw {
         static filterPageCount(filter: Filter, api: API, callback: IAPICallback<number>): Async;
         /** Gets CharacteristicOfSchoolOrStudents by ParentCharacteristicOfSchoolOrStudentID.
          *  @return An Array of CharacteristicOfSchoolOrStudents. */
-        getCharacteristicOfSchoolOrStudents(api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudent>>, page?: number): Async;
+        getCharacteristicOfSchoolOrStudents(api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudent>>, page?: number, pageSize?: number): Async;
         /** Gets CharacteristicOfSchoolOrStudents by ParentCharacteristicOfSchoolOrStudentID.
          *  @param characteristicOfSchoolOrStudentID The ID of the CharacteristicOfSchoolOrStudent for which to retrieve the child CharacteristicOfSchoolOrStudents.
          *  @return An Array of CharacteristicOfSchoolOrStudents. */
-        static getByParentCharacteristicOfSchoolOrStudentID(characteristicOfSchoolOrStudentID: number, api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudent>>, page?: number): Async;
+        static getByParentCharacteristicOfSchoolOrStudentID(characteristicOfSchoolOrStudentID: number, api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudent>>, page?: number, pageSize?: number): Async;
         /** Gets how many CharacteristicOfSchoolOrStudents by ParentCharacteristicOfSchoolOrStudentID exist.
          *  @return An Array of CharacteristicOfSchoolOrStudents. */
         getCharacteristicOfSchoolOrStudentsCount(api: API, callback: IAPICallback<number>): Async;
@@ -686,7 +691,7 @@ declare module hiw {
         /** Gets a list of all of the CharacteristicOfSchoolOrStudentRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of CharacteristicOfSchoolOrStudentRelations */
-        static getAll(api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudentRelation>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudentRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many CharacteristicOfSchoolOrStudentRelations exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the CharacteristicOfSchoolOrStudentRelations method. */
@@ -698,7 +703,7 @@ declare module hiw {
         /** Returns a filtered collection of CharacteristicOfSchoolOrStudentRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All CharacteristicOfSchoolOrStudentRelations which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudentRelation>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudentRelation>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many CharacteristicOfSchoolOrStudentRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of CharacteristicOfSchoolOrStudentRelations which match the provided filter. */
@@ -710,7 +715,7 @@ declare module hiw {
         /** Gets CharacteristicOfSchoolOrStudentRelations by AncestorCharacteristicOfSchoolOrStudentID.
          *  @param characteristicOfSchoolOrStudentID The ID of the CharacteristicOfSchoolOrStudent for which to retrieve the child CharacteristicOfSchoolOrStudentRelations.
          *  @return An Array of CharacteristicOfSchoolOrStudentRelations. */
-        static getByAncestorCharacteristicOfSchoolOrStudentID(characteristicOfSchoolOrStudentID: number, api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudentRelation>>, page?: number): Async;
+        static getByAncestorCharacteristicOfSchoolOrStudentID(characteristicOfSchoolOrStudentID: number, api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudentRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many CharacteristicOfSchoolOrStudentRelations by AncestorCharacteristicOfSchoolOrStudentID exist.
          *  @param characteristicOfSchoolOrStudentID The ID of the CharacteristicOfSchoolOrStudent for which to retrieve the child CharacteristicOfSchoolOrStudentRelations.
          *  @return An Array of CharacteristicOfSchoolOrStudentRelations. */
@@ -729,7 +734,7 @@ declare module hiw {
         /** Gets CharacteristicOfSchoolOrStudentRelations by DescendantCharacteristicOfSchoolOrStudentID.
          *  @param characteristicOfSchoolOrStudentID The ID of the CharacteristicOfSchoolOrStudent for which to retrieve the child CharacteristicOfSchoolOrStudentRelations.
          *  @return An Array of CharacteristicOfSchoolOrStudentRelations. */
-        static getByDescendantCharacteristicOfSchoolOrStudentID(characteristicOfSchoolOrStudentID: number, api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudentRelation>>, page?: number): Async;
+        static getByDescendantCharacteristicOfSchoolOrStudentID(characteristicOfSchoolOrStudentID: number, api: API, callback: IAPICallback<Array<CharacteristicOfSchoolOrStudentRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many CharacteristicOfSchoolOrStudentRelations by DescendantCharacteristicOfSchoolOrStudentID exist.
          *  @param characteristicOfSchoolOrStudentID The ID of the CharacteristicOfSchoolOrStudent for which to retrieve the child CharacteristicOfSchoolOrStudentRelations.
          *  @return An Array of CharacteristicOfSchoolOrStudentRelations. */
@@ -772,7 +777,7 @@ declare module hiw {
         /** Gets a list of all of the CountryOfBirths in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of CountryOfBirths */
-        static getAll(api: API, callback: IAPICallback<Array<CountryOfBirth>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<CountryOfBirth>>, page?: number, pageSize?: number): Async;
         /** Gets how many CountryOfBirths exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the CountryOfBirths method. */
@@ -784,7 +789,7 @@ declare module hiw {
         /** Returns a filtered collection of CountryOfBirths based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All CountryOfBirths which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<CountryOfBirth>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<CountryOfBirth>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many CountryOfBirths exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of CountryOfBirths which match the provided filter. */
@@ -795,11 +800,11 @@ declare module hiw {
         static filterPageCount(filter: Filter, api: API, callback: IAPICallback<number>): Async;
         /** Gets CountryOfBirths by ParentCountryOfBirthID.
          *  @return An Array of CountryOfBirths. */
-        getCountryOfBirths(api: API, callback: IAPICallback<Array<CountryOfBirth>>, page?: number): Async;
+        getCountryOfBirths(api: API, callback: IAPICallback<Array<CountryOfBirth>>, page?: number, pageSize?: number): Async;
         /** Gets CountryOfBirths by ParentCountryOfBirthID.
          *  @param countryOfBirthID The ID of the CountryOfBirth for which to retrieve the child CountryOfBirths.
          *  @return An Array of CountryOfBirths. */
-        static getByParentCountryOfBirthID(countryOfBirthID: number, api: API, callback: IAPICallback<Array<CountryOfBirth>>, page?: number): Async;
+        static getByParentCountryOfBirthID(countryOfBirthID: number, api: API, callback: IAPICallback<Array<CountryOfBirth>>, page?: number, pageSize?: number): Async;
         /** Gets how many CountryOfBirths by ParentCountryOfBirthID exist.
          *  @return An Array of CountryOfBirths. */
         getCountryOfBirthsCount(api: API, callback: IAPICallback<number>): Async;
@@ -840,7 +845,7 @@ declare module hiw {
         /** Gets a list of all of the CountryOfBirthRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of CountryOfBirthRelations */
-        static getAll(api: API, callback: IAPICallback<Array<CountryOfBirthRelation>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<CountryOfBirthRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many CountryOfBirthRelations exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the CountryOfBirthRelations method. */
@@ -852,7 +857,7 @@ declare module hiw {
         /** Returns a filtered collection of CountryOfBirthRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All CountryOfBirthRelations which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<CountryOfBirthRelation>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<CountryOfBirthRelation>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many CountryOfBirthRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of CountryOfBirthRelations which match the provided filter. */
@@ -864,7 +869,7 @@ declare module hiw {
         /** Gets CountryOfBirthRelations by AncestorCountryOfBirthID.
          *  @param countryOfBirthID The ID of the CountryOfBirth for which to retrieve the child CountryOfBirthRelations.
          *  @return An Array of CountryOfBirthRelations. */
-        static getByAncestorCountryOfBirthID(countryOfBirthID: number, api: API, callback: IAPICallback<Array<CountryOfBirthRelation>>, page?: number): Async;
+        static getByAncestorCountryOfBirthID(countryOfBirthID: number, api: API, callback: IAPICallback<Array<CountryOfBirthRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many CountryOfBirthRelations by AncestorCountryOfBirthID exist.
          *  @param countryOfBirthID The ID of the CountryOfBirth for which to retrieve the child CountryOfBirthRelations.
          *  @return An Array of CountryOfBirthRelations. */
@@ -883,7 +888,7 @@ declare module hiw {
         /** Gets CountryOfBirthRelations by DescendantCountryOfBirthID.
          *  @param countryOfBirthID The ID of the CountryOfBirth for which to retrieve the child CountryOfBirthRelations.
          *  @return An Array of CountryOfBirthRelations. */
-        static getByDescendantCountryOfBirthID(countryOfBirthID: number, api: API, callback: IAPICallback<Array<CountryOfBirthRelation>>, page?: number): Async;
+        static getByDescendantCountryOfBirthID(countryOfBirthID: number, api: API, callback: IAPICallback<Array<CountryOfBirthRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many CountryOfBirthRelations by DescendantCountryOfBirthID exist.
          *  @param countryOfBirthID The ID of the CountryOfBirth for which to retrieve the child CountryOfBirthRelations.
          *  @return An Array of CountryOfBirthRelations. */
@@ -938,7 +943,7 @@ declare module hiw {
         /** Gets a list of all of the DataCategories in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataCategories */
-        static getAll(api: API, callback: IAPICallback<Array<DataCategory>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<DataCategory>>, page?: number, pageSize?: number): Async;
         /** Gets how many DataCategories exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the DataCategories method. */
@@ -950,7 +955,7 @@ declare module hiw {
         /** Returns a filtered collection of DataCategories based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DataCategories which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<DataCategory>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<DataCategory>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many DataCategories exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of DataCategories which match the provided filter. */
@@ -961,11 +966,11 @@ declare module hiw {
         static filterPageCount(filter: Filter, api: API, callback: IAPICallback<number>): Async;
         /** Gets DataCategories by ParentDataCategoryID.
          *  @return An Array of DataCategories. */
-        getParentDataCategories(api: API, callback: IAPICallback<Array<DataCategory>>, page?: number): Async;
+        getParentDataCategories(api: API, callback: IAPICallback<Array<DataCategory>>, page?: number, pageSize?: number): Async;
         /** Gets DataCategories by ParentDataCategoryID.
          *  @param dataCategoryID The ID of the DataCategory for which to retrieve the child DataCategories.
          *  @return An Array of DataCategories. */
-        static getByParentDataCategoryID(dataCategoryID: number, api: API, callback: IAPICallback<Array<DataCategory>>, page?: number): Async;
+        static getByParentDataCategoryID(dataCategoryID: number, api: API, callback: IAPICallback<Array<DataCategory>>, page?: number, pageSize?: number): Async;
         /** Gets how many DataCategories by ParentDataCategoryID exist.
          *  @return An Array of DataCategories. */
         getParentDataCategoriesCount(api: API, callback: IAPICallback<number>): Async;
@@ -990,7 +995,7 @@ declare module hiw {
         /** Gets DataCategories by InitiativeID.
          *  @param initiativeID The ID of the Initiative for which to retrieve the child DataCategories.
          *  @return An Array of DataCategories. */
-        static getByInitiativeID(initiativeID: number, api: API, callback: IAPICallback<Array<DataCategory>>, page?: number): Async;
+        static getByInitiativeID(initiativeID: number, api: API, callback: IAPICallback<Array<DataCategory>>, page?: number, pageSize?: number): Async;
         /** Gets how many DataCategories by InitiativeID exist.
          *  @param initiativeID The ID of the Initiative for which to retrieve the child DataCategories.
          *  @return An Array of DataCategories. */
@@ -1025,7 +1030,7 @@ declare module hiw {
         /** Gets a list of all of the DataCategoryRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataCategoryRelations */
-        static getAll(api: API, callback: IAPICallback<Array<DataCategoryRelation>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<DataCategoryRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many DataCategoryRelations exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the DataCategoryRelations method. */
@@ -1037,7 +1042,7 @@ declare module hiw {
         /** Returns a filtered collection of DataCategoryRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DataCategoryRelations which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<DataCategoryRelation>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<DataCategoryRelation>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many DataCategoryRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of DataCategoryRelations which match the provided filter. */
@@ -1049,7 +1054,7 @@ declare module hiw {
         /** Gets DataCategoryRelations by AncestorDataCategoryID.
          *  @param dataCategoryID The ID of the DataCategory for which to retrieve the child DataCategoryRelations.
          *  @return An Array of DataCategoryRelations. */
-        static getByAncestorDataCategoryID(dataCategoryID: number, api: API, callback: IAPICallback<Array<DataCategoryRelation>>, page?: number): Async;
+        static getByAncestorDataCategoryID(dataCategoryID: number, api: API, callback: IAPICallback<Array<DataCategoryRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many DataCategoryRelations by AncestorDataCategoryID exist.
          *  @param dataCategoryID The ID of the DataCategory for which to retrieve the child DataCategoryRelations.
          *  @return An Array of DataCategoryRelations. */
@@ -1068,7 +1073,7 @@ declare module hiw {
         /** Gets DataCategoryRelations by DescendantDataCategoryID.
          *  @param dataCategoryID The ID of the DataCategory for which to retrieve the child DataCategoryRelations.
          *  @return An Array of DataCategoryRelations. */
-        static getByDescendantDataCategoryID(dataCategoryID: number, api: API, callback: IAPICallback<Array<DataCategoryRelation>>, page?: number): Async;
+        static getByDescendantDataCategoryID(dataCategoryID: number, api: API, callback: IAPICallback<Array<DataCategoryRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many DataCategoryRelations by DescendantDataCategoryID exist.
          *  @param dataCategoryID The ID of the DataCategory for which to retrieve the child DataCategoryRelations.
          *  @return An Array of DataCategoryRelations. */
@@ -1103,7 +1108,7 @@ declare module hiw {
         /** Gets a list of all of the DataSourceDataSuppliers in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataSourceDataSuppliers */
-        static getAll(api: API, callback: IAPICallback<Array<DataSourceDataSupplier>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<DataSourceDataSupplier>>, page?: number, pageSize?: number): Async;
         /** Gets how many DataSourceDataSuppliers exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the DataSourceDataSuppliers method. */
@@ -1115,7 +1120,7 @@ declare module hiw {
         /** Returns a filtered collection of DataSourceDataSuppliers based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DataSourceDataSuppliers which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<DataSourceDataSupplier>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<DataSourceDataSupplier>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many DataSourceDataSuppliers exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of DataSourceDataSuppliers which match the provided filter. */
@@ -1127,7 +1132,7 @@ declare module hiw {
         /** Gets DataSourceDataSuppliers by DataSourceID.
          *  @param dataSourceID The ID of the DataSource for which to retrieve the child DataSourceDataSuppliers.
          *  @return An Array of DataSourceDataSuppliers. */
-        static getByDataSourceID(dataSourceID: number, api: API, callback: IAPICallback<Array<DataSourceDataSupplier>>, page?: number): Async;
+        static getByDataSourceID(dataSourceID: number, api: API, callback: IAPICallback<Array<DataSourceDataSupplier>>, page?: number, pageSize?: number): Async;
         /** Gets how many DataSourceDataSuppliers by DataSourceID exist.
          *  @param dataSourceID The ID of the DataSource for which to retrieve the child DataSourceDataSuppliers.
          *  @return An Array of DataSourceDataSuppliers. */
@@ -1146,7 +1151,7 @@ declare module hiw {
         /** Gets DataSourceDataSuppliers by DataSupplierID.
          *  @param dataSupplierID The ID of the DataSupplier for which to retrieve the child DataSourceDataSuppliers.
          *  @return An Array of DataSourceDataSuppliers. */
-        static getByDataSupplierID(dataSupplierID: number, api: API, callback: IAPICallback<Array<DataSourceDataSupplier>>, page?: number): Async;
+        static getByDataSupplierID(dataSupplierID: number, api: API, callback: IAPICallback<Array<DataSourceDataSupplier>>, page?: number, pageSize?: number): Async;
         /** Gets how many DataSourceDataSuppliers by DataSupplierID exist.
          *  @param dataSupplierID The ID of the DataSupplier for which to retrieve the child DataSourceDataSuppliers.
          *  @return An Array of DataSourceDataSuppliers. */
@@ -1217,7 +1222,7 @@ declare module hiw {
         /** Gets a list of all of the DataSources in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataSources */
-        static getAll(api: API, callback: IAPICallback<Array<DataSource>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<DataSource>>, page?: number, pageSize?: number): Async;
         /** Gets how many DataSources exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the DataSources method. */
@@ -1229,7 +1234,7 @@ declare module hiw {
         /** Returns a filtered collection of DataSources based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DataSources which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<DataSource>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<DataSource>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many DataSources exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of DataSources which match the provided filter. */
@@ -1257,7 +1262,7 @@ declare module hiw {
         /** Gets a list of all of the DataSourceURLs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataSourceURLs */
-        static getAll(api: API, callback: IAPICallback<Array<DataSourceURL>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<DataSourceURL>>, page?: number, pageSize?: number): Async;
         /** Gets how many DataSourceURLs exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the DataSourceURLs method. */
@@ -1269,7 +1274,7 @@ declare module hiw {
         /** Returns a filtered collection of DataSourceURLs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DataSourceURLs which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<DataSourceURL>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<DataSourceURL>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many DataSourceURLs exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of DataSourceURLs which match the provided filter. */
@@ -1281,7 +1286,7 @@ declare module hiw {
         /** Gets DataSourceURLs by DataSourceID.
          *  @param dataSourceID The ID of the DataSource for which to retrieve the child DataSourceURLs.
          *  @return An Array of DataSourceURLs. */
-        static getByDataSourceID(dataSourceID: number, api: API, callback: IAPICallback<Array<DataSourceURL>>, page?: number): Async;
+        static getByDataSourceID(dataSourceID: number, api: API, callback: IAPICallback<Array<DataSourceURL>>, page?: number, pageSize?: number): Async;
         /** Gets how many DataSourceURLs by DataSourceID exist.
          *  @param dataSourceID The ID of the DataSource for which to retrieve the child DataSourceURLs.
          *  @return An Array of DataSourceURLs. */
@@ -1300,7 +1305,7 @@ declare module hiw {
         /** Gets DataSourceURLs by UrlID.
          *  @param urlID The ID of the Url for which to retrieve the child DataSourceURLs.
          *  @return An Array of DataSourceURLs. */
-        static getByUrlID(urlID: number, api: API, callback: IAPICallback<Array<DataSourceURL>>, page?: number): Async;
+        static getByUrlID(urlID: number, api: API, callback: IAPICallback<Array<DataSourceURL>>, page?: number, pageSize?: number): Async;
         /** Gets how many DataSourceURLs by UrlID exist.
          *  @param urlID The ID of the Url for which to retrieve the child DataSourceURLs.
          *  @return An Array of DataSourceURLs. */
@@ -1347,7 +1352,7 @@ declare module hiw {
         /** Gets a list of all of the DataSuppliers in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataSuppliers */
-        static getAll(api: API, callback: IAPICallback<Array<DataSupplier>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<DataSupplier>>, page?: number, pageSize?: number): Async;
         /** Gets how many DataSuppliers exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the DataSuppliers method. */
@@ -1359,7 +1364,7 @@ declare module hiw {
         /** Returns a filtered collection of DataSuppliers based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DataSuppliers which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<DataSupplier>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<DataSupplier>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many DataSuppliers exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of DataSuppliers which match the provided filter. */
@@ -1371,7 +1376,7 @@ declare module hiw {
         /** Gets DataSuppliers by UrlID.
          *  @param urlID The ID of the Url for which to retrieve the child DataSuppliers.
          *  @return An Array of DataSuppliers. */
-        static getByUrlID(urlID: number, api: API, callback: IAPICallback<Array<DataSupplier>>, page?: number): Async;
+        static getByUrlID(urlID: number, api: API, callback: IAPICallback<Array<DataSupplier>>, page?: number, pageSize?: number): Async;
         /** Gets how many DataSuppliers by UrlID exist.
          *  @param urlID The ID of the Url for which to retrieve the child DataSuppliers.
          *  @return An Array of DataSuppliers. */
@@ -1426,7 +1431,7 @@ declare module hiw {
         /** Gets a list of all of the DimensionBooks in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DimensionBooks */
-        static getAll(api: API, callback: IAPICallback<Array<DimensionBook>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<DimensionBook>>, page?: number, pageSize?: number): Async;
         /** Gets how many DimensionBooks exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the DimensionBooks method. */
@@ -1438,7 +1443,7 @@ declare module hiw {
         /** Returns a filtered collection of DimensionBooks based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DimensionBooks which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<DimensionBook>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<DimensionBook>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many DimensionBooks exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of DimensionBooks which match the provided filter. */
@@ -1449,11 +1454,11 @@ declare module hiw {
         static filterPageCount(filter: Filter, api: API, callback: IAPICallback<number>): Async;
         /** Gets DimensionBooks by ParentDimensionBookID.
          *  @return An Array of DimensionBooks. */
-        getDimensionBooks(api: API, callback: IAPICallback<Array<DimensionBook>>, page?: number): Async;
+        getDimensionBooks(api: API, callback: IAPICallback<Array<DimensionBook>>, page?: number, pageSize?: number): Async;
         /** Gets DimensionBooks by ParentDimensionBookID.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child DimensionBooks.
          *  @return An Array of DimensionBooks. */
-        static getByParentDimensionBookID(dimensionBookID: number, api: API, callback: IAPICallback<Array<DimensionBook>>, page?: number): Async;
+        static getByParentDimensionBookID(dimensionBookID: number, api: API, callback: IAPICallback<Array<DimensionBook>>, page?: number, pageSize?: number): Async;
         /** Gets how many DimensionBooks by ParentDimensionBookID exist.
          *  @return An Array of DimensionBooks. */
         getDimensionBooksCount(api: API, callback: IAPICallback<number>): Async;
@@ -1478,7 +1483,7 @@ declare module hiw {
         /** Gets DimensionBooks by DimensionListID.
          *  @param dimensionListID The ID of the DimensionList for which to retrieve the child DimensionBooks.
          *  @return An Array of DimensionBooks. */
-        static getByDimensionListID(dimensionListID: number, api: API, callback: IAPICallback<Array<DimensionBook>>, page?: number): Async;
+        static getByDimensionListID(dimensionListID: number, api: API, callback: IAPICallback<Array<DimensionBook>>, page?: number, pageSize?: number): Async;
         /** Gets how many DimensionBooks by DimensionListID exist.
          *  @param dimensionListID The ID of the DimensionList for which to retrieve the child DimensionBooks.
          *  @return An Array of DimensionBooks. */
@@ -1516,7 +1521,7 @@ declare module hiw {
         /** Gets a list of all of the DimensionBookRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DimensionBookRelations */
-        static getAll(api: API, callback: IAPICallback<Array<DimensionBookRelation>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<DimensionBookRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many DimensionBookRelations exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the DimensionBookRelations method. */
@@ -1528,7 +1533,7 @@ declare module hiw {
         /** Returns a filtered collection of DimensionBookRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DimensionBookRelations which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<DimensionBookRelation>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<DimensionBookRelation>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many DimensionBookRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of DimensionBookRelations which match the provided filter. */
@@ -1540,7 +1545,7 @@ declare module hiw {
         /** Gets DimensionBookRelations by AncestorDimensionBookID.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child DimensionBookRelations.
          *  @return An Array of DimensionBookRelations. */
-        static getByAncestorDimensionBookID(dimensionBookID: number, api: API, callback: IAPICallback<Array<DimensionBookRelation>>, page?: number): Async;
+        static getByAncestorDimensionBookID(dimensionBookID: number, api: API, callback: IAPICallback<Array<DimensionBookRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many DimensionBookRelations by AncestorDimensionBookID exist.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child DimensionBookRelations.
          *  @return An Array of DimensionBookRelations. */
@@ -1559,7 +1564,7 @@ declare module hiw {
         /** Gets DimensionBookRelations by DescendantDimensionBookID.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child DimensionBookRelations.
          *  @return An Array of DimensionBookRelations. */
-        static getByDescendantDimensionBookID(dimensionBookID: number, api: API, callback: IAPICallback<Array<DimensionBookRelation>>, page?: number): Async;
+        static getByDescendantDimensionBookID(dimensionBookID: number, api: API, callback: IAPICallback<Array<DimensionBookRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many DimensionBookRelations by DescendantDimensionBookID exist.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child DimensionBookRelations.
          *  @return An Array of DimensionBookRelations. */
@@ -1744,7 +1749,7 @@ declare module hiw {
         /** Gets a list of all of the DimensionGraphs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DimensionGraphs */
-        static getAll(api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many DimensionGraphs exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the DimensionGraphs method. */
@@ -1756,7 +1761,7 @@ declare module hiw {
         /** Returns a filtered collection of DimensionGraphs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DimensionGraphs which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many DimensionGraphs exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of DimensionGraphs which match the provided filter. */
@@ -1768,7 +1773,7 @@ declare module hiw {
         /** Gets DimensionGraphs by TotalID.
          *  @param totalID The ID of the Total for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        static getByTotalID(totalID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async;
+        static getByTotalID(totalID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many DimensionGraphs by TotalID exist.
          *  @param totalID The ID of the Total for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
@@ -1787,7 +1792,7 @@ declare module hiw {
         /** Gets DimensionGraphs by AgeID.
          *  @param ageID The ID of the Age for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        static getByAgeID(ageID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async;
+        static getByAgeID(ageID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many DimensionGraphs by AgeID exist.
          *  @param ageID The ID of the Age for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
@@ -1806,7 +1811,7 @@ declare module hiw {
         /** Gets DimensionGraphs by SexID.
          *  @param sexID The ID of the Sex for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        static getBySexID(sexID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async;
+        static getBySexID(sexID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many DimensionGraphs by SexID exist.
          *  @param sexID The ID of the Sex for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
@@ -1825,7 +1830,7 @@ declare module hiw {
         /** Gets DimensionGraphs by RaceEthnicityID.
          *  @param raceEthnicityID The ID of the RaceEthnicity for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        static getByRaceEthnicityID(raceEthnicityID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async;
+        static getByRaceEthnicityID(raceEthnicityID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many DimensionGraphs by RaceEthnicityID exist.
          *  @param raceEthnicityID The ID of the RaceEthnicity for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
@@ -1844,7 +1849,7 @@ declare module hiw {
         /** Gets DimensionGraphs by IncomeAndPovertyStatusID.
          *  @param incomeAndPovertyStatusID The ID of the IncomeAndPovertyStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        static getByIncomeAndPovertyStatusID(incomeAndPovertyStatusID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async;
+        static getByIncomeAndPovertyStatusID(incomeAndPovertyStatusID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many DimensionGraphs by IncomeAndPovertyStatusID exist.
          *  @param incomeAndPovertyStatusID The ID of the IncomeAndPovertyStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
@@ -1863,7 +1868,7 @@ declare module hiw {
         /** Gets DimensionGraphs by EducationalAttainmentID.
          *  @param educationalAttainmentID The ID of the EducationalAttainment for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        static getByEducationalAttainmentID(educationalAttainmentID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async;
+        static getByEducationalAttainmentID(educationalAttainmentID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many DimensionGraphs by EducationalAttainmentID exist.
          *  @param educationalAttainmentID The ID of the EducationalAttainment for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
@@ -1882,7 +1887,7 @@ declare module hiw {
         /** Gets DimensionGraphs by HealthInsuranceStatusID.
          *  @param healthInsuranceStatusID The ID of the HealthInsuranceStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        static getByHealthInsuranceStatusID(healthInsuranceStatusID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async;
+        static getByHealthInsuranceStatusID(healthInsuranceStatusID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many DimensionGraphs by HealthInsuranceStatusID exist.
          *  @param healthInsuranceStatusID The ID of the HealthInsuranceStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
@@ -1901,7 +1906,7 @@ declare module hiw {
         /** Gets DimensionGraphs by SexualOrientationID.
          *  @param sexualOrientationID The ID of the SexualOrientation for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        static getBySexualOrientationID(sexualOrientationID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async;
+        static getBySexualOrientationID(sexualOrientationID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many DimensionGraphs by SexualOrientationID exist.
          *  @param sexualOrientationID The ID of the SexualOrientation for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
@@ -1920,7 +1925,7 @@ declare module hiw {
         /** Gets DimensionGraphs by FamilyTypeID.
          *  @param familyTypeID The ID of the FamilyType for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        static getByFamilyTypeID(familyTypeID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async;
+        static getByFamilyTypeID(familyTypeID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many DimensionGraphs by FamilyTypeID exist.
          *  @param familyTypeID The ID of the FamilyType for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
@@ -1939,7 +1944,7 @@ declare module hiw {
         /** Gets DimensionGraphs by MaritalStatusID.
          *  @param maritalStatusID The ID of the MaritalStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        static getByMaritalStatusID(maritalStatusID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async;
+        static getByMaritalStatusID(maritalStatusID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many DimensionGraphs by MaritalStatusID exist.
          *  @param maritalStatusID The ID of the MaritalStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
@@ -1958,7 +1963,7 @@ declare module hiw {
         /** Gets DimensionGraphs by VeteranStatusID.
          *  @param veteranStatusID The ID of the VeteranStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        static getByVeteranStatusID(veteranStatusID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async;
+        static getByVeteranStatusID(veteranStatusID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many DimensionGraphs by VeteranStatusID exist.
          *  @param veteranStatusID The ID of the VeteranStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
@@ -1977,7 +1982,7 @@ declare module hiw {
         /** Gets DimensionGraphs by CountryOfBirthID.
          *  @param countryOfBirthID The ID of the CountryOfBirth for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        static getByCountryOfBirthID(countryOfBirthID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async;
+        static getByCountryOfBirthID(countryOfBirthID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many DimensionGraphs by CountryOfBirthID exist.
          *  @param countryOfBirthID The ID of the CountryOfBirth for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
@@ -1996,7 +2001,7 @@ declare module hiw {
         /** Gets DimensionGraphs by DisabilityStatusID.
          *  @param disabilityStatusID The ID of the DisabilityStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        static getByDisabilityStatusID(disabilityStatusID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async;
+        static getByDisabilityStatusID(disabilityStatusID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many DimensionGraphs by DisabilityStatusID exist.
          *  @param disabilityStatusID The ID of the DisabilityStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
@@ -2015,7 +2020,7 @@ declare module hiw {
         /** Gets DimensionGraphs by ObesityStatusID.
          *  @param obesityStatusID The ID of the ObesityStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        static getByObesityStatusID(obesityStatusID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async;
+        static getByObesityStatusID(obesityStatusID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many DimensionGraphs by ObesityStatusID exist.
          *  @param obesityStatusID The ID of the ObesityStatus for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
@@ -2034,7 +2039,7 @@ declare module hiw {
         /** Gets DimensionGraphs by CharacteristicOfSchoolOrStudentID.
          *  @param characteristicOfSchoolOrStudentID The ID of the CharacteristicOfSchoolOrStudent for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        static getByCharacteristicOfSchoolOrStudentID(characteristicOfSchoolOrStudentID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async;
+        static getByCharacteristicOfSchoolOrStudentID(characteristicOfSchoolOrStudentID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many DimensionGraphs by CharacteristicOfSchoolOrStudentID exist.
          *  @param characteristicOfSchoolOrStudentID The ID of the CharacteristicOfSchoolOrStudent for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
@@ -2053,7 +2058,7 @@ declare module hiw {
         /** Gets DimensionGraphs by OtherID.
          *  @param otherID The ID of the Other for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        static getByOtherID(otherID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async;
+        static getByOtherID(otherID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many DimensionGraphs by OtherID exist.
          *  @param otherID The ID of the Other for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
@@ -2072,7 +2077,7 @@ declare module hiw {
         /** Gets DimensionGraphs by GeographyID.
          *  @param geographyID The ID of the Geography for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
-        static getByGeographyID(geographyID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number): Async;
+        static getByGeographyID(geographyID: number, api: API, callback: IAPICallback<Array<DimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many DimensionGraphs by GeographyID exist.
          *  @param geographyID The ID of the Geography for which to retrieve the child DimensionGraphs.
          *  @return An Array of DimensionGraphs. */
@@ -2109,7 +2114,7 @@ declare module hiw {
         /** Gets a list of all of the DimensionLists in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DimensionLists */
-        static getAll(api: API, callback: IAPICallback<Array<DimensionList>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<DimensionList>>, page?: number, pageSize?: number): Async;
         /** Gets how many DimensionLists exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the DimensionLists method. */
@@ -2121,7 +2126,7 @@ declare module hiw {
         /** Returns a filtered collection of DimensionLists based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DimensionLists which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<DimensionList>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<DimensionList>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many DimensionLists exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of DimensionLists which match the provided filter. */
@@ -2157,7 +2162,7 @@ declare module hiw {
         /** Gets a list of all of the DisabilityStatuses in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DisabilityStatuses */
-        static getAll(api: API, callback: IAPICallback<Array<DisabilityStatus>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<DisabilityStatus>>, page?: number, pageSize?: number): Async;
         /** Gets how many DisabilityStatuses exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the DisabilityStatuses method. */
@@ -2169,7 +2174,7 @@ declare module hiw {
         /** Returns a filtered collection of DisabilityStatuses based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DisabilityStatuses which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<DisabilityStatus>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<DisabilityStatus>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many DisabilityStatuses exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of DisabilityStatuses which match the provided filter. */
@@ -2180,11 +2185,11 @@ declare module hiw {
         static filterPageCount(filter: Filter, api: API, callback: IAPICallback<number>): Async;
         /** Gets DisabilityStatuses by ParentDisabilityStatusID.
          *  @return An Array of DisabilityStatuses. */
-        getDisabilityStatuses(api: API, callback: IAPICallback<Array<DisabilityStatus>>, page?: number): Async;
+        getDisabilityStatuses(api: API, callback: IAPICallback<Array<DisabilityStatus>>, page?: number, pageSize?: number): Async;
         /** Gets DisabilityStatuses by ParentDisabilityStatusID.
          *  @param disabilityStatusID The ID of the DisabilityStatus for which to retrieve the child DisabilityStatuses.
          *  @return An Array of DisabilityStatuses. */
-        static getByParentDisabilityStatusID(disabilityStatusID: number, api: API, callback: IAPICallback<Array<DisabilityStatus>>, page?: number): Async;
+        static getByParentDisabilityStatusID(disabilityStatusID: number, api: API, callback: IAPICallback<Array<DisabilityStatus>>, page?: number, pageSize?: number): Async;
         /** Gets how many DisabilityStatuses by ParentDisabilityStatusID exist.
          *  @return An Array of DisabilityStatuses. */
         getDisabilityStatusesCount(api: API, callback: IAPICallback<number>): Async;
@@ -2225,7 +2230,7 @@ declare module hiw {
         /** Gets a list of all of the DisabilityStatusRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DisabilityStatusRelations */
-        static getAll(api: API, callback: IAPICallback<Array<DisabilityStatusRelation>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<DisabilityStatusRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many DisabilityStatusRelations exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the DisabilityStatusRelations method. */
@@ -2237,7 +2242,7 @@ declare module hiw {
         /** Returns a filtered collection of DisabilityStatusRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All DisabilityStatusRelations which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<DisabilityStatusRelation>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<DisabilityStatusRelation>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many DisabilityStatusRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of DisabilityStatusRelations which match the provided filter. */
@@ -2249,7 +2254,7 @@ declare module hiw {
         /** Gets DisabilityStatusRelations by AncestorDisabilityStatusID.
          *  @param disabilityStatusID The ID of the DisabilityStatus for which to retrieve the child DisabilityStatusRelations.
          *  @return An Array of DisabilityStatusRelations. */
-        static getByAncestorDisabilityStatusID(disabilityStatusID: number, api: API, callback: IAPICallback<Array<DisabilityStatusRelation>>, page?: number): Async;
+        static getByAncestorDisabilityStatusID(disabilityStatusID: number, api: API, callback: IAPICallback<Array<DisabilityStatusRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many DisabilityStatusRelations by AncestorDisabilityStatusID exist.
          *  @param disabilityStatusID The ID of the DisabilityStatus for which to retrieve the child DisabilityStatusRelations.
          *  @return An Array of DisabilityStatusRelations. */
@@ -2268,7 +2273,7 @@ declare module hiw {
         /** Gets DisabilityStatusRelations by DescendantDisabilityStatusID.
          *  @param disabilityStatusID The ID of the DisabilityStatus for which to retrieve the child DisabilityStatusRelations.
          *  @return An Array of DisabilityStatusRelations. */
-        static getByDescendantDisabilityStatusID(disabilityStatusID: number, api: API, callback: IAPICallback<Array<DisabilityStatusRelation>>, page?: number): Async;
+        static getByDescendantDisabilityStatusID(disabilityStatusID: number, api: API, callback: IAPICallback<Array<DisabilityStatusRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many DisabilityStatusRelations by DescendantDisabilityStatusID exist.
          *  @param disabilityStatusID The ID of the DisabilityStatus for which to retrieve the child DisabilityStatusRelations.
          *  @return An Array of DisabilityStatusRelations. */
@@ -2311,7 +2316,7 @@ declare module hiw {
         /** Gets a list of all of the EducationalAttainments in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of EducationalAttainments */
-        static getAll(api: API, callback: IAPICallback<Array<EducationalAttainment>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<EducationalAttainment>>, page?: number, pageSize?: number): Async;
         /** Gets how many EducationalAttainments exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the EducationalAttainments method. */
@@ -2323,7 +2328,7 @@ declare module hiw {
         /** Returns a filtered collection of EducationalAttainments based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All EducationalAttainments which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<EducationalAttainment>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<EducationalAttainment>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many EducationalAttainments exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of EducationalAttainments which match the provided filter. */
@@ -2334,11 +2339,11 @@ declare module hiw {
         static filterPageCount(filter: Filter, api: API, callback: IAPICallback<number>): Async;
         /** Gets EducationalAttainments by ParentEducationalAttainmentID.
          *  @return An Array of EducationalAttainments. */
-        getEducationalAttainments(api: API, callback: IAPICallback<Array<EducationalAttainment>>, page?: number): Async;
+        getEducationalAttainments(api: API, callback: IAPICallback<Array<EducationalAttainment>>, page?: number, pageSize?: number): Async;
         /** Gets EducationalAttainments by ParentEducationalAttainmentID.
          *  @param educationalAttainmentID The ID of the EducationalAttainment for which to retrieve the child EducationalAttainments.
          *  @return An Array of EducationalAttainments. */
-        static getByParentEducationalAttainmentID(educationalAttainmentID: number, api: API, callback: IAPICallback<Array<EducationalAttainment>>, page?: number): Async;
+        static getByParentEducationalAttainmentID(educationalAttainmentID: number, api: API, callback: IAPICallback<Array<EducationalAttainment>>, page?: number, pageSize?: number): Async;
         /** Gets how many EducationalAttainments by ParentEducationalAttainmentID exist.
          *  @return An Array of EducationalAttainments. */
         getEducationalAttainmentsCount(api: API, callback: IAPICallback<number>): Async;
@@ -2379,7 +2384,7 @@ declare module hiw {
         /** Gets a list of all of the EducationalAttainmentRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of EducationalAttainmentRelations */
-        static getAll(api: API, callback: IAPICallback<Array<EducationalAttainmentRelation>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<EducationalAttainmentRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many EducationalAttainmentRelations exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the EducationalAttainmentRelations method. */
@@ -2391,7 +2396,7 @@ declare module hiw {
         /** Returns a filtered collection of EducationalAttainmentRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All EducationalAttainmentRelations which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<EducationalAttainmentRelation>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<EducationalAttainmentRelation>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many EducationalAttainmentRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of EducationalAttainmentRelations which match the provided filter. */
@@ -2403,7 +2408,7 @@ declare module hiw {
         /** Gets EducationalAttainmentRelations by AncestorEducationalAttainmentID.
          *  @param educationalAttainmentID The ID of the EducationalAttainment for which to retrieve the child EducationalAttainmentRelations.
          *  @return An Array of EducationalAttainmentRelations. */
-        static getByAncestorEducationalAttainmentID(educationalAttainmentID: number, api: API, callback: IAPICallback<Array<EducationalAttainmentRelation>>, page?: number): Async;
+        static getByAncestorEducationalAttainmentID(educationalAttainmentID: number, api: API, callback: IAPICallback<Array<EducationalAttainmentRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many EducationalAttainmentRelations by AncestorEducationalAttainmentID exist.
          *  @param educationalAttainmentID The ID of the EducationalAttainment for which to retrieve the child EducationalAttainmentRelations.
          *  @return An Array of EducationalAttainmentRelations. */
@@ -2422,7 +2427,7 @@ declare module hiw {
         /** Gets EducationalAttainmentRelations by DescendantEducationalAttainmentID.
          *  @param educationalAttainmentID The ID of the EducationalAttainment for which to retrieve the child EducationalAttainmentRelations.
          *  @return An Array of EducationalAttainmentRelations. */
-        static getByDescendantEducationalAttainmentID(educationalAttainmentID: number, api: API, callback: IAPICallback<Array<EducationalAttainmentRelation>>, page?: number): Async;
+        static getByDescendantEducationalAttainmentID(educationalAttainmentID: number, api: API, callback: IAPICallback<Array<EducationalAttainmentRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many EducationalAttainmentRelations by DescendantEducationalAttainmentID exist.
          *  @param educationalAttainmentID The ID of the EducationalAttainment for which to retrieve the child EducationalAttainmentRelations.
          *  @return An Array of EducationalAttainmentRelations. */
@@ -2465,7 +2470,7 @@ declare module hiw {
         /** Gets a list of all of the FamilyTypes in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of FamilyTypes */
-        static getAll(api: API, callback: IAPICallback<Array<FamilyType>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<FamilyType>>, page?: number, pageSize?: number): Async;
         /** Gets how many FamilyTypes exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the FamilyTypes method. */
@@ -2477,7 +2482,7 @@ declare module hiw {
         /** Returns a filtered collection of FamilyTypes based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All FamilyTypes which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<FamilyType>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<FamilyType>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many FamilyTypes exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of FamilyTypes which match the provided filter. */
@@ -2488,11 +2493,11 @@ declare module hiw {
         static filterPageCount(filter: Filter, api: API, callback: IAPICallback<number>): Async;
         /** Gets FamilyTypes by ParentFamilyTypeID.
          *  @return An Array of FamilyTypes. */
-        getFamilyTypes(api: API, callback: IAPICallback<Array<FamilyType>>, page?: number): Async;
+        getFamilyTypes(api: API, callback: IAPICallback<Array<FamilyType>>, page?: number, pageSize?: number): Async;
         /** Gets FamilyTypes by ParentFamilyTypeID.
          *  @param familyTypeID The ID of the FamilyType for which to retrieve the child FamilyTypes.
          *  @return An Array of FamilyTypes. */
-        static getByParentFamilyTypeID(familyTypeID: number, api: API, callback: IAPICallback<Array<FamilyType>>, page?: number): Async;
+        static getByParentFamilyTypeID(familyTypeID: number, api: API, callback: IAPICallback<Array<FamilyType>>, page?: number, pageSize?: number): Async;
         /** Gets how many FamilyTypes by ParentFamilyTypeID exist.
          *  @return An Array of FamilyTypes. */
         getFamilyTypesCount(api: API, callback: IAPICallback<number>): Async;
@@ -2533,7 +2538,7 @@ declare module hiw {
         /** Gets a list of all of the FamilyTypeRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of FamilyTypeRelations */
-        static getAll(api: API, callback: IAPICallback<Array<FamilyTypeRelation>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<FamilyTypeRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many FamilyTypeRelations exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the FamilyTypeRelations method. */
@@ -2545,7 +2550,7 @@ declare module hiw {
         /** Returns a filtered collection of FamilyTypeRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All FamilyTypeRelations which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<FamilyTypeRelation>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<FamilyTypeRelation>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many FamilyTypeRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of FamilyTypeRelations which match the provided filter. */
@@ -2557,7 +2562,7 @@ declare module hiw {
         /** Gets FamilyTypeRelations by AncestorFamilyTypeID.
          *  @param familyTypeID The ID of the FamilyType for which to retrieve the child FamilyTypeRelations.
          *  @return An Array of FamilyTypeRelations. */
-        static getByAncestorFamilyTypeID(familyTypeID: number, api: API, callback: IAPICallback<Array<FamilyTypeRelation>>, page?: number): Async;
+        static getByAncestorFamilyTypeID(familyTypeID: number, api: API, callback: IAPICallback<Array<FamilyTypeRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many FamilyTypeRelations by AncestorFamilyTypeID exist.
          *  @param familyTypeID The ID of the FamilyType for which to retrieve the child FamilyTypeRelations.
          *  @return An Array of FamilyTypeRelations. */
@@ -2576,7 +2581,7 @@ declare module hiw {
         /** Gets FamilyTypeRelations by DescendantFamilyTypeID.
          *  @param familyTypeID The ID of the FamilyType for which to retrieve the child FamilyTypeRelations.
          *  @return An Array of FamilyTypeRelations. */
-        static getByDescendantFamilyTypeID(familyTypeID: number, api: API, callback: IAPICallback<Array<FamilyTypeRelation>>, page?: number): Async;
+        static getByDescendantFamilyTypeID(familyTypeID: number, api: API, callback: IAPICallback<Array<FamilyTypeRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many FamilyTypeRelations by DescendantFamilyTypeID exist.
          *  @param familyTypeID The ID of the FamilyType for which to retrieve the child FamilyTypeRelations.
          *  @return An Array of FamilyTypeRelations. */
@@ -2619,7 +2624,7 @@ declare module hiw {
         /** Gets a list of all of the Geographies in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Geographies */
-        static getAll(api: API, callback: IAPICallback<Array<Geography>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<Geography>>, page?: number, pageSize?: number): Async;
         /** Gets how many Geographies exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the Geographies method. */
@@ -2631,7 +2636,7 @@ declare module hiw {
         /** Returns a filtered collection of Geographies based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Geographies which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Geography>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Geography>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many Geographies exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of Geographies which match the provided filter. */
@@ -2642,11 +2647,11 @@ declare module hiw {
         static filterPageCount(filter: Filter, api: API, callback: IAPICallback<number>): Async;
         /** Gets Geographies by ParentGeographyID.
          *  @return An Array of Geographies. */
-        getGeographies(api: API, callback: IAPICallback<Array<Geography>>, page?: number): Async;
+        getGeographies(api: API, callback: IAPICallback<Array<Geography>>, page?: number, pageSize?: number): Async;
         /** Gets Geographies by ParentGeographyID.
          *  @param geographyID The ID of the Geography for which to retrieve the child Geographies.
          *  @return An Array of Geographies. */
-        static getByParentGeographyID(geographyID: number, api: API, callback: IAPICallback<Array<Geography>>, page?: number): Async;
+        static getByParentGeographyID(geographyID: number, api: API, callback: IAPICallback<Array<Geography>>, page?: number, pageSize?: number): Async;
         /** Gets how many Geographies by ParentGeographyID exist.
          *  @return An Array of Geographies. */
         getGeographiesCount(api: API, callback: IAPICallback<number>): Async;
@@ -2687,7 +2692,7 @@ declare module hiw {
         /** Gets a list of all of the GeographyRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of GeographyRelations */
-        static getAll(api: API, callback: IAPICallback<Array<GeographyRelation>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<GeographyRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many GeographyRelations exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the GeographyRelations method. */
@@ -2699,7 +2704,7 @@ declare module hiw {
         /** Returns a filtered collection of GeographyRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All GeographyRelations which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<GeographyRelation>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<GeographyRelation>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many GeographyRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of GeographyRelations which match the provided filter. */
@@ -2711,7 +2716,7 @@ declare module hiw {
         /** Gets GeographyRelations by AncestorGeographyID.
          *  @param geographyID The ID of the Geography for which to retrieve the child GeographyRelations.
          *  @return An Array of GeographyRelations. */
-        static getByAncestorGeographyID(geographyID: number, api: API, callback: IAPICallback<Array<GeographyRelation>>, page?: number): Async;
+        static getByAncestorGeographyID(geographyID: number, api: API, callback: IAPICallback<Array<GeographyRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many GeographyRelations by AncestorGeographyID exist.
          *  @param geographyID The ID of the Geography for which to retrieve the child GeographyRelations.
          *  @return An Array of GeographyRelations. */
@@ -2730,7 +2735,7 @@ declare module hiw {
         /** Gets GeographyRelations by DescendantGeographyID.
          *  @param geographyID The ID of the Geography for which to retrieve the child GeographyRelations.
          *  @return An Array of GeographyRelations. */
-        static getByDescendantGeographyID(geographyID: number, api: API, callback: IAPICallback<Array<GeographyRelation>>, page?: number): Async;
+        static getByDescendantGeographyID(geographyID: number, api: API, callback: IAPICallback<Array<GeographyRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many GeographyRelations by DescendantGeographyID exist.
          *  @param geographyID The ID of the Geography for which to retrieve the child GeographyRelations.
          *  @return An Array of GeographyRelations. */
@@ -2771,7 +2776,7 @@ declare module hiw {
         /** Gets a list of all of the GlossaryTerms in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of GlossaryTerms */
-        static getAll(api: API, callback: IAPICallback<Array<GlossaryTerm>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<GlossaryTerm>>, page?: number, pageSize?: number): Async;
         /** Gets how many GlossaryTerms exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the GlossaryTerms method. */
@@ -2783,7 +2788,7 @@ declare module hiw {
         /** Returns a filtered collection of GlossaryTerms based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All GlossaryTerms which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<GlossaryTerm>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<GlossaryTerm>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many GlossaryTerms exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of GlossaryTerms which match the provided filter. */
@@ -2795,7 +2800,7 @@ declare module hiw {
         /** Gets GlossaryTerms by SourceUrl1ID.
          *  @param urlID The ID of the Url for which to retrieve the child GlossaryTerms.
          *  @return An Array of GlossaryTerms. */
-        static getBySourceUrl1ID(urlID: number, api: API, callback: IAPICallback<Array<GlossaryTerm>>, page?: number): Async;
+        static getBySourceUrl1ID(urlID: number, api: API, callback: IAPICallback<Array<GlossaryTerm>>, page?: number, pageSize?: number): Async;
         /** Gets how many GlossaryTerms by SourceUrl1ID exist.
          *  @param urlID The ID of the Url for which to retrieve the child GlossaryTerms.
          *  @return An Array of GlossaryTerms. */
@@ -2814,7 +2819,7 @@ declare module hiw {
         /** Gets GlossaryTerms by SourceUrl2ID.
          *  @param urlID The ID of the Url for which to retrieve the child GlossaryTerms.
          *  @return An Array of GlossaryTerms. */
-        static getBySourceUrl2ID(urlID: number, api: API, callback: IAPICallback<Array<GlossaryTerm>>, page?: number): Async;
+        static getBySourceUrl2ID(urlID: number, api: API, callback: IAPICallback<Array<GlossaryTerm>>, page?: number, pageSize?: number): Async;
         /** Gets how many GlossaryTerms by SourceUrl2ID exist.
          *  @param urlID The ID of the Url for which to retrieve the child GlossaryTerms.
          *  @return An Array of GlossaryTerms. */
@@ -2857,7 +2862,7 @@ declare module hiw {
         /** Gets a list of all of the HealthInsuranceStatuses in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of HealthInsuranceStatuses */
-        static getAll(api: API, callback: IAPICallback<Array<HealthInsuranceStatus>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<HealthInsuranceStatus>>, page?: number, pageSize?: number): Async;
         /** Gets how many HealthInsuranceStatuses exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the HealthInsuranceStatuses method. */
@@ -2869,7 +2874,7 @@ declare module hiw {
         /** Returns a filtered collection of HealthInsuranceStatuses based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All HealthInsuranceStatuses which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<HealthInsuranceStatus>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<HealthInsuranceStatus>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many HealthInsuranceStatuses exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of HealthInsuranceStatuses which match the provided filter. */
@@ -2880,11 +2885,11 @@ declare module hiw {
         static filterPageCount(filter: Filter, api: API, callback: IAPICallback<number>): Async;
         /** Gets HealthInsuranceStatuses by ParentHealthInsuranceStatusID.
          *  @return An Array of HealthInsuranceStatuses. */
-        getHealthInsuranceStatuses(api: API, callback: IAPICallback<Array<HealthInsuranceStatus>>, page?: number): Async;
+        getHealthInsuranceStatuses(api: API, callback: IAPICallback<Array<HealthInsuranceStatus>>, page?: number, pageSize?: number): Async;
         /** Gets HealthInsuranceStatuses by ParentHealthInsuranceStatusID.
          *  @param healthInsuranceStatusID The ID of the HealthInsuranceStatus for which to retrieve the child HealthInsuranceStatuses.
          *  @return An Array of HealthInsuranceStatuses. */
-        static getByParentHealthInsuranceStatusID(healthInsuranceStatusID: number, api: API, callback: IAPICallback<Array<HealthInsuranceStatus>>, page?: number): Async;
+        static getByParentHealthInsuranceStatusID(healthInsuranceStatusID: number, api: API, callback: IAPICallback<Array<HealthInsuranceStatus>>, page?: number, pageSize?: number): Async;
         /** Gets how many HealthInsuranceStatuses by ParentHealthInsuranceStatusID exist.
          *  @return An Array of HealthInsuranceStatuses. */
         getHealthInsuranceStatusesCount(api: API, callback: IAPICallback<number>): Async;
@@ -2925,7 +2930,7 @@ declare module hiw {
         /** Gets a list of all of the HealthInsuranceStatusRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of HealthInsuranceStatusRelations */
-        static getAll(api: API, callback: IAPICallback<Array<HealthInsuranceStatusRelation>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<HealthInsuranceStatusRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many HealthInsuranceStatusRelations exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the HealthInsuranceStatusRelations method. */
@@ -2937,7 +2942,7 @@ declare module hiw {
         /** Returns a filtered collection of HealthInsuranceStatusRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All HealthInsuranceStatusRelations which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<HealthInsuranceStatusRelation>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<HealthInsuranceStatusRelation>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many HealthInsuranceStatusRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of HealthInsuranceStatusRelations which match the provided filter. */
@@ -2949,7 +2954,7 @@ declare module hiw {
         /** Gets HealthInsuranceStatusRelations by AncestorHealthInsuranceStatusID.
          *  @param healthInsuranceStatusID The ID of the HealthInsuranceStatus for which to retrieve the child HealthInsuranceStatusRelations.
          *  @return An Array of HealthInsuranceStatusRelations. */
-        static getByAncestorHealthInsuranceStatusID(healthInsuranceStatusID: number, api: API, callback: IAPICallback<Array<HealthInsuranceStatusRelation>>, page?: number): Async;
+        static getByAncestorHealthInsuranceStatusID(healthInsuranceStatusID: number, api: API, callback: IAPICallback<Array<HealthInsuranceStatusRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many HealthInsuranceStatusRelations by AncestorHealthInsuranceStatusID exist.
          *  @param healthInsuranceStatusID The ID of the HealthInsuranceStatus for which to retrieve the child HealthInsuranceStatusRelations.
          *  @return An Array of HealthInsuranceStatusRelations. */
@@ -2968,7 +2973,7 @@ declare module hiw {
         /** Gets HealthInsuranceStatusRelations by DescendantHealthInsuranceStatusID.
          *  @param healthInsuranceStatusID The ID of the HealthInsuranceStatus for which to retrieve the child HealthInsuranceStatusRelations.
          *  @return An Array of HealthInsuranceStatusRelations. */
-        static getByDescendantHealthInsuranceStatusID(healthInsuranceStatusID: number, api: API, callback: IAPICallback<Array<HealthInsuranceStatusRelation>>, page?: number): Async;
+        static getByDescendantHealthInsuranceStatusID(healthInsuranceStatusID: number, api: API, callback: IAPICallback<Array<HealthInsuranceStatusRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many HealthInsuranceStatusRelations by DescendantHealthInsuranceStatusID exist.
          *  @param healthInsuranceStatusID The ID of the HealthInsuranceStatus for which to retrieve the child HealthInsuranceStatusRelations.
          *  @return An Array of HealthInsuranceStatusRelations. */
@@ -3001,7 +3006,7 @@ declare module hiw {
         /** Gets a list of all of the HP2020TSMs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of HP2020TSMs */
-        static getAll(api: API, callback: IAPICallback<Array<HP2020TSM>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<HP2020TSM>>, page?: number, pageSize?: number): Async;
         /** Gets how many HP2020TSMs exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the HP2020TSMs method. */
@@ -3013,7 +3018,7 @@ declare module hiw {
         /** Returns a filtered collection of HP2020TSMs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All HP2020TSMs which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<HP2020TSM>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<HP2020TSM>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many HP2020TSMs exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of HP2020TSMs which match the provided filter. */
@@ -3049,7 +3054,7 @@ declare module hiw {
         /** Gets a list of all of the IncomeAndPovertyStatuses in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IncomeAndPovertyStatuses */
-        static getAll(api: API, callback: IAPICallback<Array<IncomeAndPovertyStatus>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IncomeAndPovertyStatus>>, page?: number, pageSize?: number): Async;
         /** Gets how many IncomeAndPovertyStatuses exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IncomeAndPovertyStatuses method. */
@@ -3061,7 +3066,7 @@ declare module hiw {
         /** Returns a filtered collection of IncomeAndPovertyStatuses based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IncomeAndPovertyStatuses which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IncomeAndPovertyStatus>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IncomeAndPovertyStatus>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IncomeAndPovertyStatuses exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IncomeAndPovertyStatuses which match the provided filter. */
@@ -3072,11 +3077,11 @@ declare module hiw {
         static filterPageCount(filter: Filter, api: API, callback: IAPICallback<number>): Async;
         /** Gets IncomeAndPovertyStatuses by ParentIncomeAndPovertyStatusID.
          *  @return An Array of IncomeAndPovertyStatuses. */
-        getIncomeAndPovertyStatuses(api: API, callback: IAPICallback<Array<IncomeAndPovertyStatus>>, page?: number): Async;
+        getIncomeAndPovertyStatuses(api: API, callback: IAPICallback<Array<IncomeAndPovertyStatus>>, page?: number, pageSize?: number): Async;
         /** Gets IncomeAndPovertyStatuses by ParentIncomeAndPovertyStatusID.
          *  @param incomeAndPovertyStatusID The ID of the IncomeAndPovertyStatus for which to retrieve the child IncomeAndPovertyStatuses.
          *  @return An Array of IncomeAndPovertyStatuses. */
-        static getByParentIncomeAndPovertyStatusID(incomeAndPovertyStatusID: number, api: API, callback: IAPICallback<Array<IncomeAndPovertyStatus>>, page?: number): Async;
+        static getByParentIncomeAndPovertyStatusID(incomeAndPovertyStatusID: number, api: API, callback: IAPICallback<Array<IncomeAndPovertyStatus>>, page?: number, pageSize?: number): Async;
         /** Gets how many IncomeAndPovertyStatuses by ParentIncomeAndPovertyStatusID exist.
          *  @return An Array of IncomeAndPovertyStatuses. */
         getIncomeAndPovertyStatusesCount(api: API, callback: IAPICallback<number>): Async;
@@ -3117,7 +3122,7 @@ declare module hiw {
         /** Gets a list of all of the IncomeAndPovertyStatusRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IncomeAndPovertyStatusRelations */
-        static getAll(api: API, callback: IAPICallback<Array<IncomeAndPovertyStatusRelation>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IncomeAndPovertyStatusRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many IncomeAndPovertyStatusRelations exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IncomeAndPovertyStatusRelations method. */
@@ -3129,7 +3134,7 @@ declare module hiw {
         /** Returns a filtered collection of IncomeAndPovertyStatusRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IncomeAndPovertyStatusRelations which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IncomeAndPovertyStatusRelation>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IncomeAndPovertyStatusRelation>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IncomeAndPovertyStatusRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IncomeAndPovertyStatusRelations which match the provided filter. */
@@ -3141,7 +3146,7 @@ declare module hiw {
         /** Gets IncomeAndPovertyStatusRelations by AncestorIncomeAndPovertyStatusID.
          *  @param incomeAndPovertyStatusID The ID of the IncomeAndPovertyStatus for which to retrieve the child IncomeAndPovertyStatusRelations.
          *  @return An Array of IncomeAndPovertyStatusRelations. */
-        static getByAncestorIncomeAndPovertyStatusID(incomeAndPovertyStatusID: number, api: API, callback: IAPICallback<Array<IncomeAndPovertyStatusRelation>>, page?: number): Async;
+        static getByAncestorIncomeAndPovertyStatusID(incomeAndPovertyStatusID: number, api: API, callback: IAPICallback<Array<IncomeAndPovertyStatusRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many IncomeAndPovertyStatusRelations by AncestorIncomeAndPovertyStatusID exist.
          *  @param incomeAndPovertyStatusID The ID of the IncomeAndPovertyStatus for which to retrieve the child IncomeAndPovertyStatusRelations.
          *  @return An Array of IncomeAndPovertyStatusRelations. */
@@ -3160,7 +3165,7 @@ declare module hiw {
         /** Gets IncomeAndPovertyStatusRelations by DescendantIncomeAndPovertyStatusID.
          *  @param incomeAndPovertyStatusID The ID of the IncomeAndPovertyStatus for which to retrieve the child IncomeAndPovertyStatusRelations.
          *  @return An Array of IncomeAndPovertyStatusRelations. */
-        static getByDescendantIncomeAndPovertyStatusID(incomeAndPovertyStatusID: number, api: API, callback: IAPICallback<Array<IncomeAndPovertyStatusRelation>>, page?: number): Async;
+        static getByDescendantIncomeAndPovertyStatusID(incomeAndPovertyStatusID: number, api: API, callback: IAPICallback<Array<IncomeAndPovertyStatusRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many IncomeAndPovertyStatusRelations by DescendantIncomeAndPovertyStatusID exist.
          *  @param incomeAndPovertyStatusID The ID of the IncomeAndPovertyStatus for which to retrieve the child IncomeAndPovertyStatusRelations.
          *  @return An Array of IncomeAndPovertyStatusRelations. */
@@ -3193,7 +3198,7 @@ declare module hiw {
         /** Gets a list of all of the IndicatorDescriptionDataCategories in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionDataCategories */
-        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionDataCategory>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionDataCategory>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionDataCategories exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IndicatorDescriptionDataCategories method. */
@@ -3205,7 +3210,7 @@ declare module hiw {
         /** Returns a filtered collection of IndicatorDescriptionDataCategories based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionDataCategories which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionDataCategory>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionDataCategory>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IndicatorDescriptionDataCategories exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IndicatorDescriptionDataCategories which match the provided filter. */
@@ -3217,7 +3222,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionDataCategories by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDataCategories.
          *  @return An Array of IndicatorDescriptionDataCategories. */
-        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDataCategory>>, page?: number): Async;
+        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDataCategory>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionDataCategories by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDataCategories.
          *  @return An Array of IndicatorDescriptionDataCategories. */
@@ -3236,7 +3241,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionDataCategories by DataCategoryID.
          *  @param dataCategoryID The ID of the DataCategory for which to retrieve the child IndicatorDescriptionDataCategories.
          *  @return An Array of IndicatorDescriptionDataCategories. */
-        static getByDataCategoryID(dataCategoryID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDataCategory>>, page?: number): Async;
+        static getByDataCategoryID(dataCategoryID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDataCategory>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionDataCategories by DataCategoryID exist.
          *  @param dataCategoryID The ID of the DataCategory for which to retrieve the child IndicatorDescriptionDataCategories.
          *  @return An Array of IndicatorDescriptionDataCategories. */
@@ -3273,7 +3278,7 @@ declare module hiw {
         /** Gets a list of all of the IndicatorDescriptionDataSources in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionDataSources */
-        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionDataSource>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionDataSource>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionDataSources exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IndicatorDescriptionDataSources method. */
@@ -3285,7 +3290,7 @@ declare module hiw {
         /** Returns a filtered collection of IndicatorDescriptionDataSources based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionDataSources which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionDataSource>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionDataSource>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IndicatorDescriptionDataSources exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IndicatorDescriptionDataSources which match the provided filter. */
@@ -3297,7 +3302,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionDataSources by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDataSources.
          *  @return An Array of IndicatorDescriptionDataSources. */
-        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDataSource>>, page?: number): Async;
+        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDataSource>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionDataSources by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDataSources.
          *  @return An Array of IndicatorDescriptionDataSources. */
@@ -3316,7 +3321,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionDataSources by DataSourceID.
          *  @param dataSourceID The ID of the DataSource for which to retrieve the child IndicatorDescriptionDataSources.
          *  @return An Array of IndicatorDescriptionDataSources. */
-        static getByDataSourceID(dataSourceID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDataSource>>, page?: number): Async;
+        static getByDataSourceID(dataSourceID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDataSource>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionDataSources by DataSourceID exist.
          *  @param dataSourceID The ID of the DataSource for which to retrieve the child IndicatorDescriptionDataSources.
          *  @return An Array of IndicatorDescriptionDataSources. */
@@ -3351,7 +3356,7 @@ declare module hiw {
         /** Gets a list of all of the IndicatorDescriptionDefaultDimensionGraphs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionDefaultDimensionGraphs */
-        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionDefaultDimensionGraph>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionDefaultDimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionDefaultDimensionGraphs exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IndicatorDescriptionDefaultDimensionGraphs method. */
@@ -3363,7 +3368,7 @@ declare module hiw {
         /** Returns a filtered collection of IndicatorDescriptionDefaultDimensionGraphs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionDefaultDimensionGraphs which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionDefaultDimensionGraph>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionDefaultDimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IndicatorDescriptionDefaultDimensionGraphs exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IndicatorDescriptionDefaultDimensionGraphs which match the provided filter. */
@@ -3375,7 +3380,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionDefaultDimensionGraphs by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDefaultDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDefaultDimensionGraphs. */
-        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDefaultDimensionGraph>>, page?: number): Async;
+        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDefaultDimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionDefaultDimensionGraphs by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDefaultDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDefaultDimensionGraphs. */
@@ -3394,7 +3399,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionDefaultDimensionGraphs by LocaleLevelID.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDescriptionDefaultDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDefaultDimensionGraphs. */
-        static getByLocaleLevelID(localeLevelID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDefaultDimensionGraph>>, page?: number): Async;
+        static getByLocaleLevelID(localeLevelID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDefaultDimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionDefaultDimensionGraphs by LocaleLevelID exist.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDescriptionDefaultDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDefaultDimensionGraphs. */
@@ -3413,7 +3418,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionDefaultDimensionGraphs by DimensionGraphID.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child IndicatorDescriptionDefaultDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDefaultDimensionGraphs. */
-        static getByDimensionGraphID(dimensionGraphID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDefaultDimensionGraph>>, page?: number): Async;
+        static getByDimensionGraphID(dimensionGraphID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDefaultDimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionDefaultDimensionGraphs by DimensionGraphID exist.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child IndicatorDescriptionDefaultDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDefaultDimensionGraphs. */
@@ -3446,7 +3451,7 @@ declare module hiw {
         /** Gets a list of all of the IndicatorDescriptionDimensions in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionDimensions */
-        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionDimension>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionDimension>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionDimensions exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IndicatorDescriptionDimensions method. */
@@ -3458,7 +3463,7 @@ declare module hiw {
         /** Returns a filtered collection of IndicatorDescriptionDimensions based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionDimensions which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimension>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimension>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IndicatorDescriptionDimensions exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IndicatorDescriptionDimensions which match the provided filter. */
@@ -3470,7 +3475,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionDimensions by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDimensions.
          *  @return An Array of IndicatorDescriptionDimensions. */
-        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimension>>, page?: number): Async;
+        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimension>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionDimensions by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDimensions.
          *  @return An Array of IndicatorDescriptionDimensions. */
@@ -3489,7 +3494,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionDimensions by DimensionListID.
          *  @param dimensionListID The ID of the DimensionList for which to retrieve the child IndicatorDescriptionDimensions.
          *  @return An Array of IndicatorDescriptionDimensions. */
-        static getByDimensionListID(dimensionListID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimension>>, page?: number): Async;
+        static getByDimensionListID(dimensionListID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimension>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionDimensions by DimensionListID exist.
          *  @param dimensionListID The ID of the DimensionList for which to retrieve the child IndicatorDescriptionDimensions.
          *  @return An Array of IndicatorDescriptionDimensions. */
@@ -3527,7 +3532,7 @@ declare module hiw {
         /** Gets a list of all of the IndicatorDescriptionDimensionGraphs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionDimensionGraphs */
-        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionGraph>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionDimensionGraphs exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IndicatorDescriptionDimensionGraphs method. */
@@ -3539,7 +3544,7 @@ declare module hiw {
         /** Returns a filtered collection of IndicatorDescriptionDimensionGraphs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionDimensionGraphs which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionGraph>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IndicatorDescriptionDimensionGraphs exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IndicatorDescriptionDimensionGraphs which match the provided filter. */
@@ -3551,7 +3556,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionDimensionGraphs by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDimensionGraphs. */
-        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionGraph>>, page?: number): Async;
+        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionDimensionGraphs by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDimensionGraphs. */
@@ -3570,7 +3575,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionDimensionGraphs by LocaleLevelID.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDescriptionDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDimensionGraphs. */
-        static getByLocaleLevelID(localeLevelID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionGraph>>, page?: number): Async;
+        static getByLocaleLevelID(localeLevelID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionDimensionGraphs by LocaleLevelID exist.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDescriptionDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDimensionGraphs. */
@@ -3589,7 +3594,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionDimensionGraphs by DimensionGraphID.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child IndicatorDescriptionDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDimensionGraphs. */
-        static getByDimensionGraphID(dimensionGraphID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionGraph>>, page?: number): Async;
+        static getByDimensionGraphID(dimensionGraphID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionDimensionGraphs by DimensionGraphID exist.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child IndicatorDescriptionDimensionGraphs.
          *  @return An Array of IndicatorDescriptionDimensionGraphs. */
@@ -3622,7 +3627,7 @@ declare module hiw {
         /** Gets a list of all of the IndicatorDescriptionDimensionValues in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionDimensionValues */
-        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionValue>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionValue>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionDimensionValues exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IndicatorDescriptionDimensionValues method. */
@@ -3634,7 +3639,7 @@ declare module hiw {
         /** Returns a filtered collection of IndicatorDescriptionDimensionValues based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionDimensionValues which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionValue>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionValue>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IndicatorDescriptionDimensionValues exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IndicatorDescriptionDimensionValues which match the provided filter. */
@@ -3646,7 +3651,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionDimensionValues by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDimensionValues.
          *  @return An Array of IndicatorDescriptionDimensionValues. */
-        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionValue>>, page?: number): Async;
+        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionValue>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionDimensionValues by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionDimensionValues.
          *  @return An Array of IndicatorDescriptionDimensionValues. */
@@ -3665,7 +3670,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionDimensionValues by DimensionBookID.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child IndicatorDescriptionDimensionValues.
          *  @return An Array of IndicatorDescriptionDimensionValues. */
-        static getByDimensionBookID(dimensionBookID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionValue>>, page?: number): Async;
+        static getByDimensionBookID(dimensionBookID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionDimensionValue>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionDimensionValues by DimensionBookID exist.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child IndicatorDescriptionDimensionValues.
          *  @return An Array of IndicatorDescriptionDimensionValues. */
@@ -3701,7 +3706,7 @@ declare module hiw {
         /** Gets a list of all of the IndicatorDescriptionInitiatives in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionInitiatives */
-        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionInitiative>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionInitiative>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionInitiatives exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IndicatorDescriptionInitiatives method. */
@@ -3713,7 +3718,7 @@ declare module hiw {
         /** Returns a filtered collection of IndicatorDescriptionInitiatives based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionInitiatives which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionInitiative>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionInitiative>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IndicatorDescriptionInitiatives exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IndicatorDescriptionInitiatives which match the provided filter. */
@@ -3725,7 +3730,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionInitiatives by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionInitiatives.
          *  @return An Array of IndicatorDescriptionInitiatives. */
-        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionInitiative>>, page?: number): Async;
+        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionInitiative>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionInitiatives by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionInitiatives.
          *  @return An Array of IndicatorDescriptionInitiatives. */
@@ -3744,7 +3749,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionInitiatives by InitiativeID.
          *  @param initiativeID The ID of the Initiative for which to retrieve the child IndicatorDescriptionInitiatives.
          *  @return An Array of IndicatorDescriptionInitiatives. */
-        static getByInitiativeID(initiativeID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionInitiative>>, page?: number): Async;
+        static getByInitiativeID(initiativeID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionInitiative>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionInitiatives by InitiativeID exist.
          *  @param initiativeID The ID of the Initiative for which to retrieve the child IndicatorDescriptionInitiatives.
          *  @return An Array of IndicatorDescriptionInitiatives. */
@@ -3779,7 +3784,7 @@ declare module hiw {
         /** Gets a list of all of the IndicatorDescriptionInterventions in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionInterventions */
-        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionIntervention>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionIntervention>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionInterventions exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IndicatorDescriptionInterventions method. */
@@ -3791,7 +3796,7 @@ declare module hiw {
         /** Returns a filtered collection of IndicatorDescriptionInterventions based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionInterventions which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionIntervention>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionIntervention>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IndicatorDescriptionInterventions exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IndicatorDescriptionInterventions which match the provided filter. */
@@ -3803,7 +3808,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionInterventions by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionInterventions.
          *  @return An Array of IndicatorDescriptionInterventions. */
-        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionIntervention>>, page?: number): Async;
+        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionIntervention>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionInterventions by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionInterventions.
          *  @return An Array of IndicatorDescriptionInterventions. */
@@ -3822,7 +3827,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionInterventions by InterventionID.
          *  @param interventionID The ID of the Intervention for which to retrieve the child IndicatorDescriptionInterventions.
          *  @return An Array of IndicatorDescriptionInterventions. */
-        static getByInterventionID(interventionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionIntervention>>, page?: number): Async;
+        static getByInterventionID(interventionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionIntervention>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionInterventions by InterventionID exist.
          *  @param interventionID The ID of the Intervention for which to retrieve the child IndicatorDescriptionInterventions.
          *  @return An Array of IndicatorDescriptionInterventions. */
@@ -3855,7 +3860,7 @@ declare module hiw {
         /** Gets a list of all of the IndicatorDescriptionKeywords in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionKeywords */
-        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionKeyword>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionKeyword>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionKeywords exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IndicatorDescriptionKeywords method. */
@@ -3867,7 +3872,7 @@ declare module hiw {
         /** Returns a filtered collection of IndicatorDescriptionKeywords based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionKeywords which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionKeyword>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionKeyword>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IndicatorDescriptionKeywords exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IndicatorDescriptionKeywords which match the provided filter. */
@@ -3879,7 +3884,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionKeywords by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionKeywords.
          *  @return An Array of IndicatorDescriptionKeywords. */
-        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionKeyword>>, page?: number): Async;
+        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionKeyword>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionKeywords by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionKeywords.
          *  @return An Array of IndicatorDescriptionKeywords. */
@@ -3898,7 +3903,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionKeywords by KeywordID.
          *  @param keywordID The ID of the Keyword for which to retrieve the child IndicatorDescriptionKeywords.
          *  @return An Array of IndicatorDescriptionKeywords. */
-        static getByKeywordID(keywordID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionKeyword>>, page?: number): Async;
+        static getByKeywordID(keywordID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionKeyword>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionKeywords by KeywordID exist.
          *  @param keywordID The ID of the Keyword for which to retrieve the child IndicatorDescriptionKeywords.
          *  @return An Array of IndicatorDescriptionKeywords. */
@@ -3934,7 +3939,7 @@ declare module hiw {
         /** Gets a list of all of the IndicatorDescriptionLocaleCounties in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionLocaleCounties */
-        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleCounty>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleCounty>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionLocaleCounties exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IndicatorDescriptionLocaleCounties method. */
@@ -3946,7 +3951,7 @@ declare module hiw {
         /** Returns a filtered collection of IndicatorDescriptionLocaleCounties based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionLocaleCounties which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleCounty>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleCounty>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IndicatorDescriptionLocaleCounties exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IndicatorDescriptionLocaleCounties which match the provided filter. */
@@ -3958,7 +3963,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionLocaleCounties by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleCounties.
          *  @return An Array of IndicatorDescriptionLocaleCounties. */
-        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleCounty>>, page?: number): Async;
+        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleCounty>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionLocaleCounties by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleCounties.
          *  @return An Array of IndicatorDescriptionLocaleCounties. */
@@ -3977,7 +3982,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionLocaleCounties by LocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocaleCounties.
          *  @return An Array of IndicatorDescriptionLocaleCounties. */
-        static getByLocaleID(localeID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleCounty>>, page?: number): Async;
+        static getByLocaleID(localeID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleCounty>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionLocaleCounties by LocaleID exist.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocaleCounties.
          *  @return An Array of IndicatorDescriptionLocaleCounties. */
@@ -4010,7 +4015,7 @@ declare module hiw {
         /** Gets a list of all of the IndicatorDescriptionLocaleHospitalReferralRegions in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionLocaleHospitalReferralRegions */
-        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionLocaleHospitalReferralRegions exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IndicatorDescriptionLocaleHospitalReferralRegions method. */
@@ -4022,7 +4027,7 @@ declare module hiw {
         /** Returns a filtered collection of IndicatorDescriptionLocaleHospitalReferralRegions based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionLocaleHospitalReferralRegions which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IndicatorDescriptionLocaleHospitalReferralRegions exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IndicatorDescriptionLocaleHospitalReferralRegions which match the provided filter. */
@@ -4034,7 +4039,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionLocaleHospitalReferralRegions by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleHospitalReferralRegions.
          *  @return An Array of IndicatorDescriptionLocaleHospitalReferralRegions. */
-        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>, page?: number): Async;
+        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionLocaleHospitalReferralRegions by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleHospitalReferralRegions.
          *  @return An Array of IndicatorDescriptionLocaleHospitalReferralRegions. */
@@ -4053,7 +4058,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionLocaleHospitalReferralRegions by LocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocaleHospitalReferralRegions.
          *  @return An Array of IndicatorDescriptionLocaleHospitalReferralRegions. */
-        static getByLocaleID(localeID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>, page?: number): Async;
+        static getByLocaleID(localeID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleHospitalReferralRegion>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionLocaleHospitalReferralRegions by LocaleID exist.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocaleHospitalReferralRegions.
          *  @return An Array of IndicatorDescriptionLocaleHospitalReferralRegions. */
@@ -4086,7 +4091,7 @@ declare module hiw {
         /** Gets a list of all of the IndicatorDescriptionLocaleLevels in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionLocaleLevels */
-        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleLevel>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleLevel>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionLocaleLevels exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IndicatorDescriptionLocaleLevels method. */
@@ -4098,7 +4103,7 @@ declare module hiw {
         /** Returns a filtered collection of IndicatorDescriptionLocaleLevels based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionLocaleLevels which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleLevel>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleLevel>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IndicatorDescriptionLocaleLevels exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IndicatorDescriptionLocaleLevels which match the provided filter. */
@@ -4110,7 +4115,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionLocaleLevels by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleLevels.
          *  @return An Array of IndicatorDescriptionLocaleLevels. */
-        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleLevel>>, page?: number): Async;
+        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleLevel>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionLocaleLevels by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleLevels.
          *  @return An Array of IndicatorDescriptionLocaleLevels. */
@@ -4129,7 +4134,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionLocaleLevels by LocaleLevelID.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDescriptionLocaleLevels.
          *  @return An Array of IndicatorDescriptionLocaleLevels. */
-        static getByLocaleLevelID(localeLevelID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleLevel>>, page?: number): Async;
+        static getByLocaleLevelID(localeLevelID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleLevel>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionLocaleLevels by LocaleLevelID exist.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDescriptionLocaleLevels.
          *  @return An Array of IndicatorDescriptionLocaleLevels. */
@@ -4162,7 +4167,7 @@ declare module hiw {
         /** Gets a list of all of the IndicatorDescriptionLocales in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionLocales */
-        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionLocale>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionLocale>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionLocales exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IndicatorDescriptionLocales method. */
@@ -4174,7 +4179,7 @@ declare module hiw {
         /** Returns a filtered collection of IndicatorDescriptionLocales based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionLocales which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocale>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocale>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IndicatorDescriptionLocales exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IndicatorDescriptionLocales which match the provided filter. */
@@ -4186,7 +4191,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionLocales by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocales.
          *  @return An Array of IndicatorDescriptionLocales. */
-        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocale>>, page?: number): Async;
+        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocale>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionLocales by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocales.
          *  @return An Array of IndicatorDescriptionLocales. */
@@ -4205,7 +4210,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionLocales by LocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocales.
          *  @return An Array of IndicatorDescriptionLocales. */
-        static getByLocaleID(localeID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocale>>, page?: number): Async;
+        static getByLocaleID(localeID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocale>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionLocales by LocaleID exist.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocales.
          *  @return An Array of IndicatorDescriptionLocales. */
@@ -4238,7 +4243,7 @@ declare module hiw {
         /** Gets a list of all of the IndicatorDescriptionLocaleStates in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionLocaleStates */
-        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleState>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleState>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionLocaleStates exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IndicatorDescriptionLocaleStates method. */
@@ -4250,7 +4255,7 @@ declare module hiw {
         /** Returns a filtered collection of IndicatorDescriptionLocaleStates based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionLocaleStates which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleState>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleState>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IndicatorDescriptionLocaleStates exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IndicatorDescriptionLocaleStates which match the provided filter. */
@@ -4262,7 +4267,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionLocaleStates by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleStates.
          *  @return An Array of IndicatorDescriptionLocaleStates. */
-        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleState>>, page?: number): Async;
+        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleState>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionLocaleStates by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionLocaleStates.
          *  @return An Array of IndicatorDescriptionLocaleStates. */
@@ -4281,7 +4286,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionLocaleStates by LocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocaleStates.
          *  @return An Array of IndicatorDescriptionLocaleStates. */
-        static getByLocaleID(localeID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleState>>, page?: number): Async;
+        static getByLocaleID(localeID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionLocaleState>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionLocaleStates by LocaleID exist.
          *  @param localeID The ID of the Locale for which to retrieve the child IndicatorDescriptionLocaleStates.
          *  @return An Array of IndicatorDescriptionLocaleStates. */
@@ -4324,7 +4329,7 @@ declare module hiw {
         /** Gets a list of all of the IndicatorDescriptionMethodologyNotes in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionMethodologyNotes */
-        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionMethodologyNote>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionMethodologyNote>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionMethodologyNotes exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IndicatorDescriptionMethodologyNotes method. */
@@ -4336,7 +4341,7 @@ declare module hiw {
         /** Returns a filtered collection of IndicatorDescriptionMethodologyNotes based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionMethodologyNotes which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionMethodologyNote>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionMethodologyNote>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IndicatorDescriptionMethodologyNotes exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IndicatorDescriptionMethodologyNotes which match the provided filter. */
@@ -4348,7 +4353,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionMethodologyNotes by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionMethodologyNotes.
          *  @return An Array of IndicatorDescriptionMethodologyNotes. */
-        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionMethodologyNote>>, page?: number): Async;
+        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionMethodologyNote>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionMethodologyNotes by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionMethodologyNotes.
          *  @return An Array of IndicatorDescriptionMethodologyNotes. */
@@ -4385,7 +4390,7 @@ declare module hiw {
         /** Gets a list of all of the IndicatorDescriptionMoreInfos in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionMoreInfos */
-        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionMoreInfo>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionMoreInfo>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionMoreInfos exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IndicatorDescriptionMoreInfos method. */
@@ -4397,7 +4402,7 @@ declare module hiw {
         /** Returns a filtered collection of IndicatorDescriptionMoreInfos based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionMoreInfos which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionMoreInfo>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionMoreInfo>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IndicatorDescriptionMoreInfos exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IndicatorDescriptionMoreInfos which match the provided filter. */
@@ -4409,7 +4414,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionMoreInfos by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionMoreInfos.
          *  @return An Array of IndicatorDescriptionMoreInfos. */
-        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionMoreInfo>>, page?: number): Async;
+        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionMoreInfo>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionMoreInfos by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionMoreInfos.
          *  @return An Array of IndicatorDescriptionMoreInfos. */
@@ -4428,7 +4433,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionMoreInfos by UrlID.
          *  @param urlID The ID of the Url for which to retrieve the child IndicatorDescriptionMoreInfos.
          *  @return An Array of IndicatorDescriptionMoreInfos. */
-        static getByUrlID(urlID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionMoreInfo>>, page?: number): Async;
+        static getByUrlID(urlID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionMoreInfo>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionMoreInfos by UrlID exist.
          *  @param urlID The ID of the Url for which to retrieve the child IndicatorDescriptionMoreInfos.
          *  @return An Array of IndicatorDescriptionMoreInfos. */
@@ -4465,7 +4470,7 @@ declare module hiw {
         /** Gets a list of all of the IndicatorDescriptionReferences in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionReferences */
-        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionReference>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionReference>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionReferences exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IndicatorDescriptionReferences method. */
@@ -4477,7 +4482,7 @@ declare module hiw {
         /** Returns a filtered collection of IndicatorDescriptionReferences based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionReferences which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionReference>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionReference>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IndicatorDescriptionReferences exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IndicatorDescriptionReferences which match the provided filter. */
@@ -4489,7 +4494,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionReferences by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionReferences.
          *  @return An Array of IndicatorDescriptionReferences. */
-        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionReference>>, page?: number): Async;
+        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionReference>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionReferences by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionReferences.
          *  @return An Array of IndicatorDescriptionReferences. */
@@ -4508,7 +4513,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionReferences by UrlID.
          *  @param urlID The ID of the Url for which to retrieve the child IndicatorDescriptionReferences.
          *  @return An Array of IndicatorDescriptionReferences. */
-        static getByUrlID(urlID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionReference>>, page?: number): Async;
+        static getByUrlID(urlID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionReference>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionReferences by UrlID exist.
          *  @param urlID The ID of the Url for which to retrieve the child IndicatorDescriptionReferences.
          *  @return An Array of IndicatorDescriptionReferences. */
@@ -4545,7 +4550,7 @@ declare module hiw {
         /** Gets a list of all of the IndicatorDescriptionResources in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionResources */
-        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionResource>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionResource>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionResources exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IndicatorDescriptionResources method. */
@@ -4557,7 +4562,7 @@ declare module hiw {
         /** Returns a filtered collection of IndicatorDescriptionResources based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionResources which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionResource>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionResource>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IndicatorDescriptionResources exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IndicatorDescriptionResources which match the provided filter. */
@@ -4569,7 +4574,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionResources by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionResources.
          *  @return An Array of IndicatorDescriptionResources. */
-        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionResource>>, page?: number): Async;
+        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionResource>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionResources by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionResources.
          *  @return An Array of IndicatorDescriptionResources. */
@@ -4588,7 +4593,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionResources by UrlID.
          *  @param urlID The ID of the Url for which to retrieve the child IndicatorDescriptionResources.
          *  @return An Array of IndicatorDescriptionResources. */
-        static getByUrlID(urlID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionResource>>, page?: number): Async;
+        static getByUrlID(urlID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionResource>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionResources by UrlID exist.
          *  @param urlID The ID of the Url for which to retrieve the child IndicatorDescriptionResources.
          *  @return An Array of IndicatorDescriptionResources. */
@@ -4657,7 +4662,7 @@ declare module hiw {
         /** Gets a list of all of the IndicatorDescriptions in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptions */
-        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescription>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescription>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptions exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IndicatorDescriptions method. */
@@ -4669,7 +4674,7 @@ declare module hiw {
         /** Returns a filtered collection of IndicatorDescriptions based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptions which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescription>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescription>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IndicatorDescriptions exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IndicatorDescriptions which match the provided filter. */
@@ -4681,7 +4686,7 @@ declare module hiw {
         /** Gets IndicatorDescriptions by ValueLabelID.
          *  @param valueLabelID The ID of the ValueLabel for which to retrieve the child IndicatorDescriptions.
          *  @return An Array of IndicatorDescriptions. */
-        static getByValueLabelID(valueLabelID: number, api: API, callback: IAPICallback<Array<IndicatorDescription>>, page?: number): Async;
+        static getByValueLabelID(valueLabelID: number, api: API, callback: IAPICallback<Array<IndicatorDescription>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptions by ValueLabelID exist.
          *  @param valueLabelID The ID of the ValueLabel for which to retrieve the child IndicatorDescriptions.
          *  @return An Array of IndicatorDescriptions. */
@@ -4724,7 +4729,7 @@ declare module hiw {
         /** Gets a list of all of the IndicatorDescriptionHP2020s in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionHP2020s */
-        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionHP2020>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionHP2020>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionHP2020s exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IndicatorDescriptionHP2020s method. */
@@ -4736,7 +4741,7 @@ declare module hiw {
         /** Returns a filtered collection of IndicatorDescriptionHP2020s based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionHP2020s which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionHP2020>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionHP2020>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IndicatorDescriptionHP2020s exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IndicatorDescriptionHP2020s which match the provided filter. */
@@ -4748,7 +4753,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionHP2020s by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionHP2020s.
          *  @return An Array of IndicatorDescriptionHP2020s. */
-        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionHP2020>>, page?: number): Async;
+        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionHP2020>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionHP2020s by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionHP2020s.
          *  @return An Array of IndicatorDescriptionHP2020s. */
@@ -4767,7 +4772,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionHP2020s by HP2020TSMID.
          *  @param hP2020TSMID The ID of the HP2020TSM for which to retrieve the child IndicatorDescriptionHP2020s.
          *  @return An Array of IndicatorDescriptionHP2020s. */
-        static getByHP2020TSMID(hP2020TSMID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionHP2020>>, page?: number): Async;
+        static getByHP2020TSMID(hP2020TSMID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionHP2020>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionHP2020s by HP2020TSMID exist.
          *  @param hP2020TSMID The ID of the HP2020TSM for which to retrieve the child IndicatorDescriptionHP2020s.
          *  @return An Array of IndicatorDescriptionHP2020s. */
@@ -4800,7 +4805,7 @@ declare module hiw {
         /** Gets a list of all of the IndicatorDescriptionTimeFrames in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionTimeFrames */
-        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionTimeFrame>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionTimeFrame>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionTimeFrames exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IndicatorDescriptionTimeFrames method. */
@@ -4812,7 +4817,7 @@ declare module hiw {
         /** Returns a filtered collection of IndicatorDescriptionTimeFrames based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionTimeFrames which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionTimeFrame>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionTimeFrame>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IndicatorDescriptionTimeFrames exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IndicatorDescriptionTimeFrames which match the provided filter. */
@@ -4824,7 +4829,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionTimeFrames by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionTimeFrames.
          *  @return An Array of IndicatorDescriptionTimeFrames. */
-        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionTimeFrame>>, page?: number): Async;
+        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionTimeFrame>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionTimeFrames by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionTimeFrames.
          *  @return An Array of IndicatorDescriptionTimeFrames. */
@@ -4843,7 +4848,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionTimeFrames by TimeframeID.
          *  @param timeframeID The ID of the Timeframe for which to retrieve the child IndicatorDescriptionTimeFrames.
          *  @return An Array of IndicatorDescriptionTimeFrames. */
-        static getByTimeframeID(timeframeID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionTimeFrame>>, page?: number): Async;
+        static getByTimeframeID(timeframeID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionTimeFrame>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionTimeFrames by TimeframeID exist.
          *  @param timeframeID The ID of the Timeframe for which to retrieve the child IndicatorDescriptionTimeFrames.
          *  @return An Array of IndicatorDescriptionTimeFrames. */
@@ -4876,7 +4881,7 @@ declare module hiw {
         /** Gets a list of all of the IndicatorDescriptionYears in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptionYears */
-        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionYear>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IndicatorDescriptionYear>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionYears exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IndicatorDescriptionYears method. */
@@ -4888,7 +4893,7 @@ declare module hiw {
         /** Returns a filtered collection of IndicatorDescriptionYears based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDescriptionYears which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionYear>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDescriptionYear>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IndicatorDescriptionYears exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IndicatorDescriptionYears which match the provided filter. */
@@ -4900,7 +4905,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionYears by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionYears.
          *  @return An Array of IndicatorDescriptionYears. */
-        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionYear>>, page?: number): Async;
+        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionYear>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionYears by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDescriptionYears.
          *  @return An Array of IndicatorDescriptionYears. */
@@ -4919,7 +4924,7 @@ declare module hiw {
         /** Gets IndicatorDescriptionYears by YearID.
          *  @param yearID The ID of the Year for which to retrieve the child IndicatorDescriptionYears.
          *  @return An Array of IndicatorDescriptionYears. */
-        static getByYearID(yearID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionYear>>, page?: number): Async;
+        static getByYearID(yearID: number, api: API, callback: IAPICallback<Array<IndicatorDescriptionYear>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDescriptionYears by YearID exist.
          *  @param yearID The ID of the Year for which to retrieve the child IndicatorDescriptionYears.
          *  @return An Array of IndicatorDescriptionYears. */
@@ -4957,7 +4962,7 @@ declare module hiw {
         /** Gets a list of all of the IndicatorDimensionGraphs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDimensionGraphs */
-        static getAll(api: API, callback: IAPICallback<Array<IndicatorDimensionGraph>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IndicatorDimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDimensionGraphs exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IndicatorDimensionGraphs method. */
@@ -4969,7 +4974,7 @@ declare module hiw {
         /** Returns a filtered collection of IndicatorDimensionGraphs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDimensionGraphs which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDimensionGraph>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IndicatorDimensionGraphs exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IndicatorDimensionGraphs which match the provided filter. */
@@ -4981,7 +4986,7 @@ declare module hiw {
         /** Gets IndicatorDimensionGraphs by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDimensionGraphs.
          *  @return An Array of IndicatorDimensionGraphs. */
-        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDimensionGraph>>, page?: number): Async;
+        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<IndicatorDimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDimensionGraphs by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child IndicatorDimensionGraphs.
          *  @return An Array of IndicatorDimensionGraphs. */
@@ -5000,7 +5005,7 @@ declare module hiw {
         /** Gets IndicatorDimensionGraphs by LocaleLevelID.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDimensionGraphs.
          *  @return An Array of IndicatorDimensionGraphs. */
-        static getByLocaleLevelID(localeLevelID: number, api: API, callback: IAPICallback<Array<IndicatorDimensionGraph>>, page?: number): Async;
+        static getByLocaleLevelID(localeLevelID: number, api: API, callback: IAPICallback<Array<IndicatorDimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDimensionGraphs by LocaleLevelID exist.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child IndicatorDimensionGraphs.
          *  @return An Array of IndicatorDimensionGraphs. */
@@ -5019,7 +5024,7 @@ declare module hiw {
         /** Gets IndicatorDimensionGraphs by DimensionGraphID.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child IndicatorDimensionGraphs.
          *  @return An Array of IndicatorDimensionGraphs. */
-        static getByDimensionGraphID(dimensionGraphID: number, api: API, callback: IAPICallback<Array<IndicatorDimensionGraph>>, page?: number): Async;
+        static getByDimensionGraphID(dimensionGraphID: number, api: API, callback: IAPICallback<Array<IndicatorDimensionGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDimensionGraphs by DimensionGraphID exist.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child IndicatorDimensionGraphs.
          *  @return An Array of IndicatorDimensionGraphs. */
@@ -5052,7 +5057,7 @@ declare module hiw {
         /** Gets a list of all of the IndicatorDimensions in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDimensions */
-        static getAll(api: API, callback: IAPICallback<Array<IndicatorDimension>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<IndicatorDimension>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDimensions exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IndicatorDimensions method. */
@@ -5064,7 +5069,7 @@ declare module hiw {
         /** Returns a filtered collection of IndicatorDimensions based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All IndicatorDimensions which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDimension>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<IndicatorDimension>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many IndicatorDimensions exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of IndicatorDimensions which match the provided filter. */
@@ -5076,7 +5081,7 @@ declare module hiw {
         /** Gets IndicatorDimensions by IndicatorID.
          *  @param indicatorID The ID of the Indicator for which to retrieve the child IndicatorDimensions.
          *  @return An Array of IndicatorDimensions. */
-        static getByIndicatorID(indicatorID: number, api: API, callback: IAPICallback<Array<IndicatorDimension>>, page?: number): Async;
+        static getByIndicatorID(indicatorID: number, api: API, callback: IAPICallback<Array<IndicatorDimension>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDimensions by IndicatorID exist.
          *  @param indicatorID The ID of the Indicator for which to retrieve the child IndicatorDimensions.
          *  @return An Array of IndicatorDimensions. */
@@ -5095,7 +5100,7 @@ declare module hiw {
         /** Gets IndicatorDimensions by DimensionBookID.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child IndicatorDimensions.
          *  @return An Array of IndicatorDimensions. */
-        static getByDimensionBookID(dimensionBookID: number, api: API, callback: IAPICallback<Array<IndicatorDimension>>, page?: number): Async;
+        static getByDimensionBookID(dimensionBookID: number, api: API, callback: IAPICallback<Array<IndicatorDimension>>, page?: number, pageSize?: number): Async;
         /** Gets how many IndicatorDimensions by DimensionBookID exist.
          *  @param dimensionBookID The ID of the DimensionBook for which to retrieve the child IndicatorDimensions.
          *  @return An Array of IndicatorDimensions. */
@@ -5187,7 +5192,7 @@ declare module hiw {
         /** Gets a list of all of the Indicators in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Indicators */
-        static getAll(api: API, callback: IAPICallback<Array<Indicator>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<Indicator>>, page?: number, pageSize?: number): Async;
         /** Gets how many Indicators exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the Indicators method. */
@@ -5199,7 +5204,7 @@ declare module hiw {
         /** Returns a filtered collection of Indicators based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Indicators which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Indicator>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Indicator>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many Indicators exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of Indicators which match the provided filter. */
@@ -5211,7 +5216,7 @@ declare module hiw {
         /** Gets Indicators by IndicatorDescriptionID.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child Indicators.
          *  @return An Array of Indicators. */
-        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<Indicator>>, page?: number): Async;
+        static getByIndicatorDescriptionID(indicatorDescriptionID: number, api: API, callback: IAPICallback<Array<Indicator>>, page?: number, pageSize?: number): Async;
         /** Gets how many Indicators by IndicatorDescriptionID exist.
          *  @param indicatorDescriptionID The ID of the IndicatorDescription for which to retrieve the child Indicators.
          *  @return An Array of Indicators. */
@@ -5230,7 +5235,7 @@ declare module hiw {
         /** Gets Indicators by TimeframeID.
          *  @param timeframeID The ID of the Timeframe for which to retrieve the child Indicators.
          *  @return An Array of Indicators. */
-        static getByTimeframeID(timeframeID: number, api: API, callback: IAPICallback<Array<Indicator>>, page?: number): Async;
+        static getByTimeframeID(timeframeID: number, api: API, callback: IAPICallback<Array<Indicator>>, page?: number, pageSize?: number): Async;
         /** Gets how many Indicators by TimeframeID exist.
          *  @param timeframeID The ID of the Timeframe for which to retrieve the child Indicators.
          *  @return An Array of Indicators. */
@@ -5249,7 +5254,7 @@ declare module hiw {
         /** Gets Indicators by LocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child Indicators.
          *  @return An Array of Indicators. */
-        static getByLocaleID(localeID: number, api: API, callback: IAPICallback<Array<Indicator>>, page?: number): Async;
+        static getByLocaleID(localeID: number, api: API, callback: IAPICallback<Array<Indicator>>, page?: number, pageSize?: number): Async;
         /** Gets how many Indicators by LocaleID exist.
          *  @param localeID The ID of the Locale for which to retrieve the child Indicators.
          *  @return An Array of Indicators. */
@@ -5268,7 +5273,7 @@ declare module hiw {
         /** Gets Indicators by DimensionGraphID.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child Indicators.
          *  @return An Array of Indicators. */
-        static getByDimensionGraphID(dimensionGraphID: number, api: API, callback: IAPICallback<Array<Indicator>>, page?: number): Async;
+        static getByDimensionGraphID(dimensionGraphID: number, api: API, callback: IAPICallback<Array<Indicator>>, page?: number, pageSize?: number): Async;
         /** Gets how many Indicators by DimensionGraphID exist.
          *  @param dimensionGraphID The ID of the DimensionGraph for which to retrieve the child Indicators.
          *  @return An Array of Indicators. */
@@ -5287,7 +5292,7 @@ declare module hiw {
         /** Gets Indicators by ModifierGraphID.
          *  @param modifierGraphID The ID of the ModifierGraph for which to retrieve the child Indicators.
          *  @return An Array of Indicators. */
-        static getByModifierGraphID(modifierGraphID: number, api: API, callback: IAPICallback<Array<Indicator>>, page?: number): Async;
+        static getByModifierGraphID(modifierGraphID: number, api: API, callback: IAPICallback<Array<Indicator>>, page?: number, pageSize?: number): Async;
         /** Gets how many Indicators by ModifierGraphID exist.
          *  @param modifierGraphID The ID of the ModifierGraph for which to retrieve the child Indicators.
          *  @return An Array of Indicators. */
@@ -5336,7 +5341,7 @@ declare module hiw {
         /** Gets a list of all of the Initiatives in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Initiatives */
-        static getAll(api: API, callback: IAPICallback<Array<Initiative>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<Initiative>>, page?: number, pageSize?: number): Async;
         /** Gets how many Initiatives exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the Initiatives method. */
@@ -5348,7 +5353,7 @@ declare module hiw {
         /** Returns a filtered collection of Initiatives based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Initiatives which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Initiative>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Initiative>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many Initiatives exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of Initiatives which match the provided filter. */
@@ -5384,7 +5389,7 @@ declare module hiw {
         /** Gets a list of all of the Interventions in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Interventions */
-        static getAll(api: API, callback: IAPICallback<Array<Intervention>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<Intervention>>, page?: number, pageSize?: number): Async;
         /** Gets how many Interventions exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the Interventions method. */
@@ -5396,7 +5401,7 @@ declare module hiw {
         /** Returns a filtered collection of Interventions based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Interventions which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Intervention>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Intervention>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many Interventions exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of Interventions which match the provided filter. */
@@ -5408,7 +5413,7 @@ declare module hiw {
         /** Gets Interventions by UrlID.
          *  @param urlID The ID of the Url for which to retrieve the child Interventions.
          *  @return An Array of Interventions. */
-        static getByUrlID(urlID: number, api: API, callback: IAPICallback<Array<Intervention>>, page?: number): Async;
+        static getByUrlID(urlID: number, api: API, callback: IAPICallback<Array<Intervention>>, page?: number, pageSize?: number): Async;
         /** Gets how many Interventions by UrlID exist.
          *  @param urlID The ID of the Url for which to retrieve the child Interventions.
          *  @return An Array of Interventions. */
@@ -5449,7 +5454,7 @@ declare module hiw {
         /** Gets a list of all of the Keywords in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Keywords */
-        static getAll(api: API, callback: IAPICallback<Array<Keyword>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<Keyword>>, page?: number, pageSize?: number): Async;
         /** Gets how many Keywords exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the Keywords method. */
@@ -5461,7 +5466,7 @@ declare module hiw {
         /** Returns a filtered collection of Keywords based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Keywords which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Keyword>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Keyword>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many Keywords exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of Keywords which match the provided filter. */
@@ -5487,7 +5492,7 @@ declare module hiw {
         /** Gets a list of all of the LocaleLevels in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of LocaleLevels */
-        static getAll(api: API, callback: IAPICallback<Array<LocaleLevel>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<LocaleLevel>>, page?: number, pageSize?: number): Async;
         /** Gets how many LocaleLevels exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the LocaleLevels method. */
@@ -5499,7 +5504,7 @@ declare module hiw {
         /** Returns a filtered collection of LocaleLevels based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All LocaleLevels which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<LocaleLevel>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<LocaleLevel>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many LocaleLevels exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of LocaleLevels which match the provided filter. */
@@ -5527,7 +5532,7 @@ declare module hiw {
         /** Gets a list of all of the LocaleRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of LocaleRelations */
-        static getAll(api: API, callback: IAPICallback<Array<LocaleRelation>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<LocaleRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many LocaleRelations exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the LocaleRelations method. */
@@ -5539,7 +5544,7 @@ declare module hiw {
         /** Returns a filtered collection of LocaleRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All LocaleRelations which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<LocaleRelation>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<LocaleRelation>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many LocaleRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of LocaleRelations which match the provided filter. */
@@ -5551,7 +5556,7 @@ declare module hiw {
         /** Gets LocaleRelations by AncestorLocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child LocaleRelations.
          *  @return An Array of LocaleRelations. */
-        static getByAncestorLocaleID(localeID: number, api: API, callback: IAPICallback<Array<LocaleRelation>>, page?: number): Async;
+        static getByAncestorLocaleID(localeID: number, api: API, callback: IAPICallback<Array<LocaleRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many LocaleRelations by AncestorLocaleID exist.
          *  @param localeID The ID of the Locale for which to retrieve the child LocaleRelations.
          *  @return An Array of LocaleRelations. */
@@ -5570,7 +5575,7 @@ declare module hiw {
         /** Gets LocaleRelations by DescendantLocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child LocaleRelations.
          *  @return An Array of LocaleRelations. */
-        static getByDescendantLocaleID(localeID: number, api: API, callback: IAPICallback<Array<LocaleRelation>>, page?: number): Async;
+        static getByDescendantLocaleID(localeID: number, api: API, callback: IAPICallback<Array<LocaleRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many LocaleRelations by DescendantLocaleID exist.
          *  @param localeID The ID of the Locale for which to retrieve the child LocaleRelations.
          *  @return An Array of LocaleRelations. */
@@ -5624,7 +5629,7 @@ declare module hiw {
         /** Gets a list of all of the Locales in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Locales */
-        static getAll(api: API, callback: IAPICallback<Array<Locale>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<Locale>>, page?: number, pageSize?: number): Async;
         /** Gets how many Locales exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the Locales method. */
@@ -5636,7 +5641,7 @@ declare module hiw {
         /** Returns a filtered collection of Locales based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Locales which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Locale>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Locale>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many Locales exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of Locales which match the provided filter. */
@@ -5647,11 +5652,11 @@ declare module hiw {
         static filterPageCount(filter: Filter, api: API, callback: IAPICallback<number>): Async;
         /** Gets Locales by ParentLocaleID.
          *  @return An Array of Locales. */
-        getLocales(api: API, callback: IAPICallback<Array<Locale>>, page?: number): Async;
+        getLocales(api: API, callback: IAPICallback<Array<Locale>>, page?: number, pageSize?: number): Async;
         /** Gets Locales by ParentLocaleID.
          *  @param localeID The ID of the Locale for which to retrieve the child Locales.
          *  @return An Array of Locales. */
-        static getByParentLocaleID(localeID: number, api: API, callback: IAPICallback<Array<Locale>>, page?: number): Async;
+        static getByParentLocaleID(localeID: number, api: API, callback: IAPICallback<Array<Locale>>, page?: number, pageSize?: number): Async;
         /** Gets how many Locales by ParentLocaleID exist.
          *  @return An Array of Locales. */
         getLocalesCount(api: API, callback: IAPICallback<number>): Async;
@@ -5676,7 +5681,7 @@ declare module hiw {
         /** Gets Locales by LocaleLevelID.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child Locales.
          *  @return An Array of Locales. */
-        static getByLocaleLevelID(localeLevelID: number, api: API, callback: IAPICallback<Array<Locale>>, page?: number): Async;
+        static getByLocaleLevelID(localeLevelID: number, api: API, callback: IAPICallback<Array<Locale>>, page?: number, pageSize?: number): Async;
         /** Gets how many Locales by LocaleLevelID exist.
          *  @param localeLevelID The ID of the LocaleLevel for which to retrieve the child Locales.
          *  @return An Array of Locales. */
@@ -5719,7 +5724,7 @@ declare module hiw {
         /** Gets a list of all of the MaritalStatuses in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of MaritalStatuses */
-        static getAll(api: API, callback: IAPICallback<Array<MaritalStatus>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<MaritalStatus>>, page?: number, pageSize?: number): Async;
         /** Gets how many MaritalStatuses exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the MaritalStatuses method. */
@@ -5731,7 +5736,7 @@ declare module hiw {
         /** Returns a filtered collection of MaritalStatuses based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All MaritalStatuses which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<MaritalStatus>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<MaritalStatus>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many MaritalStatuses exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of MaritalStatuses which match the provided filter. */
@@ -5742,11 +5747,11 @@ declare module hiw {
         static filterPageCount(filter: Filter, api: API, callback: IAPICallback<number>): Async;
         /** Gets MaritalStatuses by ParentMaritalStatusID.
          *  @return An Array of MaritalStatuses. */
-        getMaritalStatuses(api: API, callback: IAPICallback<Array<MaritalStatus>>, page?: number): Async;
+        getMaritalStatuses(api: API, callback: IAPICallback<Array<MaritalStatus>>, page?: number, pageSize?: number): Async;
         /** Gets MaritalStatuses by ParentMaritalStatusID.
          *  @param maritalStatusID The ID of the MaritalStatus for which to retrieve the child MaritalStatuses.
          *  @return An Array of MaritalStatuses. */
-        static getByParentMaritalStatusID(maritalStatusID: number, api: API, callback: IAPICallback<Array<MaritalStatus>>, page?: number): Async;
+        static getByParentMaritalStatusID(maritalStatusID: number, api: API, callback: IAPICallback<Array<MaritalStatus>>, page?: number, pageSize?: number): Async;
         /** Gets how many MaritalStatuses by ParentMaritalStatusID exist.
          *  @return An Array of MaritalStatuses. */
         getMaritalStatusesCount(api: API, callback: IAPICallback<number>): Async;
@@ -5787,7 +5792,7 @@ declare module hiw {
         /** Gets a list of all of the MaritalStatusRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of MaritalStatusRelations */
-        static getAll(api: API, callback: IAPICallback<Array<MaritalStatusRelation>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<MaritalStatusRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many MaritalStatusRelations exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the MaritalStatusRelations method. */
@@ -5799,7 +5804,7 @@ declare module hiw {
         /** Returns a filtered collection of MaritalStatusRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All MaritalStatusRelations which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<MaritalStatusRelation>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<MaritalStatusRelation>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many MaritalStatusRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of MaritalStatusRelations which match the provided filter. */
@@ -5811,7 +5816,7 @@ declare module hiw {
         /** Gets MaritalStatusRelations by AncestorMaritalStatusID.
          *  @param maritalStatusID The ID of the MaritalStatus for which to retrieve the child MaritalStatusRelations.
          *  @return An Array of MaritalStatusRelations. */
-        static getByAncestorMaritalStatusID(maritalStatusID: number, api: API, callback: IAPICallback<Array<MaritalStatusRelation>>, page?: number): Async;
+        static getByAncestorMaritalStatusID(maritalStatusID: number, api: API, callback: IAPICallback<Array<MaritalStatusRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many MaritalStatusRelations by AncestorMaritalStatusID exist.
          *  @param maritalStatusID The ID of the MaritalStatus for which to retrieve the child MaritalStatusRelations.
          *  @return An Array of MaritalStatusRelations. */
@@ -5830,7 +5835,7 @@ declare module hiw {
         /** Gets MaritalStatusRelations by DescendantMaritalStatusID.
          *  @param maritalStatusID The ID of the MaritalStatus for which to retrieve the child MaritalStatusRelations.
          *  @return An Array of MaritalStatusRelations. */
-        static getByDescendantMaritalStatusID(maritalStatusID: number, api: API, callback: IAPICallback<Array<MaritalStatusRelation>>, page?: number): Async;
+        static getByDescendantMaritalStatusID(maritalStatusID: number, api: API, callback: IAPICallback<Array<MaritalStatusRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many MaritalStatusRelations by DescendantMaritalStatusID exist.
          *  @param maritalStatusID The ID of the MaritalStatus for which to retrieve the child MaritalStatusRelations.
          *  @return An Array of MaritalStatusRelations. */
@@ -5887,7 +5892,7 @@ declare module hiw {
         /** Gets a list of all of the Modifiers in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Modifiers */
-        static getAll(api: API, callback: IAPICallback<Array<Modifier>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<Modifier>>, page?: number, pageSize?: number): Async;
         /** Gets how many Modifiers exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the Modifiers method. */
@@ -5899,7 +5904,7 @@ declare module hiw {
         /** Returns a filtered collection of Modifiers based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Modifiers which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Modifier>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Modifier>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many Modifiers exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of Modifiers which match the provided filter. */
@@ -5910,11 +5915,11 @@ declare module hiw {
         static filterPageCount(filter: Filter, api: API, callback: IAPICallback<number>): Async;
         /** Gets Modifiers by ParentModifierID.
          *  @return An Array of Modifiers. */
-        getModifiers(api: API, callback: IAPICallback<Array<Modifier>>, page?: number): Async;
+        getModifiers(api: API, callback: IAPICallback<Array<Modifier>>, page?: number, pageSize?: number): Async;
         /** Gets Modifiers by ParentModifierID.
          *  @param modifierID The ID of the Modifier for which to retrieve the child Modifiers.
          *  @return An Array of Modifiers. */
-        static getByParentModifierID(modifierID: number, api: API, callback: IAPICallback<Array<Modifier>>, page?: number): Async;
+        static getByParentModifierID(modifierID: number, api: API, callback: IAPICallback<Array<Modifier>>, page?: number, pageSize?: number): Async;
         /** Gets how many Modifiers by ParentModifierID exist.
          *  @return An Array of Modifiers. */
         getModifiersCount(api: API, callback: IAPICallback<number>): Async;
@@ -6003,7 +6008,7 @@ declare module hiw {
         /** Gets a list of all of the ModifierGraphs in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of ModifierGraphs */
-        static getAll(api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many ModifierGraphs exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the ModifierGraphs method. */
@@ -6015,7 +6020,7 @@ declare module hiw {
         /** Returns a filtered collection of ModifierGraphs based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All ModifierGraphs which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many ModifierGraphs exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of ModifierGraphs which match the provided filter. */
@@ -6027,7 +6032,7 @@ declare module hiw {
         /** Gets ModifierGraphs by Modifier1ID.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
          *  @return An Array of ModifierGraphs. */
-        static getByModifier1ID(modifierID: number, api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number): Async;
+        static getByModifier1ID(modifierID: number, api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many ModifierGraphs by Modifier1ID exist.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
          *  @return An Array of ModifierGraphs. */
@@ -6046,7 +6051,7 @@ declare module hiw {
         /** Gets ModifierGraphs by Modifier2ID.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
          *  @return An Array of ModifierGraphs. */
-        static getByModifier2ID(modifierID: number, api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number): Async;
+        static getByModifier2ID(modifierID: number, api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many ModifierGraphs by Modifier2ID exist.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
          *  @return An Array of ModifierGraphs. */
@@ -6065,7 +6070,7 @@ declare module hiw {
         /** Gets ModifierGraphs by Modifier3ID.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
          *  @return An Array of ModifierGraphs. */
-        static getByModifier3ID(modifierID: number, api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number): Async;
+        static getByModifier3ID(modifierID: number, api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many ModifierGraphs by Modifier3ID exist.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
          *  @return An Array of ModifierGraphs. */
@@ -6084,7 +6089,7 @@ declare module hiw {
         /** Gets ModifierGraphs by Modifier4ID.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
          *  @return An Array of ModifierGraphs. */
-        static getByModifier4ID(modifierID: number, api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number): Async;
+        static getByModifier4ID(modifierID: number, api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many ModifierGraphs by Modifier4ID exist.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
          *  @return An Array of ModifierGraphs. */
@@ -6103,7 +6108,7 @@ declare module hiw {
         /** Gets ModifierGraphs by Modifier5ID.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
          *  @return An Array of ModifierGraphs. */
-        static getByModifier5ID(modifierID: number, api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number): Async;
+        static getByModifier5ID(modifierID: number, api: API, callback: IAPICallback<Array<ModifierGraph>>, page?: number, pageSize?: number): Async;
         /** Gets how many ModifierGraphs by Modifier5ID exist.
          *  @param modifierID The ID of the Modifier for which to retrieve the child ModifierGraphs.
          *  @return An Array of ModifierGraphs. */
@@ -6146,7 +6151,7 @@ declare module hiw {
         /** Gets a list of all of the ObesityStatuses in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of ObesityStatuses */
-        static getAll(api: API, callback: IAPICallback<Array<ObesityStatus>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<ObesityStatus>>, page?: number, pageSize?: number): Async;
         /** Gets how many ObesityStatuses exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the ObesityStatuses method. */
@@ -6158,7 +6163,7 @@ declare module hiw {
         /** Returns a filtered collection of ObesityStatuses based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All ObesityStatuses which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<ObesityStatus>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<ObesityStatus>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many ObesityStatuses exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of ObesityStatuses which match the provided filter. */
@@ -6169,11 +6174,11 @@ declare module hiw {
         static filterPageCount(filter: Filter, api: API, callback: IAPICallback<number>): Async;
         /** Gets ObesityStatuses by ParentObesityStatusID.
          *  @return An Array of ObesityStatuses. */
-        getObesityStatuses(api: API, callback: IAPICallback<Array<ObesityStatus>>, page?: number): Async;
+        getObesityStatuses(api: API, callback: IAPICallback<Array<ObesityStatus>>, page?: number, pageSize?: number): Async;
         /** Gets ObesityStatuses by ParentObesityStatusID.
          *  @param obesityStatusID The ID of the ObesityStatus for which to retrieve the child ObesityStatuses.
          *  @return An Array of ObesityStatuses. */
-        static getByParentObesityStatusID(obesityStatusID: number, api: API, callback: IAPICallback<Array<ObesityStatus>>, page?: number): Async;
+        static getByParentObesityStatusID(obesityStatusID: number, api: API, callback: IAPICallback<Array<ObesityStatus>>, page?: number, pageSize?: number): Async;
         /** Gets how many ObesityStatuses by ParentObesityStatusID exist.
          *  @return An Array of ObesityStatuses. */
         getObesityStatusesCount(api: API, callback: IAPICallback<number>): Async;
@@ -6214,7 +6219,7 @@ declare module hiw {
         /** Gets a list of all of the ObesityStatusRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of ObesityStatusRelations */
-        static getAll(api: API, callback: IAPICallback<Array<ObesityStatusRelation>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<ObesityStatusRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many ObesityStatusRelations exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the ObesityStatusRelations method. */
@@ -6226,7 +6231,7 @@ declare module hiw {
         /** Returns a filtered collection of ObesityStatusRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All ObesityStatusRelations which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<ObesityStatusRelation>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<ObesityStatusRelation>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many ObesityStatusRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of ObesityStatusRelations which match the provided filter. */
@@ -6238,7 +6243,7 @@ declare module hiw {
         /** Gets ObesityStatusRelations by AncestorObesityStatusID.
          *  @param obesityStatusID The ID of the ObesityStatus for which to retrieve the child ObesityStatusRelations.
          *  @return An Array of ObesityStatusRelations. */
-        static getByAncestorObesityStatusID(obesityStatusID: number, api: API, callback: IAPICallback<Array<ObesityStatusRelation>>, page?: number): Async;
+        static getByAncestorObesityStatusID(obesityStatusID: number, api: API, callback: IAPICallback<Array<ObesityStatusRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many ObesityStatusRelations by AncestorObesityStatusID exist.
          *  @param obesityStatusID The ID of the ObesityStatus for which to retrieve the child ObesityStatusRelations.
          *  @return An Array of ObesityStatusRelations. */
@@ -6257,7 +6262,7 @@ declare module hiw {
         /** Gets ObesityStatusRelations by DescendantObesityStatusID.
          *  @param obesityStatusID The ID of the ObesityStatus for which to retrieve the child ObesityStatusRelations.
          *  @return An Array of ObesityStatusRelations. */
-        static getByDescendantObesityStatusID(obesityStatusID: number, api: API, callback: IAPICallback<Array<ObesityStatusRelation>>, page?: number): Async;
+        static getByDescendantObesityStatusID(obesityStatusID: number, api: API, callback: IAPICallback<Array<ObesityStatusRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many ObesityStatusRelations by DescendantObesityStatusID exist.
          *  @param obesityStatusID The ID of the ObesityStatus for which to retrieve the child ObesityStatusRelations.
          *  @return An Array of ObesityStatusRelations. */
@@ -6300,7 +6305,7 @@ declare module hiw {
         /** Gets a list of all of the Others in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Others */
-        static getAll(api: API, callback: IAPICallback<Array<Other>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<Other>>, page?: number, pageSize?: number): Async;
         /** Gets how many Others exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the Others method. */
@@ -6312,7 +6317,7 @@ declare module hiw {
         /** Returns a filtered collection of Others based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Others which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Other>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Other>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many Others exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of Others which match the provided filter. */
@@ -6323,11 +6328,11 @@ declare module hiw {
         static filterPageCount(filter: Filter, api: API, callback: IAPICallback<number>): Async;
         /** Gets Others by ParentOtherID.
          *  @return An Array of Others. */
-        getOthers(api: API, callback: IAPICallback<Array<Other>>, page?: number): Async;
+        getOthers(api: API, callback: IAPICallback<Array<Other>>, page?: number, pageSize?: number): Async;
         /** Gets Others by ParentOtherID.
          *  @param otherID The ID of the Other for which to retrieve the child Others.
          *  @return An Array of Others. */
-        static getByParentOtherID(otherID: number, api: API, callback: IAPICallback<Array<Other>>, page?: number): Async;
+        static getByParentOtherID(otherID: number, api: API, callback: IAPICallback<Array<Other>>, page?: number, pageSize?: number): Async;
         /** Gets how many Others by ParentOtherID exist.
          *  @return An Array of Others. */
         getOthersCount(api: API, callback: IAPICallback<number>): Async;
@@ -6368,7 +6373,7 @@ declare module hiw {
         /** Gets a list of all of the OtherRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of OtherRelations */
-        static getAll(api: API, callback: IAPICallback<Array<OtherRelation>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<OtherRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many OtherRelations exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the OtherRelations method. */
@@ -6380,7 +6385,7 @@ declare module hiw {
         /** Returns a filtered collection of OtherRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All OtherRelations which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<OtherRelation>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<OtherRelation>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many OtherRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of OtherRelations which match the provided filter. */
@@ -6392,7 +6397,7 @@ declare module hiw {
         /** Gets OtherRelations by AncestorOtherID.
          *  @param otherID The ID of the Other for which to retrieve the child OtherRelations.
          *  @return An Array of OtherRelations. */
-        static getByAncestorOtherID(otherID: number, api: API, callback: IAPICallback<Array<OtherRelation>>, page?: number): Async;
+        static getByAncestorOtherID(otherID: number, api: API, callback: IAPICallback<Array<OtherRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many OtherRelations by AncestorOtherID exist.
          *  @param otherID The ID of the Other for which to retrieve the child OtherRelations.
          *  @return An Array of OtherRelations. */
@@ -6411,7 +6416,7 @@ declare module hiw {
         /** Gets OtherRelations by DescendantOtherID.
          *  @param otherID The ID of the Other for which to retrieve the child OtherRelations.
          *  @return An Array of OtherRelations. */
-        static getByDescendantOtherID(otherID: number, api: API, callback: IAPICallback<Array<OtherRelation>>, page?: number): Async;
+        static getByDescendantOtherID(otherID: number, api: API, callback: IAPICallback<Array<OtherRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many OtherRelations by DescendantOtherID exist.
          *  @param otherID The ID of the Other for which to retrieve the child OtherRelations.
          *  @return An Array of OtherRelations. */
@@ -6454,7 +6459,7 @@ declare module hiw {
         /** Gets a list of all of the RaceEthnicities in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of RaceEthnicities */
-        static getAll(api: API, callback: IAPICallback<Array<RaceEthnicity>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<RaceEthnicity>>, page?: number, pageSize?: number): Async;
         /** Gets how many RaceEthnicities exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the RaceEthnicities method. */
@@ -6466,7 +6471,7 @@ declare module hiw {
         /** Returns a filtered collection of RaceEthnicities based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All RaceEthnicities which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<RaceEthnicity>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<RaceEthnicity>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many RaceEthnicities exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of RaceEthnicities which match the provided filter. */
@@ -6477,11 +6482,11 @@ declare module hiw {
         static filterPageCount(filter: Filter, api: API, callback: IAPICallback<number>): Async;
         /** Gets RaceEthnicities by ParentRaceEthnicityID.
          *  @return An Array of RaceEthnicities. */
-        getRaceEthnicities(api: API, callback: IAPICallback<Array<RaceEthnicity>>, page?: number): Async;
+        getRaceEthnicities(api: API, callback: IAPICallback<Array<RaceEthnicity>>, page?: number, pageSize?: number): Async;
         /** Gets RaceEthnicities by ParentRaceEthnicityID.
          *  @param raceEthnicityID The ID of the RaceEthnicity for which to retrieve the child RaceEthnicities.
          *  @return An Array of RaceEthnicities. */
-        static getByParentRaceEthnicityID(raceEthnicityID: number, api: API, callback: IAPICallback<Array<RaceEthnicity>>, page?: number): Async;
+        static getByParentRaceEthnicityID(raceEthnicityID: number, api: API, callback: IAPICallback<Array<RaceEthnicity>>, page?: number, pageSize?: number): Async;
         /** Gets how many RaceEthnicities by ParentRaceEthnicityID exist.
          *  @return An Array of RaceEthnicities. */
         getRaceEthnicitiesCount(api: API, callback: IAPICallback<number>): Async;
@@ -6522,7 +6527,7 @@ declare module hiw {
         /** Gets a list of all of the RaceEthnicityRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of RaceEthnicityRelations */
-        static getAll(api: API, callback: IAPICallback<Array<RaceEthnicityRelation>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<RaceEthnicityRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many RaceEthnicityRelations exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the RaceEthnicityRelations method. */
@@ -6534,7 +6539,7 @@ declare module hiw {
         /** Returns a filtered collection of RaceEthnicityRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All RaceEthnicityRelations which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<RaceEthnicityRelation>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<RaceEthnicityRelation>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many RaceEthnicityRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of RaceEthnicityRelations which match the provided filter. */
@@ -6546,7 +6551,7 @@ declare module hiw {
         /** Gets RaceEthnicityRelations by AncestorRaceEthnicityID.
          *  @param raceEthnicityID The ID of the RaceEthnicity for which to retrieve the child RaceEthnicityRelations.
          *  @return An Array of RaceEthnicityRelations. */
-        static getByAncestorRaceEthnicityID(raceEthnicityID: number, api: API, callback: IAPICallback<Array<RaceEthnicityRelation>>, page?: number): Async;
+        static getByAncestorRaceEthnicityID(raceEthnicityID: number, api: API, callback: IAPICallback<Array<RaceEthnicityRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many RaceEthnicityRelations by AncestorRaceEthnicityID exist.
          *  @param raceEthnicityID The ID of the RaceEthnicity for which to retrieve the child RaceEthnicityRelations.
          *  @return An Array of RaceEthnicityRelations. */
@@ -6565,7 +6570,7 @@ declare module hiw {
         /** Gets RaceEthnicityRelations by DescendantRaceEthnicityID.
          *  @param raceEthnicityID The ID of the RaceEthnicity for which to retrieve the child RaceEthnicityRelations.
          *  @return An Array of RaceEthnicityRelations. */
-        static getByDescendantRaceEthnicityID(raceEthnicityID: number, api: API, callback: IAPICallback<Array<RaceEthnicityRelation>>, page?: number): Async;
+        static getByDescendantRaceEthnicityID(raceEthnicityID: number, api: API, callback: IAPICallback<Array<RaceEthnicityRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many RaceEthnicityRelations by DescendantRaceEthnicityID exist.
          *  @param raceEthnicityID The ID of the RaceEthnicity for which to retrieve the child RaceEthnicityRelations.
          *  @return An Array of RaceEthnicityRelations. */
@@ -6608,7 +6613,7 @@ declare module hiw {
         /** Gets a list of all of the Sexes in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Sexes */
-        static getAll(api: API, callback: IAPICallback<Array<Sex>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<Sex>>, page?: number, pageSize?: number): Async;
         /** Gets how many Sexes exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the Sexes method. */
@@ -6620,7 +6625,7 @@ declare module hiw {
         /** Returns a filtered collection of Sexes based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Sexes which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Sex>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Sex>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many Sexes exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of Sexes which match the provided filter. */
@@ -6631,11 +6636,11 @@ declare module hiw {
         static filterPageCount(filter: Filter, api: API, callback: IAPICallback<number>): Async;
         /** Gets Sexes by ParentSexID.
          *  @return An Array of Sexes. */
-        getSexes(api: API, callback: IAPICallback<Array<Sex>>, page?: number): Async;
+        getSexes(api: API, callback: IAPICallback<Array<Sex>>, page?: number, pageSize?: number): Async;
         /** Gets Sexes by ParentSexID.
          *  @param sexID The ID of the Sex for which to retrieve the child Sexes.
          *  @return An Array of Sexes. */
-        static getByParentSexID(sexID: number, api: API, callback: IAPICallback<Array<Sex>>, page?: number): Async;
+        static getByParentSexID(sexID: number, api: API, callback: IAPICallback<Array<Sex>>, page?: number, pageSize?: number): Async;
         /** Gets how many Sexes by ParentSexID exist.
          *  @return An Array of Sexes. */
         getSexesCount(api: API, callback: IAPICallback<number>): Async;
@@ -6676,7 +6681,7 @@ declare module hiw {
         /** Gets a list of all of the SexRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of SexRelations */
-        static getAll(api: API, callback: IAPICallback<Array<SexRelation>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<SexRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many SexRelations exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the SexRelations method. */
@@ -6688,7 +6693,7 @@ declare module hiw {
         /** Returns a filtered collection of SexRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All SexRelations which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<SexRelation>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<SexRelation>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many SexRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of SexRelations which match the provided filter. */
@@ -6700,7 +6705,7 @@ declare module hiw {
         /** Gets SexRelations by AncestorSexID.
          *  @param sexID The ID of the Sex for which to retrieve the child SexRelations.
          *  @return An Array of SexRelations. */
-        static getByAncestorSexID(sexID: number, api: API, callback: IAPICallback<Array<SexRelation>>, page?: number): Async;
+        static getByAncestorSexID(sexID: number, api: API, callback: IAPICallback<Array<SexRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many SexRelations by AncestorSexID exist.
          *  @param sexID The ID of the Sex for which to retrieve the child SexRelations.
          *  @return An Array of SexRelations. */
@@ -6719,7 +6724,7 @@ declare module hiw {
         /** Gets SexRelations by DescendantSexID.
          *  @param sexID The ID of the Sex for which to retrieve the child SexRelations.
          *  @return An Array of SexRelations. */
-        static getByDescendantSexID(sexID: number, api: API, callback: IAPICallback<Array<SexRelation>>, page?: number): Async;
+        static getByDescendantSexID(sexID: number, api: API, callback: IAPICallback<Array<SexRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many SexRelations by DescendantSexID exist.
          *  @param sexID The ID of the Sex for which to retrieve the child SexRelations.
          *  @return An Array of SexRelations. */
@@ -6762,7 +6767,7 @@ declare module hiw {
         /** Gets a list of all of the SexualOrientations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of SexualOrientations */
-        static getAll(api: API, callback: IAPICallback<Array<SexualOrientation>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<SexualOrientation>>, page?: number, pageSize?: number): Async;
         /** Gets how many SexualOrientations exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the SexualOrientations method. */
@@ -6774,7 +6779,7 @@ declare module hiw {
         /** Returns a filtered collection of SexualOrientations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All SexualOrientations which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<SexualOrientation>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<SexualOrientation>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many SexualOrientations exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of SexualOrientations which match the provided filter. */
@@ -6785,11 +6790,11 @@ declare module hiw {
         static filterPageCount(filter: Filter, api: API, callback: IAPICallback<number>): Async;
         /** Gets SexualOrientations by ParentSexualOrientationID.
          *  @return An Array of SexualOrientations. */
-        getSexualOrientations(api: API, callback: IAPICallback<Array<SexualOrientation>>, page?: number): Async;
+        getSexualOrientations(api: API, callback: IAPICallback<Array<SexualOrientation>>, page?: number, pageSize?: number): Async;
         /** Gets SexualOrientations by ParentSexualOrientationID.
          *  @param sexualOrientationID The ID of the SexualOrientation for which to retrieve the child SexualOrientations.
          *  @return An Array of SexualOrientations. */
-        static getByParentSexualOrientationID(sexualOrientationID: number, api: API, callback: IAPICallback<Array<SexualOrientation>>, page?: number): Async;
+        static getByParentSexualOrientationID(sexualOrientationID: number, api: API, callback: IAPICallback<Array<SexualOrientation>>, page?: number, pageSize?: number): Async;
         /** Gets how many SexualOrientations by ParentSexualOrientationID exist.
          *  @return An Array of SexualOrientations. */
         getSexualOrientationsCount(api: API, callback: IAPICallback<number>): Async;
@@ -6830,7 +6835,7 @@ declare module hiw {
         /** Gets a list of all of the SexualOrientationRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of SexualOrientationRelations */
-        static getAll(api: API, callback: IAPICallback<Array<SexualOrientationRelation>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<SexualOrientationRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many SexualOrientationRelations exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the SexualOrientationRelations method. */
@@ -6842,7 +6847,7 @@ declare module hiw {
         /** Returns a filtered collection of SexualOrientationRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All SexualOrientationRelations which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<SexualOrientationRelation>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<SexualOrientationRelation>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many SexualOrientationRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of SexualOrientationRelations which match the provided filter. */
@@ -6854,7 +6859,7 @@ declare module hiw {
         /** Gets SexualOrientationRelations by AncestorSexualOrientationID.
          *  @param sexualOrientationID The ID of the SexualOrientation for which to retrieve the child SexualOrientationRelations.
          *  @return An Array of SexualOrientationRelations. */
-        static getByAncestorSexualOrientationID(sexualOrientationID: number, api: API, callback: IAPICallback<Array<SexualOrientationRelation>>, page?: number): Async;
+        static getByAncestorSexualOrientationID(sexualOrientationID: number, api: API, callback: IAPICallback<Array<SexualOrientationRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many SexualOrientationRelations by AncestorSexualOrientationID exist.
          *  @param sexualOrientationID The ID of the SexualOrientation for which to retrieve the child SexualOrientationRelations.
          *  @return An Array of SexualOrientationRelations. */
@@ -6873,7 +6878,7 @@ declare module hiw {
         /** Gets SexualOrientationRelations by DescendantSexualOrientationID.
          *  @param sexualOrientationID The ID of the SexualOrientation for which to retrieve the child SexualOrientationRelations.
          *  @return An Array of SexualOrientationRelations. */
-        static getByDescendantSexualOrientationID(sexualOrientationID: number, api: API, callback: IAPICallback<Array<SexualOrientationRelation>>, page?: number): Async;
+        static getByDescendantSexualOrientationID(sexualOrientationID: number, api: API, callback: IAPICallback<Array<SexualOrientationRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many SexualOrientationRelations by DescendantSexualOrientationID exist.
          *  @param sexualOrientationID The ID of the SexualOrientation for which to retrieve the child SexualOrientationRelations.
          *  @return An Array of SexualOrientationRelations. */
@@ -6914,7 +6919,7 @@ declare module hiw {
         /** Gets a list of all of the Timeframes in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Timeframes */
-        static getAll(api: API, callback: IAPICallback<Array<Timeframe>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<Timeframe>>, page?: number, pageSize?: number): Async;
         /** Gets how many Timeframes exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the Timeframes method. */
@@ -6926,7 +6931,7 @@ declare module hiw {
         /** Returns a filtered collection of Timeframes based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Timeframes which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Timeframe>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Timeframe>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many Timeframes exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of Timeframes which match the provided filter. */
@@ -6962,7 +6967,7 @@ declare module hiw {
         /** Gets a list of all of the Totals in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Totals */
-        static getAll(api: API, callback: IAPICallback<Array<Total>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<Total>>, page?: number, pageSize?: number): Async;
         /** Gets how many Totals exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the Totals method. */
@@ -6974,7 +6979,7 @@ declare module hiw {
         /** Returns a filtered collection of Totals based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Totals which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Total>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Total>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many Totals exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of Totals which match the provided filter. */
@@ -6985,11 +6990,11 @@ declare module hiw {
         static filterPageCount(filter: Filter, api: API, callback: IAPICallback<number>): Async;
         /** Gets Totals by ParentTotalID.
          *  @return An Array of Totals. */
-        getTotals(api: API, callback: IAPICallback<Array<Total>>, page?: number): Async;
+        getTotals(api: API, callback: IAPICallback<Array<Total>>, page?: number, pageSize?: number): Async;
         /** Gets Totals by ParentTotalID.
          *  @param totalID The ID of the Total for which to retrieve the child Totals.
          *  @return An Array of Totals. */
-        static getByParentTotalID(totalID: number, api: API, callback: IAPICallback<Array<Total>>, page?: number): Async;
+        static getByParentTotalID(totalID: number, api: API, callback: IAPICallback<Array<Total>>, page?: number, pageSize?: number): Async;
         /** Gets how many Totals by ParentTotalID exist.
          *  @return An Array of Totals. */
         getTotalsCount(api: API, callback: IAPICallback<number>): Async;
@@ -7030,7 +7035,7 @@ declare module hiw {
         /** Gets a list of all of the TotalRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of TotalRelations */
-        static getAll(api: API, callback: IAPICallback<Array<TotalRelation>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<TotalRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many TotalRelations exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the TotalRelations method. */
@@ -7042,7 +7047,7 @@ declare module hiw {
         /** Returns a filtered collection of TotalRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All TotalRelations which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<TotalRelation>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<TotalRelation>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many TotalRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of TotalRelations which match the provided filter. */
@@ -7054,7 +7059,7 @@ declare module hiw {
         /** Gets TotalRelations by AncestorTotalID.
          *  @param totalID The ID of the Total for which to retrieve the child TotalRelations.
          *  @return An Array of TotalRelations. */
-        static getByAncestorTotalID(totalID: number, api: API, callback: IAPICallback<Array<TotalRelation>>, page?: number): Async;
+        static getByAncestorTotalID(totalID: number, api: API, callback: IAPICallback<Array<TotalRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many TotalRelations by AncestorTotalID exist.
          *  @param totalID The ID of the Total for which to retrieve the child TotalRelations.
          *  @return An Array of TotalRelations. */
@@ -7073,7 +7078,7 @@ declare module hiw {
         /** Gets TotalRelations by DescendantTotalID.
          *  @param totalID The ID of the Total for which to retrieve the child TotalRelations.
          *  @return An Array of TotalRelations. */
-        static getByDescendantTotalID(totalID: number, api: API, callback: IAPICallback<Array<TotalRelation>>, page?: number): Async;
+        static getByDescendantTotalID(totalID: number, api: API, callback: IAPICallback<Array<TotalRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many TotalRelations by DescendantTotalID exist.
          *  @param totalID The ID of the Total for which to retrieve the child TotalRelations.
          *  @return An Array of TotalRelations. */
@@ -7118,7 +7123,7 @@ declare module hiw {
         /** Gets a list of all of the Urls in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Urls */
-        static getAll(api: API, callback: IAPICallback<Array<Url>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<Url>>, page?: number, pageSize?: number): Async;
         /** Gets how many Urls exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the Urls method. */
@@ -7130,7 +7135,7 @@ declare module hiw {
         /** Returns a filtered collection of Urls based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Urls which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Url>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Url>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many Urls exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of Urls which match the provided filter. */
@@ -7154,7 +7159,7 @@ declare module hiw {
         /** Gets a list of all of the ValueLabels in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of ValueLabels */
-        static getAll(api: API, callback: IAPICallback<Array<ValueLabel>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<ValueLabel>>, page?: number, pageSize?: number): Async;
         /** Gets how many ValueLabels exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the ValueLabels method. */
@@ -7166,7 +7171,7 @@ declare module hiw {
         /** Returns a filtered collection of ValueLabels based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All ValueLabels which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<ValueLabel>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<ValueLabel>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many ValueLabels exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of ValueLabels which match the provided filter. */
@@ -7202,7 +7207,7 @@ declare module hiw {
         /** Gets a list of all of the VeteranStatuses in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of VeteranStatuses */
-        static getAll(api: API, callback: IAPICallback<Array<VeteranStatus>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<VeteranStatus>>, page?: number, pageSize?: number): Async;
         /** Gets how many VeteranStatuses exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the VeteranStatuses method. */
@@ -7214,7 +7219,7 @@ declare module hiw {
         /** Returns a filtered collection of VeteranStatuses based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All VeteranStatuses which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<VeteranStatus>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<VeteranStatus>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many VeteranStatuses exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of VeteranStatuses which match the provided filter. */
@@ -7225,11 +7230,11 @@ declare module hiw {
         static filterPageCount(filter: Filter, api: API, callback: IAPICallback<number>): Async;
         /** Gets VeteranStatuses by ParentVeteranStatusID.
          *  @return An Array of VeteranStatuses. */
-        getVeteranStatuses(api: API, callback: IAPICallback<Array<VeteranStatus>>, page?: number): Async;
+        getVeteranStatuses(api: API, callback: IAPICallback<Array<VeteranStatus>>, page?: number, pageSize?: number): Async;
         /** Gets VeteranStatuses by ParentVeteranStatusID.
          *  @param veteranStatusID The ID of the VeteranStatus for which to retrieve the child VeteranStatuses.
          *  @return An Array of VeteranStatuses. */
-        static getByParentVeteranStatusID(veteranStatusID: number, api: API, callback: IAPICallback<Array<VeteranStatus>>, page?: number): Async;
+        static getByParentVeteranStatusID(veteranStatusID: number, api: API, callback: IAPICallback<Array<VeteranStatus>>, page?: number, pageSize?: number): Async;
         /** Gets how many VeteranStatuses by ParentVeteranStatusID exist.
          *  @return An Array of VeteranStatuses. */
         getVeteranStatusesCount(api: API, callback: IAPICallback<number>): Async;
@@ -7270,7 +7275,7 @@ declare module hiw {
         /** Gets a list of all of the VeteranStatusRelations in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of VeteranStatusRelations */
-        static getAll(api: API, callback: IAPICallback<Array<VeteranStatusRelation>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<VeteranStatusRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many VeteranStatusRelations exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the VeteranStatusRelations method. */
@@ -7282,7 +7287,7 @@ declare module hiw {
         /** Returns a filtered collection of VeteranStatusRelations based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All VeteranStatusRelations which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<VeteranStatusRelation>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<VeteranStatusRelation>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many VeteranStatusRelations exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of VeteranStatusRelations which match the provided filter. */
@@ -7294,7 +7299,7 @@ declare module hiw {
         /** Gets VeteranStatusRelations by AncestorVeteranStatusID.
          *  @param veteranStatusID The ID of the VeteranStatus for which to retrieve the child VeteranStatusRelations.
          *  @return An Array of VeteranStatusRelations. */
-        static getByAncestorVeteranStatusID(veteranStatusID: number, api: API, callback: IAPICallback<Array<VeteranStatusRelation>>, page?: number): Async;
+        static getByAncestorVeteranStatusID(veteranStatusID: number, api: API, callback: IAPICallback<Array<VeteranStatusRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many VeteranStatusRelations by AncestorVeteranStatusID exist.
          *  @param veteranStatusID The ID of the VeteranStatus for which to retrieve the child VeteranStatusRelations.
          *  @return An Array of VeteranStatusRelations. */
@@ -7313,7 +7318,7 @@ declare module hiw {
         /** Gets VeteranStatusRelations by DescendantVeteranStatusID.
          *  @param veteranStatusID The ID of the VeteranStatus for which to retrieve the child VeteranStatusRelations.
          *  @return An Array of VeteranStatusRelations. */
-        static getByDescendantVeteranStatusID(veteranStatusID: number, api: API, callback: IAPICallback<Array<VeteranStatusRelation>>, page?: number): Async;
+        static getByDescendantVeteranStatusID(veteranStatusID: number, api: API, callback: IAPICallback<Array<VeteranStatusRelation>>, page?: number, pageSize?: number): Async;
         /** Gets how many VeteranStatusRelations by DescendantVeteranStatusID exist.
          *  @param veteranStatusID The ID of the VeteranStatus for which to retrieve the child VeteranStatusRelations.
          *  @return An Array of VeteranStatusRelations. */
@@ -7348,7 +7353,7 @@ declare module hiw {
         /** Gets a list of all of the Years in the database.
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Years */
-        static getAll(api: API, callback: IAPICallback<Array<Year>>, page?: number): Async;
+        static getAll(api: API, callback: IAPICallback<Array<Year>>, page?: number, pageSize?: number): Async;
         /** Gets how many Years exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the Years method. */
@@ -7360,7 +7365,7 @@ declare module hiw {
         /** Returns a filtered collection of Years based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return All Years which match the provided filter. */
-        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Year>>, page?: number): Async;
+        static filter(filter: Filter, api: API, callback: IAPICallback<Array<Year>>, page?: number, pageSize?: number): Async;
         /** Returns a count of how many Years exist based on the provided filter.
          *  @param filter The Filter to apply.
          *  @return The count of Years which match the provided filter. */
