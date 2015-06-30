@@ -15,6 +15,10 @@ var hiw;
         VersionInfo.prototype.getFields = function () {
             return VersionInfo.Fields;
         };
+        VersionInfo.prototype.fill = function (json, exclude) {
+            _super.prototype.fill.call(this, json, exclude);
+            this.loadDate = this.parseDate(this.loadDate);
+        };
         VersionInfo.version = function (api, callback) {
             api.executeEndpoint(hiw.Endpoint.fromSelf(), callback);
         };

@@ -62,5 +62,29 @@ module hiw {
                     this.links.push(extend(new Link(), json.Links[i]));
             }
         }
+
+        protected parseDate(value: any): Date {
+            if (value == null)
+                return null;
+            else {
+                var match = value.toString().match(/\/Date\((\d+)(?:([+-])(\d\d)(\d\d))?\)\//);
+                var milliseconds = null;
+
+                if (match == null)
+                    return new Date(NaN);
+
+                milliseconds = parseInt(match[1], 10);
+
+                if (match[2] && match[3] && match[4]) {
+                    var tzDirection = (match[2] == "+" ? -1 : 1);
+                    var tzHours = parseInt(match[3], 10);
+                    var tzMinutes = parseInt(match[4], 10);
+
+                    milliseconds += (tzDirection * ((tzHours * 60) + tzMinutes) * 60000);
+                }
+
+                return new Date(milliseconds);
+            }
+        }
     }
 }

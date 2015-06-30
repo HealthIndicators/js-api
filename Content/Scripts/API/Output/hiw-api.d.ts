@@ -402,6 +402,7 @@ declare module hiw {
         /** Recusively fills this instance with the provided data.
          *  @param json A JSON object containing the properties and values to copy to this instance. */
         fill(json: any, exclude?: Array<string>): void;
+        protected parseDate(value: any): Date;
     }
 }
 declare module hiw {
@@ -944,6 +945,8 @@ declare module hiw {
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataCategories */
         static getAll(api: API, callback: IAPICallback<Array<DataCategory>>, page?: number, pageSize?: number): Async;
+        /** Handles special data types during "fill". */
+        fill(json: any, exclude?: Array<string>): void;
         /** Gets how many DataCategories exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the DataCategories method. */
@@ -1109,6 +1112,8 @@ declare module hiw {
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataSourceDataSuppliers */
         static getAll(api: API, callback: IAPICallback<Array<DataSourceDataSupplier>>, page?: number, pageSize?: number): Async;
+        /** Handles special data types during "fill". */
+        fill(json: any, exclude?: Array<string>): void;
         /** Gets how many DataSourceDataSuppliers exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the DataSourceDataSuppliers method. */
@@ -1223,6 +1228,8 @@ declare module hiw {
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataSources */
         static getAll(api: API, callback: IAPICallback<Array<DataSource>>, page?: number, pageSize?: number): Async;
+        /** Handles special data types during "fill". */
+        fill(json: any, exclude?: Array<string>): void;
         /** Gets how many DataSources exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the DataSources method. */
@@ -1353,6 +1360,8 @@ declare module hiw {
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of DataSuppliers */
         static getAll(api: API, callback: IAPICallback<Array<DataSupplier>>, page?: number, pageSize?: number): Async;
+        /** Handles special data types during "fill". */
+        fill(json: any, exclude?: Array<string>): void;
         /** Gets how many DataSuppliers exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the DataSuppliers method. */
@@ -2777,6 +2786,8 @@ declare module hiw {
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of GlossaryTerms */
         static getAll(api: API, callback: IAPICallback<Array<GlossaryTerm>>, page?: number, pageSize?: number): Async;
+        /** Handles special data types during "fill". */
+        fill(json: any, exclude?: Array<string>): void;
         /** Gets how many GlossaryTerms exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the GlossaryTerms method. */
@@ -3007,6 +3018,8 @@ declare module hiw {
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of HP2020TSMs */
         static getAll(api: API, callback: IAPICallback<Array<HP2020TSM>>, page?: number, pageSize?: number): Async;
+        /** Handles special data types during "fill". */
+        fill(json: any, exclude?: Array<string>): void;
         /** Gets how many HP2020TSMs exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the HP2020TSMs method. */
@@ -4663,6 +4676,8 @@ declare module hiw {
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of IndicatorDescriptions */
         static getAll(api: API, callback: IAPICallback<Array<IndicatorDescription>>, page?: number, pageSize?: number): Async;
+        /** Handles special data types during "fill". */
+        fill(json: any, exclude?: Array<string>): void;
         /** Gets how many IndicatorDescriptions exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the IndicatorDescriptions method. */
@@ -5342,6 +5357,8 @@ declare module hiw {
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Initiatives */
         static getAll(api: API, callback: IAPICallback<Array<Initiative>>, page?: number, pageSize?: number): Async;
+        /** Handles special data types during "fill". */
+        fill(json: any, exclude?: Array<string>): void;
         /** Gets how many Initiatives exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the Initiatives method. */
@@ -5455,6 +5472,8 @@ declare module hiw {
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Keywords */
         static getAll(api: API, callback: IAPICallback<Array<Keyword>>, page?: number, pageSize?: number): Async;
+        /** Handles special data types during "fill". */
+        fill(json: any, exclude?: Array<string>): void;
         /** Gets how many Keywords exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the Keywords method. */
@@ -7124,6 +7143,8 @@ declare module hiw {
          *  @param  page The page of data to retrieve.
          *  @return  An IEnumerable of Urls */
         static getAll(api: API, callback: IAPICallback<Array<Url>>, page?: number, pageSize?: number): Async;
+        /** Handles special data types during "fill". */
+        fill(json: any, exclude?: Array<string>): void;
         /** Gets how many Urls exist. */
         static getAllCount(api: API, callback: IAPICallback<number>): Async;
         /** Gets how many pages of data exist for the Urls method. */
@@ -7513,6 +7534,7 @@ declare module hiw {
         loadDate: Date;
         serviceVersion: number;
         protected getFields(): any;
+        fill(json: any, exclude?: Array<string>): void;
         static version(api: API, callback: IAPICallback<VersionInfo>): void;
     }
 }

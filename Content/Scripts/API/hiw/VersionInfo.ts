@@ -12,6 +12,11 @@
 
         protected getFields(): any { return VersionInfo.Fields; }
 
+        public fill(json: any, exclude?: Array<string>): void {
+            super.fill(json, exclude);
+            this.loadDate = this.parseDate(this.loadDate);
+        }
+
         public static version(api: API, callback: IAPICallback<VersionInfo>) {
             api.executeEndpoint<VersionInfo>(Endpoint.fromSelf<VersionInfo>(), callback);
         }

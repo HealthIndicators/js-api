@@ -402,6 +402,7 @@ declare module hiw {
         /** Recusively fills this instance with the provided data.
          *  @param json A JSON object containing the properties and values to copy to this instance. */
         fill(json: any, exclude?: Array<string>): void;
+        protected parseDate(value: any): Date;
     }
 }
 declare module hiw {

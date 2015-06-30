@@ -773,6 +773,11 @@ var hiw;
         BaseDataCategory.getAll = function (api, callback, page, pageSize) {
             return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
+        /** Handles special data types during "fill". */
+        BaseDataCategory.prototype.fill = function (json, exclude) {
+            _super.prototype.fill.call(this, json, exclude);
+            this.modifyDate = this.parseDate(this.modifyDate);
+        };
         /** Gets how many DataCategories exist. */
         BaseDataCategory.getAllCount = function (api, callback) {
             return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback);
@@ -1050,6 +1055,11 @@ var hiw;
         BaseDataSourceDataSupplier.getAll = function (api, callback, page, pageSize) {
             return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
+        /** Handles special data types during "fill". */
+        BaseDataSourceDataSupplier.prototype.fill = function (json, exclude) {
+            _super.prototype.fill.call(this, json, exclude);
+            this.modificationDate = this.parseDate(this.modificationDate);
+        };
         /** Gets how many DataSourceDataSuppliers exist. */
         BaseDataSourceDataSupplier.getAllCount = function (api, callback) {
             return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback);
@@ -1193,6 +1203,11 @@ var hiw;
          *  @return  An IEnumerable of DataSources */
         BaseDataSource.getAll = function (api, callback, page, pageSize) {
             return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
+        };
+        /** Handles special data types during "fill". */
+        BaseDataSource.prototype.fill = function (json, exclude) {
+            _super.prototype.fill.call(this, json, exclude);
+            this.modifyDate = this.parseDate(this.modifyDate);
         };
         /** Gets how many DataSources exist. */
         BaseDataSource.getAllCount = function (api, callback) {
@@ -1411,6 +1426,13 @@ var hiw;
          *  @return  An IEnumerable of DataSuppliers */
         BaseDataSupplier.getAll = function (api, callback, page, pageSize) {
             return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
+        };
+        /** Handles special data types during "fill". */
+        BaseDataSupplier.prototype.fill = function (json, exclude) {
+            _super.prototype.fill.call(this, json, exclude);
+            this.modifyDate = this.parseDate(this.modifyDate);
+            _super.prototype.fill.call(this, json, exclude);
+            this.validationDate = this.parseDate(this.validationDate);
         };
         /** Gets how many DataSuppliers exist. */
         BaseDataSupplier.getAllCount = function (api, callback) {
@@ -3575,6 +3597,11 @@ var hiw;
         BaseGlossaryTerm.getAll = function (api, callback, page, pageSize) {
             return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
+        /** Handles special data types during "fill". */
+        BaseGlossaryTerm.prototype.fill = function (json, exclude) {
+            _super.prototype.fill.call(this, json, exclude);
+            this.modificationDate = this.parseDate(this.modificationDate);
+        };
         /** Gets how many GlossaryTerms exist. */
         BaseGlossaryTerm.getAllCount = function (api, callback) {
             return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback);
@@ -3948,6 +3975,11 @@ var hiw;
          *  @return  An IEnumerable of HP2020TSMs */
         BaseHP2020TSM.getAll = function (api, callback, page, pageSize) {
             return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
+        };
+        /** Handles special data types during "fill". */
+        BaseHP2020TSM.prototype.fill = function (json, exclude) {
+            _super.prototype.fill.call(this, json, exclude);
+            this.modifyDate = this.parseDate(this.modifyDate);
         };
         /** Gets how many HP2020TSMs exist. */
         BaseHP2020TSM.getAllCount = function (api, callback) {
@@ -6587,6 +6619,13 @@ var hiw;
         BaseIndicatorDescription.getAll = function (api, callback, page, pageSize) {
             return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
+        /** Handles special data types during "fill". */
+        BaseIndicatorDescription.prototype.fill = function (json, exclude) {
+            _super.prototype.fill.call(this, json, exclude);
+            this.modificationDate = this.parseDate(this.modificationDate);
+            _super.prototype.fill.call(this, json, exclude);
+            this.modifyDate = this.parseDate(this.modifyDate);
+        };
         /** Gets how many IndicatorDescriptions exist. */
         BaseIndicatorDescription.getAllCount = function (api, callback) {
             return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback);
@@ -7640,6 +7679,11 @@ var hiw;
         BaseInitiative.getAll = function (api, callback, page, pageSize) {
             return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
         };
+        /** Handles special data types during "fill". */
+        BaseInitiative.prototype.fill = function (json, exclude) {
+            _super.prototype.fill.call(this, json, exclude);
+            this.modifyDate = this.parseDate(this.modifyDate);
+        };
         /** Gets how many Initiatives exist. */
         BaseInitiative.getAllCount = function (api, callback) {
             return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback);
@@ -7822,6 +7866,11 @@ var hiw;
          *  @return  An IEnumerable of Keywords */
         BaseKeyword.getAll = function (api, callback, page, pageSize) {
             return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
+        };
+        /** Handles special data types during "fill". */
+        BaseKeyword.prototype.fill = function (json, exclude) {
+            _super.prototype.fill.call(this, json, exclude);
+            this.modifyDate = this.parseDate(this.modifyDate);
         };
         /** Gets how many Keywords exist. */
         BaseKeyword.getAllCount = function (api, callback) {
@@ -10443,6 +10492,13 @@ var hiw;
          *  @return  An IEnumerable of Urls */
         BaseUrl.getAll = function (api, callback, page, pageSize) {
             return api.executeEndpoint(hiw.Endpoint.fromSelf(), callback, null, null, page, pageSize);
+        };
+        /** Handles special data types during "fill". */
+        BaseUrl.prototype.fill = function (json, exclude) {
+            _super.prototype.fill.call(this, json, exclude);
+            this.modifyDate = this.parseDate(this.modifyDate);
+            _super.prototype.fill.call(this, json, exclude);
+            this.validationDate = this.parseDate(this.validationDate);
         };
         /** Gets how many Urls exist. */
         BaseUrl.getAllCount = function (api, callback) {

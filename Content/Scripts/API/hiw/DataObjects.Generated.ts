@@ -811,6 +811,12 @@ module hiw {
             return api.executeEndpoint<Array<DataCategory>>(Endpoint.fromSelf<Array<DataCategory>>(), callback, null, null, page, pageSize);
         }
 
+        /** Handles special data types during "fill". */
+        public fill(json: any, exclude?: Array<string>): void {
+            super.fill(json, exclude);
+            this.modifyDate = this.parseDate(this.modifyDate);
+        }
+
         /** Gets how many DataCategories exist. */
         public static getAllCount(api: API, callback: IAPICallback<number>): Async {
             return api.executeEndpoint<number>(Endpoint.fromSelf<number>(), callback);
@@ -1093,6 +1099,12 @@ module hiw {
             return api.executeEndpoint<Array<DataSourceDataSupplier>>(Endpoint.fromSelf<Array<DataSourceDataSupplier>>(), callback, null, null, page, pageSize);
         }
 
+        /** Handles special data types during "fill". */
+        public fill(json: any, exclude?: Array<string>): void {
+            super.fill(json, exclude);
+            this.modificationDate = this.parseDate(this.modificationDate);
+        }
+
         /** Gets how many DataSourceDataSuppliers exist. */
         public static getAllCount(api: API, callback: IAPICallback<number>): Async {
             return api.executeEndpoint<number>(Endpoint.fromSelf<number>(), callback);
@@ -1259,6 +1271,12 @@ module hiw {
          *  @return  An IEnumerable of DataSources */
         public static getAll(api: API, callback: IAPICallback<Array<DataSource>>, page?: number, pageSize?: number): Async {
             return api.executeEndpoint<Array<DataSource>>(Endpoint.fromSelf<Array<DataSource>>(), callback, null, null, page, pageSize);
+        }
+
+        /** Handles special data types during "fill". */
+        public fill(json: any, exclude?: Array<string>): void {
+            super.fill(json, exclude);
+            this.modifyDate = this.parseDate(this.modifyDate);
         }
 
         /** Gets how many DataSources exist. */
@@ -1467,6 +1485,14 @@ module hiw {
          *  @return  An IEnumerable of DataSuppliers */
         public static getAll(api: API, callback: IAPICallback<Array<DataSupplier>>, page?: number, pageSize?: number): Async {
             return api.executeEndpoint<Array<DataSupplier>>(Endpoint.fromSelf<Array<DataSupplier>>(), callback, null, null, page, pageSize);
+        }
+
+        /** Handles special data types during "fill". */
+        public fill(json: any, exclude?: Array<string>): void {
+            super.fill(json, exclude);
+            this.modifyDate = this.parseDate(this.modifyDate);
+            super.fill(json, exclude);
+            this.validationDate = this.parseDate(this.validationDate);
         }
 
         /** Gets how many DataSuppliers exist. */
@@ -3763,6 +3789,12 @@ module hiw {
             return api.executeEndpoint<Array<GlossaryTerm>>(Endpoint.fromSelf<Array<GlossaryTerm>>(), callback, null, null, page, pageSize);
         }
 
+        /** Handles special data types during "fill". */
+        public fill(json: any, exclude?: Array<string>): void {
+            super.fill(json, exclude);
+            this.modificationDate = this.parseDate(this.modificationDate);
+        }
+
         /** Gets how many GlossaryTerms exist. */
         public static getAllCount(api: API, callback: IAPICallback<number>): Async {
             return api.executeEndpoint<number>(Endpoint.fromSelf<number>(), callback);
@@ -4147,6 +4179,12 @@ module hiw {
          *  @return  An IEnumerable of HP2020TSMs */
         public static getAll(api: API, callback: IAPICallback<Array<HP2020TSM>>, page?: number, pageSize?: number): Async {
             return api.executeEndpoint<Array<HP2020TSM>>(Endpoint.fromSelf<Array<HP2020TSM>>(), callback, null, null, page, pageSize);
+        }
+
+        /** Handles special data types during "fill". */
+        public fill(json: any, exclude?: Array<string>): void {
+            super.fill(json, exclude);
+            this.modifyDate = this.parseDate(this.modifyDate);
         }
 
         /** Gets how many HP2020TSMs exist. */
@@ -6927,6 +6965,14 @@ module hiw {
             return api.executeEndpoint<Array<IndicatorDescription>>(Endpoint.fromSelf<Array<IndicatorDescription>>(), callback, null, null, page, pageSize);
         }
 
+        /** Handles special data types during "fill". */
+        public fill(json: any, exclude?: Array<string>): void {
+            super.fill(json, exclude);
+            this.modificationDate = this.parseDate(this.modificationDate);
+            super.fill(json, exclude);
+            this.modifyDate = this.parseDate(this.modifyDate);
+        }
+
         /** Gets how many IndicatorDescriptions exist. */
         public static getAllCount(api: API, callback: IAPICallback<number>): Async {
             return api.executeEndpoint<number>(Endpoint.fromSelf<number>(), callback);
@@ -8035,6 +8081,12 @@ module hiw {
             return api.executeEndpoint<Array<Initiative>>(Endpoint.fromSelf<Array<Initiative>>(), callback, null, null, page, pageSize);
         }
 
+        /** Handles special data types during "fill". */
+        public fill(json: any, exclude?: Array<string>): void {
+            super.fill(json, exclude);
+            this.modifyDate = this.parseDate(this.modifyDate);
+        }
+
         /** Gets how many Initiatives exist. */
         public static getAllCount(api: API, callback: IAPICallback<number>): Async {
             return api.executeEndpoint<number>(Endpoint.fromSelf<number>(), callback);
@@ -8209,6 +8261,12 @@ module hiw {
          *  @return  An IEnumerable of Keywords */
         public static getAll(api: API, callback: IAPICallback<Array<Keyword>>, page?: number, pageSize?: number): Async {
             return api.executeEndpoint<Array<Keyword>>(Endpoint.fromSelf<Array<Keyword>>(), callback, null, null, page, pageSize);
+        }
+
+        /** Handles special data types during "fill". */
+        public fill(json: any, exclude?: Array<string>): void {
+            super.fill(json, exclude);
+            this.modifyDate = this.parseDate(this.modifyDate);
         }
 
         /** Gets how many Keywords exist. */
@@ -10931,6 +10989,14 @@ module hiw {
          *  @return  An IEnumerable of Urls */
         public static getAll(api: API, callback: IAPICallback<Array<Url>>, page?: number, pageSize?: number): Async {
             return api.executeEndpoint<Array<Url>>(Endpoint.fromSelf<Array<Url>>(), callback, null, null, page, pageSize);
+        }
+
+        /** Handles special data types during "fill". */
+        public fill(json: any, exclude?: Array<string>): void {
+            super.fill(json, exclude);
+            this.modifyDate = this.parseDate(this.modifyDate);
+            super.fill(json, exclude);
+            this.validationDate = this.parseDate(this.validationDate);
         }
 
         /** Gets how many Urls exist. */
