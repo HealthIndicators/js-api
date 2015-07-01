@@ -200,3 +200,5 @@ FakesAssemblies/
 Content/Scripts/API/Output/hiw-js-api.zip
 Content/Scripts/API/Output/LICENSE.md
 Content/Scripts/API/Output/README.md
+Content/Scripts/API/hiw/**/*.js
+Content/Scripts/API/hiw/**/*.map
