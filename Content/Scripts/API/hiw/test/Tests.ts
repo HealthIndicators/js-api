@@ -37,7 +37,7 @@
                         assertAPIResponse(assert, data, response, error);
                         assert.isNotNull(childAges, "Were the child Ages returned?");
                         assert.greaterThanOrEqualTo(childAges.length, 1, "Was at least one child Age returned?");
-                        assert.any(childAges,(o) => o.id === age.id, "Is the orignal Age #34 included in the child Ages?");
+                        assert.any(childAges,(o) => o.id === age.id, "Is the original Age #34 included in the child Ages?");
                         done();
                     });
                 });
