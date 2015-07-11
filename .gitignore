@@ -202,3 +202,7 @@ Content/Scripts/API/Output/LICENSE.md
 Content/Scripts/API/Output/README.md
 Content/Scripts/API/hiw/**/*.js
 Content/Scripts/API/hiw/**/*.map
+Content/Packages/NPM/*
+!Content/Packages/NPM/package.json
+Content/Packages/NuGet/*
+!Content/Packages/NuGet/*.nuspec
