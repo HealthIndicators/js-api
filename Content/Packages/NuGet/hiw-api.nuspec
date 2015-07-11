@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>hiw-api</id>
-        <version>5.0.5</version>
+        <version>5.2.0</version>
         <title>Health Indicators Warehouse Javascript API (Complete)</title>
         <authors>Health Indicators Warehouse</authors>
         <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
@@ -16,15 +16,15 @@
         <tags>hiw health indicators warehouse rest api sdk</tags>
     </metadata>
     <files>
-        <file src="Publish\hiw-api-lite.js" target="content\Scripts\hiw-api-lite.js" />
-        <file src="Publish\hiw-api-lite.min.js" target="content\Scripts\hiw-api-lite.min.js" />
-        <file src="Publish\hiw-api.js" target="content\Scripts\hiw-api.js" />
-        <file src="Publish\hiw-api.min.js" target="content\Scripts\hiw-api.min.js" />
-        <file src="Publish\hiw-api-lite.d.ts" target="hiw-api-lite.d.ts" />
-        <file src="Publish\hiw-api-test.d.ts" target="hiw-api-test.d.ts" />
-        <file src="Publish\hiw-api-test.js" target="hiw-api-test.js" />
-        <file src="Publish\hiw-api.d.ts" target="hiw-api.d.ts" />
-        <file src="Publish\LICENSE.md" target="LICENSE.md" />
-        <file src="Publish\README.md" target="README.md" />
+        <file src="..\..\Scripts\API\Output\hiw-api-lite.js" target="content\Scripts\hiw-api-lite.js" />
+        <file src="..\..\Scripts\API\Output\hiw-api-lite.min.js" target="content\Scripts\hiw-api-lite.min.js" />
+        <file src="..\..\Scripts\API\Output\hiw-api.js" target="content\Scripts\hiw-api.js" />
+        <file src="..\..\Scripts\API\Output\hiw-api.min.js" target="content\Scripts\hiw-api.min.js" />
+        <file src="..\..\Scripts\API\Output\hiw-api-lite.d.ts" target="hiw-api-lite.d.ts" />
+        <file src="..\..\Scripts\API\Output\hiw-api-test.d.ts" target="hiw-api-test.d.ts" />
+        <file src="..\..\Scripts\API\Output\hiw-api-test.js" target="hiw-api-test.js" />
+        <file src="..\..\Scripts\API\Output\hiw-api.d.ts" target="hiw-api.d.ts" />
+        <file src="..\..\Scripts\API\Output\LICENSE.md" target="LICENSE.md" />
+        <file src="..\..\Scripts\API\Output\README.md" target="README.md" />
     </files>
 </package>

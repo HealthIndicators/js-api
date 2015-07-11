@@ -1,5 +1,5 @@
 /* Health Indicators Warehouse (HIW) JavaScript API
- *   v5.0.5 (beta)
+ *   v5.2.0
  * 
  * Docs:    http://developers.healthindicators.gov
  * Source:  https://github.com/HealthIndicators/js-api
@@ -272,13 +272,13 @@ var hiw;
         /** Creates a new Filter instance for the specified page, type, and criteria. */
         function Filter(page, pageSize, type) {
             if (page === void 0) { page = 1; }
-            if (pageSize === void 0) { pageSize = hiw.API.DefaultPageSize; }
+            if (pageSize === void 0) { pageSize = null; }
             if (type === void 0) { type = 0 /* And */; }
             _super.call(this, type);
             /** The page of data to return (default is 1, the first page). */
             this.page = 1;
             /** The amount of data to return, per page. */
-            this.pageSize = hiw.API.DefaultPageSize;
+            this.pageSize = null;
             this.page = page;
             this.pageSize = pageSize;
         }
@@ -746,7 +746,7 @@ var hiw;
         };
         API.prototype.executeEndpoint = function (endpoint, callback, params, postData, page, pageSize) {
             if (page === void 0) { page = 1; }
-            if (pageSize === void 0) { pageSize = API.DefaultPageSize; }
+            if (pageSize === void 0) { pageSize = null; }
             var parameterizedPath = null;
             var url = null;
             var async = null;
@@ -812,7 +812,6 @@ var hiw;
             api.executeEndpoint(hiw.Endpoint.fromSelf(), callback);
         };
         API.DefaultBaseURL = "http://services.healthindicators.gov/v5/REST.svc/";
-        API.DefaultPageSize = 2000;
         API.Endpoints = new Array();
         return API;
     })();

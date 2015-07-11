@@ -1,5 +1,5 @@
 /* Health Indicators Warehouse (HIW) JavaScript API
- *   v5.0.5 (beta)
+ *   v5.2.0
  * 
  * Docs:    http://developers.healthindicators.gov
  * Source:  https://github.com/HealthIndicators/js-api
@@ -430,7 +430,6 @@ declare module hiw {
     /** Provides core functionality to interact with the HIW API. */
     class API {
         static DefaultBaseURL: string;
-        static DefaultPageSize: number;
         static Endpoints: Endpoint<any>[];
         /** The base URL of the HIW API. */
         baseURL: string;

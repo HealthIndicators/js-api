@@ -1,5 +1,5 @@
 /* Health Indicators Warehouse (HIW) JavaScript API
- *   v5.0.5 (beta)
+ *   v5.2.0
  * 
  * Docs:    http://developers.healthindicators.gov
  * Source:  https://github.com/HealthIndicators/js-api
@@ -114,7 +114,7 @@ var hiw;
                             assertAPIResponse(assert, data, response, error);
                             assert.isNotNull(childAges, "Were the child Ages returned?");
                             assert.greaterThanOrEqualTo(childAges.length, 1, "Was at least one child Age returned?");
-                            assert.any(childAges, function (o) { return o.id === age.id; }, "Is the orignal Age #34 included in the child Ages?");
+                            assert.any(childAges, function (o) { return o.id === age.id; }, "Is the original Age #34 included in the child Ages?");
                             done();
                         });
                     });
@@ -217,7 +217,7 @@ var hiw;
                 asyncTest("Get -1 indicator", function (assert, done) {
                     hiw.Indicator.getAll(api, function (data, response, error) {
                         assertAPIResponse(assert, data, response, error);
-                        assert.equal(data.length, 1, "Was a single result returned?");
+                        assert.equal(data.length > 0, true, "Were more than 0 results returned?");
                         done();
                     }, 1, -1);
                 }),

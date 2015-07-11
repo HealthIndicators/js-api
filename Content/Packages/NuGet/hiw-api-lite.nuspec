@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>hiw-api-lite</id>
-        <version>5.0.5</version>
+        <version>5.2.0</version>
         <title>Health Indicators Warehouse Javascript API (Lite)</title>
         <authors>Health Indicators Warehouse</authors>
         <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
@@ -18,10 +18,10 @@ The "lite" version of the HIW API is a much smaller library without many of the 
         <tags>hiw health indicators warehouse rest api sdk</tags>
     </metadata>
     <files>
-        <file src="Publish\hiw-api-lite.js" target="content\Scripts\hiw-api-lite.js" />
-        <file src="Publish\hiw-api-lite.min.js" target="content\Scripts\hiw-api-lite.min.js" />
-        <file src="Publish\hiw-api-lite.d.ts" target="hiw-api-lite.d.ts" />
-        <file src="Publish\LICENSE.md" target="LICENSE.md" />
-        <file src="Publish\README.md" target="README.md" />
+        <file src="..\..\Scripts\API\Output\hiw-api-lite.js" target="content\Scripts\hiw-api-lite.js" />
+        <file src="..\..\Scripts\API\Output\hiw-api-lite.min.js" target="content\Scripts\hiw-api-lite.min.js" />
+        <file src="..\..\Scripts\API\Output\hiw-api-lite.d.ts" target="hiw-api-lite.d.ts" />
+        <file src="..\..\Scripts\API\Output\LICENSE.md" target="LICENSE.md" />
+        <file src="..\..\Scripts\API\Output\README.md" target="README.md" />
     </files>
 </package>
