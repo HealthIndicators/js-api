@@ -162,7 +162,7 @@
                 Indicator.getAll(api,(data, response, error) => {
                     assertAPIResponse(assert, data, response, error);
 
-                    assert.equal(data.length, 1, "Was a single result returned?");
+                    assert.equal(data.length > 0, true, "Were more than 0 results returned?");
                     done();
                 }, 1, -1);
             }),

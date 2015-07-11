@@ -5,7 +5,7 @@
         public page: Number = 1;
 
         /** The amount of data to return, per page. */
-        public pageSize: Number = API.DefaultPageSize;
+        public pageSize: Number = null;
 
         /** Creates a new, default, Filter instance. */
         constructor();
@@ -20,7 +20,7 @@
         constructor(page: number, type: FilterType)
             
         /** Creates a new Filter instance for the specified page, type, and criteria. */
-        constructor(page: number = 1, pageSize: number = API.DefaultPageSize, type: FilterType = FilterType.And) {
+        constructor(page: number = 1, pageSize: number = null, type: FilterType = FilterType.And) {
             super(type);
 
             this.page = page;
